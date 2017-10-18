@@ -5,6 +5,9 @@ int* UITextImageView::m_Select;
 
 UITextImageView::UITextImageView()
 	:m_pTexture(NULL)
+	, m_xSize(1)
+	, m_ySize(1)
+	, m_color(D3DCOLOR_ARGB(255,255,255,255))
 {
 }
 
@@ -42,6 +45,10 @@ void UITextImageView::SetTexture(char * szFullPath)
 
 void UITextImageView::Render(LPD3DXSPRITE pSprite)
 {
+	D3DXMATRIXA16 tMat = m_matWorld;
+	int tXPos = m_matWorld._41;
+	int tYPos = m_matWorld._42;
+
 	int tTempValue = (m_stSize.nWitdh / m_textPos.x);
 
 	if (m_isHidden) return;
@@ -49,20 +56,10 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 
 	pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
 
-	if (m_fontFileType == FONT1)
-	{
-		m_matWorld._11 = 2.0f;
-		m_matWorld._22 = 2.0f;
-		m_matWorld._33 = 1.0f;
-	}
-	else if (m_fontFileType == FONT2)
-	{
-		m_matWorld._11 = 1.2f;
-		m_matWorld._22 = 1.2f;
-		m_matWorld._33 = 1.0f;
-	}
+	tMat._11 = m_xSize;
+	tMat._22 = m_ySize;
+	tMat._33 = 1.0f;
 
-	pSprite->SetTransform(&m_matWorld);
 	for (int i = 0;i < m_sText.size();i++)
 	{
 		RECT rc;
@@ -87,10 +84,14 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 			((tPos % tTempValue) * m_textPos.x) + m_textPos.x,
 			((tPos / tTempValue) * m_textPos.y) + m_textPos.y);
 
+		pSprite->SetTransform(&tMat);
+
+		tMat._41 = tMat._41 + m_textPos.x * tMat._11;
+
 		if(*m_Select == m_index)
-			pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(m_vecPos.x+(i*m_textPos.x), m_vecPos.y, 0), D3DCOLOR_ARGB(255, 255, 0, 255));
+			pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(255, 255, 0, 255));
 		else
-			pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(m_vecPos.x + (i*m_textPos.x), m_vecPos.y, 0), D3DCOLOR_ARGB(255, 255, 255, 255));
+			pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
 	}
 
 	pSprite->End();

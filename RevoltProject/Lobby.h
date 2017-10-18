@@ -21,9 +21,9 @@ struct ST_Object
 {
 	LOBBY*				m_pNextLob;				// 엔터키를 눌렀을 때 다음 로비상태
 	LOBBY				m_prevLob;					// ESC키를 눌렀을 때 이전 로비상태
-	float					m_time;						// 화면을 바꿀 시간
-	int						m_count;						// 메뉴 텍스트 인덱스의 사이즈 
-	D3DXVECTOR3		m_target;					// 카메라 방향
+	float				m_time;						// 화면을 바꿀 시간
+	int					m_count;						// 메뉴 텍스트 인덱스의 사이즈 
+	D3DXVECTOR3			m_target;					// 카메라 방향
 	UIObject*			m_pObject;					// 해당 UI Object
 
 	ST_Object()
