@@ -174,7 +174,6 @@ void ObjectLoader::LoadMtlLib(char * szFolder, char * szFile)
 				m_mapMtlTex[sMtlName]->GetMaterial().Diffuse.g = g;
 				m_mapMtlTex[sMtlName]->GetMaterial().Diffuse.b = b;
 				m_mapMtlTex[sMtlName]->GetMaterial().Diffuse.a = 1.0f;
-
 			}
 			else if (szTemp[1] == 's')
 			{
@@ -184,7 +183,6 @@ void ObjectLoader::LoadMtlLib(char * szFolder, char * szFile)
 				m_mapMtlTex[sMtlName]->GetMaterial().Specular.g = g;
 				m_mapMtlTex[sMtlName]->GetMaterial().Specular.b = b;
 				m_mapMtlTex[sMtlName]->GetMaterial().Specular.a = 1.0f;
-
 			}
 		}
 		else if (szTemp[0] == 'd')
@@ -196,13 +194,14 @@ void ObjectLoader::LoadMtlLib(char * szFolder, char * szFile)
 		else if (szTemp[0] == 'm')
 		{
 			char szTexFile[1024];
+			std::string szFullPath = "";
 			sscanf_s(szTemp, "%*s %s", szTexFile, 1024);
-			sFullPath += std::string("/") + std::string(szTexFile);
+			szFullPath = std::string(szFolder) +  std::string("/") + std::string(szTexFile);
 			
 			isMaterial = false;
 
 			LPDIRECT3DTEXTURE9 pTexture =
-				g_pTextureManager->GetTexture(szTexFile);
+				g_pTextureManager->GetTexture(szFullPath);
 
 			m_mapMtlTex[sMtlName]->SetTexture(pTexture);
 		}
