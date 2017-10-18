@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="MainGame">
+      <UniqueIdentifier>{ef548f89-a87d-4891-bcf1-affbd1665c8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{9fa3f634-535e-4cf0-a017-14ef4f3e2b1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\DeviceManager">
+      <UniqueIdentifier>{8f9a3867-f014-449c-bd44-3c6ff7935f81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\KeyManager">
+      <UniqueIdentifier>{785f9bf7-38a9-4456-8208-7015a8080b00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectLoader">
+      <UniqueIdentifier>{144d9af7-184c-4e71-8732-11e3daffcce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\ObjectManager">
+      <UniqueIdentifier>{688c208c-db64-4784-b8a4-56e9ae4bb1cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\TextureManager">
+      <UniqueIdentifier>{cfd33b0b-a292-41fd-bd4c-79b8377557e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\SoundManager">
+      <UniqueIdentifier>{49f6067a-ab68-4e92-9583-cca8f0cd71e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{9ced6cdf-9317-417d-a8ef-f2d13a23be81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\FontManager">
+      <UniqueIdentifier>{ca893c29-dd9d-48de-a08e-903a8b7c9847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lobby">
+      <UniqueIdentifier>{fc5a2d6c-2305-41ee-97a8-123e8f568d34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XFileLoader">
+      <UniqueIdentifier>{b5267aeb-0d30-413e-a765-d9bd98671cbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\SkinnedMeshManger">
+      <UniqueIdentifier>{e187d92a-6dcb-4398-92d3-c5840fac5b60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CollisionClass">
+      <UniqueIdentifier>{d3005b28-9039-453f-bc5d-2cf8e40a0035}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\TimeManager">
+      <UniqueIdentifier>{f69862b6-2c24-4572-83c8-3803170691e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CollisionClass\FrustomView">
+      <UniqueIdentifier>{be1d6685-0c96-4033-83c4-adce462b34e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CollisionClass\OBB">
+      <UniqueIdentifier>{773aa466-dd08-4022-96b4-bfef7aaf0ac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\TextManager">
+      <UniqueIdentifier>{c04e62df-ada1-4e34-8fcb-42c936d75764}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PhysX">
+      <UniqueIdentifier>{e0be0c2e-1783-44ff-9f5e-293f4e402548}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\PhysXManager">
+      <UniqueIdentifier>{f0b6ffd0-8dbd-4e8e-aaf3-9cada56b89bb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="targetver.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceManager.h">
+      <Filter>Manager\DeviceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyManager.h">
+      <Filter>Manager\KeyManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Pyramid.h">
+      <Filter>MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectLoader.h">
+      <Filter>ObjectLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="MtlTex.h">
+      <Filter>ObjectLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Group.h">
+      <Filter>ObjectLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>ObjectLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>Manager\ObjectManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Manager\TextureManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Manager\SoundManager</Filter>
+    </ClInclude>
+    <ClInclude Include="UIButton.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIObject.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIImageView.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UITextChating.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UITextView.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="FontManager.h">
+      <Filter>Manager\FontManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectMap.h">
+      <Filter>ObjectLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Lobby.h">
+      <Filter>Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="XFileLoader.h">
+      <Filter>XFileLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="AllocateHierarchy.h">
+      <Filter>XFileLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedMesh.h">
+      <Filter>XFileLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedMeshManager.h">
+      <Filter>Manager\SkinnedMeshManger</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>Manager\TimeManager</Filter>
+    </ClInclude>
+    <ClInclude Include="FrustomView.h">
+      <Filter>CollisionClass\FrustomView</Filter>
+    </ClInclude>
+    <ClInclude Include="OBB.h">
+      <Filter>CollisionClass\OBB</Filter>
+    </ClInclude>
+    <ClInclude Include="TextManager.h">
+      <Filter>Manager\TextManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MacroFunction.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="StandardStructure.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="InlineFunction.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DEBUG_RENDER.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysXManager.h">
+      <Filter>Manager\PhysXManager</Filter>
+    </ClInclude>
+    <ClInclude Include="UserStream.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="RevoltProject.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="UITextImageView.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="RevoltProject.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp">
+      <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceManager.cpp">
+      <Filter>Manager\DeviceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyManager.cpp">
+      <Filter>Manager\KeyManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Pyramid.cpp">
+      <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectLoader.cpp">
+      <Filter>ObjectLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="MtlTex.cpp">
+      <Filter>ObjectLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Group.cpp">
+      <Filter>ObjectLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>ObjectLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>Manager\ObjectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Manager\TextureManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Manager\SoundManager</Filter>
+    </ClCompile>
+    <ClCompile Include="UIButton.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIObject.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIImageView.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UITextChating.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UITextView.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="FontManager.cpp">
+      <Filter>Manager\FontManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectMap.cpp">
+      <Filter>ObjectLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Lobby.cpp">
+      <Filter>Lobby</Filter>
+    </ClCompile>
+    <ClCompile Include="XFileLoader.cpp">
+      <Filter>XFileLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="AllocateHierarchy.cpp">
+      <Filter>XFileLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedMesh.cpp">
+      <Filter>XFileLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedMeshManager.cpp">
+      <Filter>Manager\SkinnedMeshManger</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>Manager\TimeManager</Filter>
+    </ClCompile>
+    <ClCompile Include="FrustomView.cpp">
+      <Filter>CollisionClass\FrustomView</Filter>
+    </ClCompile>
+    <ClCompile Include="OBB.cpp">
+      <Filter>CollisionClass\OBB</Filter>
+    </ClCompile>
+    <ClCompile Include="TextManager.cpp">
+      <Filter>Manager\TextManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DEBUG_RENDER.cpp">
+      <Filter>PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysXManager.cpp">
+      <Filter>Manager\PhysXManager</Filter>
+    </ClCompile>
+    <ClCompile Include="UserStream.cpp">
+      <Filter>PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="UITextImageView.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RevoltProject.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="RevoltProject.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
