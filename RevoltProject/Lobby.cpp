@@ -29,6 +29,7 @@ Lobby::~Lobby()
 	for each(auto a in m_mapLobby)
 	{
 		delete[] a.second->m_pNextLob;
+		SAFE_DELETE(a.second->m_pObject);
 	}
 }
 
@@ -112,7 +113,7 @@ void Lobby::KeyEvent()
 
 		if (m_mapLobby[m_stateLobby]->m_count <= m_select)
 			m_select = 0;
-		g_pSoundManager->play("MenuUpAndDown", 1.0f);
+		g_pSoundManager->Play("menuUpDown.wav", 1.0f);
 	}
 	
 	if (g_pKeyManager->isOnceKeyDown(VK_UP))
@@ -122,7 +123,7 @@ void Lobby::KeyEvent()
 		if (m_select < 0)
 			m_select = m_mapLobby[m_stateLobby]->m_count - 1;
 
-		g_pSoundManager->play("MenuUpAndDown", 1.0f);
+		g_pSoundManager->Play("menuUpDown.wav", 1.0f);
 	}
 
 	/*   엔터 키 눌렀을 때 다음 로비로 들어가는 이벤트   */
@@ -133,13 +134,15 @@ void Lobby::KeyEvent()
 		m_time = 0.0f;
 
 		if(m_stateLobby > INTRO3)
-			g_pSoundManager->play("MenuNext", 1.0f);
+			g_pSoundManager->Play("menuNext.wav", 1.0f);
 	}
 
 	/*   ESC 키 눌렀을 때 이전 로비로 들어가는 이벤트   */
 	if (g_pKeyManager->isOnceKeyDown(VK_ESCAPE))
 	{
-
+		m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
+		m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
+		g_pSoundManager->Play("menuNext.wav", 1.0f);
 	}
 
 	if (g_pKeyManager->isStayKeyDown(VK_CONTROL))
@@ -251,4 +254,6 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY]->m_target = D3DXVECTOR3(0, 20, 0);
 	m_mapLobby[MAIN_LOBBY]->m_count = 4;
 	m_mapLobby[MAIN_LOBBY]->m_pObject = pImageView8;
+	m_mapLobby[MAIN_LOBBY]->m_pNextLob = new LOBBY[4];
+	m_mapLobby[MAIN_LOBBY]->m_prevLob = START_LOBBY;
 }
