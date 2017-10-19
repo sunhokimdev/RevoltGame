@@ -484,20 +484,52 @@ void Lobby::SetUpUI()
 	pImageView26->SetTexture("Maps/Front/Image/revoltrogo.png");
 
 	UIImageView* pImageView33 = new UIImageView;
-	pImageView33->SetPosition(400, 250);
+	pImageView33->SetPosition(300, 180);
 	pImageView33->SetIsBoard(true);
-	pImageView33->SetXSize(11.5f);
-	pImageView33->SetYSize(9.5f);
+	pImageView33->SetXSize(25.0f);
+	pImageView33->SetYSize(3.0f);
 	pImageView33->SetTexture("Maps/Front/Image/ring.png");
 
 	UITextImageView* pImageView34 = new UITextImageView;
-	pImageView34->SetIndex(0);
-	pImageView34->SetPosition(50, 25);
+	pImageView34->SetIndex(INT_MAX);
+	pImageView34->SetColor(D3DCOLOR_ARGB(255, 242, 150, 97));
+	pImageView34->SetPosition(30, 40);
 	pImageView34->SetText("Player Name : ");
 	pImageView34->SetTexture("Maps/Front/Image/font2.png");
 
-	pImageView33->AddChild(pImageView34);
+	UIImageView* pImageView35 = new UIImageView;
+	pImageView35->SetPosition(-220, -130);
+	pImageView35->SetXSize(4.0f);
+	pImageView35->SetYSize(4.0f);
+	pImageView35->SetIsBoard(true);
+	pImageView35->SetTexture("Maps/Front/Image/blueRing.png");
+
+	UIImageView* pImageView36 = new UIImageView;
+	pImageView36->SetPosition(140, 25);
+	pImageView36->SetIsBoard(true);
+	pImageView36->SetXSize(20.0f);
+	pImageView36->SetYSize(1.0f);
+	pImageView36->SetTexture("Maps/Front/Image/ring.png");
+
+	UITextImageView* pImageView37 = new UITextImageView;
+	pImageView37->SetTexture("Maps/Front/Image/font1.png");
+	pImageView37->SetText("ENTER NAME");
+	pImageView37->SetXSize(1.5f);
+	pImageView37->SetYSize(1.5f);
+	pImageView37->SetPosition(200, 45);
+
+	UIImageView* pImageView38 = new UIImageView;
+	pImageView38->SetXSize(1.2f);
+	pImageView38->SetYSize(1.2f);
+	pImageView38->SetPosition(17, 17);
+	pImageView38->SetTexture("Maps/Front/Image/bluetoy.png");
+
 	pImageView33->AddChild(pImageView32);
+	pImageView33->AddChild(pImageView34);
+	pImageView33->AddChild(pImageView35);
+	pImageView35->AddChild(pImageView36);
+	pImageView35->AddChild(pImageView37);
+	pImageView35->AddChild(pImageView38);
 
 ///////////////////////////////   ±¸ºÐ   /////////////////////////////////////////
 
@@ -547,8 +579,6 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[3] = LOBBY_NONE;
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[4] = START_LOBBY;
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[5] = LOBBY_NONE;
-
-	m_mapLobby[CREATE_PROFILE_LOBBY] = new ST_Object;
 
 	m_mapLobby[MAIN_LOBBY2] = new ST_Object;
 	m_mapLobby[MAIN_LOBBY2]->m_target = D3DXVECTOR3(-1, 10, -2);

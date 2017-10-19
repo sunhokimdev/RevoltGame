@@ -204,6 +204,9 @@
     <ClInclude Include="Thing.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="ThingManager.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -312,6 +315,9 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="Thing.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ThingManager.cpp">
       <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
