@@ -3,13 +3,15 @@
 
 
 Camera::Camera()
-	: m_vEye(0, 0, -5)
+	: m_vEye(0, 1, -40)
 	, m_vLookAt(0, 0, 0)
 	, m_vUp(0, 1, 0)
 	, m_pvTarget(NULL)
 	, m_fCameraDistance(5.0f)
 	, m_isLButtonDown(false)
 	, m_vCamRotAngle(0, 0, 0)
+	, m_fTime(0.0f)
+	, m_vNextLookAT(0, 0, 0)
 {
 	m_ptPrevMouse.x = 0;
 	m_ptPrevMouse.y = 0;
@@ -47,14 +49,22 @@ void Camera::Update()
 
 	matR = matRX * matRY;
 
-	m_vEye = D3DXVECTOR3(0, 0, -m_fCameraDistance);
-	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matR);
+	m_fTime += 0.0001f;
+	if (m_fTime > 1.0f)
+	{
+		m_fTime = 0;
+	}
 
 	if (m_pvTarget)
 	{
-		m_vLookAt = *m_pvTarget;
-		m_vEye = m_vEye + *m_pvTarget;
+		D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fTime);
+		D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLookAT, m_fTime);
+		//m_vLookAt = *m_pvTarget;
 	}
+
+
+
+	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matR);
 
 	D3DXMATRIXA16 matView;
 	D3DXMatrixLookAtLH(&matView, &m_vEye,

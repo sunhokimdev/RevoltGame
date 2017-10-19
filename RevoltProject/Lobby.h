@@ -25,12 +25,14 @@ struct ST_Object
 	int					m_count;						// 메뉴 텍스트 인덱스의 사이즈 
 	D3DXVECTOR3			m_target;					// 카메라 방향
 	UIObject*			m_pObject;					// 해당 UI Object
+	D3DXVECTOR3			m_lookAt;
 
 	ST_Object()
 	{
 		m_time = 0.0f;
 		m_count = 0;
 		m_target = D3DXVECTOR3(0, 0, 0);
+		m_lookAt = D3DXVECTOR3(0, 0, 0);
 	}
 };
 

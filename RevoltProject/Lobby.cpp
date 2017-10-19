@@ -70,7 +70,7 @@ void Lobby::Update()
 
 	KeyEvent();
 
-	m_mapLobby[m_stateLobby]->m_pObject->Update();
+		m_mapLobby[m_stateLobby]->m_pObject->Update();
 }
 
 void Lobby::Render()
@@ -131,6 +131,7 @@ void Lobby::KeyEvent()
 	{
 		m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
 		m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+		m_pCamera->SetLookAt(m_mapLobby[m_stateLobby]->m_lookAt);
 		m_time = 0.0f;
 
 		if(m_stateLobby > INTRO3)
@@ -149,7 +150,7 @@ void Lobby::KeyEvent()
 	{
 		m_stateLobby = START_LOBBY;
 		m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
-	}
+	} 
 }
 
 void Lobby::SetUpUI()
@@ -301,19 +302,32 @@ void Lobby::SetUpUI()
 	m_mapLobby[INTRO3]->m_pNextLob[0] = START_LOBBY;
 
 	m_mapLobby[START_LOBBY] = new ST_Object;
-	m_mapLobby[START_LOBBY]->m_target = D3DXVECTOR3(-1, 2, -55);
+	m_mapLobby[START_LOBBY]->m_target = D3DXVECTOR3(-1, 2, -17);
+	m_mapLobby[START_LOBBY]->m_lookAt = D3DXVECTOR3(0, 0, 0);
 	m_mapLobby[START_LOBBY]->m_count = 4;
-	m_mapLobby[START_LOBBY]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[START_LOBBY]->m_time = 50.0f;
-	m_mapLobby[START_LOBBY]->m_pNextLob[0] = MAIN_LOBBY;
 	m_mapLobby[START_LOBBY]->m_pObject = pImageView4;
+	m_mapLobby[START_LOBBY]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[START_LOBBY]->m_pNextLob[0] = MAIN_LOBBY;
 
 	m_mapLobby[MAIN_LOBBY] = new ST_Object;
-	m_mapLobby[MAIN_LOBBY]->m_target = D3DXVECTOR3(-1, 1, -10);
+	m_mapLobby[MAIN_LOBBY]->m_target = D3DXVECTOR3(1, 8, -1);
+	m_mapLobby[MAIN_LOBBY]->m_lookAt = D3DXVECTOR3(0, 0, 0);
 	m_mapLobby[MAIN_LOBBY]->m_count = 6;
 	m_mapLobby[MAIN_LOBBY]->m_time = 50.0f;
 	m_mapLobby[MAIN_LOBBY]->m_pObject = pImageView11;
-	m_mapLobby[MAIN_LOBBY]->m_pNextLob = new LOBBY[6];
 	m_mapLobby[MAIN_LOBBY]->m_prevLob = START_LOBBY;
+	m_mapLobby[MAIN_LOBBY]->m_pNextLob = new LOBBY[6];
+	m_mapLobby[MAIN_LOBBY]->m_pNextLob[0] = MAIN_LOBBY2;
+
+	m_mapLobby[MAIN_LOBBY2] = new ST_Object;
+	m_mapLobby[MAIN_LOBBY2]->m_target = D3DXVECTOR3(8, 5, 10);
+	m_mapLobby[MAIN_LOBBY2]->m_lookAt = D3DXVECTOR3(15, 5, 20);
+	m_mapLobby[MAIN_LOBBY2]->m_count = 6;
+	m_mapLobby[MAIN_LOBBY2]->m_time = 50.0f;
+	m_mapLobby[MAIN_LOBBY2]->m_pObject = pImageView11;
+	m_mapLobby[MAIN_LOBBY2]->m_prevLob = MAIN_LOBBY;
+	//m_mapLobby[MAIN_LOBBY2]->m_pNextLob = new LOBBY[1];
+
 
 }
