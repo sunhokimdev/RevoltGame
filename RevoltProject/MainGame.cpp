@@ -82,7 +82,7 @@ void MainGame::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 void MainGame::SetAddSound()
 {
-	g_pSoundManager->addSound("MenuUpAndDown", "Sound/menuLeftRight.wav", false, false);
-	g_pSoundManager->addSound("MenuNext", "Sound/menuNext.wav", false, false);
+	g_pSoundManager->LoadSound("Sound", "menuUpDown.wav", false);
+	g_pSoundManager->LoadSound("Sound", "menuNext.wav",false);
 }
 

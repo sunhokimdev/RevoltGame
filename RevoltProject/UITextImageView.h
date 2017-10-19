@@ -21,8 +21,10 @@ public:
 	static int*			m_Select;				// 현재 텍스트의 위치
 
 	SYNTHESIZE(std::string, m_sText, Text);		// 텍스트의 내용을 저장하는 변수
-	SYNTHESIZE(D3DXVECTOR3, m_vecPos, VecPos);	// 텍스트의 위치
 	SYNTHESIZE(int, m_index, Index);			// 현재 위치에서 텍스트의 위치
+	SYNTHESIZE(D3DXCOLOR, m_color, Color);		// 텍스트 색상 변경
+	SYNTHESIZE(float, m_xSize, XSize);			// X폰트 사이즈 설정
+	SYNTHESIZE(float, m_ySize, YSize);			// Y폰트 사이즈 설정
 
 	virtual void Render(LPD3DXSPRITE pSprite) override;
 	virtual void SetTexture(char* szFullPath);	// 텍스쳐 설정

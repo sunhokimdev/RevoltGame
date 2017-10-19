@@ -5,6 +5,8 @@ using namespace FMOD;
 #define SOUNDBUFFER 10
 #define EXTRACHANNELBUFFER 5
 
+#define SOUND_MAX_CHANNEL	10
+
 #define TOTALSOUNDBUFFER SOUNDBUFFER + EXTRACHANNELBUFFER
 
 #define g_pSoundManager SoundManager::GetInstance()
@@ -12,30 +14,46 @@ using namespace FMOD;
 class SoundManager
 {
 private:
-	typedef std::map<std::string, Sound**> arrSounds;
-	typedef std::map<std::string, Sound**>::iterator arrSoundsIter;
-	typedef std::map<std::string, Channel**> arrChannels;
-	typedef std::map<std::string, Channel**>::iterator arrChannelsIter;
+	System* m_pSystem;
+	std::map<std::string, Sound*> m_sounds;
+	std::list<Channel*> m_channels;
 
-	System* _system;
-	Sound** _sound;
-	Channel** _channel;
+	std::string m_bgmSound;
+	int m_bgmVoiune;
+	Channel* m_pBgmChnnel;
 
-	arrSounds _mTotalSounds;
+	FMOD_VECTOR m_fmVector_Listener;
+	FMOD_VECTOR m_forward;
+	FMOD_VECTOR m_up;
 
 	SINGLETONE(SoundManager);
 public:
-	HRESULT init();
-	void release();
-	void update();
+	void Setup();
+	void Destory();
+	void Update();
 
-	void addSound(std::string keyName, std::string soundName, bool bgm, bool loop);
-	void play(std::string keyName, float volume = 1.0f);	//0 ~ 255, 0.0 ~ 1.0f
-	void stop(std::string keyName);
-	void pause(std::string keyName);
-	void resume(std::string keyName);
+	void Setup3DCamera(D3DXVECTOR3 pos, D3DXVECTOR3 forward, D3DXVECTOR3 up = D3DXVECTOR3(0.f, 1.f, 0.f));
 
-	bool isPlaySound(std::string keyName);
-	bool isPauseSound(std::string keyName);
+	Sound* FindSound(std::string key);
+	Channel* FindChannel(std::string key);
+
+	void LoadSound(std::string folderName, std::string fileName, bool loop);
+
+	void Play(std::string fileName, float volume = 1.0f, D3DXVECTOR3 soundPos = D3DXVECTOR3(0, 0, 0));
+	void Play_BGM(std::string fileName, float volume = 1.0f);
+	void SetVolum(std::string key, float volume);
+
+	void SetSoundPosition(std::string fileName, D3DXVECTOR3 position);
+	void SetSoundPosition(Channel* pChannel, D3DXVECTOR3 position);
+	void SetSoundPosition(Channel* pChannel, FMOD_VECTOR position);
+
+
+	void Stop(std::string fileName);
+	void Pause(std::string fileName);
+	void Resume(std::string fileName);
+
+	void AllSoundIsStop();
+	void AllSoundIsPause();
+	void AllSoundIsResume();
 };
 

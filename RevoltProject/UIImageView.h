@@ -10,5 +10,9 @@ public:
 	virtual ~UIImageView();
 	virtual void SetTexture(char* szFullPath);
 	virtual void Render(LPD3DXSPRITE pSprite) override;
+
+	SYNTHESIZE(bool, m_isBoard, IsBoard);		
+	SYNTHESIZE(float, m_xSize, XSize);
+	SYNTHESIZE(float, m_ySize, YSize);
 };
 
