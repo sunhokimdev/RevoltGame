@@ -251,4 +251,5 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY]->m_target = D3DXVECTOR3(0, 20, 0);
 	m_mapLobby[MAIN_LOBBY]->m_count = 4;
 	m_mapLobby[MAIN_LOBBY]->m_pObject = pImageView8;
+	m_mapLobby[MAIN_LOBBY]->m_pNextLob = new LOBBY[4];
 }
