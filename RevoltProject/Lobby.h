@@ -20,19 +20,22 @@ class Thing;		// 오브젝트 클래스
 
 struct ST_Object
 {
-	LOBBY*				m_pNextLob;				// 엔터키를 눌렀을 때 다음 로비상태
+	LOBBY*				m_pNextLob;					// 엔터키를 눌렀을 때 다음 로비상태
 	LOBBY				m_prevLob;					// ESC키를 눌렀을 때 이전 로비상태
 	float				m_time;						// 화면을 바꿀 시간
 	int					m_count;					// 메뉴 텍스트 위아래 인덱스의 사이즈 
 	int					m_selectCnt;				// 메뉴 오른쪽 왼쪽 인덱스 사이즈
+
 	D3DXVECTOR3			m_target;					// 카메라 방향
 	UIObject*			m_pObject;					// 해당 UI Object
+	D3DXVECTOR3			m_camLookAt;				// Camera LookAt
 
 	ST_Object()
 	{
 		m_time = 0.0f;
 		m_count = 0;
 		m_target = D3DXVECTOR3(0, 0, 0);
+		m_camLookAt = D3DXVECTOR3(0, 0, 0);
 	}
 };
 
@@ -65,6 +68,7 @@ public:
 	void KeyUpdate();				// 키 이벤트 발생 갱신 메서드
 	void TimeUpdate();				// 시간이 흐를 때 마다 발생 하는 이벤트를 갱신하는 메서드
 	void SetUpUI();					// UI 셋업작업
+
 
 	D3DXVECTOR3 GetTarget() { return m_mapLobby[START_LOBBY]->m_target; }		// 카메라가 보는 방향을 반환해주는 메서드
 	void SetUpCamera(Camera* camera) { m_pCamera = camera; }		// 처음 카메라 변수를 지정하는 메서드
