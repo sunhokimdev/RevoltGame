@@ -3,13 +3,14 @@
 
 
 Camera::Camera()
-	: m_vEye(0, 0, -5)
+	: m_vEye(1, 2, -55)
 	, m_vLookAt(0, 0, 0)
 	, m_vUp(0, 1, 0)
 	, m_pvTarget(NULL)
-	, m_fCameraDistance(5.0f)
+	, m_fCameraDistance(50.0f)
 	, m_isLButtonDown(false)
 	, m_vCamRotAngle(0, 0, 0)
+	, m_fCamTime(0.0f)
 {
 	m_ptPrevMouse.x = 0;
 	m_ptPrevMouse.y = 0;
@@ -23,6 +24,7 @@ Camera::~Camera()
 void Camera::Setup(D3DXVECTOR3 * pvTarget)
 {
 	m_pvTarget = pvTarget;
+
 
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
@@ -40,6 +42,9 @@ void Camera::Update()
 {
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
+	
+	m_fCamTime += 0.0001f;
+
 
 	D3DXMATRIXA16 matR, matRX, matRY;
 	D3DXMatrixRotationX(&matRX, m_vCamRotAngle.x);
@@ -47,14 +52,21 @@ void Camera::Update()
 
 	matR = matRX * matRY;
 
-	m_vEye = D3DXVECTOR3(0, 0, -m_fCameraDistance);
-	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matR);
-
 	if (m_pvTarget)
 	{
-		m_vLookAt = *m_pvTarget;
-		m_vEye = m_vEye + *m_pvTarget;
+		D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fCamTime);
+		D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
+	
 	}
+
+	if (m_fCamTime > 1.0f)
+	{
+		m_fCamTime = 0.0f;
+	}
+
+
+	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matR);
+
 
 	D3DXMATRIXA16 matView;
 	D3DXMatrixLookAtLH(&matView, &m_vEye,
