@@ -84,5 +84,7 @@ void MainGame::SetAddSound()
 {
 	g_pSoundManager->LoadSound("Sound", "menuUpDown.wav", false);
 	g_pSoundManager->LoadSound("Sound", "menuNext.wav",false);
+	g_pSoundManager->LoadSound("Sound", "menuPrev.wav", false);
+	g_pSoundManager->LoadSound("Sound", "menuLeftRight.wav", false);
 }
 

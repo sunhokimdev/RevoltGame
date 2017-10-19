@@ -3,8 +3,7 @@
 class UIObject;		// UI오브젝트를 사용하기 위한 전방선언 클래스
 class MtlTex;		// 재질을 사용하기 위한 전방선언 클래스
 class Camera;		// 카메라 클래스를 사용하기 위한 전방선언 클래스
-
-class TextLoader;	// 텍스트를 읽어오는 클래스를 사용하기 위한 전방선언 클래스
+class Thing;		// 오브젝트 클래스
 
 //===================================================================
 // - ## 10.15.17 ##
@@ -14,6 +13,8 @@ class TextLoader;	// 텍스트를 읽어오는 클래스를 사용하기 위한 전방선언 클래스
 //===================================================================
 
 //===================================================================
+// - ## 10.15.17 ##
+// - written by 김선호
 // - @@ 텍스트 인덱스의 갯수가 4개이면 처음시작은 0부터 시작하고 끝은 3이다.
 //===================================================================
 
@@ -22,7 +23,8 @@ struct ST_Object
 	LOBBY*				m_pNextLob;				// 엔터키를 눌렀을 때 다음 로비상태
 	LOBBY				m_prevLob;					// ESC키를 눌렀을 때 이전 로비상태
 	float				m_time;						// 화면을 바꿀 시간
-	int					m_count;						// 메뉴 텍스트 인덱스의 사이즈 
+	int					m_count;					// 메뉴 텍스트 위아래 인덱스의 사이즈 
+	int					m_selectCnt;				// 메뉴 오른쪽 왼쪽 인덱스 사이즈
 	D3DXVECTOR3			m_target;					// 카메라 방향
 	UIObject*			m_pObject;					// 해당 UI Object
 
@@ -45,7 +47,8 @@ private:
 
 	LOBBY	m_stateLobby;						// 로비 상태 를 저장하는 변수
 	float	m_time;							// 변경 시간을 나타내는 타임 변수
-	int		m_select;						// 현재 커서의 위치
+	int		m_select;						// 현재 위아래 커서의 위치
+	int		m_leftAndrightSelect;			// 현재 오른쪽 왼쪽 커서의 위치;
 
 	Camera*		m_pCamera;									// 카메라 클래스
 	std::vector<std::string> m_vString;
@@ -59,7 +62,8 @@ public:
 	void Render();					// 실질적으로 그릴 메서드
 
 	/*   클래스 안에 사용할 루프 메서드   */
-	void KeyEvent();				// 키 이벤트 발생 메서드
+	void KeyUpdate();				// 키 이벤트 발생 갱신 메서드
+	void TimeUpdate();				// 시간이 흐를 때 마다 발생 하는 이벤트를 갱신하는 메서드
 	void SetUpUI();					// UI 셋업작업
 
 	D3DXVECTOR3 GetTarget() { return m_mapLobby[START_LOBBY]->m_target; }		// 카메라가 보는 방향을 반환해주는 메서드

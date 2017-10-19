@@ -4,11 +4,15 @@
 UIImageView::UIImageView()
 	: m_pTexture(NULL)
 	, m_isBoard(false)
+	, m_xSize(1.0f)
+	, m_ySize(1.0f)
+	, m_color(D3DXCOLOR(255,255,255,255))
 {
 }
 
 UIImageView::~UIImageView()
 {
+	SAFE_RELEASE(m_pTexture);
 }
 
 void UIImageView::SetTexture(char * szFullPath)
@@ -114,9 +118,13 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 	else
 	{
 		RECT rc;
+
+		tMat._11 = m_xSize;
+		tMat._22 = m_ySize;
+
 		pSprite->SetTransform(&tMat);
 		SetRect(&rc, 0, 0, m_stSize.nWitdh, m_stSize.nWitdh);
-		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(255, 255, 255, 255));
+		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
 	}
 
 	pSprite->End();

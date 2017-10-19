@@ -14,5 +14,6 @@ public:
 	SYNTHESIZE(bool, m_isBoard, IsBoard);		
 	SYNTHESIZE(float, m_xSize, XSize);
 	SYNTHESIZE(float, m_ySize, YSize);
+	SYNTHESIZE(D3DXCOLOR, m_color, Color);
 };
 
