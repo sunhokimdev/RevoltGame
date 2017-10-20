@@ -179,7 +179,6 @@
     <ClInclude Include="TextManager.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Thing.h" />
-    <ClInclude Include="ThingManager.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="UIButton.h" />
     <ClInclude Include="UIImageView.h" />
