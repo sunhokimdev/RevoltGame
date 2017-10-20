@@ -41,6 +41,7 @@ void Lobby::Setup()
 
 	SetUpUI();
 
+
 	ObjectLoader loader;
 	m_pObjMesh = loader.LoadMesh(
 		m_vecObjMtlTex,
@@ -70,7 +71,7 @@ void Lobby::Update()
 
 	KeyEvent();
 
-		m_mapLobby[m_stateLobby]->m_pObject->Update();
+	m_mapLobby[m_stateLobby]->m_pObject->Update();
 }
 
 void Lobby::Render()
@@ -131,7 +132,7 @@ void Lobby::KeyEvent()
 	{
 		m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
 		m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
-		m_pCamera->SetLookAt(m_mapLobby[m_stateLobby]->m_lookAt);
+		m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 		m_time = 0.0f;
 
 		if(m_stateLobby > INTRO3)
@@ -143,6 +144,7 @@ void Lobby::KeyEvent()
 	{
 		m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
 		m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
+		m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 		g_pSoundManager->Play("menuNext.wav", 1.0f);
 	}
 
@@ -150,7 +152,7 @@ void Lobby::KeyEvent()
 	{
 		m_stateLobby = START_LOBBY;
 		m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
-	} 
+	}	m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 }
 
 void Lobby::SetUpUI()
@@ -279,6 +281,123 @@ void Lobby::SetUpUI()
 	pImageView11->AddChild(pImageView17);
 	pImageView11->AddChild(pImageView10);
 
+
+	UIImageView* pImageView18 = new UIImageView;
+	pImageView18->SetPosition(-10, -140);
+	pImageView18->SetTexture("Maps/Front/Image/revoltrogo.png");
+
+	UIImageView* pImageView19 = new UIImageView;
+	pImageView19->SetPosition(400, 250);
+	pImageView19->SetIsBoard(true);
+	pImageView19->SetXSize(11.5f);
+	pImageView19->SetYSize(9.5f);
+	pImageView19->SetTexture("Maps/Front/Image/ring.png");
+
+	UITextImageView* pImageView20 = new UITextImageView;
+	pImageView20->SetIndex(0);
+	pImageView20->SetPosition(50, 25);
+	pImageView20->SetText("Start Race");
+	pImageView20->SetTexture("Maps/Front/Image/font2.png");
+
+	UITextImageView* pImageView21 = new UITextImageView;
+	pImageView21->SetIndex(1);
+	pImageView21->SetPosition(50, 50);
+	pImageView21->SetText("Championship");
+	pImageView21->SetTexture("Maps/Front/Image/font2.png");
+
+	UITextImageView* pImageView22 = new UITextImageView;
+	pImageView22->SetIndex(2);
+	pImageView22->SetPosition(50, 75);
+	pImageView22->SetText("Multi-Player");
+	pImageView22->SetTexture("Maps/Front/Image/font2.png");
+
+	UITextImageView* pImageView23 = new UITextImageView;
+	pImageView23->SetIndex(3);
+	pImageView23->SetPosition(50, 100);
+	pImageView23->SetText("Time Trial");
+	pImageView23->SetTexture("Maps/Front/Image/font2.png");
+
+	UITextImageView* pImageView24 = new UITextImageView;
+	pImageView24->SetIndex(4);
+	pImageView24->SetPosition(50, 125);
+	pImageView24->SetText("Practice");
+	pImageView24->SetTexture("Maps/Front/Image/font2.png");
+
+	UITextImageView* pImageView25 = new UITextImageView;
+	pImageView25->SetIndex(5);
+	pImageView25->SetPosition(50, 150);
+	pImageView25->SetText("Stunt Arena");
+	pImageView25->SetTexture("Maps/Front/Image/font2.png");
+
+	pImageView19->AddChild(pImageView20);
+	pImageView19->AddChild(pImageView21);
+	pImageView19->AddChild(pImageView22);
+	pImageView19->AddChild(pImageView23);
+	pImageView19->AddChild(pImageView24);
+	pImageView19->AddChild(pImageView25);
+	pImageView19->AddChild(pImageView18);
+
+	UIImageView* pImageView26 = new UIImageView;
+	pImageView26->SetPosition(-10, -140);
+	pImageView26->SetTexture("Maps/Front/Image/revoltrogo.png");
+
+	UIImageView* pImageView27 = new UIImageView;
+	pImageView27->SetPosition(400, 250);
+	pImageView27->SetIsBoard(true);
+	pImageView27->SetXSize(11.5f);
+	pImageView27->SetYSize(9.5f);
+	pImageView27->SetTexture("Maps/Front/Image/ring.png");
+
+	UITextImageView* pImageView28 = new UITextImageView;
+	pImageView28->SetIndex(0);
+	pImageView28->SetPosition(50, 25);
+	pImageView28->SetText("Simulation");
+	pImageView28->SetTexture("Maps/Front/Image/font2.png");
+
+	UITextImageView* pImageView29 = new UITextImageView;
+	pImageView29->SetIndex(1);
+	pImageView29->SetPosition(50, 50);
+	pImageView29->SetText("Arcade");
+	pImageView29->SetTexture("Maps/Front/Image/font2.png");
+
+	UITextImageView* pImageView30 = new UITextImageView;
+	pImageView30->SetIndex(2);
+	pImageView30->SetPosition(50, 75);
+	pImageView30->SetText("Console");
+	pImageView30->SetTexture("Maps/Front/Image/font2.png");
+
+	UITextImageView* pImageView31 = new UITextImageView;
+	pImageView31->SetIndex(3);
+	pImageView31->SetPosition(50, 100);
+	pImageView31->SetText("Junior RC");
+	pImageView31->SetTexture("Maps/Front/Image/font2.png");
+
+	pImageView27->AddChild(pImageView28);
+	pImageView27->AddChild(pImageView29);
+	pImageView27->AddChild(pImageView30);
+	pImageView27->AddChild(pImageView31);
+	pImageView27->AddChild(pImageView26);
+
+	UIImageView* pImageView32 = new UIImageView;
+	pImageView26->SetPosition(-10, -140);
+	pImageView26->SetTexture("Maps/Front/Image/revoltrogo.png");
+
+	UIImageView* pImageView33 = new UIImageView;
+	pImageView33->SetPosition(400, 250);
+	pImageView33->SetIsBoard(true);
+	pImageView33->SetXSize(11.5f);
+	pImageView33->SetYSize(9.5f);
+	pImageView33->SetTexture("Maps/Front/Image/ring.png");
+
+	UITextImageView* pImageView34 = new UITextImageView;
+	pImageView34->SetIndex(0);
+	pImageView34->SetPosition(50, 25);
+	pImageView34->SetText("Player Name : ");
+	pImageView34->SetTexture("Maps/Front/Image/font2.png");
+
+	pImageView33->AddChild(pImageView34);
+	pImageView33->AddChild(pImageView32);
+
 ///////////////////////////////   구분   /////////////////////////////////////////
 
 	/*   로비 UI 추가하기   */
@@ -302,32 +421,49 @@ void Lobby::SetUpUI()
 	m_mapLobby[INTRO3]->m_pNextLob[0] = START_LOBBY;
 
 	m_mapLobby[START_LOBBY] = new ST_Object;
-	m_mapLobby[START_LOBBY]->m_target = D3DXVECTOR3(-1, 2, -17);
-	m_mapLobby[START_LOBBY]->m_lookAt = D3DXVECTOR3(0, 0, 0);
+	m_mapLobby[START_LOBBY]->m_target = D3DXVECTOR3(-1, 2, -55);
 	m_mapLobby[START_LOBBY]->m_count = 4;
-	m_mapLobby[START_LOBBY]->m_time = 50.0f;
-	m_mapLobby[START_LOBBY]->m_pObject = pImageView4;
 	m_mapLobby[START_LOBBY]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[START_LOBBY]->m_time = 50.0f;
 	m_mapLobby[START_LOBBY]->m_pNextLob[0] = MAIN_LOBBY;
+	m_mapLobby[START_LOBBY]->m_pObject = pImageView4;
+	m_mapLobby[START_LOBBY]->m_prevLob = START_LOBBY;
 
 	m_mapLobby[MAIN_LOBBY] = new ST_Object;
-	m_mapLobby[MAIN_LOBBY]->m_target = D3DXVECTOR3(1, 8, -1);
-	m_mapLobby[MAIN_LOBBY]->m_lookAt = D3DXVECTOR3(0, 0, 0);
+	m_mapLobby[MAIN_LOBBY]->m_target = D3DXVECTOR3(-1, 2, -20);
 	m_mapLobby[MAIN_LOBBY]->m_count = 6;
+	m_mapLobby[MAIN_LOBBY]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[MAIN_LOBBY]->m_time = 50.0f;
 	m_mapLobby[MAIN_LOBBY]->m_pObject = pImageView11;
-	m_mapLobby[MAIN_LOBBY]->m_prevLob = START_LOBBY;
-	m_mapLobby[MAIN_LOBBY]->m_pNextLob = new LOBBY[6];
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[0] = MAIN_LOBBY2;
+	m_mapLobby[MAIN_LOBBY]->m_prevLob = START_LOBBY;
 
 	m_mapLobby[MAIN_LOBBY2] = new ST_Object;
-	m_mapLobby[MAIN_LOBBY2]->m_target = D3DXVECTOR3(8, 5, 10);
-	m_mapLobby[MAIN_LOBBY2]->m_lookAt = D3DXVECTOR3(15, 5, 20);
+	m_mapLobby[MAIN_LOBBY2]->m_target = D3DXVECTOR3(-1, 10, -2);
 	m_mapLobby[MAIN_LOBBY2]->m_count = 6;
+	m_mapLobby[MAIN_LOBBY2]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[MAIN_LOBBY2]->m_time = 50.0f;
-	m_mapLobby[MAIN_LOBBY2]->m_pObject = pImageView11;
+	m_mapLobby[MAIN_LOBBY2]->m_pObject = pImageView19;
+	m_mapLobby[MAIN_LOBBY2]->m_pNextLob[0] = MAIN_LOBBY3;
 	m_mapLobby[MAIN_LOBBY2]->m_prevLob = MAIN_LOBBY;
-	//m_mapLobby[MAIN_LOBBY2]->m_pNextLob = new LOBBY[1];
 
+	m_mapLobby[MAIN_LOBBY3] = new ST_Object;
+	m_mapLobby[MAIN_LOBBY3]->m_target = D3DXVECTOR3(-1, 10, -2);
+	m_mapLobby[MAIN_LOBBY3]->m_count = 4;
+	m_mapLobby[MAIN_LOBBY3]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[MAIN_LOBBY3]->m_time = 50.0f;
+	m_mapLobby[MAIN_LOBBY3]->m_pObject = pImageView27;
+	m_mapLobby[MAIN_LOBBY3]->m_pNextLob[0] = MAKE_NAME;
+	m_mapLobby[MAIN_LOBBY3]->m_prevLob = MAIN_LOBBY2;
 
+	m_mapLobby[MAKE_NAME] = new ST_Object;
+	m_mapLobby[MAKE_NAME]->m_target = D3DXVECTOR3(8, 5, 10);
+	m_mapLobby[MAKE_NAME]->m_count = 1;
+	m_mapLobby[MAKE_NAME]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[MAKE_NAME]->m_time = 50.0f;
+	m_mapLobby[MAKE_NAME]->m_pObject = pImageView33;
+	m_mapLobby[MAKE_NAME]->m_camLookAt = D3DXVECTOR3(15, 5, 25);
+	m_mapLobby[MAKE_NAME]->m_pNextLob[0] = START_LOBBY;
+	m_mapLobby[MAKE_NAME]->m_prevLob = MAIN_LOBBY3;
 }
+
