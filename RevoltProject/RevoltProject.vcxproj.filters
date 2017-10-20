@@ -73,8 +73,11 @@
     <Filter Include="ObjectFileLoader">
       <UniqueIdentifier>{144d9af7-184c-4e71-8732-11e3daffcce2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{62e36d2a-301b-4050-b1de-ddb9a09b79bb}</UniqueIdentifier>
+    <Filter Include="Thing">
+      <UniqueIdentifier>{5139fb85-3366-43b9-beb0-b189ddf55405}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{eb723765-8d2d-4a37-a165-a41c1278c1a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -202,10 +205,13 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Thing.h">
-      <Filter>Object</Filter>
+      <Filter>Thing</Filter>
     </ClInclude>
     <ClInclude Include="ThingManager.h">
-      <Filter>Object</Filter>
+      <Filter>Thing</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -315,10 +321,13 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="Thing.cpp">
-      <Filter>Object</Filter>
+      <Filter>Thing</Filter>
     </ClCompile>
     <ClCompile Include="ThingManager.cpp">
-      <Filter>Object</Filter>
+      <Filter>Thing</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

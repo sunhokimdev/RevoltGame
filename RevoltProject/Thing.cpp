@@ -3,20 +3,23 @@
 #include "MtlTex.h"
 #include "ObjectLoader.h"
 
+#include "ObjectLoader.h"
+#include "MtlTex.h"
+
+LOBBY Thing::g_LobbyState;
+
 Thing::Thing()
+	: m_vPosition(0,0,0)
+	, m_yAngle(0.0f)
+	, m_xAngle(0.0f)
+	, m_isMove(false)
+	, m_isRot(false)
+
 {
 }
 
 Thing::~Thing()
 {
-}
-
-void Thing::Load(char * szFolder, char* szFile)
-{
-	ObjectLoader loader;
-	m_pObjMesh = loader.LoadMesh(
-		m_vecObjMtlTex,
-		szFolder, szFile);
 }
 
 void Thing::SetPosition(float x, float y, float z)
@@ -26,31 +29,70 @@ void Thing::SetPosition(float x, float y, float z)
 	m_vPosition.z = z;
 }
 
-void Thing::AddChild(Thing * pChild)
+void Thing::SetRotationX(float angle)
 {
-	pChild->SetParent(this);
-	m_vecChild.push_back(pChild);
+	m_xAngle = angle;
+}
+
+void Thing::SetRotationY(float angle)
+{
+	m_yAngle = angle;
+}
+
+void Thing::SetMesh(char * szFolder, char * szFile)
+{
+	ObjectLoader loader;
+	m_pObjMesh = loader.LoadMesh(
+		m_vecObjMtlTex,
+		szFolder, szFile);
+}
+
+void Thing::SetIsMove(bool isMove)
+{
+	m_isMove = isMove;
+}
+
+void Thing::SetIsRot(bool isRot)
+{
+	m_isRot = isRot;
 }
 
 void Thing::Update()
 {
+	D3DXMATRIXA16 matRX, matRY, matR, matT;
+
 	D3DXMatrixIdentity(&m_matWorld);
+	D3DXMatrixIdentity(&matR);
+	D3DXMatrixIdentity(&matRX);
+	D3DXMatrixIdentity(&matRY);
+	D3DXMatrixIdentity(&matR);
+	D3DXMatrixIdentity(&matT);
 
-	m_matWorld._41 = m_vPosition.x;
-	m_matWorld._42 = m_vPosition.y;
-	m_matWorld._43 = m_vPosition.z;
-
-	if (m_pParent)
+	if (m_isRot)
 	{
-		m_matWorld._41 += m_pParent->m_matWorld._41;
-		m_matWorld._42 += m_pParent->m_matWorld._42;
-		m_matWorld._43 += m_pParent->m_matWorld._43;
+		g_pKeyManager->setKeyDown(VK_LEFT, false);
+		g_pKeyManager->setKeyDown(VK_RIGHT, false);
+
+		if (g_pKeyManager->isOnceKeyDown(VK_LEFT))
+		{
+			m_xAngle += D3DX_PI / 15.0f;
+		}
+		if (g_pKeyManager->isOnceKeyDown(VK_RIGHT))
+		{
+			m_xAngle -= D3DX_PI / 15.0f;
+		}
 	}
 
-	for each(auto c in m_vecChild)
-	{
-		c->Update();
-	}
+	D3DXMatrixRotationZ(&matRX, m_xAngle);
+	D3DXMatrixRotationY(&matRY, m_yAngle);
+
+	matR = matRX * matRY;
+
+	m_matWorld = matR;
+	matT._41 = m_vPosition.x;
+	matT._42 = m_vPosition.y;
+	matT._43 = m_vPosition.z;
+	m_matWorld = matR * matT;
 }
 
 void Thing::Render()
@@ -63,6 +105,9 @@ void Thing::Render()
 	D3DXMatrixIdentity(&matWorld);
 
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+
+	g_pD3DDevice->SetTransform(D3DTS_WORLD,
+		&m_matWorld);
 
 	for (size_t i = 0; i < m_vecObjMtlTex.size(); ++i)
 	{
@@ -88,18 +133,3 @@ void Thing::Destroy()
 {
 }
 
-Thing * Thing::FindChildByTag(int nTag)
-{
-	if (m_nTag == nTag)
-		return this;
-
-	for each(auto c in m_vecChild)
-	{
-		Thing* p = c->FindChildByTag(nTag);
-		if (p) return p;
-	}
-
-	return nullptr;
-
-	return nullptr;
-}

@@ -5,7 +5,7 @@
 #include "Grid.h"
 
 #include "Lobby.h"
-
+#include "Map.h"
 
 //======================================
 // - ## 10.11.17 ##
@@ -24,6 +24,7 @@ MainGame::~MainGame()
 	SAFE_DELETE(m_pCamera);
 	SAFE_DELETE(m_pGrid);
 	SAFE_DELETE(m_pLobby);
+	SAFE_DELETE(m_pMap);
 }
 
 void MainGame::Setup()
@@ -47,6 +48,9 @@ void MainGame::Setup()
 	m_pLobby->Setup();
 	m_pLobby->SetUpCamera(m_pCamera);
 
+	m_pMap = new Map;
+	m_pMap->Setup();
+
 	/*   사운드 초기화 작업   */
 	SetAddSound();
 }
@@ -57,6 +61,8 @@ void MainGame::Update()
 		m_pCamera->Update();
 	if (m_pLobby)
 		m_pLobby->Update();
+	if (m_pMap)
+		m_pMap->Update();
 }
 
 void MainGame::Render()
@@ -69,6 +75,7 @@ void MainGame::Render()
 	// 그리기 시작
 	m_pGrid->Render();
 	m_pLobby->Render();
+	m_pMap->Render();
 	// 그리기 종료
 	g_pD3DDevice->EndScene();
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
@@ -86,5 +93,10 @@ void MainGame::SetAddSound()
 	g_pSoundManager->LoadSound("Sound", "menuNext.wav",false);
 	g_pSoundManager->LoadSound("Sound", "menuPrev.wav", false);
 	g_pSoundManager->LoadSound("Sound", "menuLeftRight.wav", false);
+}
+
+void MainGame::SetAddThing()
+{
+
 }
 

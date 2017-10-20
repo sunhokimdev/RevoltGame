@@ -5,6 +5,7 @@ class Grid;
 class MtlTex;
 
 class Lobby;
+class Map;
 
 class XFileLoader;
 
@@ -29,12 +30,14 @@ public:
 
 	/*   사운드 트랙 추가 메서드   */
 	void SetAddSound();
+	void SetAddThing();
 
 private:
 	/*   기본 세팅   */
 	Camera* m_pCamera;
 	Grid*	m_pGrid;
 
+	Map* m_pMap;
 	Lobby* m_pLobby;
 };
 
