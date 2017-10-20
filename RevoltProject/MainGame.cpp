@@ -88,3 +88,8 @@ void MainGame::SetAddSound()
 	g_pSoundManager->LoadSound("Sound", "menuLeftRight.wav", false);
 }
 
+void MainGame::SetAddThing()
+{
+	
+}
+

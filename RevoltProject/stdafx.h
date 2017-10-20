@@ -126,3 +126,4 @@ enum FONTFILE{ FONT1, FONT2, FONT3};
 #include "FontManager.h"
 #include "TimeManager.h"
 #include "SkinnedMeshManager.h"
+#include "ThingManager.h"

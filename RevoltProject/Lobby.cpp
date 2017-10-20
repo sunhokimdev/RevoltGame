@@ -10,6 +10,9 @@
 #include "MtlTex.h"
 #include "Camera.h"
 
+/*      */
+#include "Map.h"
+
 Lobby::Lobby()
 	: m_pSprite(NULL)
 	, m_pObjMesh(NULL)
