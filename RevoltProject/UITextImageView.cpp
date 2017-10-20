@@ -2,18 +2,23 @@
 #include "UITextImageView.h"
 
 int* UITextImageView::m_Select;
+int* UITextImageView::m_LeftAndRightSelect;
 
 UITextImageView::UITextImageView()
 	:m_pTexture(NULL)
 	, m_xSize(1)
 	, m_ySize(1)
 	, m_color(D3DCOLOR_ARGB(255,255,255,255))
+	, m_isVectorText(false)
 {
 }
 
 UITextImageView::~UITextImageView()
 {
 	SAFE_RELEASE(m_pTexture);
+
+	SAFE_DELETE(m_Select);
+	SAFE_DELETE(m_LeftAndRightSelect);
 }
 
 
@@ -48,6 +53,7 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 	D3DXMATRIXA16 tMat = m_matWorld;
 	int tXPos = m_matWorld._41;
 	int tYPos = m_matWorld._42;
+	std::string tStr = "";
 
 	int tTempValue = (m_stSize.nWitdh / m_textPos.x);
 
@@ -60,10 +66,18 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 	tMat._22 = m_ySize;
 	tMat._33 = 1.0f;
 
-	for (int i = 0;i < m_sText.size();i++)
+	if (m_isVectorText)
+	{
+		tStr = m_vecText[*m_LeftAndRightSelect];
+	}
+
+	else
+		tStr = m_sText;
+
+	for (int i = 0;i < tStr.size();i++)
 	{
 		RECT rc;
-		char tChar = m_sText[i];
+		char tChar = tStr[i];
 		int tPos;
 
 		if (m_fontFileType == FONT1)

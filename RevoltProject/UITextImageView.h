@@ -14,17 +14,23 @@ private:
 	LPDIRECT3DTEXTURE9	m_pTexture;			// 텍스쳐
 	POINT				m_textPos;			// 텍스트 이미지 파일의 위치를 계산하는 변수
 	FONTFILE			m_fontFileType;		// 폰트 파일의 타입
+	std::vector<std::string>	m_vecText;	// 버튼 누를 때 바뀌는 텍스트를 저장하기 위한 벡터 변수
 public:
 	UITextImageView();
 	virtual ~UITextImageView();
 
-	static int*			m_Select;				// 현재 텍스트의 위치
+	static int*			m_Select;				// 현재 텍스트의 선택된 위치
+	static int*			m_LeftAndRightSelect;	// 현재 오른쪽 왼쪽 선택된 위치
 
 	SYNTHESIZE(std::string, m_sText, Text);		// 텍스트의 내용을 저장하는 변수
 	SYNTHESIZE(int, m_index, Index);			// 현재 위치에서 텍스트의 위치
 	SYNTHESIZE(D3DXCOLOR, m_color, Color);		// 텍스트 색상 변경
 	SYNTHESIZE(float, m_xSize, XSize);			// X폰트 사이즈 설정
 	SYNTHESIZE(float, m_ySize, YSize);			// Y폰트 사이즈 설정
+	SYNTHESIZE(bool, m_isVectorText, IsVectorText);		// 벡터 텍스트로 사용 할 것인지 확인하는 작업
+
+	/*   텍스트를 벡터로 사용할 때 쓰는 메서드   */
+	void SetAddText(std::string text) { m_vecText.push_back(text); }
 
 	virtual void Render(LPD3DXSPRITE pSprite) override;
 	virtual void SetTexture(char* szFullPath);	// 텍스쳐 설정

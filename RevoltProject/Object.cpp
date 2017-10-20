@@ -7,7 +7,6 @@ Object::Object()
 	g_pObjectManager->AddObject(this);
 }
 
-
 Object::~Object()
 {
 	g_pObjectManager->RemoveObject(this);

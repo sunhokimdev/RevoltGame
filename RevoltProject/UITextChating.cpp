@@ -23,14 +23,14 @@ void UITextChating::Update()
 	if (PtInRect(&rc, pt))
 	{
 		SetCursor(LoadCursor(NULL, IDC_IBEAM));
-		if (GetKeyState(VK_LBUTTON) & 8000)
+		if(g_pKeyManager->isOnceKeyDown(VK_LBUTTON))
 		{
 			m_isLButtonDown = true;
 		}
 	}
 	else
 	{
-		if (GetKeyState(VK_LBUTTON) & 8000)
+		if(g_pKeyManager->isOnceKeyUp(VK_LBUTTON))
 		{
 			m_isLButtonDown = false;
 		}
