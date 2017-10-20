@@ -53,20 +53,39 @@ void Thing::SetIsRot(bool isRot)
 
 void Thing::Update()
 {
-	D3DXMATRIXA16 matRX, matRY, matR;
+	D3DXMATRIXA16 matRX, matRY, matR, matT;
 
 	D3DXMatrixIdentity(&m_matWorld);
 	D3DXMatrixIdentity(&matR);
-	D3DXMatrixRotationY(&matRX, m_yAngle);
-	D3DXMatrixRotationX(&matRY, m_yAngle);
+	D3DXMatrixIdentity(&matRX);
+	D3DXMatrixIdentity(&matRY);
+	D3DXMatrixIdentity(&matT);
+
+	if (m_isRot)
+	{
+		g_pKeyManager->setKeyDown(VK_LEFT, false);
+		g_pKeyManager->setKeyDown(VK_RIGHT, false);
+
+		if (g_pKeyManager->isOnceKeyDown(VK_LEFT))
+		{
+			m_xAngle += D3DX_PI / 15.0f;
+		}
+		if (g_pKeyManager->isOnceKeyDown(VK_RIGHT))
+		{
+			m_xAngle -= D3DX_PI / 15.0f;
+		}
+	}
+
+	D3DXMatrixRotationZ(&matRX, m_xAngle);
+	D3DXMatrixRotationY(&matRY, m_yAngle);
 
 	matR = matRX * matRY;
 
-	m_matWorld = matR;
+	matT._41 = m_vPosition.x;
+	matT._42 = m_vPosition.y;
+	matT._43 = m_vPosition.z;
 
-	m_matWorld._41 = m_vPosition.x;
-	m_matWorld._42 = m_vPosition.y;
-	m_matWorld._43 = m_vPosition.z;
+	m_matWorld = matR * matT;
 }
 
 void Thing::Render()
@@ -74,12 +93,8 @@ void Thing::Render()
 	g_pD3DDevice->SetTexture(0, NULL);
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 
-	D3DXMATRIXA16	matWorld, matS, matR;
-
-	D3DXMatrixIdentity(&matWorld);
-
 	g_pD3DDevice->SetTransform(D3DTS_WORLD,
-		&matWorld);
+		&m_matWorld);
 
 	for (size_t i = 0; i < m_vecObjMtlTex.size(); ++i)
 	{

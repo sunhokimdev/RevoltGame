@@ -43,12 +43,6 @@ void Lobby::Setup()
 	UITextImageView::m_LeftAndRightSelect = &m_leftAndrightSelect;
 
 	SetUpUI();
-
-
-	ObjectLoader loader;
-	m_pObjMesh = loader.LoadMesh(
-		m_vecObjMtlTex,
-		"Maps/Front", "Front.obj");
 }
 
 void Lobby::Update()
@@ -62,32 +56,6 @@ void Lobby::Update()
 
 void Lobby::Render()
 {
-	if (m_stateLobby > INTRO3)
-	{
-		g_pD3DDevice->SetTexture(0, NULL);
-		g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
-
-		D3DXMATRIXA16	matWorld, matS, matR;
-
-		D3DXMatrixIdentity(&matWorld);
-
-		g_pD3DDevice->SetTransform(D3DTS_WORLD,
-			&matWorld);
-
-		for (size_t i = 0; i < m_vecObjMtlTex.size(); ++i)
-		{
-			g_pD3DDevice->SetMaterial(
-				&m_vecObjMtlTex[i]->GetMaterial());
-
-			if (m_vecObjMtlTex[i]->GetTexture() != NULL)
-			{
-				g_pD3DDevice->SetTexture(
-					0,
-					m_vecObjMtlTex[i]->GetTexture());
-			}
-			m_pObjMesh->DrawSubset(i);
-		}
-	}
 	if (m_mapLobby[m_stateLobby]->m_pObject)
 		m_mapLobby[m_stateLobby]->m_pObject->Render(m_pSprite);
 }
@@ -602,12 +570,12 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY3]->m_prevLob = MAIN_LOBBY2;
 
 	m_mapLobby[CREATE_PROFILE_LOBBY] = new ST_Object;
-	m_mapLobby[CREATE_PROFILE_LOBBY]->m_target = D3DXVECTOR3(8, 5, 10);
+	m_mapLobby[CREATE_PROFILE_LOBBY]->m_target = D3DXVECTOR3(6, 12, 14);
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_count = 1;
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_time = 50.0f;
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pObject = pImageView33;
-	m_mapLobby[CREATE_PROFILE_LOBBY]->m_camLookAt = D3DXVECTOR3(15, 5, 25);
+	m_mapLobby[CREATE_PROFILE_LOBBY]->m_camLookAt = D3DXVECTOR3(14, -4, 22);
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pNextLob[0] = START_LOBBY;
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_prevLob = MAIN_LOBBY3;
 }

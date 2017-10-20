@@ -1,7 +1,5 @@
 #pragma once
 
-#define g_pThingManager ThingManager::GetInstance();
-
 class Thing;
 
 class ThingManager

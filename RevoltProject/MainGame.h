@@ -5,6 +5,7 @@ class Grid;
 class MtlTex;
 
 class Lobby;
+class Map;
 
 class XFileLoader;
 
@@ -36,6 +37,7 @@ private:
 	Camera* m_pCamera;
 	Grid*	m_pGrid;
 
+	Map* m_pMap;
 	Lobby* m_pLobby;
 };
 

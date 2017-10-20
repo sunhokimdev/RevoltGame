@@ -22,7 +22,7 @@ public:
 	/*   초기화 메서드   */
 	Thing();
 	virtual ~Thing();
-	virtual void SetPosition(float x, float y, float z = 0);
+	virtual void SetPosition(float x, float y, float z);
 	virtual void SetRotationX(float angle);
 	virtual void SetRotationY(float angle);
 	void SetMesh(char* szFolder, char* szFile);
