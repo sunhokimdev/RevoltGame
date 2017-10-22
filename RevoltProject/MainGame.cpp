@@ -93,10 +93,8 @@ void MainGame::SetAddSound()
 	g_pSoundManager->LoadSound("Sound", "menuNext.wav",false);
 	g_pSoundManager->LoadSound("Sound", "menuPrev.wav", false);
 	g_pSoundManager->LoadSound("Sound", "menuLeftRight.wav", false);
+	g_pSoundManager->LoadSound("Sound", "boxslide.wav", false);
+	g_pSoundManager->LoadSound("Sound", "honkgood.wav", false);
 }
 
-void MainGame::SetAddThing()
-{
-
-}
 

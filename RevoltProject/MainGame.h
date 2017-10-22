@@ -30,7 +30,6 @@ public:
 
 	/*   사운드 트랙 추가 메서드   */
 	void SetAddSound();
-	void SetAddThing();
 
 private:
 	/*   기본 세팅   */

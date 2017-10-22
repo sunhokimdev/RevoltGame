@@ -36,12 +36,9 @@ void UITextChating::Update()
 		}
 	}
 
-	if (m_isLButtonDown)
+	if (GetKeyState('A') & 8000)
 	{
-		if (GetKeyState('A') & 8000)
-		{
-			m_sText += "a";
-		}
+		m_sText += "a";
 	}
 
 	UIObject::Update();
