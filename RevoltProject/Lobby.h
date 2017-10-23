@@ -54,6 +54,7 @@ private:
 
 	Camera*		m_pCamera;									// 카메라 클래스
 	std::vector<std::string> m_vString;
+
 public:
 	Lobby();
 	~Lobby();

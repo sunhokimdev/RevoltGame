@@ -43,9 +43,6 @@ void Camera::Update()
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
 	
-	m_fCamTime += 0.0001f;
-
-
 	D3DXMATRIXA16 matR, matRX, matRY;
 	D3DXMatrixRotationX(&matRX, m_vCamRotAngle.x);
 	D3DXMatrixRotationY(&matRY, m_vCamRotAngle.y);
@@ -54,14 +51,10 @@ void Camera::Update()
 
 	if (m_pvTarget)
 	{
+		m_fCamTime = 0.05f;
+	
 		D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fCamTime);
 		D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
-	
-	}
-
-	if (m_fCamTime > 1.0f)
-	{
-		m_fCamTime = 0.0f;
 	}
 
 

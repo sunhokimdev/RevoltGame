@@ -60,7 +60,7 @@ void ObjectLoader::Load(OUT std::vector<Group*>& vecGroup, IN char * szFolder, I
 			{
 				float x, y, z;
 				sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
-				vecV.push_back(D3DXVECTOR3(x, y, z));
+				vecV.push_back(D3DXVECTOR3(-x, y, z));
 			}
 			else if (szTemp[1] == 't')
 			{
@@ -330,7 +330,7 @@ LPD3DXMESH ObjectLoader::LoadMesh(OUT std::vector<MtlTex*>& vecMtlTex, IN char *
 			{
 				float x, y, z;
 				sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
-				vecV.push_back(D3DXVECTOR3(x, y, z));
+				vecV.push_back(D3DXVECTOR3(-x, y, z));
 			}
 			else if (szTemp[1] == 't')
 			{
@@ -360,7 +360,7 @@ LPD3DXMESH ObjectLoader::LoadMesh(OUT std::vector<MtlTex*>& vecMtlTex, IN char *
 				&nIndex[2][0], &nIndex[2][1], &nIndex[2][2]
 				);
 
-			for (int i = 0; i < 3; i++)
+			for (int i = 2; i >= 0; i--)
 			{
 				ST_PNT_VERTEX v;
 				v.p = vecV[nIndex[i][0] - 1];
