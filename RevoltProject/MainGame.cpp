@@ -74,8 +74,8 @@ void MainGame::Render()
 	g_pD3DDevice->BeginScene();
 	// 그리기 시작
 	m_pGrid->Render();
-	m_pLobby->Render();
 	m_pMap->Render();
+	m_pLobby->Render();
 	// 그리기 종료
 	g_pD3DDevice->EndScene();
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);

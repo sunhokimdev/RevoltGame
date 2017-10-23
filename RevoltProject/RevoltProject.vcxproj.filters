@@ -210,12 +210,6 @@
     <ClInclude Include="UITextImageView.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Thing.h">
-      <Filter>Thing</Filter>
-    </ClInclude>
-    <ClInclude Include="ThingManager.h">
-      <Filter>Thing</Filter>
-    </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Map</Filter>
     </ClInclude>
@@ -224,6 +218,9 @@
     </ClInclude>
     <ClInclude Include="CarTextLoader.h">
       <Filter>Car\CarTextLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.h">
+      <Filter>Thing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -332,12 +329,6 @@
     <ClCompile Include="UITextImageView.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="Thing.cpp">
-      <Filter>Thing</Filter>
-    </ClCompile>
-    <ClCompile Include="ThingManager.cpp">
-      <Filter>Thing</Filter>
-    </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Map</Filter>
     </ClCompile>
@@ -346,6 +337,9 @@
     </ClCompile>
     <ClCompile Include="CarTextLoader.cpp">
       <Filter>Car\CarTextLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.cpp">
+      <Filter>Thing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

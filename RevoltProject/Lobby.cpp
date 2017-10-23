@@ -53,7 +53,6 @@ void Lobby::Update()
 
 	TimeUpdate();   // 시간 갱신 메서드
 	KeyUpdate();   // 키 이벤트 갱신 메서드
-
 	m_mapLobby[m_stateLobby]->m_pObject->Update();
 }
 
@@ -164,6 +163,8 @@ void Lobby::KeyUpdate()
 			if (m_stateLobby > INTRO3)
 				g_pSoundManager->Play("menuNext.wav", 1.0f);
 		}
+
+		Thing::g_LobbyState = &m_stateLobby;
 	}
 
 	/*   ESC 키 눌렀을 때 이전 로비로 들어가는 이벤트   */
@@ -667,7 +668,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[5] = LOBBY_NONE;
 
 	m_mapLobby[MAIN_LOBBY2] = new ST_Object;
-	m_mapLobby[MAIN_LOBBY2]->m_target = D3DXVECTOR3(-1, 10, -2);
+	m_mapLobby[MAIN_LOBBY2]->m_target = D3DXVECTOR3(1, 10, -1);
 	m_mapLobby[MAIN_LOBBY2]->m_count = 6;
 	m_mapLobby[MAIN_LOBBY2]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[MAIN_LOBBY2]->m_time = 50.0f;
@@ -676,7 +677,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY2]->m_prevLob = MAIN_LOBBY;
 
 	m_mapLobby[MAIN_LOBBY3] = new ST_Object;
-	m_mapLobby[MAIN_LOBBY3]->m_target = D3DXVECTOR3(-1, 10, -2);
+	m_mapLobby[MAIN_LOBBY3]->m_target = D3DXVECTOR3(1, 10, -1);
 	m_mapLobby[MAIN_LOBBY3]->m_count = 4;
 	m_mapLobby[MAIN_LOBBY3]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[MAIN_LOBBY3]->m_time = 50.0f;

@@ -155,19 +155,15 @@ void Thing::Render()
 	g_pD3DDevice->SetTexture(0, NULL);
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 
-	g_pD3DDevice->SetTransform(D3DTS_WORLD,
-		&m_matWorld);
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
 
 	for (size_t i = 0; i < m_vecObjMtlTex.size(); ++i)
 	{
-		g_pD3DDevice->SetMaterial(
-			&m_vecObjMtlTex[i]->GetMaterial());
+		g_pD3DDevice->SetMaterial(&m_vecObjMtlTex[i]->GetMaterial());
 
 		if (m_vecObjMtlTex[i]->GetTexture() != NULL)
 		{
-			g_pD3DDevice->SetTexture(
-				0,
-				m_vecObjMtlTex[i]->GetTexture());
+			g_pD3DDevice->SetTexture(0, m_vecObjMtlTex[i]->GetTexture());
 		}
 		m_pObjMesh->DrawSubset(i);
 	}
@@ -175,6 +171,55 @@ void Thing::Render()
 	for each(auto c in m_vecChild)
 	{
 		c->Render();
+	}
+}
+
+void Thing::MirrorRender()
+{
+	if (*g_LobbyState >= CREATE_PROFILE_LOBBY)
+	{
+		g_pD3DDevice->SetRenderState(D3DRS_STENCILENABLE, true);
+		g_pD3DDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_ALWAYS);
+		g_pD3DDevice->SetRenderState(D3DRS_STENCILREF, 0x1);
+		g_pD3DDevice->SetRenderState(D3DRS_STENCILMASK, 0xffffffff);
+		g_pD3DDevice->SetRenderState(D3DRS_STENCILWRITEMASK, 0xffffffff);
+		g_pD3DDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_KEEP);
+		g_pD3DDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
+		g_pD3DDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_REPLACE);
+
+		g_pD3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
+
+		g_pD3DDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_EQUAL);
+		g_pD3DDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_KEEP);
+
+		// 반사 위치
+		D3DXMATRIX W, T, R;
+		D3DXPLANE plane(0.0f, 1.0f, 0.0f, 0.0f);
+		D3DXMatrixReflect(&R, &plane);
+
+		W = m_matWorld * R;
+
+		g_pD3DDevice->Clear(0, 0, D3DCLEAR_ZBUFFER, 0, 1.0f, 0);
+		g_pD3DDevice->SetTransform(D3DTS_WORLD, &W);
+		g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
+		g_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+		g_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCCOLOR);
+		g_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_SRCALPHA);
+
+		for (size_t i = 0; i < m_vecObjMtlTex.size(); ++i)
+		{
+			g_pD3DDevice->SetMaterial(&m_vecObjMtlTex[i]->GetMaterial());
+			if (m_vecObjMtlTex[i]->GetTexture() != NULL)
+			{
+				g_pD3DDevice->SetTexture(0, m_vecObjMtlTex[i]->GetTexture());
+			}
+
+			m_pObjMesh->DrawSubset(i);
+		}
+
+		g_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
+		g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+		g_pD3DDevice->SetRenderState(D3DRS_STENCILENABLE, false);
 	}
 }
 

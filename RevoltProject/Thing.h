@@ -59,5 +59,8 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual void Destroy();
+	
+	
+	void MirrorRender();  // 오브젝트 거울
 };
 

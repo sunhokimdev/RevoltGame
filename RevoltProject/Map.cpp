@@ -44,12 +44,17 @@ void Map::Render()
 	g_pD3DDevice->SetTexture(0, NULL);
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 
-	D3DXMATRIXA16	matWorld, matS, matR;
+	/*   오브젝트를 그리는 작업   */
+	for (int i = 0; i < m_map[m_stage]->m_vecThing.size(); i++)
+	{
+		m_map[m_stage]->m_vecThing[i]->Render();
+	}
 
+	// 맵 렌더
+	D3DXMATRIXA16	matWorld, matS, matR;
 	D3DXMatrixIdentity(&matWorld);
 
-	g_pD3DDevice->SetTransform(D3DTS_WORLD,
-		&matWorld);
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
 
 	for (size_t i = 0; i < m_map[m_stage]->m_vecObjMtlTex.size(); ++i)
 	{
@@ -58,17 +63,15 @@ void Map::Render()
 
 		if (m_map[m_stage]->m_vecObjMtlTex[i]->GetTexture() != NULL)
 		{
-			g_pD3DDevice->SetTexture(
-				0,
-				m_map[m_stage]->m_vecObjMtlTex[i]->GetTexture());
+			g_pD3DDevice->SetTexture(0, m_map[m_stage]->m_vecObjMtlTex[i]->GetTexture());
 		}
 		m_map[m_stage]->m_pObjMesh->DrawSubset(i);
 	}
-
-	/*   오브젝트를 그리는 작업   */
-	for (int i = 0;i < m_map[m_stage]->m_vecThing.size();i++)
+	
+	// 오브젝트 거울 렌더
+	for (int i = 0; i < m_map[m_stage]->m_vecThing.size(); i++)
 	{
-		m_map[m_stage]->m_vecThing[i]->Render();
+		m_map[m_stage]->m_vecThing[i]->MirrorRender();
 	}
 }
 

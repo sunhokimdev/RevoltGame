@@ -2,7 +2,6 @@
 
 class MtlTex;
 class Thing;
-
 //===================================================================
 // - ## 10.15.20 ##
 // - written by �輱ȣ
@@ -21,6 +20,7 @@ class Map
 private:
 	int m_stage;
 	std::map<int, ST_MAP*> m_map;
+
 public:
 	Map();
 	~Map();
