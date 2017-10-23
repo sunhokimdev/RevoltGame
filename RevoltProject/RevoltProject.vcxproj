@@ -149,6 +149,8 @@
   <ItemGroup>
     <ClInclude Include="AllocateHierarchy.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Car.h" />
+    <ClInclude Include="CarTextLoader.h" />
     <ClInclude Include="DEBUG_RENDER.h" />
     <ClInclude Include="DeviceManager.h" />
     <ClInclude Include="FontManager.h" />
@@ -160,6 +162,7 @@
     <ClInclude Include="Lobby.h" />
     <ClInclude Include="MacroFunction.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="MtlTex.h" />
     <ClInclude Include="OBB.h" />
     <ClInclude Include="Object.h" />
@@ -191,6 +194,8 @@
   <ItemGroup>
     <ClCompile Include="AllocateHierarchy.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Car.cpp" />
+    <ClCompile Include="CarTextLoader.cpp" />
     <ClCompile Include="DEBUG_RENDER.cpp" />
     <ClCompile Include="DeviceManager.cpp" />
     <ClCompile Include="FontManager.cpp" />
@@ -200,6 +205,7 @@
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="MtlTex.cpp" />
     <ClCompile Include="OBB.cpp" />
     <ClCompile Include="Object.cpp" />

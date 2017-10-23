@@ -10,6 +10,10 @@
 #include "MtlTex.h"
 #include "Camera.h"
 
+/*      */
+#include "Map.h"
+#include "Thing.h"
+
 Lobby::Lobby()
 	: m_pSprite(NULL)
 	, m_pObjMesh(NULL)
@@ -38,14 +42,10 @@ void Lobby::Setup()
 
 	UITextImageView::m_Select = &m_select;
 	UITextImageView::m_LeftAndRightSelect = &m_leftAndrightSelect;
+	Thing::g_LobbyState = &m_stateLobby;
+	Thing::g_select = &m_leftAndrightSelect;
 
 	SetUpUI();
-
-
-	ObjectLoader loader;
-	m_pObjMesh = loader.LoadMesh(
-		m_vecObjMtlTex,
-		"Maps/Front", "Front.obj");
 }
 
 void Lobby::Update()
@@ -59,32 +59,6 @@ void Lobby::Update()
 
 void Lobby::Render()
 {
-	if (m_stateLobby > INTRO3)
-	{
-		g_pD3DDevice->SetTexture(0, NULL);
-		g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
-
-		D3DXMATRIXA16	matWorld, matS, matR;
-
-		D3DXMatrixIdentity(&matWorld);
-
-		g_pD3DDevice->SetTransform(D3DTS_WORLD,
-			&matWorld);
-
-		for (size_t i = 0; i < m_vecObjMtlTex.size(); ++i)
-		{
-			g_pD3DDevice->SetMaterial(
-				&m_vecObjMtlTex[i]->GetMaterial());
-
-			if (m_vecObjMtlTex[i]->GetTexture() != NULL)
-			{
-				g_pD3DDevice->SetTexture(
-					0,
-					m_vecObjMtlTex[i]->GetTexture());
-			}
-			m_pObjMesh->DrawSubset(i);
-		}
-	}
 	if (m_mapLobby[m_stateLobby]->m_pObject)
 		m_mapLobby[m_stateLobby]->m_pObject->Render(m_pSprite);
 }
@@ -121,8 +95,20 @@ void Lobby::KeyUpdate()
 
 			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
 		}
+		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
+		{
+			Thing::g_xRotAngle += D3DX_PI / 15.0f;
+			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
+		}
+		else if (m_stateLobby == SELECT_CAR_LOBBY)
+		{
+			m_leftAndrightSelect++;
 
+			if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
+				m_leftAndrightSelect = 0;
 
+			g_pSoundManager->Play("boxslide.wav", 1.0f);
+		}
 	}
 
 	if (g_pKeyManager->isOnceKeyDown(VK_LEFT))
@@ -135,6 +121,20 @@ void Lobby::KeyUpdate()
 				m_leftAndrightSelect = m_mapLobby[m_stateLobby]->m_selectCnt - 1;
 
 			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
+		}
+		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
+		{
+			Thing::g_xRotAngle -= D3DX_PI / 15.0f;
+			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
+		}
+		else if (m_stateLobby == SELECT_CAR_LOBBY)
+		{
+			m_leftAndrightSelect--;
+
+			if (m_leftAndrightSelect < 0)
+				m_leftAndrightSelect = m_mapLobby[m_stateLobby]->m_selectCnt - 1;
+
+			g_pSoundManager->Play("boxslide.wav", 1.0f);
 		}
 	}
 
@@ -170,13 +170,12 @@ void Lobby::KeyUpdate()
 	if (g_pKeyManager->isOnceKeyDown(VK_ESCAPE))
 	{
 
-		//if (m_mapLobby[m_stateLobby]->m_prevLob != LOBBY_NONE)
-		//{
-		//	m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
-		//	m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);;
-		//	m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
-		//	g_pSoundManager->Play("menuPrev.wav", 1.0f);
-		//}
+		if (m_mapLobby[m_stateLobby]->m_prevLob != LOBBY_NONE)
+		{
+			m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
+			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
+			g_pSoundManager->Play("menuPrev.wav", 1.0f);
+		}
 
 		m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
 		m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
@@ -386,7 +385,6 @@ void Lobby::SetUpUI()
 
 ///////////////////////////////   구분   /////////////////////////////////////////
 
-	//========================================== Main Lobby1 ==========================================//
 	UIImageView* pImageView18 = new UIImageView;
 	pImageView18->SetPosition(-10, -140);
 	pImageView18->SetTexture("Maps/Front/Image/revoltrogo.png");
@@ -434,7 +432,6 @@ void Lobby::SetUpUI()
 	pImageView25->SetText("Stunt Arena");
 	pImageView25->SetTexture("Maps/Front/Image/font2.png");
 
-
 	pImageView19->AddChild(pImageView20);
 	pImageView19->AddChild(pImageView21);
 	pImageView19->AddChild(pImageView22);
@@ -443,8 +440,6 @@ void Lobby::SetUpUI()
 	pImageView19->AddChild(pImageView25);
 	pImageView19->AddChild(pImageView18);
 
-
-	//========================================== Main Lobby2 ==========================================//
 	UIImageView* pImageView26 = new UIImageView;
 	pImageView26->SetPosition(-10, -140);
 	pImageView26->SetTexture("Maps/Front/Image/revoltrogo.png");
@@ -486,7 +481,6 @@ void Lobby::SetUpUI()
 	pImageView27->AddChild(pImageView31);
 	pImageView27->AddChild(pImageView26);
 
-	//========================================== Create Profile ==========================================//
 	UIImageView* pImageView32 = new UIImageView;
 	pImageView26->SetPosition(-10, -140);
 	pImageView26->SetTexture("Maps/Front/Image/revoltrogo.png");
@@ -513,7 +507,7 @@ void Lobby::SetUpUI()
 	pImageView35->SetTexture("Maps/Front/Image/blueRing.png");
 
 	UIImageView* pImageView36 = new UIImageView;
-	pImageView36->SetPosition(140, 25);
+	pImageView36->SetPosition(120, 25);
 	pImageView36->SetIsBoard(true);
 	pImageView36->SetXSize(20.0f);
 	pImageView36->SetYSize(1.0f);
@@ -524,7 +518,7 @@ void Lobby::SetUpUI()
 	pImageView37->SetText("ENTER NAME");
 	pImageView37->SetXSize(1.5f);
 	pImageView37->SetYSize(1.5f);
-	pImageView37->SetPosition(200, 45);
+	pImageView37->SetPosition(180, 45);
 
 	UIImageView* pImageView38 = new UIImageView;
 	pImageView38->SetXSize(1.2f);
@@ -532,118 +526,99 @@ void Lobby::SetUpUI()
 	pImageView38->SetPosition(17, 17);
 	pImageView38->SetTexture("Maps/Front/Image/bluetoy.png");
 
+	UITextImageView* pImageView39 = new UITextImageView;
+	pImageView39->SetIndex(INT_MAX);
+	pImageView39->SetPosition(160, 40);
+	pImageView39->SetIsChatingText(true);
+	pImageView39->SetTexture("Maps/Front/Image/font2.png");
+	pImageView39->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+
 	pImageView33->AddChild(pImageView32);
 	pImageView33->AddChild(pImageView34);
 	pImageView33->AddChild(pImageView35);
 	pImageView35->AddChild(pImageView36);
 	pImageView35->AddChild(pImageView37);
 	pImageView35->AddChild(pImageView38);
+	pImageView33->AddChild(pImageView39);
 
-	//========================================== Selcet Car ==========================================//
+///////////////////////////////   구분   /////////////////////////////////////////
 
-	UIImageView* pImageView39 = new UIImageView;
-	pImageView39->SetPosition(-20, -20);
-	pImageView39->SetIsBoard(true);
-	pImageView39->SetXSize(23.0f);
-	pImageView39->SetYSize(10.0f);
-	pImageView39->SetTexture("Maps/Front/Image/ring.png");
+	UIImageView* pImageView40 = new UIImageView;
+	pImageView40->SetPosition(80, 50);
+	pImageView40->SetXSize(4.0f);
+	pImageView40->SetYSize(4.0f);
+	pImageView40->SetIsBoard(true);
+	pImageView40->SetTexture("Maps/Front/Image/blueRing.png");
 
-	UITextImageView* pImageView40 = new UITextImageView;
-	pImageView40->SetIndex(INT_MAX);
-	pImageView40->SetPosition(150, 150);
-	pImageView40->SetText("Class");
-	pImageView40->SetTexture("Maps/Front/Image/font2.png");
+	UIImageView* pImageView41 = new UIImageView;
+	pImageView41->SetXSize(1.2f);
+	pImageView41->SetYSize(1.2f);
+	pImageView41->SetPosition(17, 17);
+	pImageView41->SetTexture("Maps/Front/Image/bluecar.png");
 
-	UITextImageView* pImageView41 = new UITextImageView;
-	pImageView41->SetIndex(INT_MAX);
-	pImageView41->SetPosition(0, 20);
-	pImageView41->SetText("Rating");
-	pImageView41->SetTexture("Maps/Front/Image/font2.png");
-
-	UITextImageView* pImageView42 = new UITextImageView;
-	pImageView42->SetIndex(INT_MAX);
-	pImageView42->SetPosition(0, 40);
-	pImageView42->SetText("Speed");
-	pImageView42->SetTexture("Maps/Front/Image/font2.png");
+	UIImageView* pImageView42 = new UIImageView;
+	pImageView42->SetPosition(120, 25);
+	pImageView42->SetIsBoard(true);
+	pImageView42->SetXSize(20.0f);
+	pImageView42->SetYSize(1.0f);
+	pImageView42->SetTexture("Maps/Front/Image/ring.png");
 
 	UITextImageView* pImageView43 = new UITextImageView;
-	pImageView43->SetIndex(INT_MAX);
-	pImageView43->SetPosition(0, 60);
-	pImageView43->SetText("Acc");
-	pImageView43->SetTexture("Maps/Front/Image/font2.png");
+	pImageView43->SetTexture("Maps/Front/Image/font1.png");
+	pImageView43->SetText("SELECT CAR");
+	pImageView43->SetXSize(1.5f);
+	pImageView43->SetYSize(1.5f);
+	pImageView43->SetPosition(180, 45);
 
-	UITextImageView* pImageView44 = new UITextImageView;
-	pImageView44->SetIndex(INT_MAX);
-	pImageView44->SetPosition(0, 80);
-	pImageView44->SetText("Weight");
-	pImageView44->SetTexture("Maps/Front/Image/font2.png");
+	UIImageView* pImageView44 = new UIImageView;
+	pImageView44->SetPosition(50, 130);
+	pImageView44->SetIsBoard(true);
+	pImageView44->SetXSize(28.0f);
+	pImageView44->SetYSize(16.0f);
+	pImageView44->SetTexture("Maps/Front/Image/ring.png");
 
 	UITextImageView* pImageView45 = new UITextImageView;
-	pImageView45->SetIndex(INT_MAX);
-	pImageView45->SetPosition(0, 100);
-	pImageView45->SetText("Trans");
 	pImageView45->SetTexture("Maps/Front/Image/font2.png");
+	pImageView45->SetText("Class");
+	pImageView45->SetPosition(60, 100);
 
 	UITextImageView* pImageView46 = new UITextImageView;
-	pImageView46->SetIndex(INT_MAX);
-	pImageView46->SetPosition(200, 0);
-	pImageView46->SetText("Electric");
 	pImageView46->SetTexture("Maps/Front/Image/font2.png");
+	pImageView46->SetText("Rating");
+	pImageView46->SetPosition(60, 125);
 
 	UITextImageView* pImageView47 = new UITextImageView;
-	pImageView47->SetIndex(INT_MAX);
-	pImageView47->SetPosition(200, 20);
-	pImageView47->SetText("Rookie");
 	pImageView47->SetTexture("Maps/Front/Image/font2.png");
+	pImageView47->SetText("Speed");
+	pImageView47->SetPosition(60, 150);
 
 	UITextImageView* pImageView48 = new UITextImageView;
-	pImageView48->SetIndex(INT_MAX);
-	pImageView48->SetPosition(200, 100);
-	pImageView48->SetText("4WD");
 	pImageView48->SetTexture("Maps/Front/Image/font2.png");
+	pImageView48->SetText("Acc");
+	pImageView48->SetPosition(60, 175);
 
-	UIImageView* pImageView49 = new UIImageView;
-	pImageView49->SetPosition(-100, -130);
-	pImageView49->SetXSize(4.0f);
-	pImageView49->SetYSize(4.0f);
-	pImageView49->SetIsBoard(true);
-	pImageView49->SetTexture("Maps/Front/Image/blueRing.png");
+	UITextImageView* pImageView49 = new UITextImageView;
+	pImageView49->SetTexture("Maps/Front/Image/font2.png");
+	pImageView49->SetText("Weight");
+	pImageView49->SetPosition(60, 200);
 
-	UIImageView* pImageView50 = new UIImageView;
-	pImageView50->SetPosition(140, 25);
-	pImageView50->SetIsBoard(true);
-	pImageView50->SetXSize(20.0f);
-	pImageView50->SetYSize(1.0f);
-	pImageView50->SetTexture("Maps/Front/Image/ring.png");
+	UITextImageView* pImageView50 = new UITextImageView;
+	pImageView50->SetTexture("Maps/Front/Image/font2.png");
+	pImageView50->SetText("Trans");
+	pImageView50->SetPosition(60, 225);
 
-	UITextImageView* pImageView51 = new UITextImageView;
-	pImageView51->SetTexture("Maps/Front/Image/font1.png");
-	pImageView51->SetText("SELECT CAR");
-	pImageView51->SetXSize(1.5f);
-	pImageView51->SetYSize(1.5f);
-	pImageView51->SetPosition(200, 45);
-
-	UIImageView* pImageView52 = new UIImageView;
-	pImageView52->SetXSize(1.2f);
-	pImageView52->SetYSize(1.2f);
-	pImageView52->SetPosition(17, 17);
-	pImageView52->SetTexture("Maps/Front/Image/bluetoy.png");
-
-	pImageView39->AddChild(pImageView40);
 	pImageView40->AddChild(pImageView41);
 	pImageView40->AddChild(pImageView42);
 	pImageView40->AddChild(pImageView43);
 	pImageView40->AddChild(pImageView44);
-	pImageView40->AddChild(pImageView45);
-	pImageView40->AddChild(pImageView46);
-	pImageView40->AddChild(pImageView47);
-	pImageView40->AddChild(pImageView48);
-	pImageView40->AddChild(pImageView49);
-	pImageView49->AddChild(pImageView50);
-	pImageView49->AddChild(pImageView51);
-	pImageView49->AddChild(pImageView52);
-///////////////////////////////   구분   /////////////////////////////////////////
+	pImageView44->AddChild(pImageView45);
+	pImageView44->AddChild(pImageView46);
+	pImageView44->AddChild(pImageView47);
+	pImageView44->AddChild(pImageView48);
+	pImageView44->AddChild(pImageView49);
+	pImageView44->AddChild(pImageView50);
 
+///////////////////////////////   구분   /////////////////////////////////////////
 	/*   로비 UI 추가하기   */
 
 	m_mapLobby[INTRO1] = new ST_Object;
@@ -687,12 +662,12 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[0] = MAIN_LOBBY2;
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[1] = LOBBY_NONE;
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[2] = LOBBY_NONE;
-	m_mapLobby[MAIN_LOBBY]->m_pNextLob[3] = OPTION;
+	m_mapLobby[MAIN_LOBBY]->m_pNextLob[3] = LOBBY_NONE;
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[4] = START_LOBBY;
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[5] = LOBBY_NONE;
 
 	m_mapLobby[MAIN_LOBBY2] = new ST_Object;
-	m_mapLobby[MAIN_LOBBY2]->m_target = D3DXVECTOR3(1, 10, -2);
+	m_mapLobby[MAIN_LOBBY2]->m_target = D3DXVECTOR3(-1, 10, -2);
 	m_mapLobby[MAIN_LOBBY2]->m_count = 6;
 	m_mapLobby[MAIN_LOBBY2]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[MAIN_LOBBY2]->m_time = 50.0f;
@@ -701,7 +676,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY2]->m_prevLob = MAIN_LOBBY;
 
 	m_mapLobby[MAIN_LOBBY3] = new ST_Object;
-	m_mapLobby[MAIN_LOBBY3]->m_target = D3DXVECTOR3(1, 10, -2);
+	m_mapLobby[MAIN_LOBBY3]->m_target = D3DXVECTOR3(-1, 10, -2);
 	m_mapLobby[MAIN_LOBBY3]->m_count = 4;
 	m_mapLobby[MAIN_LOBBY3]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[MAIN_LOBBY3]->m_time = 50.0f;
@@ -710,45 +685,23 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY3]->m_prevLob = MAIN_LOBBY2;
 
 	m_mapLobby[CREATE_PROFILE_LOBBY] = new ST_Object;
-	m_mapLobby[CREATE_PROFILE_LOBBY]->m_target = D3DXVECTOR3(4, 10, 10);
+	m_mapLobby[CREATE_PROFILE_LOBBY]->m_target = D3DXVECTOR3(6, 12, 14);
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_count = 1;
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_time = 50.0f;
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pObject = pImageView33;
-	m_mapLobby[CREATE_PROFILE_LOBBY]->m_camLookAt = D3DXVECTOR3(15, 0, 25);
-	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pNextLob[0] = SELECT_CAR;
+	m_mapLobby[CREATE_PROFILE_LOBBY]->m_camLookAt = D3DXVECTOR3(14, -4, 22);
+	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pNextLob[0] = SELECT_CAR_LOBBY;
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_prevLob = MAIN_LOBBY3;
 
-	m_mapLobby[SELECT_CAR] = new ST_Object;
-	m_mapLobby[SELECT_CAR]->m_target = D3DXVECTOR3(10, 10, 6);
-	m_mapLobby[SELECT_CAR]->m_count = 1;
-	m_mapLobby[SELECT_CAR]->m_pNextLob = new LOBBY[1];
-	m_mapLobby[SELECT_CAR]->m_time = 50.0f;
-	m_mapLobby[SELECT_CAR]->m_pObject = pImageView40;
-	m_mapLobby[SELECT_CAR]->m_camLookAt = D3DXVECTOR3(18, 4, 15);
-	m_mapLobby[SELECT_CAR]->m_pNextLob[0] = SHOW_CAR;
-	m_mapLobby[SELECT_CAR]->m_prevLob = CREATE_PROFILE_LOBBY;
-	
-	//m_mapLobby[SHOW_CAR] = new ST_Object;
-	//m_mapLobby[SHOW_CAR]->m_target = D3DXVECTOR3(10, 5, 10);
-	//m_mapLobby[SHOW_CAR]->m_count = 1;
-	//m_mapLobby[SHOW_CAR]->m_pNextLob = new LOBBY[1];
-	//m_mapLobby[SHOW_CAR]->m_time = 50.0f;
-	//m_mapLobby[SHOW_CAR]->m_pObject = pImageView33;
-	//m_mapLobby[SHOW_CAR]->m_camLookAt = D3DXVECTOR3(15, 1, 10);
-	//m_mapLobby[SHOW_CAR]->m_pNextLob[0] = SELECT_MAP;
-	//m_mapLobby[SHOW_CAR]->m_prevLob = CREATE_PROFILE_LOBBY;
-	//
-	//m_mapLobby[SELECT_MAP] = new ST_Object;
-	//m_mapLobby[SELECT_MAP]->m_target = D3DXVECTOR3(12, 3, -18);
-	//m_mapLobby[SELECT_MAP]->m_count = 1;
-	//m_mapLobby[SELECT_MAP]->m_pNextLob = new LOBBY[1];
-	//m_mapLobby[SELECT_MAP]->m_time = 50.0f;
-	//m_mapLobby[SELECT_MAP]->m_pObject = pImageView33;
-	//m_mapLobby[SELECT_MAP]->m_camLookAt = D3DXVECTOR3(23, 5, -12);
-	//m_mapLobby[SELECT_MAP]->m_pNextLob[0] = START_LOBBY;
-	//m_mapLobby[SELECT_MAP]->m_prevLob = SELECT_CAR;
-
-
+	m_mapLobby[SELECT_CAR_LOBBY] = new ST_Object;
+	m_mapLobby[SELECT_CAR_LOBBY]->m_target = D3DXVECTOR3(10, 14, 8);
+	m_mapLobby[SELECT_CAR_LOBBY]->m_camLookAt = D3DXVECTOR3(20, -2, 16);
+	m_mapLobby[SELECT_CAR_LOBBY]->m_pObject = pImageView40;
+	m_mapLobby[SELECT_CAR_LOBBY]->m_count = 1;
+	m_mapLobby[SELECT_CAR_LOBBY]->m_selectCnt = 6;
+	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[SELECT_CAR_LOBBY]->m_time = 50.0f;
+	m_mapLobby[SELECT_CAR_LOBBY]->m_prevLob = MAIN_LOBBY3;
 }
 

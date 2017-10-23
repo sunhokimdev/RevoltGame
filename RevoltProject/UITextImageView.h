@@ -2,6 +2,8 @@
 
 #include "UIObject.h"
 
+#define CURSORRENDER 10
+
 //======================================
 // - ## 10.11.17 ##
 // - written by 김선호
@@ -15,6 +17,10 @@ private:
 	POINT				m_textPos;			// 텍스트 이미지 파일의 위치를 계산하는 변수
 	FONTFILE			m_fontFileType;		// 폰트 파일의 타입
 	std::vector<std::string>	m_vecText;	// 버튼 누를 때 바뀌는 텍스트를 저장하기 위한 벡터 변수
+	std::string m_chatText;					// 채팅 텍스트를 저장하기 위한 string변수
+
+	int			m_cursorTime;				// 커서를 Update하는 변수
+	bool		m_isCursorRender;			// 커서를 보이게 하는 변수
 public:
 	UITextImageView();
 	virtual ~UITextImageView();
@@ -28,10 +34,15 @@ public:
 	SYNTHESIZE(float, m_xSize, XSize);			// X폰트 사이즈 설정
 	SYNTHESIZE(float, m_ySize, YSize);			// Y폰트 사이즈 설정
 	SYNTHESIZE(bool, m_isVectorText, IsVectorText);		// 벡터 텍스트로 사용 할 것인지 확인하는 작업
+	SYNTHESIZE(bool, m_isChatingText, IsChatingText);	// 키 입력을 받을 것인지 확인하는 작업
 
 	/*   텍스트를 벡터로 사용할 때 쓰는 메서드   */
 	void SetAddText(std::string text) { m_vecText.push_back(text); }
 
+	void KeyEvent();
+
+	/*   UI오브젝트에서 상속받은 클래스   */
+	virtual void Update();
 	virtual void Render(LPD3DXSPRITE pSprite) override;
 	virtual void SetTexture(char* szFullPath);	// 텍스쳐 설정
 };
