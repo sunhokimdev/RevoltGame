@@ -105,7 +105,7 @@ void Map::SetupThing()
 	tThing5->SetIndex(0);
 	tThing5->SetPosition(13.0f, 0.8f, 15.2f);
 	tThing5->SetRotationY(-D3DX_PI / 110.0f);
-	//-D3DX_PI / 110.0f
+
 	Thing* tThing6 = new Thing;
 	tThing6->SetMesh("Maps/Front/carbox", "carbox.obj");
 	tThing6->SetTarget(14.0f, 9.8f, 9.0f);

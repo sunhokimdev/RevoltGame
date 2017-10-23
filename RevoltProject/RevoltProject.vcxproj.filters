@@ -79,6 +79,12 @@
     <Filter Include="Map">
       <UniqueIdentifier>{eb723765-8d2d-4a37-a165-a41c1278c1a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Car">
+      <UniqueIdentifier>{ba3e07fe-f5ce-42ac-86e8-83f92155ddd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Car\CarTextLoader">
+      <UniqueIdentifier>{14829522-7bc6-4e69-9f30-d2e6f6641609}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -213,6 +219,12 @@
     <ClInclude Include="Map.h">
       <Filter>Map</Filter>
     </ClInclude>
+    <ClInclude Include="Car.h">
+      <Filter>Car</Filter>
+    </ClInclude>
+    <ClInclude Include="CarTextLoader.h">
+      <Filter>Car\CarTextLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -328,6 +340,12 @@
     </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Car.cpp">
+      <Filter>Car</Filter>
+    </ClCompile>
+    <ClCompile Include="CarTextLoader.cpp">
+      <Filter>Car\CarTextLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
