@@ -55,8 +55,15 @@ void Camera::Update()
 	
 		D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fCamTime);
 		D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
+<<<<<<< HEAD
+=======
 	}
 
+	if (m_fCamTime > 1.0f)
+	{
+		m_fCamTime = 0.0f;
+>>>>>>> 5642836036df2c023942cce1d6d64e1ecd988214
+	}
 
 	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matR);
 

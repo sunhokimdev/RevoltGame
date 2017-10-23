@@ -31,6 +31,8 @@
 
 // C 런타임 헤더 파일입니다.
 #include <stdlib.h>
+#include <stdio.h>
+#include <conio.h>
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
@@ -74,7 +76,11 @@ extern HINSTANCE	g_hInst;
 
 /*   열거체 형 설정   */
 /*   현재 로비상태를 저장하는 열거형 구조체   */
+<<<<<<< HEAD
 enum LOBBY { LOBBY_NONE = 1001, INTRO1, INTRO2, INTRO3, START_LOBBY, MAIN_LOBBY, MAIN_LOBBY2, MAIN_LOBBY3, MAIN_LOBBY4, CREATE_PROFILE_LOBBY, SELECT_CAR_LOBBY, GAME_QUIT};
+=======
+enum LOBBY { LOBBY_NONE = 1001, INTRO1, INTRO2, INTRO3, START_LOBBY, MAIN_LOBBY, MAIN_LOBBY2, MAIN_LOBBY3, MAIN_LOBBY4, CREATE_PROFILE_LOBBY, GAME_QUIT,SELECT_MAP_LOBBY, SELECT_CAR_LOBBY};
+>>>>>>> 5642836036df2c023942cce1d6d64e1ecd988214
 enum FONTFILE{ FONT1, FONT2, FONT3};
 
 //======================================

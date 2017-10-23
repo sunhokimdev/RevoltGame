@@ -25,9 +25,6 @@
     <Filter Include="Manager\KeyManager">
       <UniqueIdentifier>{785f9bf7-38a9-4456-8208-7015a8080b00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ObjectLoader">
-      <UniqueIdentifier>{144d9af7-184c-4e71-8732-11e3daffcce2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Manager\ObjectManager">
       <UniqueIdentifier>{688c208c-db64-4784-b8a4-56e9ae4bb1cb}</UniqueIdentifier>
     </Filter>
@@ -73,6 +70,15 @@
     <Filter Include="Manager\PhysXManager">
       <UniqueIdentifier>{f0b6ffd0-8dbd-4e8e-aaf3-9cada56b89bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ObjectFileLoader">
+      <UniqueIdentifier>{144d9af7-184c-4e71-8732-11e3daffcce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thing">
+      <UniqueIdentifier>{5139fb85-3366-43b9-beb0-b189ddf55405}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{eb723765-8d2d-4a37-a165-a41c1278c1a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -106,16 +112,16 @@
       <Filter>MainGame</Filter>
     </ClInclude>
     <ClInclude Include="ObjectLoader.h">
-      <Filter>ObjectLoader</Filter>
+      <Filter>ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="MtlTex.h">
-      <Filter>ObjectLoader</Filter>
+      <Filter>ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="Group.h">
-      <Filter>ObjectLoader</Filter>
+      <Filter>ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
-      <Filter>ObjectLoader</Filter>
+      <Filter>ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="ObjectManager.h">
       <Filter>Manager\ObjectManager</Filter>
@@ -145,7 +151,7 @@
       <Filter>Manager\FontManager</Filter>
     </ClInclude>
     <ClInclude Include="ObjectMap.h">
-      <Filter>ObjectLoader</Filter>
+      <Filter>ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="Lobby.h">
       <Filter>Lobby</Filter>
@@ -198,6 +204,15 @@
     <ClInclude Include="UITextImageView.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="Thing.h">
+      <Filter>Thing</Filter>
+    </ClInclude>
+    <ClInclude Include="ThingManager.h">
+      <Filter>Thing</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -222,16 +237,16 @@
       <Filter>MainGame</Filter>
     </ClCompile>
     <ClCompile Include="ObjectLoader.cpp">
-      <Filter>ObjectLoader</Filter>
+      <Filter>ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="MtlTex.cpp">
-      <Filter>ObjectLoader</Filter>
+      <Filter>ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="Group.cpp">
-      <Filter>ObjectLoader</Filter>
+      <Filter>ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>ObjectLoader</Filter>
+      <Filter>ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="ObjectManager.cpp">
       <Filter>Manager\ObjectManager</Filter>
@@ -261,7 +276,7 @@
       <Filter>Manager\FontManager</Filter>
     </ClCompile>
     <ClCompile Include="ObjectMap.cpp">
-      <Filter>ObjectLoader</Filter>
+      <Filter>ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="Lobby.cpp">
       <Filter>Lobby</Filter>
@@ -304,6 +319,15 @@
     </ClCompile>
     <ClCompile Include="UITextImageView.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.cpp">
+      <Filter>Thing</Filter>
+    </ClCompile>
+    <ClCompile Include="ThingManager.cpp">
+      <Filter>Thing</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

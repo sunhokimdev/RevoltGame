@@ -9,6 +9,7 @@ class KeyManager
 private:
 	std::bitset<KEYMAX> _keyUp;
 	std::bitset<KEYMAX> _keyDown;
+	int m_key;
 	SINGLETONE(KeyManager);
 public:
 	HRESULT init(void);

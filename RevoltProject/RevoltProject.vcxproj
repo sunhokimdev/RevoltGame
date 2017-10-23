@@ -160,6 +160,7 @@
     <ClInclude Include="Lobby.h" />
     <ClInclude Include="MacroFunction.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="MtlTex.h" />
     <ClInclude Include="OBB.h" />
     <ClInclude Include="Object.h" />
@@ -200,6 +201,7 @@
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="MtlTex.cpp" />
     <ClCompile Include="OBB.cpp" />
     <ClCompile Include="Object.cpp" />
