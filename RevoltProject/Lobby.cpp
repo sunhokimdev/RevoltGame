@@ -51,98 +51,14 @@ void Lobby::Setup()
 void Lobby::Update()
 {
 
-	TimeUpdate();	// 시간 갱신 메서드
-	KeyUpdate();	// 키 이벤트 갱신 메서드
+	TimeUpdate();   // 시간 갱신 메서드
+	KeyUpdate();   // 키 이벤트 갱신 메서드
 
 	m_mapLobby[m_stateLobby]->m_pObject->Update();
 }
 
 void Lobby::Render()
 {
-<<<<<<< HEAD
-	if (m_stateLobby > INTRO3)
-	{
-		g_pD3DDevice->SetTexture(0, NULL);
-		g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
-
-		{
-			// jh
-			g_pD3DDevice->SetRenderState(D3DRS_STENCILENABLE, true);
-			g_pD3DDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_ALWAYS);
-			g_pD3DDevice->SetRenderState(D3DRS_STENCILREF, 0x1);
-			g_pD3DDevice->SetRenderState(D3DRS_STENCILMASK, 0xffffffff);
-			g_pD3DDevice->SetRenderState(D3DRS_STENCILWRITEMASK, 0xffffffff);
-			g_pD3DDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_KEEP);
-			g_pD3DDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
-			g_pD3DDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_REPLACE);
-
-			g_pD3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
-
-			g_pD3DDevice->SetRenderState(D3DRS_STENCILFUNC, D3DCMP_EQUAL);
-			g_pD3DDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_KEEP);
-
-			// 반사 위치
-			D3DXMATRIX W, T, R;
-			D3DXPLANE plane(0.0f, 1.0f, 0.0f, 0.0f);
-			D3DXMatrixReflect(&R, &plane);
-			D3DXMatrixTranslation(&T, 0, -0.1f, 0);
-			W = T * R;
-
-			g_pD3DDevice->Clear(0, 0, D3DCLEAR_ZBUFFER, 0, 1.0f, 0);
-			g_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_DESTCOLOR);
-			g_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
-			g_pD3DDevice->SetTransform(D3DTS_WORLD, &W);
-			g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
-			for (size_t i = 0; i < m_vecObjMtlTex.size(); ++i)
-			{
-				g_pD3DDevice->SetMaterial(&m_vecObjMtlTex[i]->GetMaterial());
-				if (m_vecObjMtlTex[i]->GetTexture() != NULL)
-				{
-					g_pD3DDevice->SetTexture(0,m_vecObjMtlTex[i]->GetTexture());
-				}			
-				
-				if (i == 4)
-				{
-					g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-					g_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
-					g_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCCOLOR);
-					g_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVDESTCOLOR);
-
-				}
-				else
-				{
-					g_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
-					g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
-				}
-				m_pObjMesh->DrawSubset(i);
-			}
-			
-			g_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
-			g_pD3DDevice->SetRenderState(D3DRS_STENCILENABLE, false);
-			g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-			
-		}
-
-		D3DXMATRIXA16	matWorld, matS, matR;
-
-		D3DXMatrixIdentity(&matWorld);
-
-		g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
-
-		for (size_t i = 0; i < m_vecObjMtlTex.size(); ++i)
-		{
-			g_pD3DDevice->SetMaterial(&m_vecObjMtlTex[i]->GetMaterial());
-
-			if (m_vecObjMtlTex[i]->GetTexture() != NULL)
-			{
-				g_pD3DDevice->SetTexture(0, m_vecObjMtlTex[i]->GetTexture());
-			}
-			
-			m_pObjMesh->DrawSubset(i);
-		}
-	}
-=======
->>>>>>> 5642836036df2c023942cce1d6d64e1ecd988214
 	if (m_mapLobby[m_stateLobby]->m_pObject)
 		m_mapLobby[m_stateLobby]->m_pObject->Render(m_pSprite);
 }
@@ -157,14 +73,14 @@ void Lobby::KeyUpdate()
 			m_select = 0;
 		g_pSoundManager->Play("menuUpDown.wav", 1.0f);
 	}
-	
+
 	if (g_pKeyManager->isOnceKeyDown(VK_UP))
 	{
 		m_select--;
 
 		if (m_select < 0)
 			m_select = m_mapLobby[m_stateLobby]->m_count - 1;
-	
+
 		g_pSoundManager->Play("menuUpDown.wav", 1.0f);
 	}
 
@@ -228,8 +144,7 @@ void Lobby::KeyUpdate()
 		if (m_mapLobby[m_stateLobby]->m_pNextLob[m_select] != LOBBY_NONE)
 		{
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
-			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
-			m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
@@ -241,7 +156,7 @@ void Lobby::KeyUpdate()
 		else if (m_stateLobby == START_LOBBY)
 		{
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
-			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
@@ -259,7 +174,6 @@ void Lobby::KeyUpdate()
 		{
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
 			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
-			m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			g_pSoundManager->Play("menuPrev.wav", 1.0f);
 		}
 
@@ -273,7 +187,7 @@ void Lobby::KeyUpdate()
 	{
 		m_stateLobby = START_LOBBY;
 		m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
-	}	m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+	}   m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 }
 
 void Lobby::TimeUpdate()
@@ -300,15 +214,15 @@ void Lobby::TimeUpdate()
 
 void Lobby::SetUpUI()
 {
-//===================================================================
-// - ## 10.15.19 ##
-// - written by 김선호
-// - @@ UI 추가작업은 여기서만 진행해야 한다.
-//===================================================================
+	//===================================================================
+	// - ## 10.15.19 ##
+	// - written by 김선호
+	// - @@ UI 추가작업은 여기서만 진행해야 한다.
+	//===================================================================
 
-///////////////////////////////   구분   /////////////////////////////////////////
-	
-/*   인트로 이미지   */
+	///////////////////////////////   구분   /////////////////////////////////////////
+
+	/*   인트로 이미지   */
 	UIImageView* pImageView1 = new UIImageView;
 	pImageView1->SetPosition(0, 0);
 	pImageView1->SetTexture("Maps/Front/Image/intro1.png");
@@ -321,7 +235,7 @@ void Lobby::SetUpUI()
 	pImageView3->SetPosition(0, 0);
 	pImageView3->SetTexture("Maps/Front/Image/intro3.png");
 
-///////////////////////////////   구분   /////////////////////////////////////////
+	///////////////////////////////   구분   /////////////////////////////////////////
 
 	UIImageView* pImageView4 = new UIImageView;
 	pImageView4->SetPosition(40, 40);
@@ -412,10 +326,10 @@ void Lobby::SetUpUI()
 	pImageView12->AddChild(pImageView13);
 	pImageView12->AddChild(pImageView14);
 
-///////////////////////////////   구분   /////////////////////////////////////////
+	///////////////////////////////   구분   /////////////////////////////////////////
 
 	UIImageView* pImageView100 = new UIImageView;
-	pImageView100->SetPosition(-10,-140);
+	pImageView100->SetPosition(-10, -140);
 	pImageView100->SetTexture("Maps/Front/Image/revoltrogo.png");
 
 	UIImageView* pImageView110 = new UIImageView;
@@ -469,7 +383,7 @@ void Lobby::SetUpUI()
 	pImageView110->AddChild(pImageView170);
 	pImageView110->AddChild(pImageView100);
 
-///////////////////////////////   구분   /////////////////////////////////////////
+	///////////////////////////////   구분   /////////////////////////////////////////
 
 	UIImageView* pImageView18 = new UIImageView;
 	pImageView18->SetPosition(-10, -140);
@@ -627,54 +541,7 @@ void Lobby::SetUpUI()
 	pImageView35->AddChild(pImageView38);
 	pImageView33->AddChild(pImageView39);
 
-	UIImageView* pImageView39 = new UIImageView;
-	pImageView39->SetPosition(300, 180);
-	pImageView39->SetIsBoard(true);
-	pImageView39->SetXSize(25.0f);
-	pImageView39->SetYSize(3.0f);
-	pImageView39->SetTexture("Maps/Front/Image/ring.png");
-
-	UITextImageView* pImageView40 = new UITextImageView;
-	pImageView40->SetIndex(INT_MAX);
-	pImageView40->SetColor(D3DCOLOR_ARGB(255, 242, 150, 97));
-	pImageView40->SetPosition(30, 40);
-	pImageView40->SetText("INFO");
-	pImageView40->SetTexture("Maps/Front/Image/font2.png");
-
-	UIImageView* pImageView41 = new UIImageView;
-	pImageView41->SetPosition(-220, -130);
-	pImageView41->SetXSize(4.0f);
-	pImageView41->SetYSize(4.0f);
-	pImageView41->SetIsBoard(true);
-	pImageView41->SetTexture("Maps/Front/Image/blueRing.png");
-
-	UIImageView* pImageView42 = new UIImageView;
-	pImageView42->SetPosition(140, 25);
-	pImageView42->SetIsBoard(true);
-	pImageView42->SetXSize(20.0f);
-	pImageView42->SetYSize(1.0f);
-	pImageView42->SetTexture("Maps/Front/Image/ring.png");
-
-	UITextImageView* pImageView43 = new UITextImageView;
-	pImageView43->SetTexture("Maps/Front/Image/font1.png");
-	pImageView43->SetText("SELECT CAR");
-	pImageView43->SetXSize(1.5f);
-	pImageView43->SetYSize(1.5f);
-	pImageView43->SetPosition(200, 45);
-
-	UIImageView* pImageView44 = new UIImageView;
-	pImageView44->SetXSize(1.2f);
-	pImageView44->SetYSize(1.2f);
-	pImageView44->SetPosition(17, 17);
-	pImageView44->SetTexture("Maps/Front/Image/bluetoy.png");
-
-	pImageView39->AddChild(pImageView40);
-	pImageView39->AddChild(pImageView41);
-	pImageView41->AddChild(pImageView42);
-	pImageView41->AddChild(pImageView43);
-	pImageView41->AddChild(pImageView44);
-
-///////////////////////////////   구분   /////////////////////////////////////////
+	///////////////////////////////   구분   /////////////////////////////////////////
 
 	UIImageView* pImageView40 = new UIImageView;
 	pImageView40->SetPosition(80, 50);
@@ -751,7 +618,7 @@ void Lobby::SetUpUI()
 	pImageView44->AddChild(pImageView49);
 	pImageView44->AddChild(pImageView50);
 
-///////////////////////////////   구분   /////////////////////////////////////////
+	///////////////////////////////   구분   /////////////////////////////////////////
 	/*   로비 UI 추가하기   */
 
 	m_mapLobby[INTRO1] = new ST_Object;
@@ -800,7 +667,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[5] = LOBBY_NONE;
 
 	m_mapLobby[MAIN_LOBBY2] = new ST_Object;
-	m_mapLobby[MAIN_LOBBY2]->m_target = D3DXVECTOR3(1, 10, -1);
+	m_mapLobby[MAIN_LOBBY2]->m_target = D3DXVECTOR3(-1, 10, -2);
 	m_mapLobby[MAIN_LOBBY2]->m_count = 6;
 	m_mapLobby[MAIN_LOBBY2]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[MAIN_LOBBY2]->m_time = 50.0f;
@@ -809,7 +676,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY2]->m_prevLob = MAIN_LOBBY;
 
 	m_mapLobby[MAIN_LOBBY3] = new ST_Object;
-	m_mapLobby[MAIN_LOBBY3]->m_target = D3DXVECTOR3(1, 10, -1);
+	m_mapLobby[MAIN_LOBBY3]->m_target = D3DXVECTOR3(-1, 10, -2);
 	m_mapLobby[MAIN_LOBBY3]->m_count = 4;
 	m_mapLobby[MAIN_LOBBY3]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[MAIN_LOBBY3]->m_time = 50.0f;
@@ -818,34 +685,16 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY3]->m_prevLob = MAIN_LOBBY2;
 
 	m_mapLobby[CREATE_PROFILE_LOBBY] = new ST_Object;
-<<<<<<< HEAD
-	m_mapLobby[CREATE_PROFILE_LOBBY]->m_target = D3DXVECTOR3(3, 5, 10);
-=======
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_target = D3DXVECTOR3(6, 12, 14);
->>>>>>> 5642836036df2c023942cce1d6d64e1ecd988214
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_count = 1;
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_time = 50.0f;
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pObject = pImageView33;
-<<<<<<< HEAD
-	m_mapLobby[CREATE_PROFILE_LOBBY]->m_camLookAt = D3DXVECTOR3(14, 3, 25);
-=======
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_camLookAt = D3DXVECTOR3(14, -4, 22);
->>>>>>> 5642836036df2c023942cce1d6d64e1ecd988214
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pNextLob[0] = SELECT_CAR_LOBBY;
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_prevLob = MAIN_LOBBY3;
 
 	m_mapLobby[SELECT_CAR_LOBBY] = new ST_Object;
-<<<<<<< HEAD
-	m_mapLobby[SELECT_CAR_LOBBY]->m_target = D3DXVECTOR3(14, 5, 3);
-	m_mapLobby[SELECT_CAR_LOBBY]->m_count = 1;
-	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
-	m_mapLobby[SELECT_CAR_LOBBY]->m_time = 50.0f;
-	m_mapLobby[SELECT_CAR_LOBBY]->m_pObject = pImageView39;
-	m_mapLobby[SELECT_CAR_LOBBY]->m_camLookAt = D3DXVECTOR3(20, 3, 25);
-	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob[0] = START_LOBBY;
-	m_mapLobby[SELECT_CAR_LOBBY]->m_prevLob = CREATE_PROFILE_LOBBY;
-=======
 	m_mapLobby[SELECT_CAR_LOBBY]->m_target = D3DXVECTOR3(10, 14, 8);
 	m_mapLobby[SELECT_CAR_LOBBY]->m_camLookAt = D3DXVECTOR3(20, -2, 16);
 	m_mapLobby[SELECT_CAR_LOBBY]->m_pObject = pImageView40;
@@ -854,6 +703,4 @@ void Lobby::SetUpUI()
 	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[SELECT_CAR_LOBBY]->m_time = 50.0f;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_prevLob = MAIN_LOBBY3;
->>>>>>> 5642836036df2c023942cce1d6d64e1ecd988214
 }
-

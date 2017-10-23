@@ -34,13 +34,14 @@ protected:
 	LOBBY	m_lobby;	// 어느 로비 상태에서 이벤트를 발생할지 묻는 여부
 	int		m_stage;	// 현재 스테이지 : 0 - 프론트, 1이상 맵 스테이지
 	int		m_index;	// 현재 선택 위치
-
+	std::string m_name;	// 오브젝트의 이름
 public:
-	/*   초기화 메서드   */
-	static float g_xRotAngle;
-	static LOBBY* g_LobbyState;
-	static int*	g_select;
+	/*   초기화 정적 매개변수   */
+	static float g_xRotAngle;		// 로비에서 왼,오른쪽 키 눌렀을 시 회전값
+	static LOBBY* g_LobbyState;	// 로비의 상태
+	static int*	g_select;		// 로비에서 선택된 인덱스
 
+	/*    초기화 메서드    */
 	Thing();
 	virtual ~Thing();
 	virtual void SetPosition(float x, float y, float z);
@@ -52,7 +53,9 @@ public:
 	void SetIsRot(bool isRot);
 	void SetLobby(LOBBY lobby);
 	void SetIndex(int index);
+	void SetNameObject(std::string name);
 
+	/*    갱신, 렌더링 메서드    */
 	virtual void Update();
 	virtual void Render();
 	virtual void Destroy();

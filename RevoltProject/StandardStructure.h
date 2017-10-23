@@ -83,3 +83,19 @@ struct ST_ASTAR
 	POINT wall;
 	POINT path;
 };
+
+/*   자동차에 대한 정보를 저장하는 구조체   */
+enum CAR_CLASS { CLASS_NONE, CAR_ELECTRIC, CAR_GLOW, CAR_OTHER };
+enum CAR_RATING { RATING_NONE, RATING_ROOKIE, RATING_AMATEUR, RATING_PRO };
+
+/*   자동차 정보 구조체   */
+struct ST_CAR
+{
+	std::string name;
+	std::string car_class;
+	std::string car_skill_level;
+	float speed;
+	float acc;
+	float weight;
+	int trans;
+};

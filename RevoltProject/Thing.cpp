@@ -80,6 +80,17 @@ void Thing::SetIndex(int index)
 	m_index = index;
 }
 
+void Thing::SetNameObject(std::string name)
+{
+	m_name = name;
+
+	/*   자동차 박스라면   */
+	if (m_name.find("CarBox") != -1)
+	{
+
+	}
+}
+
 void Thing::Update()
 {
 	D3DXMATRIXA16 matRX, matRY, matR, matT;
@@ -98,7 +109,7 @@ void Thing::Update()
 		{
 			if (m_vPosition.y < m_vTarget.y)
 			{
-				D3DXVECTOR3 tempV = (m_vTarget - m_vPrevPosition) / 50.0f;
+				D3DXVECTOR3 tempV = (m_vTarget - m_vPrevPosition) / 30.0f;
 				m_vPosition += tempV;
 			}
 

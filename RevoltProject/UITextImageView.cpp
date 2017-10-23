@@ -119,7 +119,7 @@ void UITextImageView::KeyEvent()
 
 	if (tSize != m_chatText.size())
 	{
-		g_pSoundManager->Play("honkgood.wav", 1.0f);
+		//g_pSoundManager->Play("honkgood.wav", 1.0f);
 
 		if (m_chatText.size() == 1)
 		{
