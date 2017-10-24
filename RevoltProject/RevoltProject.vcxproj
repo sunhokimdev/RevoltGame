@@ -150,6 +150,7 @@
     <ClInclude Include="AllocateHierarchy.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Car.h" />
+    <ClInclude Include="CarBox.h" />
     <ClInclude Include="CarTextLoader.h" />
     <ClInclude Include="DEBUG_RENDER.h" />
     <ClInclude Include="DeviceManager.h" />
@@ -191,12 +192,14 @@
     <ClInclude Include="UITextImageView.h" />
     <ClInclude Include="UITextView.h" />
     <ClInclude Include="UserStream.h" />
+    <ClInclude Include="WheelTire.h" />
     <ClInclude Include="XFileLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AllocateHierarchy.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Car.cpp" />
+    <ClCompile Include="CarBox.cpp" />
     <ClCompile Include="CarTextLoader.cpp" />
     <ClCompile Include="DEBUG_RENDER.cpp" />
     <ClCompile Include="DeviceManager.cpp" />
@@ -238,6 +241,7 @@
     <ClCompile Include="UITextImageView.cpp" />
     <ClCompile Include="UITextView.cpp" />
     <ClCompile Include="UserStream.cpp" />
+    <ClCompile Include="WheelTire.cpp" />
     <ClCompile Include="XFileLoader.cpp" />
   </ItemGroup>
   <ItemGroup>

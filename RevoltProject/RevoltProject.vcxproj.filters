@@ -225,6 +225,12 @@
     <ClInclude Include="CarTextLoader.h">
       <Filter>Car\CarTextLoader</Filter>
     </ClInclude>
+    <ClInclude Include="CarBox.h">
+      <Filter>Thing</Filter>
+    </ClInclude>
+    <ClInclude Include="WheelTire.h">
+      <Filter>Thing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -346,6 +352,12 @@
     </ClCompile>
     <ClCompile Include="CarTextLoader.cpp">
       <Filter>Car\CarTextLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="CarBox.cpp">
+      <Filter>Thing</Filter>
+    </ClCompile>
+    <ClCompile Include="WheelTire.cpp">
+      <Filter>Thing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

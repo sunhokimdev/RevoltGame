@@ -1,48 +1,85 @@
 #include "stdafx.h"
 #include "Car.h"
 #include "MtlTex.h"
-#include "CarTextLoader.h"
+#include "ObjectLoader.h"
 
 Car::Car()
 {
 }
 
-
 Car::~Car()
 {
+
 }
 
 void Car::Setup()
 {
-	CarTextLoader loader;
 
-	loader.Load(m_car, "Cars/tc1", "Parameters.txt");
 }
 
 void Car::Update()
 {
-
+	Thing::Update();
 }
 
 void Car::Render()
 {
-	g_pD3DDevice->SetTexture(0, NULL);
-	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+	Thing::Render();
 
-	g_pD3DDevice->SetTransform(D3DTS_WORLD,
-		&m_matWorld);
-
-	for (size_t i = 0; i < m_vecObjMtlTex.size(); ++i)
+	for each(auto p in m_vecChild)
 	{
-		g_pD3DDevice->SetMaterial(
-			&m_vecObjMtlTex[i]->GetMaterial());
-
-		if (m_vecObjMtlTex[i]->GetTexture() != NULL)
-		{
-			g_pD3DDevice->SetTexture(
-				0,
-				m_vecObjMtlTex[i]->GetTexture());
-		}
-		m_pObjMesh->DrawSubset(i);
+		p->Render();
 	}
+}
+
+void Car::SetSTCar(ST_CAR car)
+{
+	m_stCar = car;
+}
+
+void Car::SetMeshWheel(char * szFolder, char * szName)
+{
+	std::string tStr;
+	ObjectLoader load;
+
+	{
+		Thing* tWheel = new Car;
+		tStr = std::string(szName) + std::string("fl.obj");
+		tWheel->SetPosition(m_stCar.fl.x, m_stCar.fl.y, m_stCar.fl.z);
+		tWheel->SetMesh(szFolder, const_cast<char*>(tStr.c_str()));
+		AddChild(tWheel);
+	}
+
+	{
+		Thing* tWheel = new Thing;
+		tStr = std::string(szName) + std::string("fr.obj");
+		tWheel->SetPosition(m_stCar.fr.x, m_stCar.fr.y, m_stCar.fr.z);
+		tWheel->SetMesh(szFolder, const_cast<char*>(tStr.c_str()));
+		AddChild(tWheel);
+	}
+
+	{
+		Thing* tWheel = new Thing;
+		tStr = std::string(szName) + std::string("bl.obj");
+		tWheel->SetPosition(m_stCar.bl.x, m_stCar.bl.y, m_stCar.bl.z);
+		tWheel->SetMesh(szFolder, const_cast<char*>(tStr.c_str()));
+		AddChild(tWheel);
+	}
+
+	{
+		Thing* tWheel = new Thing;
+		tStr = std::string(szName) + std::string("br.obj");
+		tWheel->SetPosition(m_stCar.br.x, m_stCar.br.y, m_stCar.br.z);
+		tWheel->SetMesh(szFolder, const_cast<char*>(tStr.c_str()));
+		AddChild(tWheel);
+	}
+}
+
+void Car::WheelRender()
+{
+	
+}
+
+void Car::KeyEvent()
+{
 }

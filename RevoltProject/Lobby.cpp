@@ -13,6 +13,8 @@
 /*      */
 #include "Map.h"
 #include "Thing.h"
+#include "CarBox.h"
+#include "WheelTire.h"
 
 Lobby::Lobby()
 	: m_pSprite(NULL)
@@ -43,7 +45,7 @@ void Lobby::Setup()
 	UITextImageView::m_Select = &m_select;
 	UITextImageView::m_LeftAndRightSelect = &m_leftAndrightSelect;
 	Thing::g_LobbyState = &m_stateLobby;
-	Thing::g_select = &m_leftAndrightSelect;
+	CarBox::g_select = &m_leftAndrightSelect;
 
 	SetUpUI();
 }
@@ -97,7 +99,7 @@ void Lobby::KeyUpdate()
 		}
 		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
 		{
-			Thing::g_xRotAngle += D3DX_PI / 15.0f;
+			WheelTire::g_xRotAngle += D3DX_PI / 15.0f;
 			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
 		}
 		else if (m_stateLobby == SELECT_CAR_LOBBY)
@@ -124,7 +126,7 @@ void Lobby::KeyUpdate()
 		}
 		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
 		{
-			Thing::g_xRotAngle -= D3DX_PI / 15.0f;
+			WheelTire::g_xRotAngle -= D3DX_PI / 15.0f;
 			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
 		}
 		else if (m_stateLobby == SELECT_CAR_LOBBY)
@@ -141,9 +143,9 @@ void Lobby::KeyUpdate()
 	/*   엔터 키 눌렀을 때 다음 로비로 들어가는 이벤트   */
 	if (g_pKeyManager->isOnceKeyDown(VK_RETURN))
 	{
-		if (m_mapLobby[m_stateLobby]->m_pNextLob[m_select] != LOBBY_NONE)
+		if (m_stateLobby == START_LOBBY)
 		{
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
+			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
 			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
 			m_time = 0.0f;
 			m_select = 0;
@@ -153,9 +155,19 @@ void Lobby::KeyUpdate()
 				g_pSoundManager->Play("menuNext.wav", 1.0f);
 		}
 
-		else if (m_stateLobby == START_LOBBY)
+		else if (m_stateLobby == SELECT_CAR_LOBBY)
 		{
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
+			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[0];
+			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+			m_time = 0.0f;
+
+			if (m_stateLobby > INTRO3)
+				g_pSoundManager->Play("menuNext.wav", 1.0f);
+		}
+
+		else if (m_mapLobby[m_stateLobby]->m_pNextLob[m_select] != LOBBY_NONE)
+		{
+			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
 			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
 			m_time = 0.0f;
 			m_select = 0;
@@ -169,18 +181,10 @@ void Lobby::KeyUpdate()
 	/*   ESC 키 눌렀을 때 이전 로비로 들어가는 이벤트   */
 	if (g_pKeyManager->isOnceKeyDown(VK_ESCAPE))
 	{
-
-		if (m_mapLobby[m_stateLobby]->m_prevLob != LOBBY_NONE)
-		{
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
-			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
-			g_pSoundManager->Play("menuPrev.wav", 1.0f);
-		}
-
 		m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
 		m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
 		m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
-		g_pSoundManager->Play("menuNext.wav", 1.0f);
+		g_pSoundManager->Play("menuPrev.wav", 1.0f);
 	}
 
 	if (g_pKeyManager->isStayKeyDown(VK_CONTROL))
@@ -277,7 +281,7 @@ void Lobby::SetUpUI()
 	pImageView9->SetIndex(INT_MAX);
 	pImageView9->SetIsVectorText(true);
 	pImageView9->SetAddText("Load Profile");
-	pImageView9->SetAddText("Select Profile");
+	pImageView9->SetAddText("Create Profile");
 	pImageView9->SetAddText("Delete Profile");
 	pImageView9->SetXSize(1.0f);
 	pImageView9->SetYSize(1.0f);
@@ -607,6 +611,56 @@ void Lobby::SetUpUI()
 	pImageView50->SetText("Trans");
 	pImageView50->SetPosition(60, 225);
 
+	UITextImageView* pImageView51 = new UITextImageView;
+	pImageView51->SetTexture("Maps/Front/Image/font2.png");
+	pImageView51->SetCarIndex(1);
+	pImageView51->SetIsRealTime(true);
+	pImageView51->SetPosition(200, 100);
+	pImageView51->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+
+	UITextImageView* pImageView52 = new UITextImageView;
+	pImageView52->SetTexture("Maps/Front/Image/font2.png");
+	pImageView52->SetCarIndex(2);
+	pImageView52->SetIsRealTime(true);
+	pImageView52->SetPosition(200, 125);
+	pImageView52->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+
+	UITextImageView* pImageView53 = new UITextImageView;
+	pImageView53->SetTexture("Maps/Front/Image/font2.png");
+	pImageView53->SetCarIndex(3);
+	pImageView53->SetIsRealTime(true);
+	pImageView53->SetPosition(200, 150);
+	pImageView53->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+
+	UITextImageView* pImageView54 = new UITextImageView;
+	pImageView54->SetTexture("Maps/Front/Image/font2.png");
+	pImageView54->SetCarIndex(4);
+	pImageView54->SetIsRealTime(true);
+	pImageView54->SetPosition(200, 175);
+	pImageView54->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+
+	UITextImageView* pImageView55 = new UITextImageView;
+	pImageView55->SetTexture("Maps/Front/Image/font2.png");
+	pImageView55->SetCarIndex(5);
+	pImageView55->SetIsRealTime(true);
+	pImageView55->SetPosition(200, 200);
+	pImageView55->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+
+	UITextImageView* pImageView56 = new UITextImageView;
+	pImageView56->SetTexture("Maps/Front/Image/font2.png");
+	pImageView56->SetCarIndex(6);
+	pImageView56->SetIsRealTime(true);
+	pImageView56->SetPosition(200, 225);
+	pImageView56->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+
+
+	UITextImageView* pImageView57 = new UITextImageView;
+	pImageView57->SetTexture("Maps/Front/Image/font2.png");
+	pImageView57->SetCarIndex(0);
+	pImageView57->SetIsRealTime(true);
+	pImageView57->SetPosition(50, 50);
+	pImageView57->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+
 	pImageView40->AddChild(pImageView41);
 	pImageView40->AddChild(pImageView42);
 	pImageView40->AddChild(pImageView43);
@@ -617,6 +671,44 @@ void Lobby::SetUpUI()
 	pImageView44->AddChild(pImageView48);
 	pImageView44->AddChild(pImageView49);
 	pImageView44->AddChild(pImageView50);
+	pImageView44->AddChild(pImageView51);
+	pImageView44->AddChild(pImageView52);
+	pImageView44->AddChild(pImageView53);
+	pImageView44->AddChild(pImageView54);
+	pImageView44->AddChild(pImageView55);
+	pImageView44->AddChild(pImageView56);
+	pImageView44->AddChild(pImageView57);
+
+	UIImageView* pImageView58 = new UIImageView;
+	pImageView58->SetPosition(80, 50);
+	pImageView58->SetXSize(4.0f);
+	pImageView58->SetYSize(4.0f);
+	pImageView58->SetIsBoard(true);
+	pImageView58->SetTexture("Maps/Front/Image/blueRing.png");
+
+	UIImageView* pImageView59 = new UIImageView;
+	pImageView59->SetXSize(1.2f);
+	pImageView59->SetYSize(1.2f);
+	pImageView59->SetPosition(17, 17);
+	pImageView59->SetTexture("Maps/Front/Image/bluecar.png");
+
+	UIImageView* pImageView60 = new UIImageView;
+	pImageView60->SetPosition(120, 25);
+	pImageView60->SetIsBoard(true);
+	pImageView60->SetXSize(20.0f);
+	pImageView60->SetYSize(1.0f);
+	pImageView60->SetTexture("Maps/Front/Image/ring.png");
+
+	UITextImageView* pImageView61 = new UITextImageView;
+	pImageView61->SetTexture("Maps/Front/Image/font1.png");
+	pImageView61->SetText("SELECT CAR");
+	pImageView61->SetXSize(1.5f);
+	pImageView61->SetYSize(1.5f);
+	pImageView61->SetPosition(180, 45);
+
+	pImageView58->AddChild(pImageView59);
+	pImageView58->AddChild(pImageView60);
+	pImageView58->AddChild(pImageView61);
 
 ///////////////////////////////   구분   /////////////////////////////////////////
 	/*   로비 UI 추가하기   */
@@ -701,7 +793,15 @@ void Lobby::SetUpUI()
 	m_mapLobby[SELECT_CAR_LOBBY]->m_count = 1;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_selectCnt = 6;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob[0] = VIEW_CAR_LOBBY;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_time = 50.0f;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_prevLob = MAIN_LOBBY3;
+
+	m_mapLobby[VIEW_CAR_LOBBY] = new ST_Object;
+	m_mapLobby[VIEW_CAR_LOBBY]->m_target = D3DXVECTOR3(10, 4, 8);
+	m_mapLobby[VIEW_CAR_LOBBY]->m_camLookAt = D3DXVECTOR3(20, -3, 10);
+	m_mapLobby[VIEW_CAR_LOBBY]->m_pObject = pImageView58;
+	m_mapLobby[VIEW_CAR_LOBBY]->m_count = 1;
+	m_mapLobby[VIEW_CAR_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
 }
 

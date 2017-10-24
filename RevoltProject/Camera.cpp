@@ -24,7 +24,7 @@ Camera::~Camera()
 void Camera::Setup(D3DXVECTOR3 * pvTarget)
 {
 	m_pvTarget = pvTarget;
-
+	m_fCamTime = 0.0f;
 
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
@@ -44,7 +44,6 @@ void Camera::Update()
 	GetClientRect(g_hWnd, &rc);
 	
 	m_fCamTime += 0.0001f;
-
 
 	D3DXMATRIXA16 matR, matRX, matRY;
 	D3DXMatrixRotationX(&matRX, m_vCamRotAngle.x);

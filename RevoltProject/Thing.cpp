@@ -3,26 +3,36 @@
 #include "MtlTex.h"
 #include "ObjectLoader.h"
 
-#include "ObjectLoader.h"
+#include "CarTextLoader.h"
 #include "MtlTex.h"
+#include "Car.h"
 
 LOBBY* Thing::g_LobbyState;
-float Thing::g_xRotAngle = 0.0f;
-int* Thing::g_select;
 
 Thing::Thing()
 	: m_vPosition(0,0,0)
 	, m_vTarget(0,0,0)
 	, m_yAngle(0.0f)
 	, m_xAngle(0.0f)
-	, m_isMove(false)
-	, m_isRot(false)
-	, m_lobby(LOBBY_NONE)
+	, m_pParentWorldTM(NULL)
 {
+	D3DXMatrixIdentity(&m_matWorld);
+	D3DXMatrixIdentity(&m_matR);
+	D3DXMatrixIdentity(&m_matRX);
+	D3DXMatrixIdentity(&m_matRY);
+	D3DXMatrixIdentity(&m_matR);
+	D3DXMatrixIdentity(&m_matT);
 }
 
 Thing::~Thing()
 {
+	SAFE_RELEASE(m_pObjMesh);
+
+	for each(auto c in m_vecObjMtlTex)
+		SAFE_RELEASE(c);
+
+	SAFE_DELETE(g_LobbyState);
+	SAFE_DELETE(m_pParentWorldTM);
 }
 
 void Thing::SetPosition(float x, float y, float z)
@@ -36,7 +46,8 @@ void Thing::SetPosition(float x, float y, float z)
 
 void Thing::SetRotationX(float angle)
 {
-	g_xRotAngle = angle;
+	m_xAngle = angle;
+	m_prevXAngle = m_xAngle;
 }
 
 void Thing::SetRotationY(float angle)
@@ -60,94 +71,36 @@ void Thing::SetMesh(char * szFolder, char * szFile)
 		szFolder, szFile);
 }
 
-void Thing::SetIsMove(bool isMove)
+void Thing::AddChild(Thing * pChild)
 {
-	m_isMove = isMove;
+	if (pChild == NULL) return;
+
+	pChild->m_pParentWorldTM = &m_matWorld;
+	m_vecChild.push_back(pChild);
 }
 
-void Thing::SetIsRot(bool isRot)
-{
-	m_isRot = isRot;
-}
-
-void Thing::SetLobby(LOBBY lobby)
-{
-	m_lobby = lobby;
-}
-
-void Thing::SetIndex(int index)
-{
-	m_index = index;
-}
-
-void Thing::SetNameObject(std::string name)
-{
-	m_name = name;
-
-	/*   자동차 박스라면   */
-	if (m_name.find("CarBox") != -1)
-	{
-
-	}
-}
 
 void Thing::Update()
 {
-	D3DXMATRIXA16 matRX, matRY, matR, matT;
+	D3DXMatrixRotationY(&m_matRY, m_yAngle);
 
-	D3DXMatrixIdentity(&m_matWorld);
-	D3DXMatrixIdentity(&matR);
-	D3DXMatrixIdentity(&matRX);
-	D3DXMatrixIdentity(&matRY);
-	D3DXMatrixIdentity(&matR);
-	D3DXMatrixIdentity(&matT);
+	m_matR = m_matRX * m_matRY;
 
-	/*   자동차 선택 분기점일 때   */
-	if (m_lobby == SELECT_CAR_LOBBY && *g_LobbyState == SELECT_CAR_LOBBY)
+	m_matT._41 = m_vPosition.x;
+	m_matT._42 = m_vPosition.y;
+	m_matT._43 = m_vPosition.z;
+
+	m_matWorld = m_matR * m_matT;
+
+	if (m_pParentWorldTM)
 	{
-		if (m_index == *g_select)
-		{
-			if (m_vPosition.y < m_vTarget.y)
-			{
-				D3DXVECTOR3 tempV = (m_vTarget - m_vPrevPosition) / 30.0f;
-				m_vPosition += tempV;
-			}
-
-			else if (m_vTarget.y >= m_vPosition.y)
-			{
-				m_vPosition = m_vTarget;
-			}
-
-			D3DXMatrixRotationX(&matRX, D3DX_PI/4.0f);
-			m_yAngle = D3DX_PI / 3.7f;
-		}
-		else
-		{
-			if (m_vPosition != m_vPrevPosition)
-			{
-				m_vPosition += (m_vPrevPosition - m_vTarget) / 40.0f;
-			}
-			m_vPosition = m_vPrevPosition;
-			m_yAngle = m_prevYAngle;
-			D3DXMatrixRotationX(&matRX, 0.0f);
-		}
+		m_matWorld *= *m_pParentWorldTM;
 	}
 
-	else if (*g_LobbyState == CREATE_PROFILE_LOBBY)
+	for each(auto p in m_vecChild)
 	{
-		if(m_isRot)
-			D3DXMatrixRotationZ(&matRX, g_xRotAngle);
+		p->Update();
 	}
-
-	D3DXMatrixRotationY(&matRY, m_yAngle);
-
-	matR = matRX * matRY;
-
-	matT._41 = m_vPosition.x;
-	matT._42 = m_vPosition.y;
-	matT._43 = m_vPosition.z;
-
-	m_matWorld = matR * matT;
 }
 
 void Thing::Render()
@@ -157,7 +110,7 @@ void Thing::Render()
 
 	g_pD3DDevice->SetTransform(D3DTS_WORLD,
 		&m_matWorld);
-
+		
 	for (size_t i = 0; i < m_vecObjMtlTex.size(); ++i)
 	{
 		g_pD3DDevice->SetMaterial(
@@ -170,11 +123,6 @@ void Thing::Render()
 				m_vecObjMtlTex[i]->GetTexture());
 		}
 		m_pObjMesh->DrawSubset(i);
-	}
-
-	for each(auto c in m_vecChild)
-	{
-		c->Render();
 	}
 }
 

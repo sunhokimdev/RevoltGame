@@ -5,6 +5,6 @@ public:
 	CarTextLoader();
 	~CarTextLoader();
 
-	void Load(ST_CAR& szCar,char* szFolder, char* szFile);
+	void Load(ST_CAR& szCar, const char* szFile);
 };
 
