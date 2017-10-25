@@ -43,7 +43,7 @@ void Camera::Update()
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
 	
-	m_fCamTime += 0.0001f;
+	m_fCamTime += 0.005f;
 
 	D3DXMATRIXA16 matR, matRX, matRY;
 	D3DXMatrixRotationX(&matRX, m_vCamRotAngle.x);
