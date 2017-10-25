@@ -257,7 +257,6 @@ void Lobby::KeyUpdate()
 			if (m_stateLobby > INTRO3)
 				g_pSoundManager->Play("menuNext.wav", 1.0f);
 		}
-
 		else if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
 			m_selectMapType = m_mapLobby[m_stateLobby]->m_selectCnt;

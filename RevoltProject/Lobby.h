@@ -1,10 +1,8 @@
 #pragma once
 
-<<<<<<< Updated upstream
-class UIObject;		// UI오브젝트를 사용하기 위한 전방선언 클래스
-class MtlTex;		// 재질을 사용하기 위한 전방선언 클래스
-class Camera;		// 카메라 클래스를 사용하기 위한 전방선언 클래스
-=======
+class UIObject;					// UI오브젝트를 사용하기 위한 전방선언 클래스
+class MtlTex;					// 재질을 사용하기 위한 전방선언 클래스
+class Camera;					// 카메라 클래스를 사용하기 위한 전방선언 클래스
 class UIObject;					// UI오브젝트를 사용하기 위한 전방선언 클래스
 class MtlTex;					// 재질을 사용하기 위한 전방선언 클래스
 class Camera;					// 카메라 클래스를 사용하기 위한 전방선언 클래스
@@ -12,7 +10,6 @@ class Thing;					// 오브젝트 클래스
 class UITextImageView;			// TextImageView Class
 class UIImageView;				// ImageView Class
 
->>>>>>> Stashed changes
 
 //===================================================================
 // - ## 10.15.17 ##
@@ -61,10 +58,6 @@ private:
 	float	m_time;								// 변경 시간을 나타내는 타임 변수
 	int		m_select;							// 현재 위아래 커서의 위치
 	int		m_leftAndrightSelect;				// 현재 오른쪽 왼쪽 커서의 위치;
-<<<<<<< Updated upstream
-
-	Camera*		m_pCamera;						// 카메라 클래스
-=======
 	int		m_selectMapType;					// Select Map Type
 	int		m_LockedTime;						// Update Locked Time
 
@@ -85,8 +78,6 @@ private:
 	UIImageView*		m_LockedRing;
 	UITextImageView*	m_LockedTextImage;
 
-
->>>>>>> Stashed changes
 	std::vector<std::string> m_vString;
 public:
 	Lobby();

@@ -198,6 +198,21 @@
     <ClInclude Include="UITextImageView.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="Car.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CarTextLoader.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Thing.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ThingManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -303,6 +318,21 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="UITextImageView.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Car.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CarTextLoader.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Thing.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ThingManager.cpp">
       <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>

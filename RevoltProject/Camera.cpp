@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Camera.h"
-
+#include "Lobby.h"
 
 Camera::Camera()
 	: m_vEye(1, 2, -55)
@@ -105,11 +105,6 @@ void Camera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		//
 		//if (m_fCameraDistance < 0.0001f)
 		//	m_fCameraDistance = 0.0001f;
-<<<<<<< Updated upstream
-
-=======
-		
->>>>>>> Stashed changes
 		break;
 	}
 }

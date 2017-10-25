@@ -181,6 +181,8 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextManager.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Thing.h" />
+    <ClInclude Include="ThingManager.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="UIButton.h" />
     <ClInclude Include="UIImageView.h" />
@@ -226,6 +228,8 @@
     </ClCompile>
     <ClCompile Include="TextManager.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="Thing.cpp" />
+    <ClCompile Include="ThingManager.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UIImageView.cpp" />

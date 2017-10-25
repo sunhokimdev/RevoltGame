@@ -89,12 +89,7 @@ void ObjectLoader::Load(OUT std::vector<Group*>& vecGroup, IN char * szFolder, I
 				&nIndex[1][0], &nIndex[1][1], &nIndex[1][2],
 				&nIndex[2][0], &nIndex[2][1], &nIndex[2][2]
 				);
-
-<<<<<<< Updated upstream
-			for (int i = 2; i >= 0; i--)
-=======
 			for (int i = 2; i>= 0; i--)
->>>>>>> Stashed changes
 			{
 				ST_PNT_VERTEX v;
 				v.p = vecV[nIndex[i][0] - 1];
