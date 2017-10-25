@@ -59,10 +59,10 @@ void MainGame::Update()
 {
 	if(m_pCamera)
 		m_pCamera->Update();
-	if (m_pLobby)
-		m_pLobby->Update();
 	if (m_pMap)
 		m_pMap->Update();
+	if (m_pLobby)
+		m_pLobby->Update();
 }
 
 void MainGame::Render()
