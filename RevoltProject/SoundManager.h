@@ -47,7 +47,6 @@ public:
 	void SetSoundPosition(Channel* pChannel, D3DXVECTOR3 position);
 	void SetSoundPosition(Channel* pChannel, FMOD_VECTOR position);
 
-
 	void Stop(std::string fileName);
 	void Pause(std::string fileName);
 	void Resume(std::string fileName);

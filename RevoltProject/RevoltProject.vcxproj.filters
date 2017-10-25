@@ -25,6 +25,9 @@
     <Filter Include="Manager\KeyManager">
       <UniqueIdentifier>{785f9bf7-38a9-4456-8208-7015a8080b00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ObjectLoader">
+      <UniqueIdentifier>{144d9af7-184c-4e71-8732-11e3daffcce2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Manager\ObjectManager">
       <UniqueIdentifier>{688c208c-db64-4784-b8a4-56e9ae4bb1cb}</UniqueIdentifier>
     </Filter>
@@ -70,21 +73,6 @@
     <Filter Include="Manager\PhysXManager">
       <UniqueIdentifier>{f0b6ffd0-8dbd-4e8e-aaf3-9cada56b89bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ObjectFileLoader">
-      <UniqueIdentifier>{144d9af7-184c-4e71-8732-11e3daffcce2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Thing">
-      <UniqueIdentifier>{5139fb85-3366-43b9-beb0-b189ddf55405}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Map">
-      <UniqueIdentifier>{eb723765-8d2d-4a37-a165-a41c1278c1a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Car">
-      <UniqueIdentifier>{ba3e07fe-f5ce-42ac-86e8-83f92155ddd0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Car\CarTextLoader">
-      <UniqueIdentifier>{14829522-7bc6-4e69-9f30-d2e6f6641609}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -118,16 +106,16 @@
       <Filter>MainGame</Filter>
     </ClInclude>
     <ClInclude Include="ObjectLoader.h">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>ObjectLoader</Filter>
     </ClInclude>
     <ClInclude Include="MtlTex.h">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>ObjectLoader</Filter>
     </ClInclude>
     <ClInclude Include="Group.h">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>ObjectLoader</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>ObjectLoader</Filter>
     </ClInclude>
     <ClInclude Include="ObjectManager.h">
       <Filter>Manager\ObjectManager</Filter>
@@ -157,7 +145,7 @@
       <Filter>Manager\FontManager</Filter>
     </ClInclude>
     <ClInclude Include="ObjectMap.h">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>ObjectLoader</Filter>
     </ClInclude>
     <ClInclude Include="Lobby.h">
       <Filter>Lobby</Filter>
@@ -210,6 +198,7 @@
     <ClInclude Include="UITextImageView.h">
       <Filter>UI</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Thing.h">
       <Filter>Thing</Filter>
     </ClInclude>
@@ -231,6 +220,8 @@
     <ClInclude Include="WheelTire.h">
       <Filter>Thing</Filter>
     </ClInclude>
+=======
+>>>>>>> 3ca3d3427d15a11590633a4e51533e8a1eb563a0
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -255,16 +246,16 @@
       <Filter>MainGame</Filter>
     </ClCompile>
     <ClCompile Include="ObjectLoader.cpp">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>ObjectLoader</Filter>
     </ClCompile>
     <ClCompile Include="MtlTex.cpp">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>ObjectLoader</Filter>
     </ClCompile>
     <ClCompile Include="Group.cpp">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>ObjectLoader</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>ObjectLoader</Filter>
     </ClCompile>
     <ClCompile Include="ObjectManager.cpp">
       <Filter>Manager\ObjectManager</Filter>
@@ -294,7 +285,7 @@
       <Filter>Manager\FontManager</Filter>
     </ClCompile>
     <ClCompile Include="ObjectMap.cpp">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>ObjectLoader</Filter>
     </ClCompile>
     <ClCompile Include="Lobby.cpp">
       <Filter>Lobby</Filter>
@@ -338,6 +329,7 @@
     <ClCompile Include="UITextImageView.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Thing.cpp">
       <Filter>Thing</Filter>
     </ClCompile>
@@ -359,6 +351,8 @@
     <ClCompile Include="WheelTire.cpp">
       <Filter>Thing</Filter>
     </ClCompile>
+=======
+>>>>>>> 3ca3d3427d15a11590633a4e51533e8a1eb563a0
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RevoltProject.rc">
