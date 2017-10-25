@@ -269,6 +269,10 @@ void Lobby::KeyUpdate()
 			if (m_stateLobby > INTRO3)
 				g_pSoundManager->Play("menuNext.wav", 1.0f);
 		}
+		else if (m_stateLobby == MAIN_LOBBY3)
+		{
+			m_pCamera->Setup(NULL);
+		}
 		else if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
 			m_selectMapType = m_mapLobby[m_stateLobby]->m_selectCnt;
@@ -856,49 +860,49 @@ void Lobby::SetUpUI()
 	m_mapImage->SetPosition(250, 100);
 	m_mapImage->SetIsNoise(true);
 
-	UIImageView* pImageView51 = new UIImageView;
-	pImageView51->SetPosition(80, 50);
-	pImageView51->SetXSize(4.0f);
-	pImageView51->SetYSize(4.0f);
-	pImageView51->SetIsBoard(true);
-	pImageView51->SetTexture("Maps/Front/Image/blueRing.png");
+	UIImageView* pImageView62 = new UIImageView;
+	pImageView62->SetPosition(80, 50);
+	pImageView62->SetXSize(4.0f);
+	pImageView62->SetYSize(4.0f);
+	pImageView62->SetIsBoard(true);
+	pImageView62->SetTexture("Maps/Front/Image/blueRing.png");
 
-	UIImageView* pImageView52 = new UIImageView;
-	pImageView52->SetXSize(1.2f);
-	pImageView52->SetYSize(1.2f);
-	pImageView52->SetPosition(17, 17);
-	pImageView52->SetTexture("Maps/Front/Image/blueflag.png");
+	UIImageView* pImageView63 = new UIImageView;
+	pImageView63->SetXSize(1.2f);
+	pImageView63->SetYSize(1.2f);
+	pImageView63->SetPosition(17, 17);
+	pImageView63->SetTexture("Maps/Front/Image/blueflag.png");
 
-	UIImageView* pImageView53 = new UIImageView;
-	pImageView53->SetPosition(120, 20);
-	pImageView53->SetIsBoard(true);
-	pImageView53->SetXSize(25.0f);
-	pImageView53->SetYSize(1.0f);
-	pImageView53->SetTexture("Maps/Front/Image/ring.png");
+	UIImageView* pImageView64 = new UIImageView;
+	pImageView64->SetPosition(120, 20);
+	pImageView64->SetIsBoard(true);
+	pImageView64->SetXSize(25.0f);
+	pImageView64->SetYSize(1.0f);
+	pImageView64->SetTexture("Maps/Front/Image/ring.png");
 
-	UITextImageView* pImageView54 = new UITextImageView;
-	pImageView54->SetTexture("Maps/Front/Image/font1.png");
-	pImageView54->SetText("SELECT TRACK");
-	pImageView54->SetXSize(1.5f);
-	pImageView54->SetYSize(1.5f);
-	pImageView54->SetPosition(180, 40);
+	UITextImageView* pImageView65 = new UITextImageView;
+	pImageView65->SetTexture("Maps/Front/Image/font1.png");
+	pImageView65->SetText("SELECT TRACK");
+	pImageView65->SetXSize(1.5f);
+	pImageView65->SetYSize(1.5f);
+	pImageView65->SetPosition(180, 40);
 
-	UIImageView* pImageView55 = new UIImageView;
-	pImageView55->SetPosition(230, 400);
-	pImageView55->SetIsBoard(true);
-	pImageView55->SetXSize(25.0f);
-	pImageView55->SetYSize(10.0f);
-	pImageView55->SetTexture("Maps/Front/Image/ring.png");
+	UIImageView* pImageView66 = new UIImageView;
+	pImageView66->SetPosition(230, 400);
+	pImageView66->SetIsBoard(true);
+	pImageView66->SetXSize(25.0f);
+	pImageView66->SetYSize(10.0f);
+	pImageView66->SetTexture("Maps/Front/Image/ring.png");
 
-	UITextImageView* pImageView57 = new UITextImageView;
-	pImageView57->SetTexture("Maps/Front/Image/font2.png");
-	pImageView57->SetText("Length");
-	pImageView57->SetPosition(60, 80);
+	UITextImageView* pImageView67 = new UITextImageView;
+	pImageView67->SetTexture("Maps/Front/Image/font2.png");
+	pImageView67->SetText("Length");
+	pImageView67->SetPosition(60, 80);
 
-	UITextImageView* pImageView58 = new UITextImageView;
-	pImageView58->SetTexture("Maps/Front/Image/font2.png");
-	pImageView58->SetText("Difficulty");
-	pImageView58->SetPosition(60, 105);
+	UITextImageView* pImageView68 = new UITextImageView;
+	pImageView68->SetTexture("Maps/Front/Image/font2.png");
+	pImageView68->SetText("Difficulty");
+	pImageView68->SetPosition(60, 105);
 
 	m_LockedRing = new UIImageView;
 	m_LockedRing->SetPosition(150, 180);
@@ -914,16 +918,16 @@ void Lobby::SetUpUI()
 	m_LockedTextImage->SetPosition(15, 20);
 
 
-	pImageView51->AddChild(m_mapImage);
-	pImageView51->AddChild(pImageView52);
-	pImageView51->AddChild(pImageView53);
-	pImageView51->AddChild(pImageView54);
-	pImageView51->AddChild(pImageView55);
-	pImageView55->AddChild(m_mapName);
-	pImageView55->AddChild(pImageView57);
-	pImageView55->AddChild(pImageView58);
-	pImageView55->AddChild(m_mapLength);
-	pImageView55->AddChild(m_mapDifficulty);
+	pImageView62->AddChild(m_mapImage);
+	pImageView62->AddChild(pImageView63);
+	pImageView62->AddChild(pImageView64);
+	pImageView62->AddChild(pImageView65);
+	pImageView62->AddChild(pImageView66);
+	pImageView66->AddChild(m_mapName);
+	pImageView66->AddChild(pImageView67);
+	pImageView66->AddChild(pImageView68);
+	pImageView66->AddChild(m_mapLength);
+	pImageView66->AddChild(m_mapDifficulty);
 	m_mapImage->AddChild(m_LockedRing);
 	m_LockedRing->AddChild(m_LockedTextImage);
 
@@ -1012,33 +1016,6 @@ void Lobby::SetUpUI()
 	m_mapLobby[SELECT_CAR_LOBBY]->m_count = 1;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_selectCnt = 6;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
-<<<<<<< HEAD
-	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob[0] = SELECT_MAP_LOBBY;
-	m_mapLobby[SELECT_CAR_LOBBY]->m_time = 50.0f;
-	m_mapLobby[SELECT_CAR_LOBBY]->m_prevLob = CREATE_PROFILE_LOBBY;
-
-	//m_mapLobby[SHOW_MY_CAR] = new ST_Object;
-	//m_mapLobby[SHOW_MY_CAR]->m_target = D3DXVECTOR3(10, 5, 10);
-	//m_mapLobby[SHOW_MY_CAR]->m_count = 1;
-	//m_mapLobby[SHOW_MY_CAR]->m_pNextLob = new LOBBY[1];
-	//m_mapLobby[SHOW_MY_CAR]->m_time = 50.0f;
-	//m_mapLobby[SHOW_MY_CAR]->m_pObject = NULL;
-	//m_mapLobby[SHOW_MY_CAR]->m_camLookAt = D3DXVECTOR3(15, 1, 10);
-	//m_mapLobby[SHOW_MY_CAR]->m_pNextLob[0] = SELECT_MAP_LOBBY;
-	//m_mapLobby[SHOW_MY_CAR]->m_prevLob = CREATE_PROFILE_LOBBY;
-
-	m_mapLobby[SELECT_MAP_LOBBY] = new ST_Object;
-	m_mapLobby[SELECT_MAP_LOBBY]->m_target = D3DXVECTOR3(12, 3, -18);
-	m_mapLobby[SELECT_MAP_LOBBY]->m_count = 1;
-	m_mapLobby[SELECT_MAP_LOBBY]->m_selectCnt = 4;
-	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob = new LOBBY[1];
-	m_mapLobby[SELECT_MAP_LOBBY]->m_time = 5000.0f;
-	m_mapLobby[SELECT_MAP_LOBBY]->m_pObject = pImageView51;
-	m_mapLobby[SELECT_MAP_LOBBY]->m_camLookAt = D3DXVECTOR3(23, 5, -12);
-	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob[0] = START_LOBBY;
-	m_mapLobby[SELECT_MAP_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
-
-=======
 	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob[0] = VIEW_CAR_LOBBY;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_time = 50.0f;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_prevLob = MAIN_LOBBY3;
@@ -1048,8 +1025,20 @@ void Lobby::SetUpUI()
 	m_mapLobby[VIEW_CAR_LOBBY]->m_camLookAt = D3DXVECTOR3(20, -3, 10);
 	m_mapLobby[VIEW_CAR_LOBBY]->m_pObject = pImageView58;
 	m_mapLobby[VIEW_CAR_LOBBY]->m_count = 1;
+	m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob[0] = SELECT_MAP_LOBBY;
 	m_mapLobby[VIEW_CAR_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
->>>>>>> 30757961885dafa282c794ca81d69fa6396ad2f4
+
+	m_mapLobby[SELECT_MAP_LOBBY] = new ST_Object;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_target = D3DXVECTOR3(12, 3, -18);
+	m_mapLobby[SELECT_MAP_LOBBY]->m_count = 1;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_selectCnt = 4;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[SELECT_MAP_LOBBY]->m_time = 5000.0f;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_pObject = pImageView62;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_camLookAt = D3DXVECTOR3(23, 5, -12);
+	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob[0] = START_LOBBY;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
 }
 
 void Lobby::MapTypeUpdate()
