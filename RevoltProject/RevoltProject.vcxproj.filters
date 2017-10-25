@@ -198,6 +198,7 @@
     <ClInclude Include="UITextImageView.h">
       <Filter>UI</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Car.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -213,6 +214,32 @@
     <ClInclude Include="ThingManager.h">
       <Filter>UI</Filter>
     </ClInclude>
+=======
+<<<<<<< HEAD
+    <ClInclude Include="Thing.h">
+      <Filter>Thing</Filter>
+    </ClInclude>
+    <ClInclude Include="ThingManager.h">
+      <Filter>Thing</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Car.h">
+      <Filter>Car</Filter>
+    </ClInclude>
+    <ClInclude Include="CarTextLoader.h">
+      <Filter>Car\CarTextLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="CarBox.h">
+      <Filter>Thing</Filter>
+    </ClInclude>
+    <ClInclude Include="WheelTire.h">
+      <Filter>Thing</Filter>
+    </ClInclude>
+=======
+>>>>>>> 3ca3d3427d15a11590633a4e51533e8a1eb563a0
+>>>>>>> 30757961885dafa282c794ca81d69fa6396ad2f4
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -320,6 +347,7 @@
     <ClCompile Include="UITextImageView.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Car.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -335,6 +363,32 @@
     <ClCompile Include="ThingManager.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+=======
+<<<<<<< HEAD
+    <ClCompile Include="Thing.cpp">
+      <Filter>Thing</Filter>
+    </ClCompile>
+    <ClCompile Include="ThingManager.cpp">
+      <Filter>Thing</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Car.cpp">
+      <Filter>Car</Filter>
+    </ClCompile>
+    <ClCompile Include="CarTextLoader.cpp">
+      <Filter>Car\CarTextLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="CarBox.cpp">
+      <Filter>Thing</Filter>
+    </ClCompile>
+    <ClCompile Include="WheelTire.cpp">
+      <Filter>Thing</Filter>
+    </ClCompile>
+=======
+>>>>>>> 3ca3d3427d15a11590633a4e51533e8a1eb563a0
+>>>>>>> 30757961885dafa282c794ca81d69fa6396ad2f4
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RevoltProject.rc">

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Camera.h"
-#include "Lobby.h"
+
 
 Camera::Camera()
 	: m_vEye(1, 2, -55)
@@ -25,7 +25,7 @@ void Camera::Setup(D3DXVECTOR3 * pvTarget)
 {
 	m_pvTarget = pvTarget;
 
-	m_fCamTime = 0;
+	m_fCamTime = 0.0f;
 
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
@@ -58,6 +58,10 @@ void Camera::Update()
 		D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
 	}
 
+	if (m_fCamTime > 1.0f)
+	{
+		m_fCamTime = 0.0f;
+	}
 
 	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matR);
 
@@ -105,6 +109,7 @@ void Camera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		//
 		//if (m_fCameraDistance < 0.0001f)
 		//	m_fCameraDistance = 0.0001f;
+
 		break;
 	}
 }

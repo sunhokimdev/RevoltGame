@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "UITextImageView.h"
-#include "Thing.h"
+#include "CarBox.h"
+#include "WheelTire.h"
 
 int* UITextImageView::m_Select;
 int* UITextImageView::m_LeftAndRightSelect;
@@ -15,6 +16,7 @@ UITextImageView::UITextImageView()
 	, m_chatText("")
 	, m_cursorTime(0.0f)
 	, m_isCursorRender(false)
+	, m_isRealTime(false)
 {
 }
 
@@ -112,7 +114,7 @@ void UITextImageView::KeyEvent()
 		if (m_chatText.size() != 0)
 		{
 			m_chatText.pop_back();
-			Thing::g_xRotAngle = (-D3DX_PI / 15.0f * 2);
+			WheelTire::g_xRotAngle = (-D3DX_PI / 15.0f * 2);
 			return;
 		}
 	}
@@ -128,7 +130,7 @@ void UITextImageView::KeyEvent()
 			if (m_chatText[0] >= 97)
 				temp = m_chatText[0] - 97;
 
-			Thing::g_xRotAngle = temp * (D3DX_PI / 15.0f);
+			WheelTire::g_xRotAngle = temp * (D3DX_PI / 15.0f);
 		}
 		else
 		{
@@ -142,10 +144,10 @@ void UITextImageView::KeyEvent()
 			else
 				temp2 = m_chatText[m_chatText.size() - 2] - 64;
 
-			if(Thing::g_xRotAngle != -D3DX_PI / 15.0f * 2)
-				Thing::g_xRotAngle += (temp1 - temp2) * (D3DX_PI / 15.0f);
+			if(WheelTire::g_xRotAngle != -D3DX_PI / 15.0f * 2)
+				WheelTire::g_xRotAngle += (temp1 - temp2) * (D3DX_PI / 15.0f);
 			else
-				Thing::g_xRotAngle = (temp1-1) * (D3DX_PI / 15.0f);
+				WheelTire::g_xRotAngle = (temp1-1) * (D3DX_PI / 15.0f);
 		}
 	}
 
@@ -195,6 +197,24 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 		tStr = m_vecText[*m_LeftAndRightSelect];
 	else if (m_isChatingText)
 		tStr = m_chatText;
+	else if (m_isRealTime)			// 실시간으로 그려야할 텍스트인 경우
+	{
+		switch (m_carIndex)
+		{
+			case 0:
+				tStr = CarBox::g_vecCar[*m_LeftAndRightSelect].name;
+			break;
+			case 1:
+				tStr = CarBox::g_vecCar[*m_LeftAndRightSelect].car_class;
+			break;
+			case 2:
+				tStr = CarBox::g_vecCar[*m_LeftAndRightSelect].car_skill_level;
+			break;
+			case 6:
+				tStr = CarBox::g_vecCar[*m_LeftAndRightSelect].trans;
+			break;
+		}
+	}
 	else
 		tStr = m_sText;
 
@@ -246,6 +266,42 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 		LPDIRECT3DTEXTURE9	tTexture = g_pTextureManager->GetTexture(szTemp, &stImageInfo);
 		SetRect(&rc, 0, 0, stImageInfo.Width, stImageInfo.Height);
 		pSprite->Draw(tTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
+	}
+
+	if (m_isRealTime)
+	{
+		RECT rc;
+		pSprite->SetTransform(&m_matWorld);
+
+		D3DXIMAGE_INFO stImageInfo;
+		std::string szTemp = std::string("Maps/Front/Image/progressbar.png");
+
+		LPDIRECT3DTEXTURE9	tTexture = g_pTextureManager->GetTexture(szTemp, &stImageInfo);
+
+		if (m_carIndex == 3 ||
+			m_carIndex == 4 ||
+			m_carIndex == 5)
+		{
+			float ratio;
+
+			switch (m_carIndex)
+			{
+				case 3:
+					ratio = CarBox::g_vecCar[*m_LeftAndRightSelect].speed;
+					SetRect(&rc, 0, 0, (ratio/80.0f)*stImageInfo.Width, stImageInfo.Height - 48);
+					break;
+				case 4:
+					ratio = CarBox::g_vecCar[*m_LeftAndRightSelect].acc;
+					SetRect(&rc, 0, 0, (ratio / 15.0f)*stImageInfo.Width, stImageInfo.Height - 48);
+					break;
+				case 5:
+					ratio = CarBox::g_vecCar[*m_LeftAndRightSelect].weight;
+					SetRect(&rc, 0, 0, (ratio *stImageInfo.Width) /5.0f, stImageInfo.Height - 48);
+					break;
+			}
+
+			pSprite->Draw(tTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
+		}
 	}
 
 	pSprite->End();

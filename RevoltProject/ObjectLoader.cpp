@@ -292,7 +292,7 @@ void ObjectLoader::LoadSurface(OUT std::vector<D3DXVECTOR3>& vecSurface, IN char
 }
 
 
-LPD3DXMESH ObjectLoader::LoadMesh(OUT std::vector<MtlTex*>& vecMtlTex, IN char * szFolder, IN char * szFile)
+LPD3DXMESH ObjectLoader::LoadMesh(OUT std::vector<MtlTex*>& vecMtlTex, IN char * szFolder, IN const char * szFile)
 {
 	std::vector<D3DXVECTOR3> vecV;
 	std::vector<D3DXVECTOR2> vecVT;

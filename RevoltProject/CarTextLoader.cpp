@@ -11,13 +11,11 @@ CarTextLoader::~CarTextLoader()
 {
 }
 
-void CarTextLoader::Load(ST_CAR& szCar, char * szFolder, char * szFile)
+void CarTextLoader::Load(ST_CAR& szCar, const char * szFile)
 {
-	std::string sFullPath(szFolder);
-	sFullPath += (std::string("/") + std::string(szFile));
-
 	FILE* fp;
-	fopen_s(&fp, sFullPath.c_str(), "r");
+	int offsetIndex = 0;
+	fopen_s(&fp, szFile, "r");
 
 	while (true)
 	{
@@ -26,7 +24,7 @@ void CarTextLoader::Load(ST_CAR& szCar, char * szFolder, char * szFile)
 		char szTemp[1024];
 		char* pch;
 		std::string str;
-		fgets(szTemp, 1024, fp);
+		fgets(szTemp, 2048, fp);
 
 		pch = strtok(szTemp, "\t ;");
 		str = pch;
@@ -58,6 +56,8 @@ void CarTextLoader::Load(ST_CAR& szCar, char * szFolder, char * szFile)
 			if (s == "1")
 				szCar.car_skill_level = "amateur";
 			if (s == "2")
+				szCar.car_skill_level = "semi_pro";
+			if (s == "3")
 				szCar.car_skill_level = "pro";
 		}
 		else if (str == "Acc")
@@ -74,7 +74,49 @@ void CarTextLoader::Load(ST_CAR& szCar, char * szFolder, char * szFile)
 		else if (str == "Trans")
 		{
 			pch = strtok(NULL, "\t ;");
-			szCar.weight = atoi(pch);
+			switch (atoi(pch))
+			{
+				case 0:
+					szCar.trans = "4WD";
+					break;
+				case 1:
+					szCar.trans = "FWD";
+					break;
+				case 2:
+					szCar.trans = "RWD";
+					break;
+			}
+		}
+		else if (str == "TopSpeed")
+		{
+			pch = strtok(NULL, "\t ;");
+			szCar.speed = atof(pch);
+		}
+		else if (str == "Offset1")
+		{
+			D3DXVECTOR3 tV;
+
+			tV.x = atof(strtok(NULL, "\t ;")) / 100;
+			tV.y = -atof(strtok(NULL, "\t ;")) / 100;
+			tV.z = atof(strtok(NULL, "\t ;")) / 100;
+
+			switch (offsetIndex)
+			{
+				case 0:
+					szCar.fl = tV;
+				break;
+				case 1:
+					szCar.fr = tV;
+				break;
+				case 2:
+					szCar.bl = tV;
+				break;
+				case 3:
+					szCar.br = tV;
+				break;
+			}
+
+			offsetIndex++;
 		}
 	}
 }

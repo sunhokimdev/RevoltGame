@@ -1,6 +1,7 @@
 #pragma once
 
 class MtlTex;
+class Car;
 
 #define SELECT_YANGLE 3.7f
 
@@ -17,29 +18,23 @@ class MtlTex;
 class Thing : public Object
 {
 protected:
-	std::vector<Thing*>	m_vecChild;			//	오브젝트내 자식(조각)들을 저장할 벡터
-	D3DXMATRIXA16		m_matWorld;			// 오브젝트의 월드 행렬
-	LPD3DXMESH			m_pObjMesh;		// 오브젝트를 그릴 메쉬 변수
+	D3DXMATRIXA16			m_matWorld;			// 오브젝트의 월드 행렬
+	D3DXMATRIXA16			m_matRX, m_matRY, m_matT, m_matR;			// 오브젝트의 X회전, Y회전, 움직임 회전, 최종 Rotation회전
+	LPD3DXMESH				m_pObjMesh;		// 오브젝트를 그릴 메쉬 변수
 	std::vector<MtlTex*>		m_vecObjMtlTex;	// 오브젝트의 매터리얼를 저장하는 변수
+	std::vector<Thing*>		 m_vecChild;					// 자식 노드들
 
 	float m_xAngle;		// 버튼 눌렀을 때 x축으로 회전 시키기 위한 회전 각도
 	float m_yAngle;		// 오브젝트를 돌리기 위한 y축 회전 각도
 	float m_prevYAngle;	// 이전 y각도값
-	bool m_isMove;	// 움직이는 오브젝트인지 체크
-	bool m_isRot;		// x축 회전 가능한지 체크
+	float m_prevXAngle;			// 이전 x각도값
+
 	D3DXVECTOR3 m_vPosition;		// 오브젝트 위치
 	D3DXVECTOR3 m_vTarget;			// 오브젝트의 다음 위치
 	D3DXVECTOR3 m_vPrevPosition;	// 최초의 오브젝트 위치
-
-	LOBBY	m_lobby;	// 어느 로비 상태에서 이벤트를 발생할지 묻는 여부
-	int		m_stage;	// 현재 스테이지 : 0 - 프론트, 1이상 맵 스테이지
-	int		m_index;	// 현재 선택 위치
-	std::string m_name;	// 오브젝트의 이름
 public:
 	/*   초기화 정적 매개변수   */
-	static float g_xRotAngle;		// 로비에서 왼,오른쪽 키 눌렀을 시 회전값
 	static LOBBY* g_LobbyState;	// 로비의 상태
-	static int*	g_select;		// 로비에서 선택된 인덱스
 
 	/*    초기화 메서드    */
 	Thing();
@@ -47,13 +42,10 @@ public:
 	virtual void SetPosition(float x, float y, float z);
 	virtual void SetRotationX(float angle);
 	virtual void SetRotationY(float angle);
-	void SetTarget(float x, float y, float z);
-	void SetMesh(char* szFolder, char* szFile);
-	void SetIsMove(bool isMove);
-	void SetIsRot(bool isRot);
-	void SetLobby(LOBBY lobby);
-	void SetIndex(int index);
-	void SetNameObject(std::string name);
+	virtual void SetTarget(float x, float y, float z);
+	virtual void SetMesh(char* szFolder, char* szFile);
+	SYNTHESIZE(D3DXMATRIXA16*, m_pParentWorldTM, ParentWorldTM);
+	virtual void AddChild(Thing* pChild);
 
 	/*    갱신, 렌더링 메서드    */
 	virtual void Update();

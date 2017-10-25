@@ -7,7 +7,7 @@
 //======================================
 // - ## 10.11.17 ##
 // - written by 김선호
-// - 이미지파일(png파일)로 된 텍스트를 읽어와 출력하는 UI 클래스
+// - 텍스트를 읽어와 이미지파일(png파일)를 출력하는 UI 클래스
 //======================================
 
 class UITextImageView : public UIObject
@@ -35,6 +35,8 @@ public:
 	SYNTHESIZE(float, m_ySize, YSize);					// Y폰트 사이즈 설정
 	SYNTHESIZE(bool, m_isVectorText, IsVectorText);		// 벡터 텍스트로 사용 할 것인지 확인하는 작업
 	SYNTHESIZE(bool, m_isChatingText, IsChatingText);	// 키 입력을 받을 것인지 확인하는 작업
+	SYNTHESIZE(bool, m_isRealTime, IsRealTime);		// 실시간으로 그려줄 텍스트인지 확인
+	SYNTHESIZE(int, m_carIndex, CarIndex);				// 자동차의 어떤 위치의 특성을 보여줄 변수 -> m_isRealTime이 true여야 한다. 
 
 
 	/*   텍스트를 벡터로 사용할 때 쓰는 메서드   */

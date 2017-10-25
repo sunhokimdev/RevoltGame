@@ -1,6 +1,6 @@
 #pragma once
 #include <d3dx9.h>
-
+#include <string>
 
 struct ST_SIZE
 {
@@ -84,18 +84,18 @@ struct ST_ASTAR
 	POINT path;
 };
 
-/*   자동차에 대한 정보를 저장하는 구조체   */
-enum CAR_CLASS { CLASS_NONE, CAR_ELECTRIC, CAR_GLOW, CAR_OTHER };
-enum CAR_RATING { RATING_NONE, RATING_ROOKIE, RATING_AMATEUR, RATING_PRO };
-
 /*   자동차 정보 구조체   */
 struct ST_CAR
 {
-	std::string name;
-	std::string car_class;
-	std::string car_skill_level;
-	float speed;
-	float acc;
-	float weight;
-	int trans;
+	std::string name;		// 자동차의 이름
+	std::string car_class;	// 자동차의 종류
+	std::string car_skill_level;		// 자동차 레벨
+	float speed;		// 최대 속도
+	float acc;			// 가속도
+	float weight;	// 가중치
+	std::string trans;	// Transition
+	D3DXVECTOR3 fl;	// 앞의 타이어 왼쪽 위치
+	D3DXVECTOR3 fr; // 앞의 타이어 오른쪽 위치
+	D3DXVECTOR3 bl; // 뒤의 타이어 왼쪽 위치
+	D3DXVECTOR3 br; // 뒤의 타이어 오른쪽 위치
 };
