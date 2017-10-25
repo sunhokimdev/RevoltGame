@@ -1,12 +1,25 @@
 #include "stdafx.h"
 #include "UIImageView.h"
 
+#define INCREASE_NOISE_X	20.0f
+#define LEFT_NOISE_X		-500.0f
+#define RIGHT_NOISE_X		-512.0f
+#define LIMIT_NOISE_X		-256.0f
+
+
 UIImageView::UIImageView()
 	: m_pTexture(NULL)
 	, m_isBoard(false)
 	, m_xSize(1.0f)
 	, m_ySize(1.0f)
 	, m_color(D3DXCOLOR(255,255,255,255))
+	, m_isMove(false)
+	, m_isNoise(false)
+	, LeftNoiseX(LEFT_NOISE_X)
+	, RightNoiseX(RIGHT_NOISE_X)
+	, UpNoiseY(-256.0f)
+	, DownNoiseY(-512.0f)
+
 {
 }
 
@@ -23,6 +36,26 @@ void UIImageView::SetTexture(char * szFullPath)
 
 	m_stSize.nWitdh = stImageInfo.Width;
 	m_stSize.nHeight = stImageInfo.Height;
+
+}
+
+void UIImageView::Update()
+{
+	if (m_isNoise)
+	{
+		if (m_isMove)
+		{
+			if (LeftNoiseX < LIMIT_NOISE_X)   LeftNoiseX += INCREASE_NOISE_X;
+			else
+			{
+				m_isMove = false;
+				LeftNoiseX = LEFT_NOISE_X;
+				RightNoiseX = RIGHT_NOISE_X;
+			}
+		}
+	}
+
+	UIObject::Update();
 }
 
 void UIImageView::Render(LPD3DXSPRITE pSprite)
@@ -109,13 +142,8 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 		SetRect(&rc, 38, 40, 64, 64);
 		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(220, 255, 255, 255));
 
-		/*
-		m_matWorld._11 = 1.0f;
-		m_matWorld._22 = 1.0f;
-		*/
 	}
-
-	else
+	else if (m_isNoise && m_isMove)
 	{
 		RECT rc;
 
@@ -123,7 +151,18 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 		tMat._22 = m_ySize;
 
 		pSprite->SetTransform(&tMat);
-		SetRect(&rc, 0, 0, m_stSize.nWitdh, m_stSize.nWitdh);
+		SetRect(&rc, RightNoiseX, 0, LeftNoiseX, m_stSize.nHeight);
+		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
+	}
+	else if ((!m_isBoard || !m_isNoise) && !m_isMove)
+	{
+		RECT rc; 
+
+		tMat._11 = m_xSize;
+		tMat._22 = m_ySize;
+
+		pSprite->SetTransform(&tMat);
+		SetRect(&rc, 0, 0, m_stSize.nWitdh, m_stSize.nHeight);
 		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
 	}
 

@@ -18,6 +18,7 @@ Map::~Map()
 void Map::Setup()
 {
 	ObjectLoader loader;
+
 	m_map[0] = new ST_MAP;
 	m_map[0]->m_pObjMesh = loader.LoadMesh(
 		m_map[0]->m_vecObjMtlTex,

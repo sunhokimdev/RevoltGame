@@ -24,6 +24,7 @@ Camera::~Camera()
 void Camera::Setup(D3DXVECTOR3 * pvTarget)
 {
 	m_pvTarget = pvTarget;
+
 	m_fCamTime = 0;
 
 	RECT rc;
@@ -45,7 +46,6 @@ void Camera::Update()
 	
 	m_fCamTime += 0.0005f;
 
-
 	D3DXMATRIXA16 matR, matRX, matRY;
 	D3DXMatrixRotationX(&matRX, m_vCamRotAngle.x);
 	D3DXMatrixRotationY(&matRY, m_vCamRotAngle.y);
@@ -58,10 +58,6 @@ void Camera::Update()
 		D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
 	}
 
-	if (m_fCamTime > 1.0f)
-	{
-		m_fCamTime = 0.0f;
-	}
 
 	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matR);
 
@@ -109,7 +105,11 @@ void Camera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		//
 		//if (m_fCameraDistance < 0.0001f)
 		//	m_fCameraDistance = 0.0001f;
+<<<<<<< Updated upstream
 
+=======
+		
+>>>>>>> Stashed changes
 		break;
 	}
 }

@@ -6,7 +6,7 @@ int* UITextImageView::m_Select;
 int* UITextImageView::m_LeftAndRightSelect;
 
 UITextImageView::UITextImageView()
-	:m_pTexture(NULL)
+	: m_pTexture(NULL)
 	, m_xSize(1)
 	, m_ySize(1)
 	, m_color(D3DCOLOR_ARGB(255, 255, 255, 255))

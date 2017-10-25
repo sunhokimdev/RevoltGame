@@ -21,6 +21,13 @@ Lobby::Lobby()
 	, m_time(0.0f)
 	, m_select(0)
 	, m_leftAndrightSelect(0)
+	, m_selectMapType(0)
+	, m_isUnLocked(true)
+	, m_isOpenHood(false)
+	, m_isOpenShip(false)
+	, m_isOpenMuse(false)
+	, m_isLockedRender(false)
+	, m_LockedTime(0)
 {
 }
 
@@ -51,10 +58,46 @@ void Lobby::Setup()
 void Lobby::Update()
 {
 
-	TimeUpdate();	// 시간 갱신 메서드
-	KeyUpdate();	// 키 이벤트 갱신 메서드
+	TimeUpdate();			// 시간 갱신 메서드
+	KeyUpdate();			// 키 이벤트 갱신 메서드
+	MapTypeUpdate();		// Select Map UI Update Method
 
-	m_mapLobby[m_stateLobby]->m_pObject->Update();
+
+
+	if (m_stateLobby == SELECT_MAP_LOBBY)
+	{
+		if (!m_isUnLocked)
+		{
+			if ((m_LockedTime / 10) % 2 == 1)
+				m_isLockedRender = true;
+			else
+				m_isLockedRender = false;
+
+			m_LockedTime++;
+
+			if (m_LockedTime > 1000000)
+				m_LockedTime = 0;
+
+
+			if (m_isLockedRender)
+			{
+				m_LockedRing->SetTexture("");
+				m_LockedTextImage->SetText("");
+			}
+			else
+			{
+				m_LockedRing->SetTexture("Maps/Front/Image/ring.png");
+				m_LockedTextImage->SetTexture("Maps/Front/Image/font2.png");
+				m_LockedTextImage->SetText("Locked");
+			}
+		}
+	}
+
+
+
+	if (m_mapLobby[m_stateLobby]->m_pObject)
+		m_mapLobby[m_stateLobby]->m_pObject->Update();
+
 }
 
 void Lobby::Render()
@@ -65,6 +108,32 @@ void Lobby::Render()
 
 void Lobby::KeyUpdate()
 {
+	/*          Test Key          */
+	if (g_pKeyManager->isOnceKeyDown('Q'))
+	{
+		if (m_isOpenHood)
+			m_isOpenHood = false;
+		else m_isOpenHood = true;
+	}
+
+	if (g_pKeyManager->isOnceKeyDown('W'))
+	{
+		if (m_isOpenMuse)
+			m_isOpenMuse = false;
+		else m_isOpenMuse = true;
+	}
+
+	if (g_pKeyManager->isOnceKeyDown('E'))
+	{
+		if (m_isOpenShip)
+			m_isOpenShip = false;
+		else m_isOpenShip = true;
+	}
+
+
+
+
+
 	if (g_pKeyManager->isOnceKeyDown(VK_DOWN))
 	{
 		m_select++;
@@ -109,6 +178,18 @@ void Lobby::KeyUpdate()
 
 			g_pSoundManager->Play("boxslide.wav", 1.0f);
 		}
+
+		else if (m_stateLobby == SELECT_MAP_LOBBY)
+		{
+			m_leftAndrightSelect++;
+
+			m_mapImage->SetIsMove(true);
+
+			if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
+				m_leftAndrightSelect = 0;
+
+			g_pSoundManager->Play("boxslide.wav", 1.0f);
+		}
 	}
 
 	if (g_pKeyManager->isOnceKeyDown(VK_LEFT))
@@ -136,6 +217,18 @@ void Lobby::KeyUpdate()
 
 			g_pSoundManager->Play("boxslide.wav", 1.0f);
 		}
+		else if (m_stateLobby == SELECT_MAP_LOBBY)
+		{
+			m_leftAndrightSelect--;
+
+			m_mapImage->SetIsMove(true);
+
+			if (m_leftAndrightSelect < 0)
+				m_leftAndrightSelect = m_mapLobby[m_stateLobby]->m_selectCnt - 1;
+
+			g_pSoundManager->Play("boxslide.wav", 1.0f);
+		}
+
 	}
 
 	/*   엔터 키 눌렀을 때 다음 로비로 들어가는 이벤트   */
@@ -164,6 +257,11 @@ void Lobby::KeyUpdate()
 			if (m_stateLobby > INTRO3)
 				g_pSoundManager->Play("menuNext.wav", 1.0f);
 		}
+
+		else if (m_stateLobby == SELECT_MAP_LOBBY)
+		{
+			m_selectMapType = m_mapLobby[m_stateLobby]->m_selectCnt;
+		}
 	}
 
 	/*   ESC 키 눌렀을 때 이전 로비로 들어가는 이벤트   */
@@ -177,10 +275,10 @@ void Lobby::KeyUpdate()
 			g_pSoundManager->Play("menuPrev.wav", 1.0f);
 		}
 
-		m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
-		m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
-		m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
-		g_pSoundManager->Play("menuNext.wav", 1.0f);
+		//m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
+		//m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
+		//m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+		//g_pSoundManager->Play("menuNext.wav", 1.0f);
 	}
 
 	if (g_pKeyManager->isStayKeyDown(VK_CONTROL))
@@ -205,6 +303,11 @@ void Lobby::TimeUpdate()
 			m_stateLobby = START_LOBBY;
 			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
 		}
+		else if (m_stateLobby == SHOW_MY_CAR)
+		{
+			m_stateLobby = SELECT_MAP_LOBBY;
+			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
+		}
 	}
 	else
 	{
@@ -222,7 +325,7 @@ void Lobby::SetUpUI()
 
 ///////////////////////////////   구분   /////////////////////////////////////////
 	
-/*   인트로 이미지   */
+	/*   인트로 이미지   */
 	UIImageView* pImageView1 = new UIImageView;
 	pImageView1->SetPosition(0, 0);
 	pImageView1->SetTexture("Maps/Front/Image/intro1.png");
@@ -235,7 +338,11 @@ void Lobby::SetUpUI()
 	pImageView3->SetPosition(0, 0);
 	pImageView3->SetTexture("Maps/Front/Image/intro3.png");
 
-///////////////////////////////   구분   /////////////////////////////////////////
+
+
+
+
+	/*   Start Lobby   */
 
 	UIImageView* pImageView4 = new UIImageView;
 	pImageView4->SetPosition(40, 40);
@@ -326,7 +433,11 @@ void Lobby::SetUpUI()
 	pImageView12->AddChild(pImageView13);
 	pImageView12->AddChild(pImageView14);
 
-///////////////////////////////   구분   /////////////////////////////////////////
+
+
+
+
+	/*   Main Lobby 1  */
 
 	UIImageView* pImageView100 = new UIImageView;
 	pImageView100->SetPosition(-10,-140);
@@ -383,7 +494,11 @@ void Lobby::SetUpUI()
 	pImageView110->AddChild(pImageView170);
 	pImageView110->AddChild(pImageView100);
 
-///////////////////////////////   구분   /////////////////////////////////////////
+
+
+
+
+	/*   Main Lobby 2  */
 
 	UIImageView* pImageView18 = new UIImageView;
 	pImageView18->SetPosition(-10, -140);
@@ -440,6 +555,12 @@ void Lobby::SetUpUI()
 	pImageView19->AddChild(pImageView25);
 	pImageView19->AddChild(pImageView18);
 
+
+
+
+
+	/*   Main Lobby 3  */
+
 	UIImageView* pImageView26 = new UIImageView;
 	pImageView26->SetPosition(-10, -140);
 	pImageView26->SetTexture("Maps/Front/Image/revoltrogo.png");
@@ -480,6 +601,12 @@ void Lobby::SetUpUI()
 	pImageView27->AddChild(pImageView30);
 	pImageView27->AddChild(pImageView31);
 	pImageView27->AddChild(pImageView26);
+
+
+
+
+
+	/*  Create Profile Lobby  */
 
 	UIImageView* pImageView32 = new UIImageView;
 	pImageView26->SetPosition(-10, -140);
@@ -541,7 +668,11 @@ void Lobby::SetUpUI()
 	pImageView35->AddChild(pImageView38);
 	pImageView33->AddChild(pImageView39);
 
-///////////////////////////////   구분   /////////////////////////////////////////
+
+
+
+
+	/*  Select Car Lobby  */
 
 	UIImageView* pImageView40 = new UIImageView;
 	pImageView40->SetPosition(80, 50);
@@ -618,7 +749,95 @@ void Lobby::SetUpUI()
 	pImageView44->AddChild(pImageView49);
 	pImageView44->AddChild(pImageView50);
 
-///////////////////////////////   구분   /////////////////////////////////////////
+
+
+
+
+
+	/*  Select Map Lobby  */
+
+	m_mapName		= new UITextImageView;
+	m_mapLength		= new UITextImageView;
+	m_mapDifficulty = new UITextImageView;
+	m_mapImage		= new UIImageView;
+	m_mapImage->SetXSize(1.5f);
+	m_mapImage->SetPosition(250, 100);
+	m_mapImage->SetIsNoise(true);
+
+	UIImageView* pImageView51 = new UIImageView;
+	pImageView51->SetPosition(80, 50);
+	pImageView51->SetXSize(4.0f);
+	pImageView51->SetYSize(4.0f);
+	pImageView51->SetIsBoard(true);
+	pImageView51->SetTexture("Maps/Front/Image/blueRing.png");
+
+	UIImageView* pImageView52 = new UIImageView;
+	pImageView52->SetXSize(1.2f);
+	pImageView52->SetYSize(1.2f);
+	pImageView52->SetPosition(17, 17);
+	pImageView52->SetTexture("Maps/Front/Image/blueflag.png");
+
+	UIImageView* pImageView53 = new UIImageView;
+	pImageView53->SetPosition(120, 20);
+	pImageView53->SetIsBoard(true);
+	pImageView53->SetXSize(25.0f);
+	pImageView53->SetYSize(1.0f);
+	pImageView53->SetTexture("Maps/Front/Image/ring.png");
+
+	UITextImageView* pImageView54 = new UITextImageView;
+	pImageView54->SetTexture("Maps/Front/Image/font1.png");
+	pImageView54->SetText("SELECT TRACK");
+	pImageView54->SetXSize(1.5f);
+	pImageView54->SetYSize(1.5f);
+	pImageView54->SetPosition(180, 40);
+
+	UIImageView* pImageView55 = new UIImageView;
+	pImageView55->SetPosition(230, 400);
+	pImageView55->SetIsBoard(true);
+	pImageView55->SetXSize(25.0f);
+	pImageView55->SetYSize(10.0f);
+	pImageView55->SetTexture("Maps/Front/Image/ring.png");
+
+	UITextImageView* pImageView57 = new UITextImageView;
+	pImageView57->SetTexture("Maps/Front/Image/font2.png");
+	pImageView57->SetText("Length");
+	pImageView57->SetPosition(60, 80);
+
+	UITextImageView* pImageView58 = new UITextImageView;
+	pImageView58->SetTexture("Maps/Front/Image/font2.png");
+	pImageView58->SetText("Difficulty");
+	pImageView58->SetPosition(60, 105);
+
+	m_LockedRing = new UIImageView;
+	m_LockedRing->SetPosition(150, 180);
+	m_LockedRing->SetIsBoard(true);
+	m_LockedRing->SetXSize(2.0f);
+	m_LockedRing->SetYSize(0.5f);
+	m_LockedRing->SetTexture("Maps/Front/Image/ring.png");
+
+	m_LockedTextImage = new UITextImageView;
+	m_LockedTextImage->SetTexture("Maps/Front/Image/font2.png");
+	m_LockedTextImage->SetColor(D3DCOLOR_ARGB(255, 255, 0, 0));
+	m_LockedTextImage->SetText("Locked");
+	m_LockedTextImage->SetPosition(15, 20);
+
+
+	pImageView51->AddChild(m_mapImage);
+	pImageView51->AddChild(pImageView52);
+	pImageView51->AddChild(pImageView53);
+	pImageView51->AddChild(pImageView54);
+	pImageView51->AddChild(pImageView55);
+	pImageView55->AddChild(m_mapName);
+	pImageView55->AddChild(pImageView57);
+	pImageView55->AddChild(pImageView58);
+	pImageView55->AddChild(m_mapLength);
+	pImageView55->AddChild(m_mapDifficulty);
+	m_mapImage->AddChild(m_LockedRing);
+	m_LockedRing->AddChild(m_LockedTextImage);
+
+	//=========================================== Add Lobby Ui ===========================================//
+
+
 	/*   로비 UI 추가하기   */
 
 	m_mapLobby[INTRO1] = new ST_Object;
@@ -667,7 +886,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[5] = LOBBY_NONE;
 
 	m_mapLobby[MAIN_LOBBY2] = new ST_Object;
-	m_mapLobby[MAIN_LOBBY2]->m_target = D3DXVECTOR3(-1, 10, -2);
+	m_mapLobby[MAIN_LOBBY2]->m_target = D3DXVECTOR3(1, 10, -2);
 	m_mapLobby[MAIN_LOBBY2]->m_count = 6;
 	m_mapLobby[MAIN_LOBBY2]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[MAIN_LOBBY2]->m_time = 50.0f;
@@ -676,7 +895,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY2]->m_prevLob = MAIN_LOBBY;
 
 	m_mapLobby[MAIN_LOBBY3] = new ST_Object;
-	m_mapLobby[MAIN_LOBBY3]->m_target = D3DXVECTOR3(-1, 10, -2);
+	m_mapLobby[MAIN_LOBBY3]->m_target = D3DXVECTOR3(1, 10, -2);
 	m_mapLobby[MAIN_LOBBY3]->m_count = 4;
 	m_mapLobby[MAIN_LOBBY3]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[MAIN_LOBBY3]->m_time = 50.0f;
@@ -701,7 +920,185 @@ void Lobby::SetUpUI()
 	m_mapLobby[SELECT_CAR_LOBBY]->m_count = 1;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_selectCnt = 6;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob[0] = SELECT_MAP_LOBBY;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_time = 50.0f;
-	m_mapLobby[SELECT_CAR_LOBBY]->m_prevLob = MAIN_LOBBY3;
+	m_mapLobby[SELECT_CAR_LOBBY]->m_prevLob = CREATE_PROFILE_LOBBY;
+
+	//m_mapLobby[SHOW_MY_CAR] = new ST_Object;
+	//m_mapLobby[SHOW_MY_CAR]->m_target = D3DXVECTOR3(10, 5, 10);
+	//m_mapLobby[SHOW_MY_CAR]->m_count = 1;
+	//m_mapLobby[SHOW_MY_CAR]->m_pNextLob = new LOBBY[1];
+	//m_mapLobby[SHOW_MY_CAR]->m_time = 50.0f;
+	//m_mapLobby[SHOW_MY_CAR]->m_pObject = NULL;
+	//m_mapLobby[SHOW_MY_CAR]->m_camLookAt = D3DXVECTOR3(15, 1, 10);
+	//m_mapLobby[SHOW_MY_CAR]->m_pNextLob[0] = SELECT_MAP_LOBBY;
+	//m_mapLobby[SHOW_MY_CAR]->m_prevLob = CREATE_PROFILE_LOBBY;
+
+	m_mapLobby[SELECT_MAP_LOBBY] = new ST_Object;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_target = D3DXVECTOR3(12, 3, -18);
+	m_mapLobby[SELECT_MAP_LOBBY]->m_count = 1;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_selectCnt = 4;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[SELECT_MAP_LOBBY]->m_time = 5000.0f;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_pObject = pImageView51;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_camLookAt = D3DXVECTOR3(23, 5, -12);
+	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob[0] = START_LOBBY;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
+
 }
 
+void Lobby::MapTypeUpdate()
+{
+	/*          Set Select Map Image          */
+
+	/*
+				m_leftAndrightSelect
+
+				1 = SuperMarket
+				2 = nHood
+				3 = Muse
+				4 = Ship
+	
+	*/
+
+	if (m_stateLobby == SELECT_MAP_LOBBY)
+	{
+		if (m_leftAndrightSelect == 0)
+		{
+			m_mapImage->SetTexture("Maps/Front/Image/market.bmp");
+			m_LockedRing->SetTexture("");
+			m_LockedTextImage->SetText("");
+			m_isUnLocked = true;
+
+		}
+
+		else if (m_leftAndrightSelect == 1)
+		{
+			m_mapImage->SetTexture("Maps/Front/Image/nhood.bmp");
+
+			if (m_isOpenHood)
+			{
+				m_LockedRing->SetTexture("");
+				m_LockedTextImage->SetText("");
+				m_isUnLocked = true;
+			}
+			else m_isUnLocked = false;
+
+		}
+		else if (m_leftAndrightSelect == 2)
+		{
+			m_mapImage->SetTexture("Maps/Front/Image/muse.bmp");
+
+			if (m_isOpenMuse)
+			{
+				m_LockedRing->SetTexture("");
+				m_LockedTextImage->SetText("");
+				m_isUnLocked = true;
+			}
+			else m_isUnLocked = false;
+		}
+		else if (m_leftAndrightSelect == 3)
+		{
+			m_mapImage->SetTexture("Maps/Front/Image/ship.bmp");
+
+			if (m_isOpenShip)
+			{
+				m_LockedRing->SetTexture("");
+				m_LockedTextImage->SetText("");
+				m_isUnLocked = true;
+			}
+			else m_isUnLocked = false;
+
+		}
+	}
+
+	/*          Set Select Map Text          */
+
+
+	/*
+				m_leftAndrightSelect
+
+				1 = SuperMarket
+				2 = nHood
+				3 = Muse
+				4 = Ship
+	*/
+
+	if (m_stateLobby == SELECT_MAP_LOBBY)
+	{
+		if (m_isOpenHood) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
+		else if (m_isOpenShip) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
+		else if (m_isOpenMuse) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
+		else m_mapName->SetColor(D3DCOLOR_ARGB(150, 0, 0, 0));
+
+		if (m_leftAndrightSelect == 0)
+		{
+			m_mapName->SetTexture("Maps/Front/Image/font2.png");
+			m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
+			m_mapName->SetText("SuperMarket");
+			m_mapName->SetPosition(60, 50);
+
+			m_mapLength->SetTexture("Maps/Front/Image/font2.png");
+			m_mapLength->SetText("301 meters");
+			m_mapLength->SetPosition(260, 80);
+
+			m_mapDifficulty->SetTexture("Maps/Front/Image/font2.png");
+			m_mapDifficulty->SetText("Easy");
+			m_mapDifficulty->SetPosition(260, 105);
+		}
+
+		else if (m_leftAndrightSelect == 1)
+		{
+			if (m_isOpenHood) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
+			else m_mapName->SetColor(D3DCOLOR_ARGB(150, 0, 0, 0));
+
+			m_mapName->SetTexture("Maps/Front/Image/font2.png");
+			m_mapName->SetText("Toys in the Hood");
+			m_mapName->SetPosition(60, 50);
+
+			m_mapLength->SetTexture("Maps/Front/Image/font2.png");
+			m_mapLength->SetText("747 meters");
+			m_mapLength->SetPosition(260, 80);
+
+			m_mapDifficulty->SetTexture("Maps/Front/Image/font2.png");
+			m_mapDifficulty->SetText("Easy");
+			m_mapDifficulty->SetPosition(260, 105);
+		}
+
+		else if (m_leftAndrightSelect == 2)
+		{
+			if (m_isOpenMuse) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
+			else m_mapName->SetColor(D3DCOLOR_ARGB(150, 0, 0, 0));
+
+			m_mapName->SetTexture("Maps/Front/Image/font2.png");
+			m_mapName->SetText("Museum");
+			m_mapName->SetPosition(60, 50);
+
+			m_mapLength->SetTexture("Maps/Front/Image/font2.png");
+			m_mapLength->SetText("600 meters");
+			m_mapLength->SetPosition(260, 80);
+
+			m_mapDifficulty->SetTexture("Maps/Front/Image/font2.png");
+			m_mapDifficulty->SetText("Mideum");
+			m_mapDifficulty->SetPosition(260, 105);
+		}
+
+		else if (m_leftAndrightSelect == 3)
+		{
+			if (m_isOpenShip) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
+			else m_mapName->SetColor(D3DCOLOR_ARGB(150, 0, 0, 0));
+
+			m_mapName->SetTexture("Maps/Front/Image/font2.png");
+			m_mapName->SetText("Toytanic");
+			m_mapName->SetPosition(60, 50);
+
+			m_mapLength->SetTexture("Maps/Front/Image/font2.png");
+			m_mapLength->SetText("742 meters");
+			m_mapLength->SetPosition(260, 80);
+
+			m_mapDifficulty->SetTexture("Maps/Front/Image/font2.png");
+			m_mapDifficulty->SetText("Hard");
+			m_mapDifficulty->SetPosition(260, 105);
+		}
+	}
+}

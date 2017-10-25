@@ -88,6 +88,7 @@ void UIButton::SetTexture(char * szNor, char * szOvr, char * szSel, std::string 
 
 void UIButton::SetText(std::string str)
 {
+
 	UITextView* pTextView = new UITextView;
 	pTextView->SetText(str);
 	pTextView->SetSize(ST_SIZE(m_stSize.nWitdh, m_stSize.nHeight));

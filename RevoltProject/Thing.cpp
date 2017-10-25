@@ -181,4 +181,3 @@ void Thing::Render()
 void Thing::Destroy()
 {
 }
-
