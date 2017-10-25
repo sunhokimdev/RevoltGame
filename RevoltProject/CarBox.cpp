@@ -7,6 +7,7 @@ std::vector<ST_CAR> CarBox::g_vecCar;
 int* CarBox::g_select;
 
 CarBox::CarBox()
+	: m_prevLobby(SELECT_CAR_LOBBY)
 {
 }
 
@@ -35,6 +36,12 @@ void CarBox::Update()
 
 	if (*g_LobbyState == SELECT_CAR_LOBBY)
 	{
+		if (m_prevLobby != *g_LobbyState)
+		{
+			m_prevLobby = *g_LobbyState;
+			m_vPosition = m_vTarget;
+		}
+
 		if (m_index == *g_select)
 		{
 			if (m_vPosition.y < m_vTarget.y)
@@ -75,9 +82,17 @@ void CarBox::Update()
 		}
 	}
 
+	else if (*g_LobbyState == SELECT_MAP_LOBBY)
+	{
+		m_vPosition = m_vPrevPosition;
+		m_yAngle = m_prevYAngle;
+	}
+
 	m_car->Update();
 
 	Thing::Update();
+
+	m_prevLobby = *g_LobbyState;
 }
 
 void CarBox::Render()
@@ -182,13 +197,13 @@ void CarBox::SetTextFile(char * szFolder)
 	}
 	else if (str.find("tc6") != -1)
 	{
-		m_carboxTexture = g_pTextureManager->GetTexture("Maps/Front/carbox/carbox2.png");
+		m_carboxTexture = g_pTextureManager->GetTexture("Maps/Front/carbox/carbox1.png");
 		m_car->SetMesh(szFolder, "tc6.obj");
 		m_car->SetSTCar(tCar);
 		m_car->SetMeshWheel(szFolder, "tc6");
 
-		xSize = 0.66666f;
-		ySize = 0.33333f;
+		xSize = 0.33333f;
+		ySize = 0.66666f;
 	}
 	else if (str.find("toyeca") != -1)
 	{

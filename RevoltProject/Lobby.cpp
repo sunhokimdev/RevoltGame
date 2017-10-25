@@ -59,12 +59,9 @@ void Lobby::Setup()
 
 void Lobby::Update()
 {
-
 	TimeUpdate();			// 시간 갱신 메서드
 	KeyUpdate();			// 키 이벤트 갱신 메서드
 	MapTypeUpdate();		// Select Map UI Update Method
-
-
 
 	if (m_stateLobby == SELECT_MAP_LOBBY)
 	{
@@ -95,11 +92,8 @@ void Lobby::Update()
 		}
 	}
 
-
-
 	if (m_mapLobby[m_stateLobby]->m_pObject)
 		m_mapLobby[m_stateLobby]->m_pObject->Update();
-
 }
 
 void Lobby::Render()
@@ -131,10 +125,6 @@ void Lobby::KeyUpdate()
 			m_isOpenShip = false;
 		else m_isOpenShip = true;
 	}
-
-
-
-
 
 	if (g_pKeyManager->isOnceKeyDown(VK_DOWN))
 	{
@@ -230,7 +220,6 @@ void Lobby::KeyUpdate()
 
 			g_pSoundManager->Play("boxslide.wav", 1.0f);
 		}
-
 	}
 
 	/*   엔터 키 눌렀을 때 다음 로비로 들어가는 이벤트   */
@@ -261,7 +250,9 @@ void Lobby::KeyUpdate()
 		else if (m_mapLobby[m_stateLobby]->m_pNextLob[m_select] != LOBBY_NONE)
 		{
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
-			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+
+			if(m_stateLobby != MAIN_LOBBY3)
+				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
@@ -269,10 +260,7 @@ void Lobby::KeyUpdate()
 			if (m_stateLobby > INTRO3)
 				g_pSoundManager->Play("menuNext.wav", 1.0f);
 		}
-		else if (m_stateLobby == MAIN_LOBBY3)
-		{
-			m_pCamera->Setup(NULL);
-		}
+
 		else if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
 			m_selectMapType = m_mapLobby[m_stateLobby]->m_selectCnt;
@@ -285,20 +273,14 @@ void Lobby::KeyUpdate()
 		if (m_mapLobby[m_stateLobby]->m_prevLob != LOBBY_NONE)
 		{
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
-			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
+
+			if(m_stateLobby != MAIN_LOBBY2)
+				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
 			g_pSoundManager->Play("menuPrev.wav", 1.0f);
 		}
-		m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
-		m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
-		m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
-		g_pSoundManager->Play("menuPrev.wav", 1.0f);
 	}
 
-	if (g_pKeyManager->isStayKeyDown(VK_CONTROL))
-	{
-		m_stateLobby = START_LOBBY;
-		m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
-	}	m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+	m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 }
 
 void Lobby::TimeUpdate()
@@ -345,10 +327,6 @@ void Lobby::SetUpUI()
 	UIImageView* pImageView3 = new UIImageView;
 	pImageView3->SetPosition(0, 0);
 	pImageView3->SetTexture("Maps/Front/Image/intro3.png");
-
-
-
-
 
 	/*   Start Lobby   */
 
@@ -441,10 +419,6 @@ void Lobby::SetUpUI()
 	pImageView12->AddChild(pImageView13);
 	pImageView12->AddChild(pImageView14);
 
-
-
-
-
 	/*   Main Lobby 1  */
 
 	UIImageView* pImageView100 = new UIImageView;
@@ -501,10 +475,6 @@ void Lobby::SetUpUI()
 	pImageView110->AddChild(pImageView160);
 	pImageView110->AddChild(pImageView170);
 	pImageView110->AddChild(pImageView100);
-
-
-
-
 
 	/*   Main Lobby 2  */
 
@@ -676,10 +646,6 @@ void Lobby::SetUpUI()
 	pImageView35->AddChild(pImageView38);
 	pImageView33->AddChild(pImageView39);
 
-
-
-
-
 	/*  Select Car Lobby  */
 
 	UIImageView* pImageView40 = new UIImageView;
@@ -844,11 +810,6 @@ void Lobby::SetUpUI()
 	pImageView58->AddChild(pImageView59);
 	pImageView58->AddChild(pImageView60);
 	pImageView58->AddChild(pImageView61);
-
-
-
-
-
 
 	/*  Select Map Lobby  */
 
@@ -1018,16 +979,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob[0] = VIEW_CAR_LOBBY;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_time = 50.0f;
-	m_mapLobby[SELECT_CAR_LOBBY]->m_prevLob = MAIN_LOBBY3;
-
-	m_mapLobby[VIEW_CAR_LOBBY] = new ST_Object;
-	m_mapLobby[VIEW_CAR_LOBBY]->m_target = D3DXVECTOR3(10, 4, 8);
-	m_mapLobby[VIEW_CAR_LOBBY]->m_camLookAt = D3DXVECTOR3(20, -3, 10);
-	m_mapLobby[VIEW_CAR_LOBBY]->m_pObject = pImageView58;
-	m_mapLobby[VIEW_CAR_LOBBY]->m_count = 1;
-	m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
-	m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob[0] = SELECT_MAP_LOBBY;
-	m_mapLobby[VIEW_CAR_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
+	m_mapLobby[SELECT_CAR_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
 
 	m_mapLobby[SELECT_MAP_LOBBY] = new ST_Object;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_target = D3DXVECTOR3(12, 3, -18);
@@ -1037,8 +989,16 @@ void Lobby::SetUpUI()
 	m_mapLobby[SELECT_MAP_LOBBY]->m_time = 5000.0f;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_pObject = pImageView62;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_camLookAt = D3DXVECTOR3(23, 5, -12);
-	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob[0] = START_LOBBY;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
+
+	m_mapLobby[VIEW_CAR_LOBBY] = new ST_Object;
+	m_mapLobby[VIEW_CAR_LOBBY]->m_target = D3DXVECTOR3(10, 4, 8);
+	m_mapLobby[VIEW_CAR_LOBBY]->m_camLookAt = D3DXVECTOR3(20, -3, 10);
+	m_mapLobby[VIEW_CAR_LOBBY]->m_pObject = pImageView58;
+	m_mapLobby[VIEW_CAR_LOBBY]->m_count = 1;
+	m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[VIEW_CAR_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
+	m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob[0] = SELECT_MAP_LOBBY;
 }
 
 void Lobby::MapTypeUpdate()
