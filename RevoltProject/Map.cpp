@@ -25,15 +25,16 @@ void Map::Setup()
 {
 	ObjectLoader loader;
 
-	m_map[0] = new cTrack;
-	m_map[0]->m_pObjMesh = loader.LoadMesh(
-		m_map[0]->m_vecObjMtlTex,
-		"Maps/Front", "Front.obj");
-
-	m_map[1] = new cTrack;
-	m_map[2] = new cTrack;
-
+	m_map = new cTrack;
+	m_pObjMesh = loader.LoadMesh(m_vecObjMtlTex, "Maps/Front", "Front.obj");
+	//	m_map[2] = new cTrack;
 	SetupThing();
+
+	m_track[0] = m_map;
+	m_track[0]->trackNum = 0;
+	m_track[1] = NULL;
+	m_track[2] = NULL;
+
 
 	m_vecMapName.push_back("Front");
 	m_vecMapName.push_back("Market2");
@@ -42,24 +43,33 @@ void Map::Setup()
 
 void Map::Update()
 {
-	if (*g_LobbyState - IN_GAME_MAP < 0)
-		m_stage = 0;
-	else 
+	
+	if (*g_LobbyState - IN_GAME_MAP < 0) m_stage = 0;
+	else
 	{
 		if (m_stage != (*g_LobbyState - IN_GAME_MAP))
 		{
 			m_stage = *g_LobbyState - IN_GAME_MAP;
 
-			MapLoader load;
-			cTrack* pStMap = new cTrack;
-			load.Load(pStMap,"Maps", m_vecMapName[m_stage].c_str());
-
-			m_map[m_stage] = pStMap;
+			ObjectLoader::LoadMesh(m_track[m_stage]->GetMeshData(), "Maps", m_vecMapName[m_stage].c_str());
+			m_track[m_stage]->trackNum = m_stage;
 		}
 	}
+	for each(Thing* pth in m_vecThing)
+	{
+		pth->Update();
+	}
 
+<<<<<<< HEAD
 	for (int i = 0;i < m_map[m_stage]->m_vecThing.size();++i)
 		m_map[m_stage]->m_vecThing[i]->Update();
+=======
+	//레이싱 화면으로 넘어가면 실행되는 업데이트 부
+//	if (m_stage != 0)
+//	{
+//		m_track[m_stage]->Update();
+//	}
+>>>>>>> origin/LeeGeonBae
 }
 
 void Map::Render()
@@ -68,30 +78,25 @@ void Map::Render()
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 
 	D3DXMATRIXA16	matWorld, matS, matR;
-
 	D3DXMatrixIdentity(&matWorld);
 
-	g_pD3DDevice->SetTransform(D3DTS_WORLD,
-		&matWorld);
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
 
-	for (size_t i = 0; i < m_map[m_stage]->m_vecObjMtlTex.size(); ++i)
+	for (size_t i = 0; i < m_vecObjMtlTex.size(); ++i)
 	{
-		g_pD3DDevice->SetMaterial(
-			&m_map[m_stage]->m_vecObjMtlTex[i]->GetMaterial());
+		g_pD3DDevice->SetMaterial(&m_vecObjMtlTex[i]->GetMaterial());
 
-		if (m_map[m_stage]->m_vecObjMtlTex[i]->GetTexture() != NULL)
+		if (m_vecObjMtlTex[i]->GetTexture() != NULL)
 		{
-			g_pD3DDevice->SetTexture(
-				0,
-				m_map[m_stage]->m_vecObjMtlTex[i]->GetTexture());
+			g_pD3DDevice->SetTexture(0, m_vecObjMtlTex[i]->GetTexture());
 		}
-		m_map[m_stage]->m_pObjMesh->DrawSubset(i);
+		m_pObjMesh->DrawSubset(i);
 	}
 
 	/*   오브젝트를 그리는 작업   */
-	for (int i = 0;i < m_map[m_stage]->m_vecThing.size();i++)
+	for each(Thing* pth in m_vecThing)
 	{
-		m_map[m_stage]->m_vecThing[i]->Render();
+		pth->Render();
 	}
 }
 
@@ -101,7 +106,7 @@ void Map::SetupThing()
 	tThing1->SetMesh("Maps/Front/namestand", "namestand.obj");
 	tThing1->SetPosition(10.0f, 0.0f, 18.0f);
 	tThing1->SetRotationY(D3DX_PI / 4.0f);
-	
+
 	WheelTire* tThing2 = new WheelTire;
 	tThing2->SetMesh("Maps/Front/nametire", "nametire.obj");
 	tThing2->SetPosition(10.0f, 4.8f, 18.0f);
@@ -167,15 +172,15 @@ void Map::SetupThing()
 	tThing11->SetTarget(14.0f, 9.8f, 9.0f);
 	tThing11->SetPosition(0.0f, 0.8f, -15.5f);
 
-	m_map[0]->m_vecThing.push_back(tThing1);
-	m_map[0]->m_vecThing.push_back(tThing2);
-	m_map[0]->m_vecThing.push_back(tThing3);
-	m_map[0]->m_vecThing.push_back(tThing4);
-	m_map[0]->m_vecThing.push_back(tThing5);
-	m_map[0]->m_vecThing.push_back(tThing6);
-	m_map[0]->m_vecThing.push_back(tThing7);
-	m_map[0]->m_vecThing.push_back(tThing8);
-	m_map[0]->m_vecThing.push_back(tThing9);
-	m_map[0]->m_vecThing.push_back(tThing10);
-	m_map[0]->m_vecThing.push_back(tThing11);
+	m_vecThing.push_back(tThing1);
+	m_vecThing.push_back(tThing2);
+	m_vecThing.push_back(tThing3);
+	m_vecThing.push_back(tThing4);
+	m_vecThing.push_back(tThing5);
+	m_vecThing.push_back(tThing6);
+	m_vecThing.push_back(tThing7);
+	m_vecThing.push_back(tThing8);
+	m_vecThing.push_back(tThing9);
+	m_vecThing.push_back(tThing10);
+	m_vecThing.push_back(tThing11);
 }

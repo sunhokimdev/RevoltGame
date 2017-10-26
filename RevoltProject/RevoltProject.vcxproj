@@ -162,7 +162,11 @@
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="FrustomView.h" />
     <ClInclude Include="Grid.h" />
+<<<<<<< HEAD
+    <ClInclude Include="Group.h" />
     <ClInclude Include="InGameUI.h" />
+=======
+>>>>>>> origin/LeeGeonBae
     <ClInclude Include="InlineFunction.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Lobby.h" />
@@ -180,7 +184,10 @@
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RevoltProject.h" />
+<<<<<<< HEAD
     <ClInclude Include="RevoltUIObject.h" />
+=======
+>>>>>>> origin/LeeGeonBae
     <ClInclude Include="SelectMap.h" />
     <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="SkinnedMeshManager.h" />
@@ -219,7 +226,11 @@
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="FrustomView.cpp" />
     <ClCompile Include="Grid.cpp" />
+<<<<<<< HEAD
+    <ClCompile Include="Group.cpp" />
     <ClCompile Include="InGameUI.cpp" />
+=======
+>>>>>>> origin/LeeGeonBae
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="MainGame.cpp" />
@@ -234,7 +245,10 @@
     <ClCompile Include="PickUpObject.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="RevoltProject.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="RevoltUIObject.cpp" />
+=======
+>>>>>>> origin/LeeGeonBae
     <ClCompile Include="SelectMap.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="SkinnedMeshManager.cpp" />

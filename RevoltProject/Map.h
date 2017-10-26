@@ -15,8 +15,21 @@ class Map
 private:
 	int m_stage;
 	std::vector<std::string> m_vecMapName;		// 맵 이름을 저장하는 벡터 변수
-	std::map<int, cTrack*> m_map;				// 맵이랑 오브젝트를 관리하는 STL 변수
 
+<<<<<<< HEAD
+=======
+	//Front 전용 맵
+	LPD3DXMESH				m_pObjMesh;
+	std::vector<MtlTex*>	m_vecObjMtlTex;
+	std::vector<Thing*>		m_vecThing;
+
+	cTrack* m_map;				
+
+	//트랙 전용 맵
+	std::map<int, cTrack*> m_track;
+
+
+>>>>>>> origin/LeeGeonBae
 public:
 	Map();
 	~Map();
