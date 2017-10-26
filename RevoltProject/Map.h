@@ -16,8 +16,6 @@ private:
 	int m_stage;
 	std::vector<std::string> m_vecMapName;		// 맵 이름을 저장하는 벡터 변수
 
-<<<<<<< HEAD
-=======
 	//Front 전용 맵
 	LPD3DXMESH				m_pObjMesh;
 	std::vector<MtlTex*>	m_vecObjMtlTex;
@@ -28,8 +26,6 @@ private:
 	//트랙 전용 맵
 	std::map<int, cTrack*> m_track;
 
-
->>>>>>> origin/LeeGeonBae
 public:
 	Map();
 	~Map();

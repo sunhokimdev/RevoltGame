@@ -100,7 +100,7 @@ void InGameUI::Update()
 	if (m_pRootUI)
 		m_pRootUI->Update();
 
-	RevoltUIObject::Update();
+
 }
 
 void InGameUI::Render(LPD3DXSPRITE pSprite)
@@ -108,5 +108,4 @@ void InGameUI::Render(LPD3DXSPRITE pSprite)
 	if (m_pRootUI)
 		m_pRootUI->Render(pSprite);
 
-	RevoltUIObject::Render();
 }

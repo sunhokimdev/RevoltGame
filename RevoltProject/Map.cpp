@@ -32,9 +32,8 @@ void Map::Setup()
 
 	m_track[0] = m_map;
 	m_track[0]->trackNum = 0;
-	m_track[1] = NULL;
-	m_track[2] = NULL;
-
+	m_track[1] = new cTrack;
+	m_track[2] = new cTrack;
 
 	m_vecMapName.push_back("Front");
 	m_vecMapName.push_back("Market2");
@@ -43,7 +42,6 @@ void Map::Setup()
 
 void Map::Update()
 {
-	
 	if (*g_LobbyState - IN_GAME_MAP < 0) m_stage = 0;
 	else
 	{
@@ -59,17 +57,6 @@ void Map::Update()
 	{
 		pth->Update();
 	}
-
-<<<<<<< HEAD
-	for (int i = 0;i < m_map[m_stage]->m_vecThing.size();++i)
-		m_map[m_stage]->m_vecThing[i]->Update();
-=======
-	//레이싱 화면으로 넘어가면 실행되는 업데이트 부
-//	if (m_stage != 0)
-//	{
-//		m_track[m_stage]->Update();
-//	}
->>>>>>> origin/LeeGeonBae
 }
 
 void Map::Render()

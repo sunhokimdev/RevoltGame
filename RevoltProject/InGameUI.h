@@ -1,7 +1,5 @@
 #pragma once
 
-#include "RevoltUIObject.h"
-
 class UIObject;
 class UITextImageView;
 class UIImageView;
@@ -12,7 +10,7 @@ class UIImageView;
 // - 인게임의 이 UI가 실행이 된다.
 //===================================================================
 
-class InGameUI : public RevoltUIObject
+class InGameUI 
 {
 private:
 	UIObject*		m_pRootUI;
