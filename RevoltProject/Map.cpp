@@ -25,73 +25,82 @@ void Map::Setup()
 {
 	ObjectLoader loader;
 
-	m_map = new cTrack;
 	m_pObjMesh = loader.LoadMesh(m_vecObjMtlTex, "Maps/Front", "Front.obj");
 	//	m_map[2] = new cTrack;
 	SetupThing();
 
-	m_track[0] = m_map;
+	m_track[0] = new cTrack;
+	m_track[1] = new cTrack;
+	m_track[2] = new cTrack;
+
+	m_track[0]->trackName = "Front";
 	m_track[0]->trackNum = 0;
-	m_track[1] = NULL;
-	m_track[2] = NULL;
 
+	m_track[1]->trackName = "Market2";
+	m_track[1]->trackNum = 1;
 
-	m_vecMapName.push_back("Front");
-	m_vecMapName.push_back("Market2");
-	m_vecMapName.push_back("Stunts");
+	m_track[2]->trackName = "Stunts";
+	m_track[2]->trackNum = 2;
 }
 
 void Map::Update()
 {
-	
-	if (*g_LobbyState - IN_GAME_MAP < 0) m_stage = 0;
-	else
+	if (m_stage == 0)
 	{
-		if (m_stage != (*g_LobbyState - IN_GAME_MAP))
+		for each(Thing* pth in m_vecThing)
 		{
-			m_stage = *g_LobbyState - IN_GAME_MAP;
+			pth->Update();
+		}
 
-			ObjectLoader::LoadMesh(m_track[m_stage]->GetMeshData(), "Maps", m_vecMapName[m_stage].c_str());
-			m_track[m_stage]->trackNum = m_stage;
+		if (*g_LobbyState - IN_GAME_MAP < 0) m_stage = 0;
+		else
+		{
+			if (m_stage != (*g_LobbyState - IN_GAME_MAP))
+			{
+				m_stage = *g_LobbyState - IN_GAME_MAP;
+
+				m_track[m_stage]->LoadTrack(m_track[m_stage]->trackName);
+
+//				ObjectLoader::LoadMesh(m_track[m_stage]->GetMeshData(), "Maps", m_track[m_stage]->trackName.c_str());
+				
+			}
 		}
 	}
-	for each(Thing* pth in m_vecThing)
+	else
 	{
-		pth->Update();
+		//레이싱 화면으로 넘어가면 실행되는 업데이트 부
+		m_track[m_stage]->Update();
 	}
 
-	//레이싱 화면으로 넘어가면 실행되는 업데이트 부
-//	if (m_stage != 0)
-//	{
-//		m_track[m_stage]->Update();
-//	}
 }
 
 void Map::Render()
 {
-	g_pD3DDevice->SetTexture(0, NULL);
-	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
-
-	D3DXMATRIXA16	matWorld, matS, matR;
-	D3DXMatrixIdentity(&matWorld);
-
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
-
-	for (size_t i = 0; i < m_vecObjMtlTex.size(); ++i)
+	if (m_stage == 0)
 	{
-		g_pD3DDevice->SetMaterial(&m_vecObjMtlTex[i]->GetMaterial());
+		g_pD3DDevice->SetTexture(0, NULL);
+		g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 
-		if (m_vecObjMtlTex[i]->GetTexture() != NULL)
+		D3DXMATRIXA16	matWorld;  D3DXMatrixIdentity(&matWorld);
+
+		g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+
+		for (size_t i = 0; i < m_vecObjMtlTex.size(); ++i)
 		{
-			g_pD3DDevice->SetTexture(0, m_vecObjMtlTex[i]->GetTexture());
-		}
-		m_pObjMesh->DrawSubset(i);
-	}
+			g_pD3DDevice->SetMaterial(&m_vecObjMtlTex[i]->GetMaterial());
+			if (m_vecObjMtlTex[i]->GetTexture() != NULL) g_pD3DDevice->SetTexture(0, m_vecObjMtlTex[i]->GetTexture());
+			m_pObjMesh->DrawSubset(i);
 
-	/*   오브젝트를 그리는 작업   */
-	for each(Thing* pth in m_vecThing)
+			if (m_vecObjMtlTex[i]->GetTexture() != NULL) g_pD3DDevice->SetTexture(0, NULL);
+		}
+
+		/*   오브젝트를 그리는 작업   */
+		for each(Thing* pth in m_vecThing) pth->Render();
+	}
+	else
 	{
-		pth->Render();
+		//레이싱 화면으로 넘어가면 실행되는 렌더 부
+		m_track[m_stage]->Render();
 	}
 }
 

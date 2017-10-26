@@ -82,8 +82,23 @@
     <Filter Include="Thing\LobbyObjects">
       <UniqueIdentifier>{0d726d44-a965-45c6-8faa-8cce6d760210}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PhysX\Basic">
+    <Filter Include="TrackBass">
       <UniqueIdentifier>{68f0285e-643b-42fd-bae9-3439e804edfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TrackBass\Objects">
+      <UniqueIdentifier>{846b5148-d4fa-4747-bb91-5821fbcc023f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TrackBass\Map">
+      <UniqueIdentifier>{cf300465-43e3-4fb7-8859-9053745ad23b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TrackBass\Util">
+      <UniqueIdentifier>{9031dd10-0fd0-44c5-84ed-593bdaf6a1ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TrackBass\Util\PhysX">
+      <UniqueIdentifier>{f3bf398f-4f68-4510-919b-e745d5521a93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TrackBass\Util\Mesh">
+      <UniqueIdentifier>{610d57ee-cb08-4c56-8f01-e3ce4004da3a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -118,12 +133,6 @@
       <Filter>MainGame</Filter>
     </ClInclude>
     <ClInclude Include="ObjectLoader.h">
-      <Filter>ObjectFileLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="MtlTex.h">
-      <Filter>ObjectFileLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
       <Filter>ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="ObjectManager.h">
@@ -225,23 +234,41 @@
     <ClInclude Include="RevoltUIObject.h">
       <Filter>Lobby\GameUI</Filter>
     </ClInclude>
-    <ClInclude Include="cPhysXManager.h">
-      <Filter>PhysX\Basic</Filter>
+    <ClInclude Include="cCheckBox.h">
+      <Filter>TrackBass\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="cStringUtil.h">
-      <Filter>PhysX\Basic</Filter>
+    <ClInclude Include="cFollowPoint.h">
+      <Filter>TrackBass\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="cLight.h">
+      <Filter>TrackBass\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="cStuff.h">
+      <Filter>TrackBass\Objects</Filter>
     </ClInclude>
     <ClInclude Include="cTrack.h">
-      <Filter>PhysX\Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="cMesh.h">
-      <Filter>PhysX\Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="cPhysX.h">
-      <Filter>PhysX\Basic</Filter>
+      <Filter>TrackBass\Map</Filter>
     </ClInclude>
     <ClInclude Include="cTransform.h">
-      <Filter>PhysX\Basic</Filter>
+      <Filter>TrackBass\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="cStringUtil.h">
+      <Filter>TrackBass\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>TrackBass\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="cMesh.h">
+      <Filter>TrackBass\Util\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="cPhysX.h">
+      <Filter>TrackBass\Util\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="cPhysXManager.h">
+      <Filter>TrackBass\Util\PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="MtlTex.h">
+      <Filter>TrackBass\Util\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -267,12 +294,6 @@
       <Filter>MainGame</Filter>
     </ClCompile>
     <ClCompile Include="ObjectLoader.cpp">
-      <Filter>ObjectFileLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="MtlTex.cpp">
-      <Filter>ObjectFileLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
       <Filter>ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="ObjectManager.cpp">
@@ -365,23 +386,41 @@
     <ClCompile Include="RevoltUIObject.cpp">
       <Filter>Lobby\GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="cPhysXManager.cpp">
-      <Filter>PhysX\Basic</Filter>
+    <ClCompile Include="cCheckBox.cpp">
+      <Filter>TrackBass\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="cStringUtil.cpp">
-      <Filter>PhysX\Basic</Filter>
+    <ClCompile Include="cFollowPoint.cpp">
+      <Filter>TrackBass\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="cLight.cpp">
+      <Filter>TrackBass\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="cStuff.cpp">
+      <Filter>TrackBass\Objects</Filter>
     </ClCompile>
     <ClCompile Include="cTrack.cpp">
-      <Filter>PhysX\Basic</Filter>
+      <Filter>TrackBass\Map</Filter>
     </ClCompile>
-    <ClCompile Include="cMesh.cpp">
-      <Filter>PhysX\Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="cPhysX.cpp">
-      <Filter>PhysX\Basic</Filter>
+    <ClCompile Include="cStringUtil.cpp">
+      <Filter>TrackBass\Util</Filter>
     </ClCompile>
     <ClCompile Include="cTransform.cpp">
-      <Filter>PhysX\Basic</Filter>
+      <Filter>TrackBass\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>TrackBass\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="cMesh.cpp">
+      <Filter>TrackBass\Util\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysX.cpp">
+      <Filter>TrackBass\Util\PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysXManager.cpp">
+      <Filter>TrackBass\Util\PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="MtlTex.cpp">
+      <Filter>TrackBass\Util\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

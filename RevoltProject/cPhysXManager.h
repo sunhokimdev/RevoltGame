@@ -2,13 +2,16 @@
 #include <NxPhysics.h>
 #include <NxCooking.h>
 #include "UserStream.h"
-
+#include "DEBUG_RENDER.h"
 #define MgrPhysX		cPhysXManager::GetInstance()
 #define MgrPhysXScene	cPhysXManager::GetInstance()->GetPhysXScene()
 #define MgrPhysXSDK		cPhysXManager::GetInstance()->GetPhysXSDK()
 #define MgrPhysXData	cPhysXManager::GetInstance()->GetPhysXData()
 
-class DEBUG_RENDER;
+#define  g_pPhysX		  MgrPhysX		
+#define  g_pPhysXScene	  MgrPhysXScene	
+#define  g_pPhysXSDK	  MgrPhysXSDK		
+#define  g_pPhysXData	  MgrPhysXData	
 
 struct PHYSXDATA
 {
@@ -86,6 +89,8 @@ public:
 	SYNTHESIZE(PHYSXDATA*, m_physXUserData, PhysXData);
 private:
 
+	DEBUG_RENDER* pDebugRenderer = NULL;
+
 	NxPhysicsSDK*	m_pNxPhysicsSDK;
 	NxScene*		m_pNxScene;
 
@@ -93,10 +98,12 @@ private:
 public:
 	NxPhysicsSDK* GetPhysXSDK() { return m_pNxPhysicsSDK; }
 	NxScene* GetPhysXScene() { return m_pNxScene; }
-	BOOL InitNxPhysX(DEBUG_RENDER** pDebugRenderer);
+	BOOL InitNxPhysX();
 
 	void Update();
 	void Destory();
+
+	void Render();
 
 	NxTriangleMeshShapeDesc CreateTringleMesh(ID3DXMesh* pMesh, D3DXMATRIXA16* matS = NULL);
 	NxBoxShapeDesc CreateBoxShape(int materialIndex, NxVec3 boxSize);

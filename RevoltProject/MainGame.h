@@ -7,8 +7,6 @@ class MtlTex;
 class Lobby;
 class Map;
 
-class XFileLoader;
-
 //======================================
 // - ## 10.03.17 ##
 // - written by �輱ȣ

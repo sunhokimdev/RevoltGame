@@ -4,6 +4,7 @@
 
 MtlTex::MtlTex()
 {
+	m_pTexture = NULL;
 }
 
 
