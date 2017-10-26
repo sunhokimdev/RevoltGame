@@ -88,8 +88,13 @@
     <Filter Include="Map\MapLoader">
       <UniqueIdentifier>{f802dfe3-fc95-41c5-9970-b49f867b6ee4}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
     <Filter Include="Lobby\GameUI">
       <UniqueIdentifier>{f1d3484f-4c7e-4574-9703-feeb44fb35df}</UniqueIdentifier>
+=======
+    <Filter Include="Map\Track">
+      <UniqueIdentifier>{fa4bee9c-b44c-4458-b938-30c5d0418495}</UniqueIdentifier>
+>>>>>>> origin/LeeGeonBae
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -127,9 +132,6 @@
       <Filter>ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="MtlTex.h">
-      <Filter>ObjectFileLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="Group.h">
       <Filter>ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
@@ -204,9 +206,6 @@
     <ClInclude Include="DEBUG_RENDER.h">
       <Filter>PhysX</Filter>
     </ClInclude>
-    <ClInclude Include="PhysXManager.h">
-      <Filter>Manager\PhysXManager</Filter>
-    </ClInclude>
     <ClInclude Include="UserStream.h">
       <Filter>PhysX</Filter>
     </ClInclude>
@@ -243,6 +242,7 @@
     <ClInclude Include="MapLoader.h">
       <Filter>Map\MapLoader</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="SelectMap.h">
       <Filter>Lobby</Filter>
     </ClInclude>
@@ -251,6 +251,25 @@
     </ClInclude>
     <ClInclude Include="RevoltUIObject.h">
       <Filter>Lobby\GameUI</Filter>
+=======
+    <ClInclude Include="cTrack.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cMesh.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cPhysX.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cStringUtil.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cPhysXManager.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectMap.h">
+      <Filter>헤더 파일</Filter>
+>>>>>>> origin/LeeGeonBae
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -279,9 +298,6 @@
       <Filter>ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="MtlTex.cpp">
-      <Filter>ObjectFileLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="Group.cpp">
       <Filter>ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
@@ -347,9 +363,6 @@
     <ClCompile Include="DEBUG_RENDER.cpp">
       <Filter>PhysX</Filter>
     </ClCompile>
-    <ClCompile Include="PhysXManager.cpp">
-      <Filter>Manager\PhysXManager</Filter>
-    </ClCompile>
     <ClCompile Include="UserStream.cpp">
       <Filter>PhysX</Filter>
     </ClCompile>
@@ -386,6 +399,7 @@
     <ClCompile Include="MapLoader.cpp">
       <Filter>Map\MapLoader</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="SelectMap.cpp">
       <Filter>Lobby</Filter>
     </ClCompile>
@@ -394,6 +408,25 @@
     </ClCompile>
     <ClCompile Include="RevoltUIObject.cpp">
       <Filter>Lobby\GameUI</Filter>
+=======
+    <ClCompile Include="cTrack.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cMesh.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysX.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cStringUtil.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysXManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectMap.cpp">
+      <Filter>소스 파일</Filter>
+>>>>>>> origin/LeeGeonBae
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

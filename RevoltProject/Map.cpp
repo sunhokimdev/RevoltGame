@@ -8,6 +8,7 @@
 #include "WheelTire.h"
 #include "PickUpObject.h"
 #include "MapLoader.h"
+#include "cTrack.h"
 
 LOBBY* Map::g_LobbyState;
 
@@ -24,13 +25,13 @@ void Map::Setup()
 {
 	ObjectLoader loader;
 
-	m_map[0] = new ST_MAP;
+	m_map[0] = new cTrack;
 	m_map[0]->m_pObjMesh = loader.LoadMesh(
 		m_map[0]->m_vecObjMtlTex,
 		"Maps/Front", "Front.obj");
 
-	m_map[1] = new ST_MAP;
-	m_map[2] = new ST_MAP;
+	m_map[1] = new cTrack;
+	m_map[2] = new cTrack;
 
 	SetupThing();
 
@@ -50,17 +51,13 @@ void Map::Update()
 			m_stage = *g_LobbyState - IN_GAME_MAP;
 
 			MapLoader load;
-			ST_MAP* pStMap = new ST_MAP;
+			cTrack* pStMap = new cTrack;
 			load.Load(pStMap,"Maps", m_vecMapName[m_stage].c_str());
 
 			m_map[m_stage] = pStMap;
 		}
 	}
 
-	for (int i = 0;i < m_map[m_stage]->m_vecThing.size();i++)
-	{
-		m_map[m_stage]->m_vecThing[i]->Update();
-	}
 }
 
 void Map::Render()

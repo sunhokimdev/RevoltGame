@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MapLoader.h"
 #include "ObjectLoader.h"
+#include "cTrack.h"
 
 MapLoader::MapLoader()
 {
@@ -11,7 +12,7 @@ MapLoader::~MapLoader()
 {
 }
 
-void MapLoader::Load(ST_MAP* stMap, char * szFolder, const char * szFile)
+void MapLoader::Load(cTrack* stMap, char * szFolder, const char * szFile)
 {
 
 	FILE* fp;

@@ -152,13 +152,21 @@
     <ClInclude Include="Car.h" />
     <ClInclude Include="CarBox.h" />
     <ClInclude Include="CarTextLoader.h" />
+    <ClInclude Include="cMesh.h" />
+    <ClInclude Include="cPhysX.h" />
+    <ClInclude Include="cPhysXManager.h" />
+    <ClInclude Include="cStringUtil.h" />
+    <ClInclude Include="cTrack.h" />
     <ClInclude Include="DEBUG_RENDER.h" />
     <ClInclude Include="DeviceManager.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="FrustomView.h" />
     <ClInclude Include="Grid.h" />
+<<<<<<< HEAD
     <ClInclude Include="Group.h" />
     <ClInclude Include="InGameUI.h" />
+=======
+>>>>>>> origin/LeeGeonBae
     <ClInclude Include="InlineFunction.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Lobby.h" />
@@ -172,12 +180,14 @@
     <ClInclude Include="ObjectLoader.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="ObjectMap.h" />
-    <ClInclude Include="PhysXManager.h" />
     <ClInclude Include="PickUpObject.h" />
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RevoltProject.h" />
+<<<<<<< HEAD
     <ClInclude Include="RevoltUIObject.h" />
+=======
+>>>>>>> origin/LeeGeonBae
     <ClInclude Include="SelectMap.h" />
     <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="SkinnedMeshManager.h" />
@@ -206,13 +216,21 @@
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="CarBox.cpp" />
     <ClCompile Include="CarTextLoader.cpp" />
+    <ClCompile Include="cMesh.cpp" />
+    <ClCompile Include="cPhysX.cpp" />
+    <ClCompile Include="cPhysXManager.cpp" />
+    <ClCompile Include="cStringUtil.cpp" />
+    <ClCompile Include="cTrack.cpp" />
     <ClCompile Include="DEBUG_RENDER.cpp" />
     <ClCompile Include="DeviceManager.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="FrustomView.cpp" />
     <ClCompile Include="Grid.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="Group.cpp" />
     <ClCompile Include="InGameUI.cpp" />
+=======
+>>>>>>> origin/LeeGeonBae
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="MainGame.cpp" />
@@ -224,11 +242,13 @@
     <ClCompile Include="ObjectLoader.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="ObjectMap.cpp" />
-    <ClCompile Include="PhysXManager.cpp" />
     <ClCompile Include="PickUpObject.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="RevoltProject.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="RevoltUIObject.cpp" />
+=======
+>>>>>>> origin/LeeGeonBae
     <ClCompile Include="SelectMap.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="SkinnedMeshManager.cpp" />

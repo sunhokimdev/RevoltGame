@@ -15,6 +15,10 @@ UIObject::~UIObject()
 {
 }
 
+void UIObject::Release()
+{
+}
+
 void UIObject::SetPosition(float x, float y, float z)
 {
 	m_vPosition.x = x;

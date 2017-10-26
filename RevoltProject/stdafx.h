@@ -149,3 +149,7 @@ enum MAP_TYPE { NONE = 0, SUPERMARKET, NHOOD, MUSEUM, SHIP };
 #include "FontManager.h"
 #include "TimeManager.h"
 #include "SkinnedMeshManager.h"
+
+
+//UTIL
+#include "cStringUtil.h"
