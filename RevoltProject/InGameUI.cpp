@@ -10,6 +10,8 @@ InGameUI::InGameUI()
 InGameUI::~InGameUI()
 {
 	SAFE_DELETE(m_pRootUI);
+	SAFE_DELETE(m_pItemImage);
+	SAFE_DELETE(m_pLobby);
 }
 
 void InGameUI::Setup()
@@ -59,15 +61,38 @@ void InGameUI::Setup()
 	UIImageView* pImageView6 = new UIImageView;
 	pImageView6->SetXSize(1.2f);
 	pImageView6->SetYSize(1.2f);
-	pImageView6->SetPosition(0, 50);
+	pImageView6->SetPosition(-5, 50);
 	pImageView6->SetTexture("Maps/Front/Image/itemframe.png");
+
+	UIImageView* pImageView7 = new UIImageView;
+	pImageView7->SetIsBoard(true);
+	pImageView7->SetXSize(12.0f);
+	pImageView7->SetYSize(2.5f);
+	pImageView7->SetPosition(20, 600);
+	pImageView7->SetTexture("Maps/Front/Image/ring.png");
+
+	UIImageView* pImageView8 = new UIImageView;
+	pImageView8->SetIsBoard(true);
+	pImageView8->SetXSize(12.0f);
+	pImageView8->SetYSize(2.5f);
+	pImageView8->SetPosition(20, 600);
+	pImageView8->SetTexture("Maps/Front/Image/ring.png");
+
+	m_pItemImage = new UIImageView;
+	m_pItemImage->SetXSize(1.2f);
+	m_pItemImage->SetYSize(1.2f);
+	m_pItemImage->SetPosition(22, 22);
+	m_pItemImage->SetIsItem(true);
+	m_pItemImage->SetTexture("Maps/Front/Image/itemlist.png");
 
 	m_pRootUI->AddChild(pImageView1);
 	m_pRootUI->AddChild(pImageView2);
+	m_pRootUI->AddChild(pImageView7);
 	pImageView1->AddChild(pImageView6);
 	pImageView2->AddChild(pImageView3);
 	pImageView2->AddChild(pImageView4);
 	pImageView2->AddChild(pImageView5);
+	pImageView6->AddChild(m_pItemImage);
 }
 
 void InGameUI::Update()

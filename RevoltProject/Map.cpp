@@ -58,6 +58,8 @@ void Map::Update()
 		}
 	}
 
+	for (int i = 0;i < m_map[m_stage]->m_vecThing.size();++i)
+		m_map[m_stage]->m_vecThing[i]->Update();
 }
 
 void Map::Render()

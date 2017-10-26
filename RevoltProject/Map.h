@@ -17,8 +17,6 @@ private:
 	std::vector<std::string> m_vecMapName;		// 맵 이름을 저장하는 벡터 변수
 	std::map<int, cTrack*> m_map;				// 맵이랑 오브젝트를 관리하는 STL 변수
 
-
-
 public:
 	Map();
 	~Map();

@@ -57,6 +57,7 @@ void Lobby::Setup()
 
 	m_pInGameUI = new InGameUI;
 	m_pInGameUI->Setup();
+	m_pInGameUI->SetLobby(&m_stateLobby);
 
 	SetUpUI();
 }

@@ -17,6 +17,8 @@ class InGameUI : public RevoltUIObject
 private:
 	UIObject*		m_pRootUI;
 	UIImageView*	m_pItemImage;
+
+	LOBBY*			m_pLobby;
 public:
 	InGameUI();
 	virtual ~InGameUI();
@@ -26,5 +28,6 @@ public:
 	virtual void Render(LPD3DXSPRITE pSprite);
 
 	UIObject* GetUIObject() { return m_pRootUI; }
+	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
 };
 

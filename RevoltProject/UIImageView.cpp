@@ -12,14 +12,18 @@ UIImageView::UIImageView()
 	, m_isBoard(false)
 	, m_xSize(1.0f)
 	, m_ySize(1.0f)
-	, m_color(D3DXCOLOR(255,255,255,255))
+	, m_color(D3DXCOLOR(255, 255, 255, 255))
 	, m_isMove(false)
 	, m_isNoise(false)
+	, m_isItem(false)
 	, LeftNoiseX(LEFT_NOISE_X)
 	, RightNoiseX(RIGHT_NOISE_X)
 	, UpNoiseY(-256.0f)
 	, DownNoiseY(-512.0f)
-
+	, m_itemID(0)
+	, m_itemPrevID(8)
+	, m_alpha(0)
+	, m_updateTIme(500)
 {
 }
 
@@ -55,6 +59,37 @@ void UIImageView::Update()
 		}
 	}
 
+	/*   현재 이미지가 아이템 리스트 라면   */
+	else if (m_isItem)
+	{
+		/*   update타입이 100이하면 선택된 m_item이 된다   */
+		if (m_updateTIme < 100)
+		{
+			m_alpha = 255;
+		}
+		else
+		{
+			if (m_itemID > MAX_ID)
+				m_itemID = 0;
+			if (m_itemPrevID > MAX_ID)
+				m_itemPrevID = 0;
+
+			if (m_fTime % m_updateTIme != 0)
+			{
+				m_alpha += 20;
+			}
+
+			if (m_alpha >= 255)
+			{
+				m_alpha = 0;
+				m_itemID++;
+				m_itemPrevID++;
+			}
+
+			m_updateTIme-=2;
+		}
+	}
+
 	UIObject::Update();
 }
 
@@ -69,6 +104,7 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 	if (pSprite == NULL) return;
 
 	pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
+	/*   그릴려고 하는 이미지가 파랑 테두리의 판일 경우   */
 	if (m_isBoard)
 	{
 		RECT rc;
@@ -154,9 +190,23 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 		SetRect(&rc, RightNoiseX, 0, LeftNoiseX, m_stSize.nHeight);
 		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
 	}
+
+	else if (m_isItem)
+	{
+		RECT rc;
+
+		pSprite->SetTransform(&tMat);
+
+		SetRect(&rc, (m_itemID % 4) * 32, (m_itemID / 4) * 32, ((m_itemID % 4) + 1) * 32, ((m_itemID / 4) + 1) * 32);
+		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(m_alpha, 255, 255, 255));
+
+		SetRect(&rc, (m_itemPrevID % 4) * 32, (m_itemPrevID / 4) * 32, ((m_itemPrevID % 4) + 1) * 32, ((m_itemPrevID / 4) + 1) * 32);
+		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(255 - m_alpha, 255, 255, 255));
+	}
+
 	else if ((!m_isBoard || !m_isNoise) && !m_isMove)
 	{
-		RECT rc; 
+		RECT rc;
 
 		tMat._11 = m_xSize;
 		tMat._22 = m_ySize;

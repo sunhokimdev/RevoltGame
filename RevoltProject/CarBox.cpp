@@ -82,11 +82,13 @@ void CarBox::Update()
 		}
 	}
 
-	else if (*g_LobbyState == SELECT_MAP_LOBBY)
+	else if (*g_LobbyState == SELECT_MAP_LOBBY || 
+			*g_LobbyState == CREATE_PROFILE_LOBBY)
 	{
 		m_vPosition = m_vPrevPosition;
 		m_yAngle = m_prevYAngle;
 	}
+
 
 	m_car->Update();
 
