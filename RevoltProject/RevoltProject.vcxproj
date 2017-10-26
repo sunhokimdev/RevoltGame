@@ -162,6 +162,7 @@
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="FrustomView.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="InGameUI.h" />
     <ClInclude Include="InlineFunction.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Lobby.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RevoltProject.h" />
+    <ClInclude Include="RevoltUIObject.h" />
     <ClInclude Include="SelectMap.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="StandardStructure.h" />
@@ -213,6 +215,7 @@
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="FrustomView.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="InGameUI.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="MainGame.cpp" />
@@ -226,6 +229,7 @@
     <ClCompile Include="PickUpObject.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="RevoltProject.cpp" />
+    <ClCompile Include="RevoltUIObject.cpp" />
     <ClCompile Include="SelectMap.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -247,6 +251,13 @@
     <ClCompile Include="UITextView.cpp" />
     <ClCompile Include="UserStream.cpp" />
     <ClCompile Include="WheelTire.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RevoltProject.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="RevoltProject.ico" />
+    <Image Include="small.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

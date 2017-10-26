@@ -8,7 +8,7 @@ class MtlTex;					// 재질을 사용하기 위한 전방선언 클래스
 class Camera;					// 카메라 클래스를 사용하기 위한 전방선언 클래스
 class Thing;					// 오브젝트 클래스
 class SelectMap;				// SelectMap Class
-
+class InGameUI;
 
 //===================================================================
 // - ## 10.15.17 ##
@@ -65,19 +65,9 @@ protected:
 	// - 로비 구현 할 때 이 클래스 내부에서만 처리할 것
 	//===================================================================
 
-	int		m_selectMapType;					// Select Map Type
-	int		m_LockedTime;						// Update Locked Time
-
-	bool	m_isUnLocked;						// Check Locked
-	bool	m_isLockedRender;					// Show Lock Image
-
-	bool	m_isOpenHood;						// Open Hood Map
-	bool	m_isOpenMuse;						// Open Muse Map
-	bool	m_isOpenShip;						// Open Ship Map
-
 	Camera*				m_pCamera;				// 카메라 클래스
 	SelectMap*			m_pSelectMap;			// Select Map Class
-	
+	InGameUI*			m_pInGameUI;			// InGame UI;
 
 	std::vector<std::string> m_vString;
 public:
