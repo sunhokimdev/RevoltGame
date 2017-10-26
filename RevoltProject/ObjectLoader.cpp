@@ -313,44 +313,54 @@ LPD3DXMESH ObjectLoader::LoadMesh(OUT std::vector<MtlTex*>& vecMtlTex, IN char *
 
 		char szTemp[1024];
 		fgets(szTemp, 1024, fp);
-		if (szTemp[0] == '#')
+
+
+		int sI = 0; // startIndex;
+		while (true)
+		{
+			if (szTemp[sI] == ' ' || szTemp[sI] == '\t') sI++; else break;
+		}
+
+
+
+		if (szTemp[sI] == '#')
 		{
 			continue;
 		}
-		else if (szTemp[0] == 'm')
+		else if (szTemp[sI] == 'm')
 		{
 			char szMtlFile[1024];
 			sscanf_s(szTemp, "%*s %s", szMtlFile, 1024);
 			LoadMtlLib(szFolder, szMtlFile);
 		}
-		else if (szTemp[0] == 'v')
+		else if (szTemp[sI] == 'v')
 		{
-			if (szTemp[1] == ' ')
+			if (szTemp[sI+1] == ' ')
 			{
 				float x, y, z;
 				sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
 				vecV.push_back(D3DXVECTOR3(-x, y, z));
 			}
-			else if (szTemp[1] == 't')
+			else if (szTemp[sI+1] == 't')
 			{
 				float u, v;
 				sscanf_s(szTemp, "%*s %f %f %*f", &u, &v);
 				vecVT.push_back(D3DXVECTOR2(u, 1.0f - v));
 			}
-			else if (szTemp[1] == 'n')
+			else if (szTemp[sI+1] == 'n')
 			{
 				float x, y, z;
 				sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
 				vecVN.push_back(D3DXVECTOR3(-x, y, z));
 			}
 		}
-		else if (szTemp[0] == 'u')
+		else if (szTemp[sI+0] == 'u')
 		{
 			char szMtlName[1024];
 			sscanf_s(szTemp, "%*s %s", szMtlName, 1024);
 			sMtlName = std::string(szMtlName);
 		}
-		else if (szTemp[0] == 'f')
+		else if (szTemp[sI+0] == 'f')
 		{
 			int nIndex[3][3];
 			sscanf_s(szTemp, "%*s %d/%d/%d %d/%d/%d %d/%d/%d",
