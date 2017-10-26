@@ -1,8 +1,9 @@
 #pragma once
 #include "cMesh.h"
 #include "cPhysX.h"
+#include "cTransform.h"
 
-class Object
+class Object : public cTransform
 {
 public:
 

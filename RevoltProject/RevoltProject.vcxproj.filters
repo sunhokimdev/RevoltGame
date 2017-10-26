@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="MainGame">
       <UniqueIdentifier>{ef548f89-a87d-4891-bcf1-affbd1665c8d}</UniqueIdentifier>
     </Filter>
@@ -43,12 +39,6 @@
     <Filter Include="Lobby">
       <UniqueIdentifier>{fc5a2d6c-2305-41ee-97a8-123e8f568d34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="XFileLoader">
-      <UniqueIdentifier>{b5267aeb-0d30-413e-a765-d9bd98671cbb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Manager\SkinnedMeshManger">
-      <UniqueIdentifier>{e187d92a-6dcb-4398-92d3-c5840fac5b60}</UniqueIdentifier>
-    </Filter>
     <Filter Include="CollisionClass">
       <UniqueIdentifier>{d3005b28-9039-453f-bc5d-2cf8e40a0035}</UniqueIdentifier>
     </Filter>
@@ -57,9 +47,6 @@
     </Filter>
     <Filter Include="CollisionClass\FrustomView">
       <UniqueIdentifier>{be1d6685-0c96-4033-83c4-adce462b34e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CollisionClass\OBB">
-      <UniqueIdentifier>{773aa466-dd08-4022-96b4-bfef7aaf0ac6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Manager\TextManager">
       <UniqueIdentifier>{c04e62df-ada1-4e34-8fcb-42c936d75764}</UniqueIdentifier>
@@ -90,6 +77,9 @@
     </Filter>
     <Filter Include="Map\Track">
       <UniqueIdentifier>{fa4bee9c-b44c-4458-b938-30c5d0418495}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{5f635b3b-007c-4795-a9ec-20c30119c077}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -165,26 +155,11 @@
     <ClInclude Include="Lobby.h">
       <Filter>Lobby</Filter>
     </ClInclude>
-    <ClInclude Include="XFileLoader.h">
-      <Filter>XFileLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="AllocateHierarchy.h">
-      <Filter>XFileLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="SkinnedMesh.h">
-      <Filter>XFileLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="SkinnedMeshManager.h">
-      <Filter>Manager\SkinnedMeshManger</Filter>
-    </ClInclude>
     <ClInclude Include="TimeManager.h">
       <Filter>Manager\TimeManager</Filter>
     </ClInclude>
     <ClInclude Include="FrustomView.h">
       <Filter>CollisionClass\FrustomView</Filter>
-    </ClInclude>
-    <ClInclude Include="OBB.h">
-      <Filter>CollisionClass\OBB</Filter>
     </ClInclude>
     <ClInclude Include="TextManager.h">
       <Filter>Manager\TextManager</Filter>
@@ -237,9 +212,6 @@
     <ClInclude Include="MapLoader.h">
       <Filter>Map\MapLoader</Filter>
     </ClInclude>
-    <ClInclude Include="cTrack.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="cMesh.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -254,6 +226,12 @@
     </ClInclude>
     <ClInclude Include="SelectMap.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cTrack.h">
+      <Filter>Map\Track</Filter>
+    </ClInclude>
+    <ClInclude Include="cTransform.h">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -320,26 +298,11 @@
     <ClCompile Include="Lobby.cpp">
       <Filter>Lobby</Filter>
     </ClCompile>
-    <ClCompile Include="XFileLoader.cpp">
-      <Filter>XFileLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="AllocateHierarchy.cpp">
-      <Filter>XFileLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="SkinnedMesh.cpp">
-      <Filter>XFileLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="SkinnedMeshManager.cpp">
-      <Filter>Manager\SkinnedMeshManger</Filter>
-    </ClCompile>
     <ClCompile Include="TimeManager.cpp">
       <Filter>Manager\TimeManager</Filter>
     </ClCompile>
     <ClCompile Include="FrustomView.cpp">
       <Filter>CollisionClass\FrustomView</Filter>
-    </ClCompile>
-    <ClCompile Include="OBB.cpp">
-      <Filter>CollisionClass\OBB</Filter>
     </ClCompile>
     <ClCompile Include="TextManager.cpp">
       <Filter>Manager\TextManager</Filter>
@@ -383,9 +346,6 @@
     <ClCompile Include="MapLoader.cpp">
       <Filter>Map\MapLoader</Filter>
     </ClCompile>
-    <ClCompile Include="cTrack.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="cMesh.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -401,18 +361,11 @@
     <ClCompile Include="SelectMap.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="RevoltProject.rc">
-      <Filter>리소스 파일</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="small.ico">
-      <Filter>리소스 파일</Filter>
-    </Image>
-    <Image Include="RevoltProject.ico">
-      <Filter>리소스 파일</Filter>
-    </Image>
+    <ClCompile Include="cTrack.cpp">
+      <Filter>Map\Track</Filter>
+    </ClCompile>
+    <ClCompile Include="cTransform.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
