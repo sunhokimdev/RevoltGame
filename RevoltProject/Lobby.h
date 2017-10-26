@@ -1,8 +1,8 @@
 #pragma once
-
 class UIObject;		// UI오브젝트를 사용하기 위한 전방선언 클래스
 class MtlTex;		// 재질을 사용하기 위한 전방선언 클래스
 class Camera;		// 카메라 클래스를 사용하기 위한 전방선언 클래스
+class ProfileList;
 //===================================================================
 // - ## 10.15.17 ##
 // - written by 김선호
@@ -47,13 +47,20 @@ private:
 	std::vector<MtlTex*>		m_vecObjMtlTex;	// 오브젝트의 매터리얼를 저장하는 변수
 
 	LOBBY	m_stateLobby;						// 로비 상태 를 저장하는 변수
-	float	m_time;							// 변경 시간을 나타내는 타임 변수
-	int		m_select;						// 현재 위아래 커서의 위치
-	int		m_leftAndrightSelect;			// 현재 오른쪽 왼쪽 커서의 위치;
+	float	m_time;								// 변경 시간을 나타내는 타임 변수
+	int		m_select;							// 현재 위아래 커서의 위치
+	int		m_leftAndrightSelect;				// 현재 오른쪽 왼쪽 커서의 위치;
 
-	Camera*		m_pCamera;									// 카메라 클래스
+	Camera*		m_pCamera;						// 카메라 클래스
 	std::vector<std::string> m_vString;
 
+	std::vector<std::string> m_vProfileList;	// 프로필 목록
+	std::string				 m_PlayerName;		// 선택된 이름
+	bool					 m_isCreate;		// 프로필 생성할지 확인
+	bool					 m_isEnterName;		// 이름 입력 확인
+	bool					 m_isflag;			// 이름 불러오기
+
+	ProfileList*		 	 m_pfileList;		// 프로필 리스트
 public:
 	Lobby();
 	~Lobby();
@@ -67,6 +74,7 @@ public:
 	void KeyUpdate();				// 키 이벤트 발생 갱신 메서드
 	void TimeUpdate();				// 시간이 흐를 때 마다 발생 하는 이벤트를 갱신하는 메서드
 	void SetUpUI();					// UI 셋업작업
+	void CreateProfile();
 
 	D3DXVECTOR3 GetTarget() { return m_mapLobby[START_LOBBY]->m_target; }		// 카메라가 보는 방향을 반환해주는 메서드
 	void SetUpCamera(Camera* camera) { m_pCamera = camera; }		// 처음 카메라 변수를 지정하는 메서드

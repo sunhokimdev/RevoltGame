@@ -154,6 +154,7 @@
     <ClInclude Include="DEBUG_RENDER.h" />
     <ClInclude Include="DeviceManager.h" />
     <ClInclude Include="FontManager.h" />
+    <ClInclude Include="ProfileList.h" />
     <ClInclude Include="FrustomView.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Group.h" />
@@ -189,6 +190,7 @@
     <ClInclude Include="UITextChating.h" />
     <ClInclude Include="UITextImageView.h" />
     <ClInclude Include="UITextView.h" />
+    <ClInclude Include="UserFileLoader.h" />
     <ClInclude Include="UserStream.h" />
     <ClInclude Include="XFileLoader.h" />
   </ItemGroup>
@@ -200,6 +202,7 @@
     <ClCompile Include="DEBUG_RENDER.cpp" />
     <ClCompile Include="DeviceManager.cpp" />
     <ClCompile Include="FontManager.cpp" />
+    <ClCompile Include="ProfileList.cpp" />
     <ClCompile Include="FrustomView.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Group.cpp" />
@@ -235,6 +238,7 @@
     <ClCompile Include="UITextChating.cpp" />
     <ClCompile Include="UITextImageView.cpp" />
     <ClCompile Include="UITextView.cpp" />
+    <ClCompile Include="UserFileLoader.cpp" />
     <ClCompile Include="UserStream.cpp" />
     <ClCompile Include="XFileLoader.cpp" />
   </ItemGroup>

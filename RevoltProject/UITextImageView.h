@@ -21,12 +21,17 @@ private:
 
 	int			m_cursorTime;				// 커서를 Update하는 변수
 	bool		m_isCursorRender;			// 커서를 보이게 하는 변수
+
 public:
 	UITextImageView();
 	virtual ~UITextImageView();
 
 	static int*			m_Select;				// 현재 텍스트의 선택된 위치
 	static int*			m_LeftAndRightSelect;	// 현재 오른쪽 왼쪽 선택된 위치
+	static std::string	m_PlayerName;			// 이름 정보
+	static bool*		m_isCreate;				// 프로필 생성할지 확인
+	static bool*		m_isflag;						// 프로필 이름 불러오기 내용
+
 
 	SYNTHESIZE(std::string, m_sText, Text);		// 텍스트의 내용을 저장하는 변수
 	SYNTHESIZE(int, m_index, Index);			// 현재 위치에서 텍스트의 위치
@@ -34,6 +39,7 @@ public:
 	SYNTHESIZE(float, m_xSize, XSize);			// X폰트 사이즈 설정
 	SYNTHESIZE(float, m_ySize, YSize);			// Y폰트 사이즈 설정
 	SYNTHESIZE(bool, m_isVectorText, IsVectorText);		// 벡터 텍스트로 사용 할 것인지 확인하는 작업
+	SYNTHESIZE(bool, m_isVectorText2, IsVectorText2);	// 벡터 텍스트(위, 아래)로 사용 할 것인지 확인하는 작업
 	SYNTHESIZE(bool, m_isChatingText, IsChatingText);	// 키 입력을 받을 것인지 확인하는 작업
 
 	/*   텍스트를 벡터로 사용할 때 쓰는 메서드   */

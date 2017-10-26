@@ -85,6 +85,9 @@
     <Filter Include="Car\CarTextLoader">
       <UniqueIdentifier>{14829522-7bc6-4e69-9f30-d2e6f6641609}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UserFileLoader">
+      <UniqueIdentifier>{bcf01fdb-d3d3-47a6-a498-3e1eb4e8b8b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -222,6 +225,12 @@
     <ClInclude Include="Thing.h">
       <Filter>Thing</Filter>
     </ClInclude>
+    <ClInclude Include="UserFileLoader.h">
+      <Filter>UserFileLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="ProfileList.h">
+      <Filter>UserFileLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -340,6 +349,12 @@
     </ClCompile>
     <ClCompile Include="Thing.cpp">
       <Filter>Thing</Filter>
+    </ClCompile>
+    <ClCompile Include="UserFileLoader.cpp">
+      <Filter>UserFileLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="ProfileList.cpp">
+      <Filter>UserFileLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -67,8 +67,8 @@ void Map::Render()
 		}
 		m_map[m_stage]->m_pObjMesh->DrawSubset(i);
 	}
-	
-	// 오브젝트 거울 렌더
+
+	/*   오브젝트를 그리는 작업   */
 	for (int i = 0; i < m_map[m_stage]->m_vecThing.size(); i++)
 	{
 		m_map[m_stage]->m_vecThing[i]->MirrorRender();

@@ -66,13 +66,13 @@ void ObjectLoader::Load(OUT std::vector<Group*>& vecGroup, IN char * szFolder, I
 			{
 				float u, v;
 				sscanf_s(szTemp, "%*s %f %f %*f", &u, &v);
-				vecVT.push_back(D3DXVECTOR2(u, v));
+				vecVT.push_back(D3DXVECTOR2(u, 1.0f - v));
 			}
 			else if (szTemp[1] == 'n')
 			{
 				float x, y, z;
 				sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
-				vecVN.push_back(D3DXVECTOR3(x, y, z));
+				vecVN.push_back(D3DXVECTOR3(-x, y, z));
 			}
 		}
 		else if (szTemp[0] == 'u')
@@ -90,7 +90,7 @@ void ObjectLoader::Load(OUT std::vector<Group*>& vecGroup, IN char * szFolder, I
 				&nIndex[2][0], &nIndex[2][1], &nIndex[2][2]
 				);
 
-			for (int i = 0; i < 3; i++)
+			for (int i = 2; i >= 0; i--)
 			{
 				ST_PNT_VERTEX v;
 				v.p = vecV[nIndex[i][0] - 1];
@@ -342,7 +342,7 @@ LPD3DXMESH ObjectLoader::LoadMesh(OUT std::vector<MtlTex*>& vecMtlTex, IN char *
 			{
 				float x, y, z;
 				sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
-				vecVN.push_back(D3DXVECTOR3(x, y, z));
+				vecVN.push_back(D3DXVECTOR3(-x, y, z));
 			}
 		}
 		else if (szTemp[0] == 'u')
