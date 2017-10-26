@@ -104,9 +104,3 @@ struct ST_CAR
 };
 
 /*   맵 정보 구조체   */
-struct ST_MAP
-{
-	LPD3DXMESH				m_pObjMesh;		// 맵의 메쉬를 저장하는 멤버 변수
-	std::vector<MtlTex*>		m_vecObjMtlTex;	// 오브젝트의 매터리얼를 저장하는 멤버 변수
-	std::vector<Thing*>		m_vecThing;			// 오브젝트를 관리하기 위한 벡터 변수
-};

@@ -1,7 +1,7 @@
 #pragma once
 #include "Object.h"
 
-class UIObject : public Object
+class UIObject
 {
 protected:
 	std::vector<UIObject*>		m_vecChild;
@@ -15,6 +15,8 @@ protected:
 public:
 	UIObject();
 	virtual ~UIObject();
+
+	virtual void Release();
 
 	virtual void SetPosition(float x, float y, float z = 0);
 	virtual void AddChild(UIObject* pChild);

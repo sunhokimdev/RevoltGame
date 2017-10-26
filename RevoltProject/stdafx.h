@@ -147,3 +147,7 @@ enum CAR_RATING { RATING_NONE, RATING_ROOKIE, RATING_AMATEUR, RATING_SEMI_PRO, R
 #include "FontManager.h"
 #include "TimeManager.h"
 #include "SkinnedMeshManager.h"
+
+
+//UTIL
+#include "cStringUtil.h"

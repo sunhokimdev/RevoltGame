@@ -1,10 +1,11 @@
 #pragma once
+class cTrack;
 class MapLoader
 {
 public:
 	MapLoader();
 	~MapLoader();
 
-	void Load(ST_MAP* stMap, char* szFolder, const char* szFile);
+	void Load(cTrack* stMap, char* szFolder, const char* szFile);
 };
 

@@ -2,7 +2,7 @@
 
 #define g_pDeviceManager DeviceManager::GetInstance()
 #define g_pD3DDevice	DeviceManager::GetInstance()->GetDevice()
-
+#define MgrD3DDevice g_pD3DDevice
 class DeviceManager
 {
 public:

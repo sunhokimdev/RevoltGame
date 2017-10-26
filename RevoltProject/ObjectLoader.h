@@ -22,6 +22,14 @@ public:
 	LPD3DXMESH LoadMesh(
 		OUT std::vector<MtlTex*> & vecMtlTex,
 		IN const char* szFolder, IN const char* szFile);
+
+
+	//Object
+	static void LoadMesh(OUT cMesh* pMesh, IN std::string szFolder, IN std::string szFile);
+	static void LoadMtlLib(std::map<std::string, MtlTex*>* mtlTex, std::string szFolder, std::string szFile);
+
+
+
 private:
 	std::map<std::string, MtlTex*> m_mapMtlTex;
 };
