@@ -265,7 +265,7 @@ void Lobby::KeyUpdate()
 		else if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
 			m_selectMapType = m_mapLobby[m_stateLobby]->m_selectCnt;
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_selectMapType-1];
+			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[1];
 		}
 	}
 
@@ -982,12 +982,13 @@ void Lobby::SetUpUI()
 	m_mapLobby[SELECT_MAP_LOBBY]->m_target = D3DXVECTOR3(12, 3, -18);
 	m_mapLobby[SELECT_MAP_LOBBY]->m_count = 1;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_selectCnt = 4;
-	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob = new LOBBY[2];
 	m_mapLobby[SELECT_MAP_LOBBY]->m_time = 5000.0f;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_pObject = pImageView62;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_camLookAt = D3DXVECTOR3(23, 5, -12);
 	m_mapLobby[SELECT_MAP_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob[0] = MARKET_MAP;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob[1] = GARDEN_MAP;
 
 	m_mapLobby[VIEW_CAR_LOBBY] = new ST_Object;
 	m_mapLobby[VIEW_CAR_LOBBY]->m_target = D3DXVECTOR3(10, 4, 8);
@@ -1009,6 +1010,12 @@ void Lobby::SetUpUI()
 	m_mapLobby[MARKET_MAP]->m_camLookAt = D3DXVECTOR3(0, 0, 0);
 	m_mapLobby[MARKET_MAP]->m_prevLob = SELECT_MAP_LOBBY;
 	m_mapLobby[MARKET_MAP]->m_pObject = NULL;
+
+	m_mapLobby[GARDEN_MAP] = new ST_Object;
+	m_mapLobby[GARDEN_MAP]->m_target = D3DXVECTOR3(0, 10, -15);
+	m_mapLobby[GARDEN_MAP]->m_camLookAt = D3DXVECTOR3(0, 0, 0);
+	m_mapLobby[GARDEN_MAP]->m_prevLob = SELECT_MAP_LOBBY;
+	m_mapLobby[GARDEN_MAP]->m_pObject = NULL;
 }
 
 void Lobby::MapTypeUpdate()

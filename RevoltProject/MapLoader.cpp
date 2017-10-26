@@ -11,7 +11,7 @@ MapLoader::~MapLoader()
 {
 }
 
-void MapLoader::Load(ST_MAP& stMap, char * szFolder, const char * szFile)
+void MapLoader::Load(ST_MAP* stMap, char * szFolder, const char * szFile)
 {
 
 	FILE* fp;
@@ -37,9 +37,9 @@ void MapLoader::Load(ST_MAP& stMap, char * szFolder, const char * szFile)
 		{
 			ObjectLoader load;
 			std::string tStr = strtok(NULL, "\t ;");
-			std::string tFolder = std::string("Maps/") + tStr;
-			tStr = tStr + std::string(".obj");
-			stMap.m_pObjMesh = load.LoadMesh(stMap.m_vecObjMtlTex, const_cast<char*>(tFolder.c_str()), tStr.c_str());
+			std::string tFolder = std::string(szFolder) + std::string("/") + std::string(szFile);
+			tStr = std::string(szFile) + std::string(".obj");
+			stMap->m_pObjMesh = load.LoadMesh(stMap->m_vecObjMtlTex, (tFolder.c_str()), tStr.c_str());
 		}
 	}
 }
