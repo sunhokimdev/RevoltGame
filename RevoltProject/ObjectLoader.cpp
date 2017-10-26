@@ -128,11 +128,22 @@ void ObjectLoader::LoadMtlLib(const char * szFolder, char * szFile)
 		char szTemp[1024];
 		fgets(szTemp, 1024, fp);
 
-		if (szTemp[0] == '#')
+
+		int sI = 0;
+		while (true)
+		{
+			if (szTemp[sI] == ' ' || szTemp[sI] == '\t')
+				sI++;
+
+			else break;
+		}
+
+
+		if (szTemp[sI] == '#')
 		{
 			continue;
 		}
-		else if (szTemp[0] == 'n')
+		else if (szTemp[sI] == 'n')
 		{
 			if (isMaterial)
 			{
@@ -154,9 +165,9 @@ void ObjectLoader::LoadMtlLib(const char * szFolder, char * szFile)
 
 			isMaterial = true;
 		}
-		else if (szTemp[0] == 'K')
+		else if (szTemp[sI] == 'K')
 		{
-			if (szTemp[1] == 'a')
+			if (szTemp[sI+1] == 'a')
 			{
 				float r, g, b;
 				sscanf_s(szTemp, "%*s %f %f %f", &r, &g, &b);
@@ -165,7 +176,7 @@ void ObjectLoader::LoadMtlLib(const char * szFolder, char * szFile)
 				m_mapMtlTex[sMtlName]->GetMaterial().Ambient.b = b;
 				m_mapMtlTex[sMtlName]->GetMaterial().Ambient.a = 1.0f;
 			}
-			else if (szTemp[1] == 'd')
+			else if (szTemp[sI+1] == 'd')
 			{
 				float r, g, b;
 				sscanf_s(szTemp, "%*s %f %f %f", &r, &g, &b);
@@ -174,7 +185,7 @@ void ObjectLoader::LoadMtlLib(const char * szFolder, char * szFile)
 				m_mapMtlTex[sMtlName]->GetMaterial().Diffuse.b = b;
 				m_mapMtlTex[sMtlName]->GetMaterial().Diffuse.a = 1.0f;
 			}
-			else if (szTemp[1] == 's')
+			else if (szTemp[sI+1] == 's')
 			{
 				float r, g, b;
 				sscanf_s(szTemp, "%*s %f %f %f", &r, &g, &b);
@@ -184,13 +195,13 @@ void ObjectLoader::LoadMtlLib(const char * szFolder, char * szFile)
 				m_mapMtlTex[sMtlName]->GetMaterial().Specular.a = 1.0f;
 			}
 		}
-		else if (szTemp[0] == 'd')
+		else if (szTemp[sI] == 'd')
 		{
 			float d;
 			sscanf_s(szTemp, "%*s %f", &d);
 			m_mapMtlTex[sMtlName]->GetMaterial().Power = d;
 		}
-		else if (szTemp[0] == 'm')
+		else if (szTemp[sI] == 'm')
 		{
 			char szTexFile[1024];
 			std::string szFullPath = "";
@@ -318,7 +329,10 @@ LPD3DXMESH ObjectLoader::LoadMesh(OUT std::vector<MtlTex*>& vecMtlTex, IN const 
 		int sI = 0; // startIndex;
 		while (true)
 		{
-			if (szTemp[sI] == ' ' || szTemp[sI] == '\t') sI++; else break;
+			if (szTemp[sI] == ' ' || szTemp[sI] == '\t') 
+				sI++;
+			
+			else break;
 		}
 
 
