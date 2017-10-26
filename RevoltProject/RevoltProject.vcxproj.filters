@@ -252,6 +252,9 @@
     <ClInclude Include="cPhysXManager.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SelectMap.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -393,6 +396,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="cPhysXManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectMap.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

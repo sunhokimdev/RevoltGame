@@ -179,6 +179,7 @@
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RevoltProject.h" />
+    <ClInclude Include="SelectMap.h" />
     <ClInclude Include="SkinnedMesh.h" />
     <ClInclude Include="SkinnedMeshManager.h" />
     <ClInclude Include="SoundManager.h" />
@@ -230,6 +231,7 @@
     <ClCompile Include="PickUpObject.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="RevoltProject.cpp" />
+    <ClCompile Include="SelectMap.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />
     <ClCompile Include="SkinnedMeshManager.cpp" />
     <ClCompile Include="SoundManager.cpp" />
