@@ -10,6 +10,7 @@
 #include "MtlTex.h"
 #include "Camera.h"
 #include "SelectMap.h"
+#include "InGameUI.h"
 
 /*      */
 #include "Map.h"
@@ -53,6 +54,9 @@ void Lobby::Setup()
 
 	m_pSelectMap = new SelectMap;
 	m_pSelectMap->Setup();
+
+	m_pInGameUI = new InGameUI;
+	m_pInGameUI->Setup();
 
 	SetUpUI();
 }
@@ -224,9 +228,7 @@ void Lobby::KeyUpdate()
 
 		else if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
-			m_selectMapType = m_mapLobby[m_stateLobby]->m_selectCnt;
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
-
 			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
 			m_time = 0.0f;
 			m_select = 0;
@@ -787,88 +789,6 @@ void Lobby::SetUpUI()
 
 	/*  Select Map Lobby  */
 
-	/*m_mapName		= new UITextImageView;
-	m_mapLength		= new UITextImageView;
-	m_mapDifficulty = new UITextImageView;
-	m_mapImage		= new UIImageView;
-	m_mapImage->SetXSize(1.5f);
-	m_mapImage->SetPosition(250, 100);
-	m_mapImage->SetIsNoise(true);
-
-	UIImageView* pImageView62 = new UIImageView;
-	pImageView62->SetPosition(80, 50);
-	pImageView62->SetXSize(4.0f);
-	pImageView62->SetYSize(4.0f);
-	pImageView62->SetIsBoard(true);
-	pImageView62->SetTexture("Maps/Front/Image/blueRing.png");
-
-	UIImageView* pImageView63 = new UIImageView;
-	pImageView63->SetXSize(1.2f);
-	pImageView63->SetYSize(1.2f);
-	pImageView63->SetPosition(17, 17);
-	pImageView63->SetTexture("Maps/Front/Image/blueflag.png");
-
-	UIImageView* pImageView64 = new UIImageView;
-	pImageView64->SetPosition(120, 20);
-	pImageView64->SetIsBoard(true);
-	pImageView64->SetXSize(25.0f);
-	pImageView64->SetYSize(1.0f);
-	pImageView64->SetTexture("Maps/Front/Image/ring.png");
-
-	UITextImageView* pImageView65 = new UITextImageView;
-	pImageView65->SetTexture("Maps/Front/Image/font1.png");
-	pImageView65->SetText("SELECT TRACK");
-	pImageView65->SetXSize(1.5f);
-	pImageView65->SetYSize(1.5f);
-	pImageView65->SetPosition(180, 40);
-
-	UIImageView* pImageView66 = new UIImageView;
-	pImageView66->SetPosition(230, 400);
-	pImageView66->SetIsBoard(true);
-	pImageView66->SetXSize(25.0f);
-	pImageView66->SetYSize(10.0f);
-	pImageView66->SetTexture("Maps/Front/Image/ring.png");
-
-	UITextImageView* pImageView67 = new UITextImageView;
-	pImageView67->SetTexture("Maps/Front/Image/font2.png");
-	pImageView67->SetText("Length");
-	pImageView67->SetPosition(60, 80);
-
-	UITextImageView* pImageView68 = new UITextImageView;
-	pImageView68->SetTexture("Maps/Front/Image/font2.png");
-	pImageView68->SetText("Difficulty");
-	pImageView68->SetPosition(60, 105);
-
-	m_LockedRing = new UIImageView;
-	m_LockedRing->SetPosition(150, 180);
-	m_LockedRing->SetIsBoard(true);
-	m_LockedRing->SetXSize(2.0f);
-	m_LockedRing->SetYSize(0.5f);
-	m_LockedRing->SetTexture("Maps/Front/Image/ring.png");
-
-	m_LockedTextImage = new UITextImageView;
-	m_LockedTextImage->SetTexture("Maps/Front/Image/font2.png");
-	m_LockedTextImage->SetColor(D3DCOLOR_ARGB(255, 255, 0, 0));
-	m_LockedTextImage->SetText("Locked");
-	m_LockedTextImage->SetPosition(15, 20);
-
-	pImageView62->AddChild(m_mapImage);
-	pImageView62->AddChild(pImageView63);
-	pImageView62->AddChild(pImageView64);
-	pImageView62->AddChild(pImageView65);
-	pImageView62->AddChild(pImageView66);
-	pImageView66->AddChild(m_mapName);
-	pImageView66->AddChild(pImageView67);
-	pImageView66->AddChild(pImageView68);
-	pImageView66->AddChild(m_mapLength);
-	pImageView66->AddChild(m_mapDifficulty);
-	m_mapImage->AddChild(m_LockedRing);
-	m_LockedRing->AddChild(m_LockedTextImage);*/
-
-	//=========================================== Add Lobby Ui ===========================================//
-
-
-
 	//=========================================== Add Lobby Ui ===========================================//
 
 	/*   로비 UI 추가하기   */
@@ -988,11 +908,11 @@ void Lobby::SetUpUI()
 	m_mapLobby[MARKET_MAP]->m_target = D3DXVECTOR3(0, 10, -15);
 	m_mapLobby[MARKET_MAP]->m_camLookAt = D3DXVECTOR3(0, 0, 0);
 	m_mapLobby[MARKET_MAP]->m_prevLob = SELECT_MAP_LOBBY;
-	m_mapLobby[MARKET_MAP]->m_pObject = NULL;
+	m_mapLobby[MARKET_MAP]->m_pObject = m_pInGameUI->GetUIObject();
 
 	m_mapLobby[GARDEN_MAP] = new ST_Object;
 	m_mapLobby[GARDEN_MAP]->m_target = D3DXVECTOR3(0, 60, -15);
 	m_mapLobby[GARDEN_MAP]->m_camLookAt = D3DXVECTOR3(0, -5, 0);
 	m_mapLobby[GARDEN_MAP]->m_prevLob = SELECT_MAP_LOBBY;
-	m_mapLobby[GARDEN_MAP]->m_pObject = NULL;
+	m_mapLobby[GARDEN_MAP]->m_pObject = m_pInGameUI->GetUIObject();
 }

@@ -88,6 +88,9 @@
     <Filter Include="Map\MapLoader">
       <UniqueIdentifier>{f802dfe3-fc95-41c5-9970-b49f867b6ee4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Lobby\GameUI">
+      <UniqueIdentifier>{f1d3484f-4c7e-4574-9703-feeb44fb35df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -240,6 +243,15 @@
     <ClInclude Include="MapLoader.h">
       <Filter>Map\MapLoader</Filter>
     </ClInclude>
+    <ClInclude Include="SelectMap.h">
+      <Filter>Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="InGameUI.h">
+      <Filter>Lobby\GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="RevoltUIObject.h">
+      <Filter>Lobby\GameUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -373,6 +385,15 @@
     </ClCompile>
     <ClCompile Include="MapLoader.cpp">
       <Filter>Map\MapLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectMap.cpp">
+      <Filter>Lobby</Filter>
+    </ClCompile>
+    <ClCompile Include="InGameUI.cpp">
+      <Filter>Lobby\GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="RevoltUIObject.cpp">
+      <Filter>Lobby\GameUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
