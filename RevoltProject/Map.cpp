@@ -36,7 +36,7 @@ void Map::Setup()
 
 	m_vecMapName.push_back("Front");
 	m_vecMapName.push_back("Market2");
-	m_vecMapName.push_back("Market2");
+	m_vecMapName.push_back("Stunts");
 }
 
 void Map::Update()
@@ -50,10 +50,10 @@ void Map::Update()
 			m_stage = *g_LobbyState - IN_GAME_MAP;
 
 			MapLoader load;
-			ST_MAP pStMap;
+			ST_MAP* pStMap = new ST_MAP;
 			load.Load(pStMap,"Maps", m_vecMapName[m_stage].c_str());
 
-			m_map[m_stage] = &pStMap;
+			m_map[m_stage] = pStMap;
 		}
 	}
 
