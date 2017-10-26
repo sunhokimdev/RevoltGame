@@ -248,6 +248,17 @@ void Lobby::KeyUpdate()
 				g_pSoundManager->Play("menuNext.wav", 1.0f);
 		}
 
+		else if (m_stateLobby == SELECT_MAP_LOBBY)
+		{
+			m_selectMapType = m_mapLobby[m_stateLobby]->m_selectCnt;
+			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
+
+			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+			m_time = 0.0f;
+			m_select = 0;
+			m_leftAndrightSelect = 0;
+		}
+
 		else if (m_mapLobby[m_stateLobby]->m_pNextLob[m_select] != LOBBY_NONE)
 		{
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
@@ -260,12 +271,6 @@ void Lobby::KeyUpdate()
 
 			if (m_stateLobby > INTRO3)
 				g_pSoundManager->Play("menuNext.wav", 1.0f);
-		}
-
-		else if (m_stateLobby == SELECT_MAP_LOBBY)
-		{
-			m_selectMapType = m_mapLobby[m_stateLobby]->m_selectCnt;
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[1];
 		}
 	}
 
@@ -1012,8 +1017,8 @@ void Lobby::SetUpUI()
 	m_mapLobby[MARKET_MAP]->m_pObject = NULL;
 
 	m_mapLobby[GARDEN_MAP] = new ST_Object;
-	m_mapLobby[GARDEN_MAP]->m_target = D3DXVECTOR3(0, 10, -15);
-	m_mapLobby[GARDEN_MAP]->m_camLookAt = D3DXVECTOR3(0, 0, 0);
+	m_mapLobby[GARDEN_MAP]->m_target = D3DXVECTOR3(0, 60, -15);
+	m_mapLobby[GARDEN_MAP]->m_camLookAt = D3DXVECTOR3(0, -5, 0);
 	m_mapLobby[GARDEN_MAP]->m_prevLob = SELECT_MAP_LOBBY;
 	m_mapLobby[GARDEN_MAP]->m_pObject = NULL;
 }
