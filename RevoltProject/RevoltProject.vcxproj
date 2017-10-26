@@ -164,6 +164,7 @@
     <ClInclude Include="MacroFunction.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MapLoader.h" />
     <ClInclude Include="MtlTex.h" />
     <ClInclude Include="OBB.h" />
     <ClInclude Include="Object.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="ObjectMap.h" />
     <ClInclude Include="PhysXManager.h" />
+    <ClInclude Include="PickUpObject.h" />
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RevoltProject.h" />
@@ -211,6 +213,7 @@
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MapLoader.cpp" />
     <ClCompile Include="MtlTex.cpp" />
     <ClCompile Include="OBB.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -218,6 +221,7 @@
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="ObjectMap.cpp" />
     <ClCompile Include="PhysXManager.cpp" />
+    <ClCompile Include="PickUpObject.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="RevoltProject.cpp" />
     <ClCompile Include="SkinnedMesh.cpp" />

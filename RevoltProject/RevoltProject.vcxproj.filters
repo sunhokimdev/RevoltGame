@@ -85,6 +85,9 @@
     <Filter Include="Car\CarTextLoader">
       <UniqueIdentifier>{14829522-7bc6-4e69-9f30-d2e6f6641609}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Map\MapLoader">
+      <UniqueIdentifier>{f802dfe3-fc95-41c5-9970-b49f867b6ee4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -231,6 +234,12 @@
     <ClInclude Include="WheelTire.h">
       <Filter>Thing</Filter>
     </ClInclude>
+    <ClInclude Include="PickUpObject.h">
+      <Filter>Thing</Filter>
+    </ClInclude>
+    <ClInclude Include="MapLoader.h">
+      <Filter>Map\MapLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -358,6 +367,12 @@
     </ClCompile>
     <ClCompile Include="WheelTire.cpp">
       <Filter>Thing</Filter>
+    </ClCompile>
+    <ClCompile Include="PickUpObject.cpp">
+      <Filter>Thing</Filter>
+    </ClCompile>
+    <ClCompile Include="MapLoader.cpp">
+      <Filter>Map\MapLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

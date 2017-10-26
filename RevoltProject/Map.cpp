@@ -6,8 +6,10 @@
 #include "Car.h"
 #include "CarBox.h"
 #include "WheelTire.h"
+#include "PickUpObject.h"
+#include "MapLoader.h"
 
-LOBBY Map::g_LobbyState;
+LOBBY* Map::g_LobbyState;
 
 Map::Map()
 	: m_stage(0)
@@ -27,15 +29,33 @@ void Map::Setup()
 		m_map[0]->m_vecObjMtlTex,
 		"Maps/Front", "Front.obj");
 
+	m_map[1] = new ST_MAP;
+	m_map[2] = new ST_MAP;
+
 	SetupThing();
+
+	m_vecMapName.push_back("Front");
+	m_vecMapName.push_back("Market2");
+	m_vecMapName.push_back("Market2");
 }
 
 void Map::Update()
 {
-	if (g_LobbyState <= SELECT_MAP_LOBBY)
+	if (*g_LobbyState - IN_GAME_MAP < 0)
 		m_stage = 0;
-	else if (g_LobbyState > SELECT_MAP_LOBBY)
-		m_stage = 1;
+	else 
+	{
+		if (m_stage != (*g_LobbyState - IN_GAME_MAP))
+		{
+			m_stage = *g_LobbyState - IN_GAME_MAP;
+
+			MapLoader load;
+			ST_MAP pStMap;
+			load.Load(pStMap,"Maps", m_vecMapName[m_stage].c_str());
+
+			m_map[m_stage] = &pStMap;
+		}
+	}
 
 	for (int i = 0;i < m_map[m_stage]->m_vecThing.size();i++)
 	{
@@ -143,6 +163,11 @@ void Map::SetupThing()
 	tThing10->SetPosition(19.0f, 0.8f, 8.5f);
 	tThing10->SetRotationY(D3DX_PI / 2.0f);
 
+	PickUpObject* tThing11 = new PickUpObject;
+	tThing11->Setup();
+	tThing11->SetTarget(14.0f, 9.8f, 9.0f);
+	tThing11->SetPosition(0.0f, 0.8f, -15.5f);
+
 	m_map[0]->m_vecThing.push_back(tThing1);
 	m_map[0]->m_vecThing.push_back(tThing2);
 	m_map[0]->m_vecThing.push_back(tThing3);
@@ -153,4 +178,5 @@ void Map::SetupThing()
 	m_map[0]->m_vecThing.push_back(tThing8);
 	m_map[0]->m_vecThing.push_back(tThing9);
 	m_map[0]->m_vecThing.push_back(tThing10);
+	m_map[0]->m_vecThing.push_back(tThing11);
 }

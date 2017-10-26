@@ -53,6 +53,7 @@ void Lobby::Setup()
 	UITextImageView::m_LeftAndRightSelect = &m_leftAndrightSelect;
 	Thing::g_LobbyState = &m_stateLobby;
 	CarBox::g_select = &m_leftAndrightSelect;
+	Map::g_LobbyState = &m_stateLobby;
 
 	SetUpUI();
 }
@@ -264,6 +265,7 @@ void Lobby::KeyUpdate()
 		else if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
 			m_selectMapType = m_mapLobby[m_stateLobby]->m_selectCnt;
+			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_selectMapType-1];
 		}
 	}
 
@@ -276,6 +278,7 @@ void Lobby::KeyUpdate()
 
 			if(m_stateLobby != MAIN_LOBBY2)
 				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
+
 			g_pSoundManager->Play("menuPrev.wav", 1.0f);
 		}
 	}
@@ -533,10 +536,6 @@ void Lobby::SetUpUI()
 	pImageView19->AddChild(pImageView25);
 	pImageView19->AddChild(pImageView18);
 
-
-
-
-
 	/*   Main Lobby 3  */
 
 	UIImageView* pImageView26 = new UIImageView;
@@ -579,10 +578,6 @@ void Lobby::SetUpUI()
 	pImageView27->AddChild(pImageView30);
 	pImageView27->AddChild(pImageView31);
 	pImageView27->AddChild(pImageView26);
-
-
-
-
 
 	/*  Create Profile Lobby  */
 
@@ -878,7 +873,6 @@ void Lobby::SetUpUI()
 	m_LockedTextImage->SetText("Locked");
 	m_LockedTextImage->SetPosition(15, 20);
 
-
 	pImageView62->AddChild(m_mapImage);
 	pImageView62->AddChild(pImageView63);
 	pImageView62->AddChild(pImageView64);
@@ -894,6 +888,9 @@ void Lobby::SetUpUI()
 
 	//=========================================== Add Lobby Ui ===========================================//
 
+
+
+	//=========================================== Add Lobby Ui ===========================================//
 
 	/*   로비 UI 추가하기   */
 
@@ -940,7 +937,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[2] = LOBBY_NONE;
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[3] = LOBBY_NONE;
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[4] = START_LOBBY;
-	m_mapLobby[MAIN_LOBBY]->m_pNextLob[5] = LOBBY_NONE;
+	m_mapLobby[MAIN_LOBBY]->m_pNextLob[5] = GAME_QUIT;
 
 	m_mapLobby[MAIN_LOBBY2] = new ST_Object;
 	m_mapLobby[MAIN_LOBBY2]->m_target = D3DXVECTOR3(1, 10, -2);
@@ -966,7 +963,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_time = 50.0f;
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pObject = pImageView33;
-	m_mapLobby[CREATE_PROFILE_LOBBY]->m_camLookAt = D3DXVECTOR3(14, -4, 22);
+	m_mapLobby[CREATE_PROFILE_LOBBY]->m_camLookAt = D3DXVECTOR3(14, -2, 22);
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pNextLob[0] = SELECT_CAR_LOBBY;
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_prevLob = MAIN_LOBBY3;
 
@@ -979,7 +976,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob[0] = VIEW_CAR_LOBBY;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_time = 50.0f;
-	m_mapLobby[SELECT_CAR_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
+	m_mapLobby[SELECT_CAR_LOBBY]->m_prevLob = CREATE_PROFILE_LOBBY;
 
 	m_mapLobby[SELECT_MAP_LOBBY] = new ST_Object;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_target = D3DXVECTOR3(12, 3, -18);
@@ -990,6 +987,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[SELECT_MAP_LOBBY]->m_pObject = pImageView62;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_camLookAt = D3DXVECTOR3(23, 5, -12);
 	m_mapLobby[SELECT_MAP_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob[0] = MARKET_MAP;
 
 	m_mapLobby[VIEW_CAR_LOBBY] = new ST_Object;
 	m_mapLobby[VIEW_CAR_LOBBY]->m_target = D3DXVECTOR3(10, 4, 8);
@@ -999,6 +997,18 @@ void Lobby::SetUpUI()
 	m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[VIEW_CAR_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
 	m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob[0] = SELECT_MAP_LOBBY;
+
+	m_mapLobby[IN_GAME_MAP] = new ST_Object;
+	m_mapLobby[IN_GAME_MAP]->m_target = D3DXVECTOR3(0, 0, -15);
+	m_mapLobby[IN_GAME_MAP]->m_camLookAt = D3DXVECTOR3(0, 0, 0);
+	m_mapLobby[IN_GAME_MAP]->m_prevLob = SELECT_MAP_LOBBY;
+	m_mapLobby[IN_GAME_MAP]->m_pObject = NULL;
+
+	m_mapLobby[MARKET_MAP] = new ST_Object;
+	m_mapLobby[MARKET_MAP]->m_target = D3DXVECTOR3(0, 10, -15);
+	m_mapLobby[MARKET_MAP]->m_camLookAt = D3DXVECTOR3(0, 0, 0);
+	m_mapLobby[MARKET_MAP]->m_prevLob = SELECT_MAP_LOBBY;
+	m_mapLobby[MARKET_MAP]->m_pObject = NULL;
 }
 
 void Lobby::MapTypeUpdate()
