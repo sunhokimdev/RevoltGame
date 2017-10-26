@@ -76,7 +76,8 @@ extern HINSTANCE	g_hInst;
 
 /*   열거체 형 설정   */
 /*   현재 로비상태를 저장하는 열거형 구조체   */
-enum LOBBY { LOBBY_NONE = 1001
+enum LOBBY {
+	LOBBY_NONE = 1001
 	, INTRO1
 	, INTRO2
 	, INTRO3
@@ -92,11 +93,12 @@ enum LOBBY { LOBBY_NONE = 1001
 	, VIEW_CAR_LOBBY
 	, IN_GAME_MAP
 	, MARKET_MAP
-	, GARDEN_MAP};
-// GARDEN_MAP - IN_GAME_MAP
+	, GARDEN_MAP
+};
 enum FONTFILE{ FONT1, FONT2, FONT3};
 enum CAR_CLASS { CLASS_NONE, CAR_ELECTRIC, CAR_GLOW, CAR_OTHER };
 enum CAR_RATING { RATING_NONE, RATING_ROOKIE, RATING_AMATEUR, RATING_SEMI_PRO, RATING_PRO };
+enum MAP_TYPE { NONE = 0, SUPERMARKET, NHOOD, MUSEUM, SHIP };
 
 //======================================
 // - ## 10.14.17 ##
