@@ -9,6 +9,7 @@
 #include "ObjectLoader.h"
 #include "MtlTex.h"
 #include "Camera.h"
+#include "SelectMap.h"
 
 /*      */
 #include "Map.h"
@@ -23,13 +24,7 @@ Lobby::Lobby()
 	, m_time(0.0f)
 	, m_select(0)
 	, m_leftAndrightSelect(0)
-	, m_selectMapType(0)
-	, m_isUnLocked(true)
-	, m_isOpenHood(false)
-	, m_isOpenShip(false)
-	, m_isOpenMuse(false)
-	, m_isLockedRender(false)
-	, m_LockedTime(0)
+	, m_stateMapType(NONE)
 {
 }
 
@@ -37,6 +32,7 @@ Lobby::~Lobby()
 {
 	SAFE_RELEASE(m_pSprite);
 	SAFE_RELEASE(m_pObjMesh);
+	SAFE_DELETE(m_pSelectMap);
 
 	for each(auto a in m_mapLobby)
 	{
@@ -54,6 +50,9 @@ void Lobby::Setup()
 	Thing::g_LobbyState = &m_stateLobby;
 	CarBox::g_select = &m_leftAndrightSelect;
 
+	m_pSelectMap = new SelectMap;
+	m_pSelectMap->Setup();
+
 	SetUpUI();
 }
 
@@ -61,35 +60,10 @@ void Lobby::Update()
 {
 	TimeUpdate();			// 시간 갱신 메서드
 	KeyUpdate();			// 키 이벤트 갱신 메서드
-	MapTypeUpdate();		// Select Map UI Update Method
 
 	if (m_stateLobby == SELECT_MAP_LOBBY)
 	{
-		if (!m_isUnLocked)
-		{
-			if ((m_LockedTime / 10) % 2 == 1)
-				m_isLockedRender = true;
-			else
-				m_isLockedRender = false;
-
-			m_LockedTime++;
-
-			if (m_LockedTime > 1000000)
-				m_LockedTime = 0;
-
-
-			if (m_isLockedRender)
-			{
-				m_LockedRing->SetTexture("");
-				m_LockedTextImage->SetText("");
-			}
-			else
-			{
-				m_LockedRing->SetTexture("Maps/Front/Image/ring.png");
-				m_LockedTextImage->SetTexture("Maps/Front/Image/font2.png");
-				m_LockedTextImage->SetText("Locked");
-			}
-		}
+		m_pSelectMap->SetMapType(&m_stateMapType, m_leftAndrightSelect);
 	}
 
 	if (m_mapLobby[m_stateLobby]->m_pObject)
@@ -107,23 +81,23 @@ void Lobby::KeyUpdate()
 	/*          Test Key          */
 	if (g_pKeyManager->isOnceKeyDown('Q'))
 	{
-		if (m_isOpenHood)
-			m_isOpenHood = false;
-		else m_isOpenHood = true;
+		if (m_pSelectMap->GetOpenHood())
+			m_pSelectMap->SetOpenHood(false);
+		else m_pSelectMap->SetOpenHood(true);
 	}
 
 	if (g_pKeyManager->isOnceKeyDown('W'))
 	{
-		if (m_isOpenMuse)
-			m_isOpenMuse = false;
-		else m_isOpenMuse = true;
+		if (m_pSelectMap->GetOpenMuse())
+			m_pSelectMap->SetOpenMuse(false);
+		else m_pSelectMap->SetOpenMuse(true);
 	}
 
 	if (g_pKeyManager->isOnceKeyDown('E'))
 	{
-		if (m_isOpenShip)
-			m_isOpenShip = false;
-		else m_isOpenShip = true;
+		if (m_pSelectMap->GetOpenShip())
+			m_pSelectMap->SetOpenShip(false);
+		else m_pSelectMap->SetOpenShip(true);
 	}
 
 	if (g_pKeyManager->isOnceKeyDown(VK_DOWN))
@@ -175,7 +149,7 @@ void Lobby::KeyUpdate()
 		{
 			m_leftAndrightSelect++;
 
-			m_mapImage->SetIsMove(true);
+			m_pSelectMap->GetmagImage()->SetIsMove(true);
 
 			if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
 				m_leftAndrightSelect = 0;
@@ -213,7 +187,7 @@ void Lobby::KeyUpdate()
 		{
 			m_leftAndrightSelect--;
 
-			m_mapImage->SetIsMove(true);
+			m_pSelectMap->GetmagImage()->SetIsMove(true);
 
 			if (m_leftAndrightSelect < 0)
 				m_leftAndrightSelect = m_mapLobby[m_stateLobby]->m_selectCnt - 1;
@@ -263,7 +237,7 @@ void Lobby::KeyUpdate()
 
 		else if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
-			m_selectMapType = m_mapLobby[m_stateLobby]->m_selectCnt;
+			m_pSelectMap->SetmapType(m_stateMapType);
 		}
 	}
 
@@ -813,7 +787,7 @@ void Lobby::SetUpUI()
 
 	/*  Select Map Lobby  */
 
-	m_mapName		= new UITextImageView;
+	/*m_mapName		= new UITextImageView;
 	m_mapLength		= new UITextImageView;
 	m_mapDifficulty = new UITextImageView;
 	m_mapImage		= new UIImageView;
@@ -890,7 +864,7 @@ void Lobby::SetUpUI()
 	pImageView66->AddChild(m_mapLength);
 	pImageView66->AddChild(m_mapDifficulty);
 	m_mapImage->AddChild(m_LockedRing);
-	m_LockedRing->AddChild(m_LockedTextImage);
+	m_LockedRing->AddChild(m_LockedTextImage);*/
 
 	//=========================================== Add Lobby Ui ===========================================//
 
@@ -986,8 +960,9 @@ void Lobby::SetUpUI()
 	m_mapLobby[SELECT_MAP_LOBBY]->m_count = 1;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_selectCnt = 4;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob[0] = VIEW_CAR_LOBBY;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_time = 5000.0f;
-	m_mapLobby[SELECT_MAP_LOBBY]->m_pObject = pImageView62;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_pObject = m_pSelectMap->GetmapParent();
 	m_mapLobby[SELECT_MAP_LOBBY]->m_camLookAt = D3DXVECTOR3(23, 5, -12);
 	m_mapLobby[SELECT_MAP_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
 
@@ -999,160 +974,4 @@ void Lobby::SetUpUI()
 	m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[VIEW_CAR_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
 	m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob[0] = SELECT_MAP_LOBBY;
-}
-
-void Lobby::MapTypeUpdate()
-{
-	/*          Set Select Map Image          */
-
-	/*
-				m_leftAndrightSelect
-
-				1 = SuperMarket
-				2 = nHood
-				3 = Muse
-				4 = Ship
-	
-	*/
-
-	if (m_stateLobby == SELECT_MAP_LOBBY)
-	{
-		if (m_leftAndrightSelect == 0)
-		{
-			m_mapImage->SetTexture("Maps/Front/Image/market.bmp");
-			m_LockedRing->SetTexture("");
-			m_LockedTextImage->SetText("");
-			m_isUnLocked = true;
-
-		}
-
-		else if (m_leftAndrightSelect == 1)
-		{
-			m_mapImage->SetTexture("Maps/Front/Image/nhood.bmp");
-
-			if (m_isOpenHood)
-			{
-				m_LockedRing->SetTexture("");
-				m_LockedTextImage->SetText("");
-				m_isUnLocked = true;
-			}
-			else m_isUnLocked = false;
-
-		}
-		else if (m_leftAndrightSelect == 2)
-		{
-			m_mapImage->SetTexture("Maps/Front/Image/muse.bmp");
-
-			if (m_isOpenMuse)
-			{
-				m_LockedRing->SetTexture("");
-				m_LockedTextImage->SetText("");
-				m_isUnLocked = true;
-			}
-			else m_isUnLocked = false;
-		}
-		else if (m_leftAndrightSelect == 3)
-		{
-			m_mapImage->SetTexture("Maps/Front/Image/ship.bmp");
-
-			if (m_isOpenShip)
-			{
-				m_LockedRing->SetTexture("");
-				m_LockedTextImage->SetText("");
-				m_isUnLocked = true;
-			}
-			else m_isUnLocked = false;
-
-		}
-	}
-
-	/*          Set Select Map Text          */
-
-
-	/*
-				m_leftAndrightSelect
-
-				1 = SuperMarket
-				2 = nHood
-				3 = Muse
-				4 = Ship
-	*/
-
-	if (m_stateLobby == SELECT_MAP_LOBBY)
-	{
-		if (m_isOpenHood) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
-		else if (m_isOpenShip) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
-		else if (m_isOpenMuse) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
-		else m_mapName->SetColor(D3DCOLOR_ARGB(150, 0, 0, 0));
-
-		if (m_leftAndrightSelect == 0)
-		{
-			m_mapName->SetTexture("Maps/Front/Image/font2.png");
-			m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
-			m_mapName->SetText("SuperMarket");
-			m_mapName->SetPosition(60, 50);
-
-			m_mapLength->SetTexture("Maps/Front/Image/font2.png");
-			m_mapLength->SetText("301 meters");
-			m_mapLength->SetPosition(260, 80);
-
-			m_mapDifficulty->SetTexture("Maps/Front/Image/font2.png");
-			m_mapDifficulty->SetText("Easy");
-			m_mapDifficulty->SetPosition(260, 105);
-		}
-
-		else if (m_leftAndrightSelect == 1)
-		{
-			if (m_isOpenHood) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
-			else m_mapName->SetColor(D3DCOLOR_ARGB(150, 0, 0, 0));
-
-			m_mapName->SetTexture("Maps/Front/Image/font2.png");
-			m_mapName->SetText("Toys in the Hood");
-			m_mapName->SetPosition(60, 50);
-
-			m_mapLength->SetTexture("Maps/Front/Image/font2.png");
-			m_mapLength->SetText("747 meters");
-			m_mapLength->SetPosition(260, 80);
-
-			m_mapDifficulty->SetTexture("Maps/Front/Image/font2.png");
-			m_mapDifficulty->SetText("Easy");
-			m_mapDifficulty->SetPosition(260, 105);
-		}
-
-		else if (m_leftAndrightSelect == 2)
-		{
-			if (m_isOpenMuse) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
-			else m_mapName->SetColor(D3DCOLOR_ARGB(150, 0, 0, 0));
-
-			m_mapName->SetTexture("Maps/Front/Image/font2.png");
-			m_mapName->SetText("Museum");
-			m_mapName->SetPosition(60, 50);
-
-			m_mapLength->SetTexture("Maps/Front/Image/font2.png");
-			m_mapLength->SetText("600 meters");
-			m_mapLength->SetPosition(260, 80);
-
-			m_mapDifficulty->SetTexture("Maps/Front/Image/font2.png");
-			m_mapDifficulty->SetText("Mideum");
-			m_mapDifficulty->SetPosition(260, 105);
-		}
-
-		else if (m_leftAndrightSelect == 3)
-		{
-			if (m_isOpenShip) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
-			else m_mapName->SetColor(D3DCOLOR_ARGB(150, 0, 0, 0));
-
-			m_mapName->SetTexture("Maps/Front/Image/font2.png");
-			m_mapName->SetText("Toytanic");
-			m_mapName->SetPosition(60, 50);
-
-			m_mapLength->SetTexture("Maps/Front/Image/font2.png");
-			m_mapLength->SetText("742 meters");
-			m_mapLength->SetPosition(260, 80);
-
-			m_mapDifficulty->SetTexture("Maps/Front/Image/font2.png");
-			m_mapDifficulty->SetText("Hard");
-			m_mapDifficulty->SetPosition(260, 105);
-		}
-	}
 }

@@ -231,6 +231,9 @@
     <ClInclude Include="WheelTire.h">
       <Filter>Thing</Filter>
     </ClInclude>
+    <ClInclude Include="SelectMap.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -358,6 +361,9 @@
     </ClCompile>
     <ClCompile Include="WheelTire.cpp">
       <Filter>Thing</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectMap.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
