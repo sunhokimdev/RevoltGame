@@ -399,3 +399,20 @@ RevoltProject/fmodlib/fmodex_vc.lib
 RevoltProject/fmodlib/libfmodex.a
 RevoltProject/fmodlib/libfmodexL.a
 RevoltProject/fmodlib/which library do I use.txt
+RevoltProject/Sound/honkgood.wav
+RevoltProject/Sound/boxslide.wav
+RevoltProject/RevoltUIObject.h
+RevoltProject/RevoltUIObject.cpp
+RevoltProject/Maps/Front/Image/symbol.bmp
+RevoltProject/Maps/Front/Image/ship.BMP
+RevoltProject/Maps/Front/Image/nhood.bmp
+RevoltProject/Maps/Front/Image/muse.bmp
+RevoltProject/Maps/Front/Image/market.BMP
+RevoltProject/Cars/volken/Parameters.txt
+RevoltProject/Cars/toyeca/Parameters.txt
+RevoltProject/Cars/tc6/Parameters.txt
+RevoltProject/Cars/tc5/Parameters.txt
+RevoltProject/Cars/tc4/Parameters.txt
+RevoltProject/Cars/tc3/Parameters.txt
+RevoltProject/Cars/tc2/Parameters.txt
+RevoltProject/Cars/tc1/Parameters.txt
