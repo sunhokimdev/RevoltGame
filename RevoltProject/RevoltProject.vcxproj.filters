@@ -52,9 +52,6 @@
     <Filter Include="PhysX">
       <UniqueIdentifier>{e0be0c2e-1783-44ff-9f5e-293f4e402548}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ObjectFileLoader">
-      <UniqueIdentifier>{144d9af7-184c-4e71-8732-11e3daffcce2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Thing">
       <UniqueIdentifier>{5139fb85-3366-43b9-beb0-b189ddf55405}</UniqueIdentifier>
     </Filter>
@@ -79,23 +76,14 @@
     <Filter Include="PhysX\Basic">
       <UniqueIdentifier>{68f0285e-643b-42fd-bae9-3439e804edfa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ObjectFileLoader">
+    <Filter Include="FileLoader">
+      <UniqueIdentifier>{cd27d2c9-6d59-4b5c-9409-ebee0e1df671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FileLoader\ObjectFileLoader">
       <UniqueIdentifier>{144d9af7-184c-4e71-8732-11e3daffcce2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Thing">
-      <UniqueIdentifier>{5139fb85-3366-43b9-beb0-b189ddf55405}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Map">
-      <UniqueIdentifier>{eb723765-8d2d-4a37-a165-a41c1278c1a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Car">
-      <UniqueIdentifier>{ba3e07fe-f5ce-42ac-86e8-83f92155ddd0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Car\CarTextLoader">
-      <UniqueIdentifier>{14829522-7bc6-4e69-9f30-d2e6f6641609}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UserFileLoader">
-      <UniqueIdentifier>{bcf01fdb-d3d3-47a6-a498-3e1eb4e8b8b6}</UniqueIdentifier>
+    <Filter Include="FileLoader\UserFileLoader">
+      <UniqueIdentifier>{e809c21e-13aa-41b0-b2d8-5780c4627f1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -130,19 +118,13 @@
       <Filter>MainGame</Filter>
     </ClInclude>
     <ClInclude Include="ObjectLoader.h">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="MtlTex.h">
-      <Filter>ObjectFileLoader</Filter>
-<<<<<<< HEAD
-=======
-    </ClInclude>
-    <ClInclude Include="Group.h">
-      <Filter>ObjectFileLoader</Filter>
->>>>>>> e84f34b5edd056e61e186699892b3e8bdc8a97b8
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="ObjectManager.h">
       <Filter>Manager\ObjectManager</Filter>
@@ -172,7 +154,7 @@
       <Filter>Manager\FontManager</Filter>
     </ClInclude>
     <ClInclude Include="ObjectMap.h">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="Lobby.h">
       <Filter>Lobby</Filter>
@@ -204,15 +186,12 @@
     <ClInclude Include="UITextImageView.h">
       <Filter>UI</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="Thing.h">
       <Filter>Thing</Filter>
     </ClInclude>
     <ClInclude Include="ThingManager.h">
       <Filter>Thing</Filter>
     </ClInclude>
-=======
->>>>>>> e84f34b5edd056e61e186699892b3e8bdc8a97b8
     <ClInclude Include="Map.h">
       <Filter>Map</Filter>
     </ClInclude>
@@ -222,7 +201,6 @@
     <ClInclude Include="CarTextLoader.h">
       <Filter>Car\CarTextLoader</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="MapLoader.h">
       <Filter>Map\MapLoader</Filter>
     </ClInclude>
@@ -258,16 +236,12 @@
     </ClInclude>
     <ClInclude Include="cTransform.h">
       <Filter>PhysX\Basic</Filter>
-=======
-    <ClInclude Include="Thing.h">
-      <Filter>Thing</Filter>
-    </ClInclude>
-    <ClInclude Include="UserFileLoader.h">
-      <Filter>UserFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="ProfileList.h">
-      <Filter>UserFileLoader</Filter>
->>>>>>> e84f34b5edd056e61e186699892b3e8bdc8a97b8
+      <Filter>FileLoader\UserFileLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="UserFileLoader.h">
+      <Filter>FileLoader\UserFileLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -293,19 +267,13 @@
       <Filter>MainGame</Filter>
     </ClCompile>
     <ClCompile Include="ObjectLoader.cpp">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="MtlTex.cpp">
-      <Filter>ObjectFileLoader</Filter>
-<<<<<<< HEAD
-=======
-    </ClCompile>
-    <ClCompile Include="Group.cpp">
-      <Filter>ObjectFileLoader</Filter>
->>>>>>> e84f34b5edd056e61e186699892b3e8bdc8a97b8
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="ObjectManager.cpp">
       <Filter>Manager\ObjectManager</Filter>
@@ -335,7 +303,7 @@
       <Filter>Manager\FontManager</Filter>
     </ClCompile>
     <ClCompile Include="ObjectMap.cpp">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="Lobby.cpp">
       <Filter>Lobby</Filter>
@@ -358,15 +326,12 @@
     <ClCompile Include="UITextImageView.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="Thing.cpp">
       <Filter>Thing</Filter>
     </ClCompile>
     <ClCompile Include="ThingManager.cpp">
       <Filter>Thing</Filter>
     </ClCompile>
-=======
->>>>>>> e84f34b5edd056e61e186699892b3e8bdc8a97b8
     <ClCompile Include="Map.cpp">
       <Filter>Map</Filter>
     </ClCompile>
@@ -376,7 +341,6 @@
     <ClCompile Include="CarTextLoader.cpp">
       <Filter>Car\CarTextLoader</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="MapLoader.cpp">
       <Filter>Map\MapLoader</Filter>
     </ClCompile>
@@ -412,16 +376,12 @@
     </ClCompile>
     <ClCompile Include="cTransform.cpp">
       <Filter>PhysX\Basic</Filter>
-=======
-    <ClCompile Include="Thing.cpp">
-      <Filter>Thing</Filter>
-    </ClCompile>
-    <ClCompile Include="UserFileLoader.cpp">
-      <Filter>UserFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="ProfileList.cpp">
-      <Filter>UserFileLoader</Filter>
->>>>>>> e84f34b5edd056e61e186699892b3e8bdc8a97b8
+      <Filter>FileLoader\UserFileLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="UserFileLoader.cpp">
+      <Filter>FileLoader\UserFileLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

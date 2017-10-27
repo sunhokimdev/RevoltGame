@@ -27,7 +27,6 @@ void Map::Setup()
 
 	m_map = new cTrack;
 	m_pObjMesh = loader.LoadMesh(m_vecObjMtlTex, "Maps/Front", "Front.obj");
-	//	m_map[2] = new cTrack;
 	SetupThing();
 
 	m_track[0] = m_map;
@@ -77,9 +76,7 @@ void Map::Render()
 
 		if (m_vecObjMtlTex[i]->GetTexture() != NULL)
 		{
-
 			g_pD3DDevice->SetTexture(0, m_vecObjMtlTex[i]->GetTexture());
-
 		}
 		m_pObjMesh->DrawSubset(i);
 	}

@@ -4,8 +4,7 @@
 
 #define CURSORRENDER 10
 
-//======================================
-// - ## 10.11.17 ##
+//======================================E
 // - written by 김선호
 // - 텍스트를 읽어와 이미지파일(png파일)를 출력하는 UI 클래스
 //======================================
@@ -22,23 +21,12 @@ private:
 	int			m_cursorTime;							// 커서를 Update하는 변수
 	bool		m_isCursorRender;						// 커서를 보이게 하는 변수
 
-	LPDIRECT3DTEXTURE9	m_pTexture;			// 텍스쳐
-	POINT				m_textPos;			// 텍스트 이미지 파일의 위치를 계산하는 변수
-	FONTFILE			m_fontFileType;		// 폰트 파일의 타입
-	std::vector<std::string>	m_vecText;	// 버튼 누를 때 바뀌는 텍스트를 저장하기 위한 벡터 변수
-	std::string m_chatText;					// 채팅 텍스트를 저장하기 위한 string변수
-
-	int			m_cursorTime;				// 커서를 Update하는 변수
-	bool		m_isCursorRender;			// 커서를 보이게 하는 변수
-
 public:
 	UITextImageView();
 	virtual ~UITextImageView();
 
 	static int*			m_Select;						// 현재 텍스트의 선택된 위치
 	static int*			m_LeftAndRightSelect;			// 현재 오른쪽 왼쪽 선택된 위치
-	static int*			m_Select;				// 현재 텍스트의 선택된 위치
-	static int*			m_LeftAndRightSelect;	// 현재 오른쪽 왼쪽 선택된 위치
 	static std::string	m_PlayerName;			// 이름 정보
 	static bool*		m_isCreate;				// 프로필 생성할지 확인
 	static bool*		m_isflag;						// 프로필 이름 불러오기 내용
