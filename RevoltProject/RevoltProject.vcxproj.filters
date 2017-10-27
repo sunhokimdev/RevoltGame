@@ -43,35 +43,14 @@
     <Filter Include="Lobby">
       <UniqueIdentifier>{fc5a2d6c-2305-41ee-97a8-123e8f568d34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="XFileLoader">
-      <UniqueIdentifier>{b5267aeb-0d30-413e-a765-d9bd98671cbb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Manager\SkinnedMeshManger">
-      <UniqueIdentifier>{e187d92a-6dcb-4398-92d3-c5840fac5b60}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CollisionClass">
-      <UniqueIdentifier>{d3005b28-9039-453f-bc5d-2cf8e40a0035}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Manager\TimeManager">
       <UniqueIdentifier>{f69862b6-2c24-4572-83c8-3803170691e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CollisionClass\FrustomView">
-      <UniqueIdentifier>{be1d6685-0c96-4033-83c4-adce462b34e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CollisionClass\OBB">
-      <UniqueIdentifier>{773aa466-dd08-4022-96b4-bfef7aaf0ac6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Manager\TextManager">
       <UniqueIdentifier>{c04e62df-ada1-4e34-8fcb-42c936d75764}</UniqueIdentifier>
     </Filter>
     <Filter Include="PhysX">
       <UniqueIdentifier>{e0be0c2e-1783-44ff-9f5e-293f4e402548}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Manager\PhysXManager">
-      <UniqueIdentifier>{f0b6ffd0-8dbd-4e8e-aaf3-9cada56b89bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ObjectFileLoader">
-      <UniqueIdentifier>{144d9af7-184c-4e71-8732-11e3daffcce2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Thing">
       <UniqueIdentifier>{5139fb85-3366-43b9-beb0-b189ddf55405}</UniqueIdentifier>
@@ -84,6 +63,27 @@
     </Filter>
     <Filter Include="Car\CarTextLoader">
       <UniqueIdentifier>{14829522-7bc6-4e69-9f30-d2e6f6641609}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map\MapLoader">
+      <UniqueIdentifier>{f802dfe3-fc95-41c5-9970-b49f867b6ee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lobby\GameUI">
+      <UniqueIdentifier>{342d65b4-950d-4b53-b19d-4633cb25ab06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thing\LobbyObjects">
+      <UniqueIdentifier>{0d726d44-a965-45c6-8faa-8cce6d760210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FileLoader">
+      <UniqueIdentifier>{cd27d2c9-6d59-4b5c-9409-ebee0e1df671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FileLoader\ObjectFileLoader">
+      <UniqueIdentifier>{144d9af7-184c-4e71-8732-11e3daffcce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FileLoader\UserFileLoader">
+      <UniqueIdentifier>{e809c21e-13aa-41b0-b2d8-5780c4627f1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Basic">
+      <UniqueIdentifier>{68f0285e-643b-42fd-bae9-3439e804edfa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -118,16 +118,13 @@
       <Filter>MainGame</Filter>
     </ClInclude>
     <ClInclude Include="ObjectLoader.h">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="MtlTex.h">
-      <Filter>ObjectFileLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="Group.h">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="ObjectManager.h">
       <Filter>Manager\ObjectManager</Filter>
@@ -157,31 +154,13 @@
       <Filter>Manager\FontManager</Filter>
     </ClInclude>
     <ClInclude Include="ObjectMap.h">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClInclude>
     <ClInclude Include="Lobby.h">
       <Filter>Lobby</Filter>
     </ClInclude>
-    <ClInclude Include="XFileLoader.h">
-      <Filter>XFileLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="AllocateHierarchy.h">
-      <Filter>XFileLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="SkinnedMesh.h">
-      <Filter>XFileLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="SkinnedMeshManager.h">
-      <Filter>Manager\SkinnedMeshManger</Filter>
-    </ClInclude>
     <ClInclude Include="TimeManager.h">
       <Filter>Manager\TimeManager</Filter>
-    </ClInclude>
-    <ClInclude Include="FrustomView.h">
-      <Filter>CollisionClass\FrustomView</Filter>
-    </ClInclude>
-    <ClInclude Include="OBB.h">
-      <Filter>CollisionClass\OBB</Filter>
     </ClInclude>
     <ClInclude Include="TextManager.h">
       <Filter>Manager\TextManager</Filter>
@@ -194,12 +173,6 @@
     </ClInclude>
     <ClInclude Include="InlineFunction.h">
       <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="DEBUG_RENDER.h">
-      <Filter>PhysX</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysXManager.h">
-      <Filter>Manager\PhysXManager</Filter>
     </ClInclude>
     <ClInclude Include="UserStream.h">
       <Filter>PhysX</Filter>
@@ -225,14 +198,71 @@
     <ClInclude Include="CarTextLoader.h">
       <Filter>Car\CarTextLoader</Filter>
     </ClInclude>
-    <ClInclude Include="CarBox.h">
-      <Filter>Thing</Filter>
-    </ClInclude>
-    <ClInclude Include="WheelTire.h">
-      <Filter>Thing</Filter>
+    <ClInclude Include="MapLoader.h">
+      <Filter>Map\MapLoader</Filter>
     </ClInclude>
     <ClInclude Include="SelectMap.h">
-      <Filter>Lobby</Filter>
+      <Filter>Lobby\GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CarBox.h">
+      <Filter>Thing\LobbyObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="PickUpObject.h">
+      <Filter>Thing\LobbyObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="WheelTire.h">
+      <Filter>Thing\LobbyObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="InGameUI.h">
+      <Filter>Lobby\GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="cPhysXManager.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cStringUtil.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cTrack.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cMesh.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cPhysX.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cTransform.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="ProfileList.h">
+      <Filter>FileLoader\UserFileLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="UserFileLoader.h">
+      <Filter>FileLoader\UserFileLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="DEBUG_RENDERER.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="cFollowPoint.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cLight.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cStuff.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cCar.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cCheckBox.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cPickUp.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="cWheel.h">
+      <Filter>Basic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -258,16 +288,13 @@
       <Filter>MainGame</Filter>
     </ClCompile>
     <ClCompile Include="ObjectLoader.cpp">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="MtlTex.cpp">
-      <Filter>ObjectFileLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="Group.cpp">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="ObjectManager.cpp">
       <Filter>Manager\ObjectManager</Filter>
@@ -297,40 +324,16 @@
       <Filter>Manager\FontManager</Filter>
     </ClCompile>
     <ClCompile Include="ObjectMap.cpp">
-      <Filter>ObjectFileLoader</Filter>
+      <Filter>FileLoader\ObjectFileLoader</Filter>
     </ClCompile>
     <ClCompile Include="Lobby.cpp">
       <Filter>Lobby</Filter>
     </ClCompile>
-    <ClCompile Include="XFileLoader.cpp">
-      <Filter>XFileLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="AllocateHierarchy.cpp">
-      <Filter>XFileLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="SkinnedMesh.cpp">
-      <Filter>XFileLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="SkinnedMeshManager.cpp">
-      <Filter>Manager\SkinnedMeshManger</Filter>
-    </ClCompile>
     <ClCompile Include="TimeManager.cpp">
       <Filter>Manager\TimeManager</Filter>
     </ClCompile>
-    <ClCompile Include="FrustomView.cpp">
-      <Filter>CollisionClass\FrustomView</Filter>
-    </ClCompile>
-    <ClCompile Include="OBB.cpp">
-      <Filter>CollisionClass\OBB</Filter>
-    </ClCompile>
     <ClCompile Include="TextManager.cpp">
       <Filter>Manager\TextManager</Filter>
-    </ClCompile>
-    <ClCompile Include="DEBUG_RENDER.cpp">
-      <Filter>PhysX</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysXManager.cpp">
-      <Filter>Manager\PhysXManager</Filter>
     </ClCompile>
     <ClCompile Include="UserStream.cpp">
       <Filter>PhysX</Filter>
@@ -356,14 +359,71 @@
     <ClCompile Include="CarTextLoader.cpp">
       <Filter>Car\CarTextLoader</Filter>
     </ClCompile>
-    <ClCompile Include="CarBox.cpp">
-      <Filter>Thing</Filter>
-    </ClCompile>
-    <ClCompile Include="WheelTire.cpp">
-      <Filter>Thing</Filter>
+    <ClCompile Include="MapLoader.cpp">
+      <Filter>Map\MapLoader</Filter>
     </ClCompile>
     <ClCompile Include="SelectMap.cpp">
-      <Filter>Lobby</Filter>
+      <Filter>Lobby\GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CarBox.cpp">
+      <Filter>Thing\LobbyObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="PickUpObject.cpp">
+      <Filter>Thing\LobbyObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="WheelTire.cpp">
+      <Filter>Thing\LobbyObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="InGameUI.cpp">
+      <Filter>Lobby\GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysXManager.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cStringUtil.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cTrack.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cMesh.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysX.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cTransform.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="ProfileList.cpp">
+      <Filter>FileLoader\UserFileLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="UserFileLoader.cpp">
+      <Filter>FileLoader\UserFileLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="DEBUG_RENDERER.cpp">
+      <Filter>PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="cFollowPoint.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cLight.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cStuff.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cCar.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cCheckBox.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cPickUp.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cWheel.cpp">
+      <Filter>Basic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

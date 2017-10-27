@@ -1,7 +1,11 @@
 #pragma once
+#include "Camera.h"
 
 class MtlTex;
 class Thing;
+
+class cTrack;
+
 
 //===================================================================
 // - ## 10.15.20 ##
@@ -9,23 +13,32 @@ class Thing;
 // - 맵을 관리하는 맵 클래스 추가
 //===================================================================
 
-struct ST_MAP
-{
-	LPD3DXMESH				m_pObjMesh;		// 맵의 메쉬를 저장하는 멤버 변수
-	std::vector<MtlTex*>	m_vecObjMtlTex;	// 오브젝트의 매터리얼를 저장하는 멤버 변수
-	std::vector<Thing*>		m_vecThing;			
-};
 
 class Map
 {
 private:
+	
 	int m_stage;
-	std::map<int, ST_MAP*> m_map;
+
+	std::vector<std::string> m_vecMapName;		// 맵 이름을 저장하는 벡터 변수
+
+		// 맵 이름을 저장하는 벡터 변수
+	Camera* m_pCamera;
+	//Front 전용 맵
+	LPD3DXMESH				m_pObjMesh;
+	std::vector<MtlTex*>	m_vecObjMtlTex;
+	std::vector<Thing*>		m_vecThing;
+
+//	cTrack* m_map;				
+
+	//트랙 전용 맵
+	std::map<int, cTrack*> m_track;
+
 public:
 	Map();
 	~Map();
 
-	static LOBBY g_LobbyState;
+	static LOBBY* g_LobbyState;
 
 	/*   기본 셋팅 맵 메서드   */
 	void Setup();
@@ -33,5 +46,6 @@ public:
 	void Render();
 
 	void SetupThing();
+	void SetUpCamera(Camera* camera) { m_pCamera = camera; }
 };
 

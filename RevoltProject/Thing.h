@@ -15,7 +15,7 @@ class Car;
 
 class MtlTex;
 
-class Thing : public Object
+class Thing
 {
 protected:
 	D3DXMATRIXA16			m_matWorld;			// 오브젝트의 월드 행렬
@@ -51,5 +51,8 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual void Destroy();
+
+	void MirrorRender();
+
 };
 

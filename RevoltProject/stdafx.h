@@ -80,6 +80,7 @@ extern HINSTANCE	g_hInst;
 
 /*   열거체 형 설정   */
 /*   현재 로비상태를 저장하는 열거형 구조체   */
+
 enum LOBBY {
 	LOBBY_NONE = 1001
 	, INTRO1
@@ -91,16 +92,19 @@ enum LOBBY {
 	, MAIN_LOBBY3
 	, MAIN_LOBBY4
 	, CREATE_PROFILE_LOBBY
+	, CREATE_PROFILE_LOBBY2
 	, GAME_QUIT
 	, SELECT_MAP_LOBBY
 	, SELECT_CAR_LOBBY
 	, VIEW_CAR_LOBBY
+	, IN_GAME_MAP
+	, MARKET_MAP
+	, GARDEN_MAP
 };
-enum FONTFILE{ FONT1, FONT2, FONT3};
 enum CAR_CLASS { CLASS_NONE, CAR_ELECTRIC, CAR_GLOW, CAR_OTHER };
 enum CAR_RATING { RATING_NONE, RATING_ROOKIE, RATING_AMATEUR, RATING_SEMI_PRO, RATING_PRO };
 enum MAP_TYPE { NONE = 0, SUPERMARKET, NHOOD, MUSEUM, SHIP };
-
+enum FONTFILE{FONT1=2001, FONT2};
 //======================================
 // - ## 10.14.17 ##
 // - written by 김선호
@@ -149,4 +153,7 @@ enum MAP_TYPE { NONE = 0, SUPERMARKET, NHOOD, MUSEUM, SHIP };
 #include "SoundManager.h"
 #include "FontManager.h"
 #include "TimeManager.h"
-#include "SkinnedMeshManager.h"
+
+
+//UTIL
+#include "cStringUtil.h"

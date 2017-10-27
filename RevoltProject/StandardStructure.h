@@ -2,6 +2,9 @@
 #include <d3dx9.h>
 #include <string>
 
+class MtlTex;
+class Thing;
+
 struct ST_SIZE
 {
 	int nWitdh;
@@ -99,3 +102,5 @@ struct ST_CAR
 	D3DXVECTOR3 bl; // 뒤의 타이어 왼쪽 위치
 	D3DXVECTOR3 br; // 뒤의 타이어 오른쪽 위치
 };
+
+/*   맵 정보 구조체   */

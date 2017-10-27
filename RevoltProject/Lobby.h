@@ -8,17 +8,19 @@ class MtlTex;					// 재질을 사용하기 위한 전방선언 클래스
 class Camera;					// 카메라 클래스를 사용하기 위한 전방선언 클래스
 class Thing;					// 오브젝트 클래스
 class SelectMap;				// SelectMap Class
-class UITextImageView;
+class InGameUI;
 
+class UIObject;		// UI오브젝트를 사용하기 위한 전방선언 클래스
+class MtlTex;		// 재질을 사용하기 위한 전방선언 클래스
+class Camera;		// 카메라 클래스를 사용하기 위한 전방선언 클래스
+class ProfileList;	
 //===================================================================
-// - ## 10.15.17 ##
 // - written by 김선호
 // - 로비 창 구현
 // - 로비 구현 할 때 이 클래스 내부에서만 처리할 것
 //===================================================================
 
 //===================================================================
-// - ## 10.15.17 ##
 // - written by 김선호
 // - @@ 텍스트 인덱스의 갯수가 4개이면 처음시작은 0부터 시작하고 끝은 3이다.
 //===================================================================
@@ -57,17 +59,30 @@ protected:
 	MAP_TYPE m_stateMapType;
 	float	m_time;								// 변경 시간을 나타내는 타임 변수
 	int		m_select;							// 현재 위아래 커서의 위치
-	int		m_leftAndrightSelect;				// 현재 오른쪽 왼쪽 커서의 위치
+	int		m_leftAndrightSelect;				// 현재 오른쪽 왼쪽 커서의 위치;
+
+	//===================================================================
+	// - written by 윤동훈
+	// - 맵 선택
+	// - 로비 구현 할 때 이 클래스 내부에서만 처리할 것
+	//===================================================================
 
 	Camera*				m_pCamera;				// 카메라 클래스
 	SelectMap*			m_pSelectMap;			// Select Map Class
+	InGameUI*			m_pInGameUI;			// InGame UI;
 
-	float m_elapseTime;
-	UITextImageView* pTimer;
+	//===================================================================
+	// - written by 정종훈
+	// - 프로필 Load/Save작업
+	// - 로비 구현 할 때 이 클래스 내부에서만 처리할 것
+	//===================================================================
+	std::vector<std::string> m_vProfileList;	// 프로필 목록
+	std::string				 m_PlayerName;		// 선택된 이름
+	bool					 m_isCreate;		// 프로필 생성할지 확인
+	bool					 m_isEnterName;		// 이름 입력 확인
+	bool					 m_isflag;			// 이름 불러오기
 
-	std::string m_timeLab;
-
-	std::vector<std::string> m_vString;
+	ProfileList*		 	 m_pfileList;		// 프로필 리스트
 public:
 	Lobby();
 	~Lobby();
@@ -80,9 +95,9 @@ public:
 	/*   클래스 안에 사용할 루프 메서드   */
 	void KeyUpdate();				// 키 이벤트 발생 갱신 메서드
 	void TimeUpdate();				// 시간이 흐를 때 마다 발생 하는 이벤트를 갱신하는 메서드
-	void TimeLab();
 	void SetUpUI();					// UI 셋업작업
 
+	void CreateProfile();
 
 	D3DXVECTOR3 GetTarget() { return m_mapLobby[START_LOBBY]->m_target; }		// 카메라가 보는 방향을 반환해주는 메서드
 	void SetUpCamera(Camera* camera) { m_pCamera = camera; }		// 처음 카메라 변수를 지정하는 메서드
