@@ -17,6 +17,7 @@ SelectMap::SelectMap()
 
 SelectMap::~SelectMap()
 {
+
 }
 
 void SelectMap::Setup()
@@ -106,18 +107,18 @@ void SelectMap::SetMapType(MAP_TYPE* mapType, int SelectNum)
 	if (SelectNum == 0) *mapType = SUPERMARKET;
 	else if (SelectNum == 1)
 	{
-		if (GetOpenHood() == true)	*mapType = NHOOD;
+		if (m_isUnLocked)	*mapType = NHOOD;
 		else *mapType = NONE;
 
 	}
 	else if (SelectNum == 2)
 	{
-		if (GetOpenMuse() == true)	*mapType = MUSEUM;
+		if (m_isUnLocked)	*mapType = MUSEUM;
 		else *mapType = NONE;
 	}
 	else if (SelectNum == 3)
 	{
-		if (GetOpenShip() == true)	*mapType = SHIP;
+		if (m_isUnLocked)	*mapType = SHIP;
 		else *mapType = NONE;
 	}
 
@@ -127,33 +128,7 @@ void SelectMap::SetMapType(MAP_TYPE* mapType, int SelectNum)
 
 void SelectMap::MapTypeUpdate(int SelectNum)
 {
-	/*          Control Locked Image, Text          */
-	if (!m_isUnLocked)
-	{
-		if ((m_LockedTime / 10) % 2 == 1)
-			m_isLockedRender = true;
-		else
-			m_isLockedRender = false;
-
-		m_LockedTime++;
-
-		if (m_LockedTime > 1000000)
-			m_LockedTime = 0;
-
-
-		if (m_isLockedRender)
-		{
-			m_LockedRing->SetTexture("");
-			m_LockedTextImage->SetText("");
-		}
-		else
-		{
-			m_LockedRing->SetTexture("Maps/Front/Image/ring.png");
-			m_LockedTextImage->SetTexture("Maps/Front/Image/font2.png");
-			m_LockedTextImage->SetText("Locked");
-		}
-	}
-
+	
 	/*          Set Select Map          */
 
 	/*
@@ -180,7 +155,7 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 
 		m_mapName->SetTexture("Maps/Front/Image/font2.png");
 		m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
-		m_mapName->SetText("SuperMarket");
+		m_mapName->SetText("SuperMarket 1");
 		m_mapName->SetPosition(60, 50);
 
 		m_mapLength->SetTexture("Maps/Front/Image/font2.png");
@@ -210,7 +185,7 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 		}
 
 		m_mapName->SetTexture("Maps/Front/Image/font2.png");
-		m_mapName->SetText("Toys in the Hood");
+		m_mapName->SetText("Toys in the Hood 1");
 		m_mapName->SetPosition(60, 50);
 
 		m_mapLength->SetTexture("Maps/Front/Image/font2.png");
@@ -238,7 +213,7 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 			m_mapName->SetColor(D3DCOLOR_ARGB(150, 0, 0, 0));
 		}
 		m_mapName->SetTexture("Maps/Front/Image/font2.png");
-		m_mapName->SetText("Museum");
+		m_mapName->SetText("Museum 1");
 		m_mapName->SetPosition(60, 50);
 
 		m_mapLength->SetTexture("Maps/Front/Image/font2.png");
@@ -267,7 +242,7 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 		}
 
 		m_mapName->SetTexture("Maps/Front/Image/font2.png");
-		m_mapName->SetText("Toytanic");
+		m_mapName->SetText("Toytanic 1");
 		m_mapName->SetPosition(60, 50);
 
 		m_mapLength->SetTexture("Maps/Front/Image/font2.png");
@@ -279,4 +254,31 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 		m_mapDifficulty->SetPosition(260, 105);
 
 	}
+	/*          Control Locked Image, Text          */
+	if (!m_isUnLocked)
+	{
+		if ((m_LockedTime / 10) % 2 == 1)
+			m_isLockedRender = true;
+		else
+			m_isLockedRender = false;
+
+		m_LockedTime++;
+
+		if (m_LockedTime > 1000000)
+			m_LockedTime = 0;
+
+
+		if (m_isLockedRender)
+		{
+			m_LockedRing->SetTexture("");
+			m_LockedTextImage->SetText("");
+		}
+		else
+		{
+			m_LockedRing->SetTexture("Maps/Front/Image/ring.png");
+			m_LockedTextImage->SetTexture("Maps/Front/Image/font2.png");
+			m_LockedTextImage->SetText("Locked");
+		}
+	}
+
 }

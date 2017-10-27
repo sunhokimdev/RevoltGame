@@ -8,7 +8,7 @@ class MtlTex;					// 재질을 사용하기 위한 전방선언 클래스
 class Camera;					// 카메라 클래스를 사용하기 위한 전방선언 클래스
 class Thing;					// 오브젝트 클래스
 class SelectMap;				// SelectMap Class
-
+class UITextImageView;
 
 //===================================================================
 // - ## 10.15.17 ##
@@ -61,7 +61,11 @@ protected:
 
 	Camera*				m_pCamera;				// 카메라 클래스
 	SelectMap*			m_pSelectMap;			// Select Map Class
-	
+
+	float m_elapseTime;
+	UITextImageView* pTimer;
+
+	std::string m_timeLab;
 
 	std::vector<std::string> m_vString;
 public:
@@ -76,6 +80,7 @@ public:
 	/*   클래스 안에 사용할 루프 메서드   */
 	void KeyUpdate();				// 키 이벤트 발생 갱신 메서드
 	void TimeUpdate();				// 시간이 흐를 때 마다 발생 하는 이벤트를 갱신하는 메서드
+	void TimeLab();
 	void SetUpUI();					// UI 셋업작업
 
 

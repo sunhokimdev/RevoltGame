@@ -40,6 +40,7 @@
 /*   C++ 헤더파일   */
 #include <iostream>
 #include <fstream>
+#include <mmsystem.h>
 
 /*   STL 헤더파일   */
 #include <vector>
@@ -69,6 +70,9 @@
 /*   사운드 관련 헤더파일   */
 #pragma comment (lib, "fmodlib/fmodex_vc.lib")
 #include "fmodinc/fmod.hpp"
+
+/*   윈도우가 실행중인 시간을 알려주는 라이부러리   */
+#pragma comment(lib, "winmm.lib")
 
 /*   전역변수 설정   */
 extern HWND			g_hWnd;

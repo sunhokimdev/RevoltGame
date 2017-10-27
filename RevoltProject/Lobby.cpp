@@ -25,6 +25,7 @@ Lobby::Lobby()
 	, m_select(0)
 	, m_leftAndrightSelect(0)
 	, m_stateMapType(NONE)
+	, m_elapseTime(0.0f)
 {
 }
 
@@ -32,13 +33,13 @@ Lobby::~Lobby()
 {
 	SAFE_RELEASE(m_pSprite);
 	SAFE_RELEASE(m_pObjMesh);
-	SAFE_DELETE(m_pSelectMap);
 
 	for each(auto a in m_mapLobby)
 	{
 		delete[] a.second->m_pNextLob;
 		SAFE_DELETE(a.second->m_pObject);
 	}
+	SAFE_DELETE(m_pSelectMap);
 }
 
 void Lobby::Setup()
@@ -60,6 +61,9 @@ void Lobby::Update()
 {
 	TimeUpdate();			// 시간 갱신 메서드
 	KeyUpdate();			// 키 이벤트 갱신 메서드
+	TimeLab();
+
+
 
 	if (m_stateLobby == SELECT_MAP_LOBBY)
 	{
@@ -68,12 +72,14 @@ void Lobby::Update()
 
 	if (m_mapLobby[m_stateLobby]->m_pObject)
 		m_mapLobby[m_stateLobby]->m_pObject->Update();
+	
 }
 
 void Lobby::Render()
 {
 	if (m_mapLobby[m_stateLobby]->m_pObject)
 		m_mapLobby[m_stateLobby]->m_pObject->Render(m_pSprite);
+
 }
 
 void Lobby::KeyUpdate()
@@ -223,21 +229,34 @@ void Lobby::KeyUpdate()
 
 		else if (m_mapLobby[m_stateLobby]->m_pNextLob[m_select] != LOBBY_NONE)
 		{
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
+			/*     If Map Locked     */
+			if (m_stateLobby == SELECT_MAP_LOBBY)
+			{
+				if (m_pSelectMap->GetUnLocked())
+				{
+					m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[0];
+					m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
+					m_pSelectMap->SetmapType(m_stateMapType);
+				}
+				//else
+				//{
+				//	
+				//}
+			}
+			else
+			{
+				m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
 
-			if(m_stateLobby != MAIN_LOBBY3)
-				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
-			m_time = 0.0f;
-			m_select = 0;
-			m_leftAndrightSelect = 0;
+				if (m_stateLobby != MAIN_LOBBY3)
+					m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+				m_time = 0.0f;
+				m_select = 0;
+				m_leftAndrightSelect = 0;
+			}
+			
 
 			if (m_stateLobby > INTRO3)
 				g_pSoundManager->Play("menuNext.wav", 1.0f);
-		}
-
-		else if (m_stateLobby == SELECT_MAP_LOBBY)
-		{
-			m_pSelectMap->SetmapType(m_stateMapType);
 		}
 	}
 
@@ -277,6 +296,68 @@ void Lobby::TimeUpdate()
 	{
 		m_time++;
 	}
+
+
+
+}
+
+void Lobby::TimeLab()
+{
+	std::string m_timeLab1;
+	std::string m_timeLab2;
+	std::string m_timeLab3;
+	int m_elapseTime1 = 0;
+	int m_elapseTime2 = 0;
+	int m_elapseTime3 = 0;
+
+	//first
+	m_elapseTime += 0.1f;
+
+	if (m_elapseTime > 10)
+	{
+		m_elapseTime1 += 1;
+		m_elapseTime = 0;
+	}
+	if (m_elapseTime1 > 10)
+	{
+		m_elapseTime2 += 1;
+		m_elapseTime1 = 0;
+	}
+
+	if (0.0f <= m_elapseTime && m_elapseTime < 1.0f) m_timeLab = std::string("0");
+	else if (1.0f <= m_elapseTime && m_elapseTime < 2.0f) m_timeLab = std::string("1");
+	else if (2.0f <= m_elapseTime && m_elapseTime < 3.0f) m_timeLab = std::string("2");
+	else if (3.0f <= m_elapseTime && m_elapseTime < 4.0f) m_timeLab = std::string("3");
+	else if (4.0f <= m_elapseTime && m_elapseTime < 5.0f) m_timeLab = std::string("4");
+	else if (5.0f <= m_elapseTime && m_elapseTime < 6.0f) m_timeLab = std::string("5");
+	else if (6.0f <= m_elapseTime && m_elapseTime < 7.0f) m_timeLab = std::string("6");
+	else if (7.0f <= m_elapseTime && m_elapseTime < 8.0f) m_timeLab = std::string("7");
+	else if (8.0f <= m_elapseTime && m_elapseTime < 9.0f) m_timeLab = std::string("8");
+	else if (9.0f <= m_elapseTime && m_elapseTime < 10.0f) m_timeLab = std::string("9");
+
+	//sec
+	if (0.0f <= m_elapseTime && m_elapseTime < 1.0f) m_timeLab1 = std::string("0");
+	else if (1.0f <= m_elapseTime && m_elapseTime < 2.0f) m_timeLab1 = std::string("1");
+	else if (2.0f <= m_elapseTime && m_elapseTime < 3.0f) m_timeLab1 = std::string("2");
+	else if (3.0f <= m_elapseTime && m_elapseTime < 4.0f) m_timeLab1 = std::string("3");
+	else if (4.0f <= m_elapseTime && m_elapseTime < 5.0f) m_timeLab1 = std::string("4");
+	else if (5.0f <= m_elapseTime && m_elapseTime < 6.0f) m_timeLab1 = std::string("5");
+	else if (6.0f <= m_elapseTime && m_elapseTime < 7.0f) m_timeLab1 = std::string("6");
+	else if (7.0f <= m_elapseTime && m_elapseTime < 8.0f) m_timeLab1 = std::string("7");
+	else if (8.0f <= m_elapseTime && m_elapseTime < 9.0f) m_timeLab1 = std::string("8");
+	else if (9.0f <= m_elapseTime && m_elapseTime < 10.0f) m_timeLab1 = std::string("9");
+
+
+
+
+
+
+
+
+
+
+	pTimer->SetText(m_timeLab);
+
 }
 
 void Lobby::SetUpUI()
@@ -781,92 +862,16 @@ void Lobby::SetUpUI()
 	pImageView61->SetYSize(1.5f);
 	pImageView61->SetPosition(180, 45);
 
+	pTimer = new UITextImageView;
+	pTimer->SetTexture("Maps/Front/Image/font2.png");
+	pTimer->SetPosition(0,300);
+
+
 	pImageView58->AddChild(pImageView59);
 	pImageView58->AddChild(pImageView60);
-	pImageView58->AddChild(pImageView61);
-
-	/*  Select Map Lobby  */
-
-	/*m_mapName		= new UITextImageView;
-	m_mapLength		= new UITextImageView;
-	m_mapDifficulty = new UITextImageView;
-	m_mapImage		= new UIImageView;
-	m_mapImage->SetXSize(1.5f);
-	m_mapImage->SetPosition(250, 100);
-	m_mapImage->SetIsNoise(true);
-
-	UIImageView* pImageView62 = new UIImageView;
-	pImageView62->SetPosition(80, 50);
-	pImageView62->SetXSize(4.0f);
-	pImageView62->SetYSize(4.0f);
-	pImageView62->SetIsBoard(true);
-	pImageView62->SetTexture("Maps/Front/Image/blueRing.png");
-
-	UIImageView* pImageView63 = new UIImageView;
-	pImageView63->SetXSize(1.2f);
-	pImageView63->SetYSize(1.2f);
-	pImageView63->SetPosition(17, 17);
-	pImageView63->SetTexture("Maps/Front/Image/blueflag.png");
-
-	UIImageView* pImageView64 = new UIImageView;
-	pImageView64->SetPosition(120, 20);
-	pImageView64->SetIsBoard(true);
-	pImageView64->SetXSize(25.0f);
-	pImageView64->SetYSize(1.0f);
-	pImageView64->SetTexture("Maps/Front/Image/ring.png");
-
-	UITextImageView* pImageView65 = new UITextImageView;
-	pImageView65->SetTexture("Maps/Front/Image/font1.png");
-	pImageView65->SetText("SELECT TRACK");
-	pImageView65->SetXSize(1.5f);
-	pImageView65->SetYSize(1.5f);
-	pImageView65->SetPosition(180, 40);
-
-	UIImageView* pImageView66 = new UIImageView;
-	pImageView66->SetPosition(230, 400);
-	pImageView66->SetIsBoard(true);
-	pImageView66->SetXSize(25.0f);
-	pImageView66->SetYSize(10.0f);
-	pImageView66->SetTexture("Maps/Front/Image/ring.png");
-
-	UITextImageView* pImageView67 = new UITextImageView;
-	pImageView67->SetTexture("Maps/Front/Image/font2.png");
-	pImageView67->SetText("Length");
-	pImageView67->SetPosition(60, 80);
-
-	UITextImageView* pImageView68 = new UITextImageView;
-	pImageView68->SetTexture("Maps/Front/Image/font2.png");
-	pImageView68->SetText("Difficulty");
-	pImageView68->SetPosition(60, 105);
-
-	m_LockedRing = new UIImageView;
-	m_LockedRing->SetPosition(150, 180);
-	m_LockedRing->SetIsBoard(true);
-	m_LockedRing->SetXSize(2.0f);
-	m_LockedRing->SetYSize(0.5f);
-	m_LockedRing->SetTexture("Maps/Front/Image/ring.png");
-
-	m_LockedTextImage = new UITextImageView;
-	m_LockedTextImage->SetTexture("Maps/Front/Image/font2.png");
-	m_LockedTextImage->SetColor(D3DCOLOR_ARGB(255, 255, 0, 0));
-	m_LockedTextImage->SetText("Locked");
-	m_LockedTextImage->SetPosition(15, 20);
-
-
-	pImageView62->AddChild(m_mapImage);
-	pImageView62->AddChild(pImageView63);
-	pImageView62->AddChild(pImageView64);
-	pImageView62->AddChild(pImageView65);
-	pImageView62->AddChild(pImageView66);
-	pImageView66->AddChild(m_mapName);
-	pImageView66->AddChild(pImageView67);
-	pImageView66->AddChild(pImageView68);
-	pImageView66->AddChild(m_mapLength);
-	pImageView66->AddChild(m_mapDifficulty);
-	m_mapImage->AddChild(m_LockedRing);
-	m_LockedRing->AddChild(m_LockedTextImage);*/
-
-	//=========================================== Add Lobby Ui ===========================================//
+	pImageView58->AddChild(pImageView61);;
+	pImageView61->AddChild(pTimer);
+	//================================= Add Lobby Ui =================================//
 
 
 	/*   로비 UI 추가하기   */
@@ -953,25 +958,26 @@ void Lobby::SetUpUI()
 	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[SELECT_CAR_LOBBY]->m_pNextLob[0] = VIEW_CAR_LOBBY;
 	m_mapLobby[SELECT_CAR_LOBBY]->m_time = 50.0f;
-	m_mapLobby[SELECT_CAR_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
+	m_mapLobby[SELECT_CAR_LOBBY]->m_prevLob = CREATE_PROFILE_LOBBY;
+
+	m_mapLobby[VIEW_CAR_LOBBY] = new ST_Object;
+	m_mapLobby[VIEW_CAR_LOBBY]->m_target = D3DXVECTOR3(10, 4, 8);
+	m_mapLobby[VIEW_CAR_LOBBY]->m_camLookAt = D3DXVECTOR3(20, -3, 10);
+	m_mapLobby[VIEW_CAR_LOBBY]->m_pObject = pTimer;
+	m_mapLobby[VIEW_CAR_LOBBY]->m_pObject = pImageView58;
+	m_mapLobby[VIEW_CAR_LOBBY]->m_count = 1;
+	m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[VIEW_CAR_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
+	m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob[0] = SELECT_MAP_LOBBY;
 
 	m_mapLobby[SELECT_MAP_LOBBY] = new ST_Object;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_target = D3DXVECTOR3(12, 3, -18);
 	m_mapLobby[SELECT_MAP_LOBBY]->m_count = 1;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_selectCnt = 4;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob = new LOBBY[1];
-	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob[0] = VIEW_CAR_LOBBY;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob[0] = START_LOBBY;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_time = 5000.0f;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_pObject = m_pSelectMap->GetmapParent();
 	m_mapLobby[SELECT_MAP_LOBBY]->m_camLookAt = D3DXVECTOR3(23, 5, -12);
 	m_mapLobby[SELECT_MAP_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
-
-	m_mapLobby[VIEW_CAR_LOBBY] = new ST_Object;
-	m_mapLobby[VIEW_CAR_LOBBY]->m_target = D3DXVECTOR3(10, 4, 8);
-	m_mapLobby[VIEW_CAR_LOBBY]->m_camLookAt = D3DXVECTOR3(20, -3, 10);
-	m_mapLobby[VIEW_CAR_LOBBY]->m_pObject = pImageView58;
-	m_mapLobby[VIEW_CAR_LOBBY]->m_count = 1;
-	m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob = new LOBBY[1];
-	m_mapLobby[VIEW_CAR_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
-	m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob[0] = SELECT_MAP_LOBBY;
 }
