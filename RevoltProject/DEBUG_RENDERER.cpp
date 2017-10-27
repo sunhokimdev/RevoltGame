@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include "DEBUG_RENDER.h"
+#include "DEBUG_RENDERER.h"
 
 
-DEBUG_RENDER::DEBUG_RENDER()
+DEBUG_RENDERER::DEBUG_RENDERER()
 {
 	m_DebugRenderVertex = NULL;
 }
 
 
-DEBUG_RENDER::~DEBUG_RENDER()
+DEBUG_RENDERER::~DEBUG_RENDERER()
 {
 }
 
-void DEBUG_RENDER::RenderData(const NxDebugRenderable * data)
+void DEBUG_RENDERER::RenderData(const NxDebugRenderable * data)
 {
 	D3DXMATRIXA16 matWorld;
 	D3DXMatrixIdentity(&matWorld);
@@ -36,15 +36,15 @@ void DEBUG_RENDER::RenderData(const NxDebugRenderable * data)
 			return;
 		}
 		const NxDebugPoint*	Points = data->getPoints();
-
+	
 		dwCount = 0;
-
+	
 		while (NbPoints--)
 		{
 			m_DebugRenderVertex[dwCount].p = D3DXVECTOR3(Points->p.x, Points->p.y, Points->p.z);
 			m_DebugRenderVertex[dwCount].c = (DWORD)Points->color;
 			dwCount++;
-
+	
 			Points++;
 		}
 		RenderBuffer(m_DebugRenderVertex, D3DPT_POINTLIST, data->getNbPoints());
@@ -81,7 +81,7 @@ void DEBUG_RENDER::RenderData(const NxDebugRenderable * data)
 	}
 
 	//면 그리기
-	unsigned int NBTriangles = data->getNbTriangles();
+	unsigned int NBTriangles= data->getNbTriangles();
 	if (NBTriangles)
 	{
 		m_DebugRenderVertex = new _DEBUG_RENDER_VERTEX[NBTriangles * 3];
@@ -90,23 +90,23 @@ void DEBUG_RENDER::RenderData(const NxDebugRenderable * data)
 			return;
 		}
 		const NxDebugTriangle* Triangles = data->getTriangles();
-
+	
 		dwCount = 0;
-
+	
 		while (NBTriangles--)
 		{
 			m_DebugRenderVertex[dwCount].p = D3DXVECTOR3(Triangles->p0.x, Triangles->p0.y, Triangles->p0.z);
 			m_DebugRenderVertex[dwCount].c = (DWORD)Triangles->color;
 			dwCount++;
-
+	
 			m_DebugRenderVertex[dwCount].p = D3DXVECTOR3(Triangles->p1.x, Triangles->p1.y, Triangles->p1.z);
 			m_DebugRenderVertex[dwCount].c = (DWORD)Triangles->color;
 			dwCount++;
-
+	
 			m_DebugRenderVertex[dwCount].p = D3DXVECTOR3(Triangles->p2.x, Triangles->p2.y, Triangles->p2.z);
 			m_DebugRenderVertex[dwCount].c = (DWORD)Triangles->color;
 			dwCount++;
-
+	
 			Triangles++;
 		}
 		RenderBuffer(m_DebugRenderVertex, D3DPT_TRIANGLELIST, data->getNbTriangles());
@@ -114,7 +114,7 @@ void DEBUG_RENDER::RenderData(const NxDebugRenderable * data)
 	}
 }
 
-void DEBUG_RENDER::RenderBuffer(const _DEBUG_RENDER_VERTEX * pVertex, const D3DPRIMITIVETYPE Type, const int VertexCount)
+void DEBUG_RENDERER::RenderBuffer(const _DEBUG_RENDER_VERTEX * pVertex, const D3DPRIMITIVETYPE Type, const int VertexCount)
 {
 	//디바이스의 현재상태 저장 및 초기화
 	DWORD RStateKightingBK;

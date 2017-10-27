@@ -13,6 +13,7 @@ enum eOBJECT_TAG
 	E_OBJECT_LIGHT,
 	E_OBJECT_STUFF,
 	E_OBJECT_CAMERA,
+	E_OBJECT_PICKUP,
 	E_OBJECT_END,
 	E_OBJECT_NONE,
 };
@@ -33,6 +34,8 @@ enum eOBJECT_ID
 	E_OBJ_ID_STUFF_CHICKEN,
 	E_OBJ_ID_STUFF_FABRIC,
 	E_OBJ_ID_STUFF_KIDRIDE,
+	E_OBJ_ID_PICKUP,
+	E_OBJ_ID_STAR,
 };
 
 
@@ -43,17 +46,17 @@ public:
 	Object();
 	~Object();
 
-	SYNTHESIZE_VIRTUAL(cMesh*, m_pMeshData, MeshData);
-	SYNTHESIZE_VIRTUAL(cPhysX*, m_PhysXData, PhysXData);
+	SYNTHESIZE(cMesh*, m_pMeshData, MeshData);
+	SYNTHESIZE(cPhysX*, m_PhysXData, PhysXData);
 
-	SYNTHESIZE_VIRTUAL(eOBJECT_TAG, m_objTag, Tag);
-	SYNTHESIZE_VIRTUAL(eOBJECT_ID, m_eID, ID);
+	SYNTHESIZE(eOBJECT_TAG, m_objTag, Tag);
+	SYNTHESIZE(eOBJECT_ID, m_eID, ID);
+	SYNTHESIZE(std::string, m_objName, ObjName);
 public:
 	virtual void Setup();
 	virtual void Destory();
 	virtual void Update();
 	virtual void LastUpdate();
 	virtual void Render();
-
 };
 

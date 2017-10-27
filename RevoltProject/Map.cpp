@@ -9,7 +9,7 @@
 #include "PickUpObject.h"
 #include "MapLoader.h"
 #include "cTrack.h"
-
+#include "Camera.h"
 LOBBY* Map::g_LobbyState;
 
 Map::Map()
@@ -59,7 +59,7 @@ void Map::Update()
 			{
 				m_stage = *g_LobbyState - IN_GAME_MAP;
 
-				m_track[m_stage]->LoadTrack(m_track[m_stage]->trackName);
+				m_track[m_stage]->LoadTrack(m_track[m_stage]->trackName , m_pCamera);
 
 //				ObjectLoader::LoadMesh(m_track[m_stage]->GetMeshData(), "Maps", m_track[m_stage]->trackName.c_str());
 				

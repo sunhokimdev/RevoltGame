@@ -4,6 +4,7 @@
 #include "cCheckBox.h"
 #include "cStuff.h"
 #include "cFollowPoint.h"
+#include "cPickUp.h"
 
 cTrack::cTrack()
 {
@@ -16,6 +17,10 @@ cTrack::~cTrack()
 
 void cTrack::Update()
 {
+	pCamera->Setup(&D3DXVECTOR3(50, 100, 50));
+	pCamera->SetLookAt(&D3DXVECTOR3(50, 0, 50));
+
+
 	for each(Object* pObj in m_vecObject)
 	{
 		pObj->Update();
@@ -48,8 +53,12 @@ void cTrack::Render()
 	//	}
 }
 
-void cTrack::LoadTrack(std::string FileName)
+void cTrack::LoadTrack(std::string FileName, Camera* pCam)
 {
+	//카메라 등록
+	pCamera = pCam;
+
+
 	Destory();// 기존에 가지고 있던 정보 버리기
 	std::string fullpath = "Maps/" + FileName + ".scn";
 
@@ -87,15 +96,16 @@ void cTrack::LoadTrack(std::string FileName)
 
 				switch (tag)
 				{
-				case E_OBJECT_NONE:			Obj = NULL;				break;
-				case E_OBJECT_CAR:			Obj = NULL;				break;
-				case E_OBJECT_MAP:			Obj = NULL;				break;
-				case E_OBJECT_LIGHT:		Obj = new cLight;		break;
-				case E_OBJECT_STUFF:		Obj = new cStuff;		break;
-				case E_OBJECT_CAMERA:		Obj = NULL;				break;
-				case E_OBJECT_CHECKBOX:		Obj = new cCheckBox;	break;
-				case E_OBJECT_FOLLOWPOINT:	Obj = new cFollowPoint; break;
-				case E_OBJECT_END:			break;
+				case E_OBJECT_CHECKBOX:      Obj = new cCheckBox; break;
+				case E_OBJECT_FOLLOWPOINT:   Obj = new cFollowPoint; break;
+				case E_OBJECT_CAR: break;
+				case E_OBJECT_MAP: break;
+				case E_OBJECT_LIGHT:      Obj = new cLight; break;
+				case E_OBJECT_STUFF:      Obj = new cStuff; break;
+				case E_OBJECT_CAMERA: break;
+				case E_OBJECT_PICKUP:      Obj = new cPickUp; break;
+				case E_OBJECT_END: break;
+				case E_OBJECT_NONE:   break;
 				default: break;
 				}
 
@@ -111,20 +121,12 @@ void cTrack::LoadTrack(std::string FileName)
 				bool isStatic_ = false;
 				bool isGravity = true;
 
-
-
-
-
 				//Obj->SetPhysXData(physx);
-
-
-
-
 
 				std::string strName;
 				Load >> strName;
 				Load >> strName;
-				//Obj->SetObjName(strName);
+				Obj->SetObjName(strName);
 
 				while (1)
 				{
@@ -141,25 +143,9 @@ void cTrack::LoadTrack(std::string FileName)
 						}
 						else
 						{
-							std::string objectName;
-							switch (nID)
-							{
-							case  0: objectName = ""; break;
-							case  1: objectName = ""; break;
-							case  2: objectName = ""; break;
-							case  3: objectName = ""; break;
-							case  4: objectName = ""; break;
-							case  5: objectName = ""; break;
-							case  6: objectName = ""; break;
-							case  7: objectName = ""; break;
-							case  8: objectName = ""; break;
-							case  9: objectName = ""; break;
-							case 10: objectName = ""; break;
-							}
-
 							mesh = new cMesh;
-							std::string folder = "Objects/" + objectName;
-							std::string fileName = objectName + ".obj";
+							std::string folder = "Objects/" + Obj->GetObjName();
+							std::string fileName = Obj->GetObjName() + ".obj";
 							if (mesh) mesh->LoadMesh(folder, fileName);
 						}
 						Obj->SetMeshData(mesh);

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "cPhysXManager.h"
-#include "DEBUG_RENDER.h"
+#include "DEBUG_RENDERER.h"
 
 
 #include "NxCooking.h"
@@ -30,11 +30,11 @@ BOOL cPhysXManager::InitNxPhysX()
 	if (pDebugRenderer == NULL)
 	{
 		m_pNxPhysicsSDK->setParameter(NX_VISUALIZATION_SCALE, 3);
-		m_pNxPhysicsSDK->setParameter(NX_VISUALIZE_COLLISION_SHAPES, true);
-		m_pNxPhysicsSDK->setParameter(NX_VISUALIZE_ACTOR_AXES, true);
-		m_pNxPhysicsSDK->setParameter(NX_VISUALIZE_JOINT_LIMITS, true);
+		m_pNxPhysicsSDK->setParameter(NX_VISUALIZE_COLLISION_SHAPES, 1);
+		m_pNxPhysicsSDK->setParameter(NX_VISUALIZE_ACTOR_AXES, 1);
+		m_pNxPhysicsSDK->setParameter(NX_VISUALIZE_JOINT_LIMITS, 1);
 
-		(pDebugRenderer) = new DEBUG_RENDER;
+		(pDebugRenderer) = new DEBUG_RENDERER;
 	}
 
 	sceneDesc.gravity = NxVec3(0.0f, -9.81f, 0.0f);

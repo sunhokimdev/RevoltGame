@@ -6,8 +6,8 @@ class MtlTex;
 struct ST_WHEEL
 {
 	LPD3DXMESH				m_pObjMesh;		// 바퀴 오브젝트를 그릴 메쉬 변수
-	std::vector<MtlTex*>		m_vecObjMtlTex;	// 오브젝트의 매터리얼를 저장하는 변수
-	D3DXVECTOR3				m_vPos;				// 바퀴 오브젝트의 상대적 위치
+	std::vector<MtlTex*>	m_vecObjMtlTex;	// 오브젝트의 매터리얼를 저장하는 변수
+	D3DXVECTOR3				m_vPos;			// 바퀴 오브젝트의 상대적 위치
 };
 
 //===================================================================

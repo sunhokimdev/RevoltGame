@@ -100,6 +100,9 @@
     <Filter Include="TrackBass\Util\Mesh">
       <UniqueIdentifier>{610d57ee-cb08-4c56-8f01-e3ce4004da3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TrackBass\RcCar">
+      <UniqueIdentifier>{6f61c51d-b591-4268-89ed-0112f2e04fdd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -186,9 +189,6 @@
     <ClInclude Include="InlineFunction.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="DEBUG_RENDER.h">
-      <Filter>PhysX</Filter>
-    </ClInclude>
     <ClInclude Include="UserStream.h">
       <Filter>PhysX</Filter>
     </ClInclude>
@@ -270,6 +270,18 @@
     <ClInclude Include="MtlTex.h">
       <Filter>TrackBass\Util\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="DEBUG_RENDERER.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="cPickUp.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cCar.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cWheel.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -337,9 +349,6 @@
     </ClCompile>
     <ClCompile Include="TextManager.cpp">
       <Filter>Manager\TextManager</Filter>
-    </ClCompile>
-    <ClCompile Include="DEBUG_RENDER.cpp">
-      <Filter>PhysX</Filter>
     </ClCompile>
     <ClCompile Include="UserStream.cpp">
       <Filter>PhysX</Filter>
@@ -421,6 +430,18 @@
     </ClCompile>
     <ClCompile Include="MtlTex.cpp">
       <Filter>TrackBass\Util\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DEBUG_RENDERER.cpp">
+      <Filter>PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="cPickUp.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cCar.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cWheel.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

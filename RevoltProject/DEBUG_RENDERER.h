@@ -1,11 +1,11 @@
 #pragma once
 #include <NxDebugRenderable.h>
 
-class DEBUG_RENDER
+class DEBUG_RENDERER
 {
 public:
-	DEBUG_RENDER();
-	~DEBUG_RENDER();
+	DEBUG_RENDERER();
+	~DEBUG_RENDERER();
 private:
 	//디버깅을 위한 버택스정보
 	typedef struct _DEBUG_RENDER_VERTEX

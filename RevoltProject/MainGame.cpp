@@ -13,6 +13,9 @@
 // - MainGame -> 게임시작
 //======================================
 
+
+
+
 MainGame::MainGame()
 	: m_pCamera(NULL)
 	, m_pGrid(NULL)
@@ -53,9 +56,10 @@ void MainGame::Setup()
 
 	m_pMap = new Map;
 	m_pMap->Setup();
-
+	m_pMap->SetUpCamera(m_pCamera);
 	/*   사운드 초기화 작업   */
 	SetAddSound();
+
 }
 
 void MainGame::Update()
@@ -76,9 +80,16 @@ void MainGame::Render()
 	// 그리기 종료
 
 	//PhysX 디버깅 렌더
+	//MgrD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	g_pPhysX->Render();
 	g_pD3DDevice->EndScene();
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
+
+
+	//PhysX 시뮬 런
+	MgrPhysXScene->simulate((float)(1.0f/60.f));	//프레임 지정
+	MgrPhysXScene->flushStream();
+	MgrPhysXScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
 }
 
 void MainGame::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
