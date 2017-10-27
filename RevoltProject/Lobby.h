@@ -91,6 +91,7 @@ public:
 	void Setup();					// 초기화 작업 메서드
 	void Update();					// 동기화 작업할 메서드
 	void Render();					// 실질적으로 그릴 메서드
+	void Destroy();					// 제거 메서드 - 태섭
 
 	/*   클래스 안에 사용할 루프 메서드   */
 	void KeyUpdate();				// 키 이벤트 발생 갱신 메서드

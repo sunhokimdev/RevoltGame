@@ -14,13 +14,12 @@ public:
 
 	//인게임 에 들어갈 장애물 등등
 	std::vector<Object*>	m_vecObject;
-	Camera* pCamera;
 
 	void Update();
 	void LastUpdate();
 	void Render();
 
-	void LoadTrack(std::string FileName , Camera* pCam);
+	void LoadTrack(std::string FileName);
 	void CreateTrackPhysX();
 };
 

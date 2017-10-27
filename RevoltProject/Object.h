@@ -54,7 +54,7 @@ public:
 	SYNTHESIZE(std::string, m_objName, ObjName);
 public:
 	virtual void Setup();
-	virtual void Destory();
+	virtual void Destroy();
 	virtual void Update();
 	virtual void LastUpdate();
 	virtual void Render();

@@ -1,13 +1,14 @@
 #pragma once
+#define g_CamManager CameraManager::GetInstance()
 
-class Camera
+class CameraManager
 {
+	SINGLETONE(CameraManager);
 public:
-	Camera();
-	~Camera();
 
 	void Setup(D3DXVECTOR3*	pvTarget);
 	void Update();
+	void Destroy();
 	void WndProc(HWND hWnd, UINT message,
 		WPARAM wParam, LPARAM lParam);
 

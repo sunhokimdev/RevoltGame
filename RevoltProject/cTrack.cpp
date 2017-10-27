@@ -17,8 +17,8 @@ cTrack::~cTrack()
 
 void cTrack::Update()
 {
-	pCamera->Setup(&D3DXVECTOR3(50, 100, 50));
-	pCamera->SetLookAt(&D3DXVECTOR3(50, 0, 50));
+	//g_CamManager->Setup(&D3DXVECTOR3(50, 100, 50));
+	//g_CamManager->SetLookAt(&D3DXVECTOR3(50, 0, 50));
 
 
 	for each(Object* pObj in m_vecObject)
@@ -53,13 +53,9 @@ void cTrack::Render()
 	//	}
 }
 
-void cTrack::LoadTrack(std::string FileName, Camera* pCam)
+void cTrack::LoadTrack(std::string FileName)
 {
-	//카메라 등록
-	pCamera = pCam;
-
-
-	Destory();// 기존에 가지고 있던 정보 버리기
+	Destroy();// 기존에 가지고 있던 정보 버리기
 	std::string fullpath = "Maps/" + FileName + ".scn";
 
 	std::fstream Load;

@@ -13,7 +13,7 @@ void Object::Setup()
 {
 }
 
-void Object::Destory()
+void Object::Destroy()
 {
 }
 
