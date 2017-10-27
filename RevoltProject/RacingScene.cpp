@@ -14,7 +14,7 @@ void RacingScene::Setup()
 		m_pTrack->Setup();
 		m_pTrack->LoadTrack("Market2");
 	}
-	g_CamManager->SetLookAt(&D3DXVECTOR3(0, 0, 0));
+	g_pCamManager->SetLookAt(&D3DXVECTOR3(0, 0, 0));
 }
 
 void RacingScene::Destroy()

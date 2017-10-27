@@ -1,5 +1,5 @@
 #pragma once
-#define g_CamManager CameraManager::GetInstance()
+#define g_pCamManager CameraManager::GetInstance()
 
 class CameraManager
 {
@@ -13,6 +13,7 @@ public:
 		WPARAM wParam, LPARAM lParam);
 
 	void SetLookAt(D3DXVECTOR3* pvLookAt) { m_vNextLootAt = *pvLookAt; }
+	void Move();
 
 private:
 	D3DXVECTOR3		m_vEye;

@@ -41,7 +41,7 @@ void MainGame::Setup()
 	m_pGrid = new Grid;
 	m_pGrid->Setup();
 
-	g_CamManager->Setup(NULL);
+	g_pCamManager->Setup(NULL);
 
 	g_SceneManager->AddScene("Lobby", new LobbyScene);
 	g_SceneManager->AddScene("Race", new RacingScene);
@@ -56,7 +56,7 @@ void MainGame::Setup()
 
 void MainGame::Update()
 {
-	SAFE_UPDATE(g_CamManager);
+	SAFE_UPDATE(g_pCamManager);
 	SAFE_UPDATE(g_SceneManager);
 }
 

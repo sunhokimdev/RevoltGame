@@ -17,8 +17,8 @@ cTrack::~cTrack()
 
 void cTrack::Update()
 {
-	//g_CamManager->Setup(&D3DXVECTOR3(50, 100, 50));
-	//g_CamManager->SetLookAt(&D3DXVECTOR3(50, 0, 50));
+	//g_pCamManager->Setup(&D3DXVECTOR3(50, 100, 50));
+	//g_pCamManager->SetLookAt(&D3DXVECTOR3(50, 0, 50));
 
 
 	for each(Object* pObj in m_vecObject)

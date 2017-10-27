@@ -8,6 +8,7 @@
 HWND g_hWnd;
 HINSTANCE g_hInst;
 MainGame* g_mg;
+POINT g_ptMouse;
 
 LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -28,6 +29,12 @@ LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				default:
 				return DefWindowProc(hWnd, msg, wParam, lParam);
 			}
+		}
+		break;
+		case WM_MOUSEMOVE:
+		{
+			g_ptMouse.x = LOWORD(lParam);
+			g_ptMouse.y = HIWORD(lParam);
 		}
 		break;
 		case WM_PAINT:
