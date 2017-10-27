@@ -2,13 +2,16 @@
 #include <NxPhysics.h>
 #include <NxCooking.h>
 #include "UserStream.h"
-
+#include "DEBUG_RENDERER.h"
 #define MgrPhysX		cPhysXManager::GetInstance()
 #define MgrPhysXScene	cPhysXManager::GetInstance()->GetPhysXScene()
 #define MgrPhysXSDK		cPhysXManager::GetInstance()->GetPhysXSDK()
 #define MgrPhysXData	cPhysXManager::GetInstance()->GetPhysXData()
 
-class DEBUG_RENDER;
+#define  g_pPhysX		  MgrPhysX		
+#define  g_pPhysXScene	  MgrPhysXScene	
+#define  g_pPhysXSDK	  MgrPhysXSDK		
+#define  g_pPhysXData	  MgrPhysXData	
 
 struct PHYSXDATA
 {
@@ -33,7 +36,7 @@ struct USERDATA
 		ContactPairFlag = 0;
 		RaycastClosestShape = NX_FALSE;
 		RaycastAllShape = NX_FALSE;
-	//	RayHitPos = NxVec3(0, 0, 0);
+		//	RayHitPos = NxVec3(0, 0, 0);
 	}
 };
 
@@ -78,6 +81,7 @@ enum eShapeTag
 	E_SHAPE_TRIANGLE,
 };
 
+
 class cPhysXManager
 {
 public:
@@ -85,6 +89,7 @@ public:
 
 	SYNTHESIZE(PHYSXDATA*, m_physXUserData, PhysXData);
 private:
+	DEBUG_RENDERER* pDebugRenderer = NULL;
 
 	NxPhysicsSDK*	m_pNxPhysicsSDK;
 	NxScene*		m_pNxScene;
@@ -93,10 +98,12 @@ private:
 public:
 	NxPhysicsSDK* GetPhysXSDK() { return m_pNxPhysicsSDK; }
 	NxScene* GetPhysXScene() { return m_pNxScene; }
-	BOOL InitNxPhysX(DEBUG_RENDER** pDebugRenderer);
+	BOOL InitNxPhysX();
 
 	void Update();
 	void Destory();
+
+	void Render();
 
 	NxTriangleMeshShapeDesc CreateTringleMesh(ID3DXMesh* pMesh, D3DXMATRIXA16* matS = NULL);
 	NxBoxShapeDesc CreateBoxShape(int materialIndex, NxVec3 boxSize);
@@ -397,7 +404,6 @@ public:
 
 		NxBodyDesc triggerBody;
 		triggerBody.setToDefault();
-
 
 		if (!isGravaty) triggerBody.flags |= NX_BF_DISABLE_GRAVITY;
 

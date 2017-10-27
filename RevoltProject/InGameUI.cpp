@@ -4,6 +4,7 @@
 #include "UIImageView.h"
 
 InGameUI::InGameUI()
+	: m_pLobby(NULL)
 {
 }
 

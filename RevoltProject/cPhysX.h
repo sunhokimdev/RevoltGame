@@ -11,25 +11,8 @@ public:
 	NxActor*  m_pActor;		//save/load (X)		->월드좌표 + 로컬좌표 저장
 	USERDATA* m_pUserData;	//save/load (X)
 
-	NxMat34 m_worldPose;	//save/load (X)		->월드좌표 저장
-	NxMat34 m_localPose;	//save/load (X)		->로컬좌표 저장
-
-
 	cPhysX();
 	~cPhysX();
-
-	std::string actorName;						//save/load
-	NxVec3 m_position;							//save/load
-	NxVec3 m_sizeValue;							//save/load
-	NxVec3 m_dirValue;							//save/load
-	NxF32 m_matR[9] = { 1,0,0,0,1,0,0,0,1 };	//save/load
-
-
-	bool m_isTrigger = false;	//save/load
-	bool m_isStatic_ = false;	//save/load
-	bool m_isGravity = true;	//save/load
-
-	NxShapeType m_type;			//save/load
 
 	void SetPosition(NxVec3 pos)
 	{
@@ -38,14 +21,6 @@ public:
 	void SetPosition(D3DXVECTOR3 vec3)
 	{
 		SetPosition(NxVec3(vec3.x, vec3.y, vec3.z));
-	}
-	void SetLocalPosition(NxVec3 pos)
-	{
-		m_localPose.t = pos;
-	}
-	void SetLocalPosition(D3DXVECTOR3 vec3)
-	{
-		SetLocalPosition(NxVec3(vec3.x, vec3.y, vec3.z));
 	}
 
 	void SetRotation(D3DXMATRIX mat16)
@@ -94,17 +69,6 @@ public:
 
 		SetLocalRotation(nxf);
 	}
-	void SetLocalRotation(NxF32* nxf32)
-	{
-		NxMat33 mat33;
-		mat33.setColumnMajor(nxf32);
-		SetLocalRotation(mat33);
-	}
-	void SetLocalRotation(NxMat33 mat33)
-	{
-		m_localPose.M = mat33;
-	}
-
 	NxVec3 GetPositionToNxVec3()
 	{
 		return m_pActor->getGlobalPose().t;
@@ -146,14 +110,6 @@ public:
 
 		SAFE_DELETE(m_pUserData);
 	}
-	void Update()
-	{
-		//저장을 위한 정보 갱신
-		m_position = m_localPose.t;
-		NxMat33 mat33 = m_localPose.M;
-		mat33.getColumnMajor(m_matR);
-	}
-
 
 #define TAB	'\t'
 #define SPACE ' '

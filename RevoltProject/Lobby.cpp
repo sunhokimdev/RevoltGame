@@ -18,8 +18,8 @@
 #include "CarBox.h"
 #include "WheelTire.h"
 
-#include "UserFileLoader.h"
 #include "ProfileList.h"
+#include "UserFileLoader.h"
 
 Lobby::Lobby()
 	: m_pSprite(NULL)
@@ -70,32 +70,36 @@ void Lobby::Setup()
 	m_pInGameUI->Setup();
 	m_pInGameUI->SetLobby(&m_stateLobby);
 
+
+	//===================================================================
+	// - written by 정종훈
+	// - 프로파일 미해결
+
+	/*
 	m_pfileList = new ProfileList;
 	m_pfileList->ListLoad();
-	m_vProfileList = m_pfileList->GetUpdateList();
+//	m_vProfileList = m_pfileList->GetUpdateList();
 	
-	if (m_vProfileList.size() == 0)
-	{
-		UserFileLoader*	pCreate = new UserFileLoader;
-		pCreate->CreateProfile("Player1");
-	}
+//	if (m_vProfileList.size() == 0)
+//	{
+//		UserFileLoader*	pCreate = new UserFileLoader;
+//		pCreate->CreateProfile("Player1");
+//	}
+*/
 
+//===================================================================
 	SetUpUI();
 }
 
 void Lobby::Update()
 {
-	TimeUpdate();			// 시간 갱신 메서드
-	KeyUpdate();			// 키 이벤트 갱신 메서드
-
 	if (m_stateLobby == SELECT_MAP_LOBBY)
 	{
 		m_pSelectMap->SetMapType(&m_stateMapType, m_leftAndrightSelect);
 	}
-	TimeUpdate();   // 시간 갱신 메서드
-	CreateProfile();	// 프로필 생성
-	KeyUpdate();   // 키 이벤트 갱신 메서드
 
+	TimeUpdate();   // 시간 갱신 메서드
+	KeyUpdate();   // 키 이벤트 갱신 메서드
 
 	if (m_mapLobby[m_stateLobby]->m_pObject)
 		m_mapLobby[m_stateLobby]->m_pObject->Update();
@@ -176,8 +180,7 @@ void Lobby::KeyUpdate()
 		
 			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
 		}
-		else if (m_stateLobby == CREATE_PROFILE_LOBBY ||
-			m_stateLobby == CREATE_PROFILE_LOBBY2)
+		else if (m_stateLobby == CREATE_PROFILE_LOBBY || m_stateLobby == CREATE_PROFILE_LOBBY2)
 		{
 			WheelTire::g_xRotAngle += D3DX_PI / 15.0f;
 			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
@@ -216,8 +219,7 @@ void Lobby::KeyUpdate()
 
 			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
 		}
-		else if (m_stateLobby == CREATE_PROFILE_LOBBY ||
-			m_stateLobby == CREATE_PROFILE_LOBBY2)
+		else if (m_stateLobby == CREATE_PROFILE_LOBBY ||	m_stateLobby == CREATE_PROFILE_LOBBY2)
 		{
 			WheelTire::g_xRotAngle -= D3DX_PI / 15.0f;
 			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
@@ -247,35 +249,13 @@ void Lobby::KeyUpdate()
 	/*   엔터 키 눌렀을 때 다음 로비로 들어가는 이벤트   */
 	if (g_pKeyManager->isOnceKeyDown(VK_RETURN))
 	{
-		if (m_stateLobby == START_LOBBY)
-		{
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
-			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
-
-			if (m_stateLobby == START_LOBBY)
+			if (m_stateLobby == SELECT_MAP_LOBBY)
 			{
-				if (m_leftAndrightSelect == 0)		// load select
-				{
-					m_isflag = false;
-					UITextImageView::m_isflag = &m_isflag;
-					m_pfileList->ListLoad();
-					m_vProfileList = m_pfileList->GetUpdateList();
-					m_PlayerName = m_vProfileList[m_select].c_str();
-					UITextImageView::m_PlayerName = m_PlayerName;
-				}
-				else if (m_leftAndrightSelect == 2)		// delete select
-				{
-					if (m_vProfileList.size() > 1)
-					{
-						UserFileLoader*	pDelete = new UserFileLoader;
-						pDelete->DeleteProfile(m_vProfileList[m_select].c_str());
-						m_pfileList->ListLoad();
-						m_vProfileList = m_pfileList->GetUpdateList();
-						m_mapLobby[START_LOBBY]->m_count = m_vProfileList.size();
-						m_mapLobby[START_LOBBY]->m_pObject = m_pfileList->GetProfileList();
-					}
-				}
-				m_stateLobby = m_mapLobby[START_LOBBY]->m_pNextLob[m_leftAndrightSelect];
+				m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
+				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+				m_time = 0.0f;
+				m_select = 0;
+				m_leftAndrightSelect = 0;
 			}
 			else if (m_stateLobby == CREATE_PROFILE_LOBBY2)
 			{
@@ -288,59 +268,44 @@ void Lobby::KeyUpdate()
 					m_stateLobby = m_mapLobby[START_LOBBY]->m_pNextLob[1];
 				}
 			}
+			else if (m_stateLobby == SELECT_CAR_LOBBY)
+			{
+				m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[0];
+				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+				m_time = 0.0f;
+
+				if (m_stateLobby > INTRO3)
+					g_pSoundManager->Play("menuNext.wav", 1.0f);
+			}
+
+			else if (m_mapLobby[m_stateLobby]->m_pNextLob[m_select] != LOBBY_NONE)
+			{
+				m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
+
+				if (m_stateLobby != MAIN_LOBBY3)
+					m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+				m_time = 0.0f;
+				m_select = 0;
+				m_leftAndrightSelect = 0;
+
+				if (m_stateLobby > INTRO3)
+					g_pSoundManager->Play("menuNext.wav", 1.0f);
+			}
+
 			else
 			{
 				m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
+
+				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
+				m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+				m_time = 0.0f;
+				m_select = 0;
+				m_leftAndrightSelect = 0;
+
+				if (m_stateLobby > INTRO3)
+					g_pSoundManager->Play("menuNext.wav", 1.0f);
 			}
-			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
-			m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
-			m_time = 0.0f;
-			m_select = 0;
-			m_leftAndrightSelect = 0;
-
-			if (m_stateLobby > INTRO3)
-				g_pSoundManager->Play("menuNext.wav", 1.0f);
-		}
-
-
-		else if (m_stateLobby == SELECT_CAR_LOBBY)
-		{
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[0];
-			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
-			m_time = 0.0f;
-
-			if (m_stateLobby > INTRO3)
-				g_pSoundManager->Play("menuNext.wav", 1.0f);
-		}
-
-		else if (m_stateLobby == SELECT_MAP_LOBBY)
-
-		else if (m_stateLobby == START_LOBBY)
-
-		{
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
-			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
-			m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
-			m_time = 0.0f;
-			m_select = 0;
-			m_leftAndrightSelect = 0;
-		}
-
-		else if (m_mapLobby[m_stateLobby]->m_pNextLob[m_select] != LOBBY_NONE)
-		{
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
-
-			if(m_stateLobby != MAIN_LOBBY3)
-				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
-			m_time = 0.0f;
-			m_select = 0;
-			m_leftAndrightSelect = 0;
-
-			if (m_stateLobby > INTRO3)
-				g_pSoundManager->Play("menuNext.wav", 1.0f);
-		}
 	}
-
 	/*   ESC 키 눌렀을 때 이전 로비로 들어가는 이벤트   */
 	if (g_pKeyManager->isOnceKeyDown(VK_ESCAPE))
 	{
@@ -348,14 +313,18 @@ void Lobby::KeyUpdate()
 		{
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
 
-			if(m_stateLobby != MAIN_LOBBY2)
+			if (m_stateLobby != MAIN_LOBBY2)
 				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
 
+			m_time = 0.0f;
+			m_select = 0;
+			m_leftAndrightSelect = 0;
 			m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
-
 			g_pSoundManager->Play("menuPrev.wav", 1.0f);
 		}
 	}
+
+	m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 }
 
 void Lobby::TimeUpdate()
@@ -384,12 +353,11 @@ void Lobby::TimeUpdate()
 void Lobby::SetUpUI()
 {
 	//===================================================================
-	// - ## 10.15.19 ##
 	// - written by 김선호
 	// - @@ UI 추가작업은 여기서만 진행해야 한다.
 	//===================================================================
 
-<<<<<<< HEAD
+
 ///////////////////////////////   구분   /////////////////////////////////////////
 	
 	/*   인트로 이미지   */
@@ -660,8 +628,8 @@ void Lobby::SetUpUI()
 	/*  Create Profile Lobby  */
 
 	UIImageView* pImageView32 = new UIImageView;
-	pImageView26->SetPosition(-10, -140);
-	pImageView26->SetTexture("Maps/Front/Image/revoltrogo.png");
+	pImageView32->SetPosition(-10, -140);
+	pImageView32->SetTexture("Maps/Front/Image/revoltrogo.png");
 
 	UIImageView* pImageView33 = new UIImageView;
 	pImageView33->SetPosition(300, 180);
@@ -969,7 +937,7 @@ void Lobby::SetUpUI()
 
 	m_mapLobby[START_LOBBY] = new ST_Object;
 	m_mapLobby[START_LOBBY]->m_target = D3DXVECTOR3(-1, 2, -55);
-	m_mapLobby[START_LOBBY]->m_count = m_vProfileList.size();
+	m_mapLobby[START_LOBBY]->m_count = 1;
 	m_mapLobby[START_LOBBY]->m_selectCnt = 3;
 	m_mapLobby[START_LOBBY]->m_pNextLob = new LOBBY[3];
 	m_mapLobby[START_LOBBY]->m_prevLob = LOBBY_NONE;
@@ -977,7 +945,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[START_LOBBY]->m_pNextLob[0] = MAIN_LOBBY;
 	m_mapLobby[START_LOBBY]->m_pNextLob[1] = CREATE_PROFILE_LOBBY2;
 	m_mapLobby[START_LOBBY]->m_pNextLob[2] = START_LOBBY;
-	m_mapLobby[START_LOBBY]->m_pObject = m_pfileList->GetProfileList();
+	m_mapLobby[START_LOBBY]->m_pObject = pImageView4;
 	m_mapLobby[START_LOBBY]->m_prevLob = START_LOBBY;
 
 	m_mapLobby[MAIN_LOBBY] = new ST_Object;
@@ -993,9 +961,9 @@ void Lobby::SetUpUI()
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[3] = LOBBY_NONE;
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[4] = START_LOBBY;
 	m_mapLobby[MAIN_LOBBY]->m_pNextLob[5] = GAME_QUIT;
+
 	m_mapLobby[MAIN_LOBBY2] = new ST_Object;
 	m_mapLobby[MAIN_LOBBY2]->m_target = D3DXVECTOR3(1, 10, -2);
-
 	m_mapLobby[MAIN_LOBBY2]->m_count = 6;
 	m_mapLobby[MAIN_LOBBY2]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[MAIN_LOBBY2]->m_time = 50.0f;
@@ -1017,7 +985,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_count = 1;
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_time = 50.0f;
-	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pObject = pImageView33;
+	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pObject = pIV_CP_BodyRing;
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_camLookAt = D3DXVECTOR3(14, 4, 22);
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_pNextLob[0] = SELECT_CAR_LOBBY;
 	m_mapLobby[CREATE_PROFILE_LOBBY]->m_prevLob = MAIN_LOBBY3;
@@ -1072,6 +1040,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[GARDEN_MAP]->m_prevLob = SELECT_MAP_LOBBY;
 	m_mapLobby[GARDEN_MAP]->m_pObject = m_pInGameUI->GetUIObject();
 
+	/*
 	m_mapLobby[CREATE_PROFILE_LOBBY2] = new ST_Object;
 	m_mapLobby[CREATE_PROFILE_LOBBY2]->m_target = D3DXVECTOR3(4, 8, 12);
 	m_mapLobby[CREATE_PROFILE_LOBBY2]->m_count = 1;
@@ -1081,8 +1050,9 @@ void Lobby::SetUpUI()
 	m_mapLobby[CREATE_PROFILE_LOBBY2]->m_camLookAt = D3DXVECTOR3(14, 4, 22);
 	m_mapLobby[CREATE_PROFILE_LOBBY2]->m_pNextLob[0] = START_LOBBY;
 	m_mapLobby[CREATE_PROFILE_LOBBY2]->m_prevLob = START_LOBBY;
+	*/
 }
-
+/*
 void Lobby::CreateProfile()
 {
 	if (m_isEnterName)
@@ -1098,3 +1068,4 @@ void Lobby::CreateProfile()
 
 	}
 }
+*/

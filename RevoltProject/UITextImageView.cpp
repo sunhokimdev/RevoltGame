@@ -7,7 +7,6 @@
 #include "Thing.h"
 #include "UserFileLoader.h"
 
-
 int* UITextImageView::m_Select;
 int* UITextImageView::m_LeftAndRightSelect;
 std::string	UITextImageView::m_PlayerName;
@@ -137,8 +136,6 @@ void UITextImageView::KeyEvent()
 	}
 	if (tSize != m_chatText.size())
 	{
-		//g_pSoundManager->Play("honkgood.wav", 1.0f);
-
 		if (m_chatText.size() == 1)
 		{
 			int temp = 0;

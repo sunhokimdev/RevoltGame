@@ -1,5 +1,4 @@
 #pragma once
-<<<<<<< HEAD
 
 class UIObject;					// UI오브젝트를 사용하기 위한 전방선언 클래스
 class MtlTex;					// 재질을 사용하기 위한 전방선언 클래스
@@ -14,7 +13,7 @@ class InGameUI;
 class UIObject;		// UI오브젝트를 사용하기 위한 전방선언 클래스
 class MtlTex;		// 재질을 사용하기 위한 전방선언 클래스
 class Camera;		// 카메라 클래스를 사용하기 위한 전방선언 클래스
-class ProfileList;
+class ProfileList;	
 //===================================================================
 // - written by 김선호
 // - 로비 창 구현
@@ -22,7 +21,6 @@ class ProfileList;
 //===================================================================
 
 //===================================================================
-// - ## 10.15.17 ##
 // - written by 김선호
 // - @@ 텍스트 인덱스의 갯수가 4개이면 처음시작은 0부터 시작하고 끝은 3이다.
 //===================================================================
@@ -73,8 +71,11 @@ protected:
 	SelectMap*			m_pSelectMap;			// Select Map Class
 	InGameUI*			m_pInGameUI;			// InGame UI;
 
-	std::vector<std::string> m_vString;
-
+	//===================================================================
+	// - written by 정종훈
+	// - 프로필 Load/Save작업
+	// - 로비 구현 할 때 이 클래스 내부에서만 처리할 것
+	//===================================================================
 	std::vector<std::string> m_vProfileList;	// 프로필 목록
 	std::string				 m_PlayerName;		// 선택된 이름
 	bool					 m_isCreate;		// 프로필 생성할지 확인

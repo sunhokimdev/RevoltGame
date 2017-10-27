@@ -151,20 +151,22 @@
     <ClInclude Include="Car.h" />
     <ClInclude Include="CarBox.h" />
     <ClInclude Include="CarTextLoader.h" />
+    <ClInclude Include="cCar.h" />
+    <ClInclude Include="cCheckBox.h" />
+    <ClInclude Include="cFollowPoint.h" />
+    <ClInclude Include="cLight.h" />
     <ClInclude Include="cMesh.h" />
     <ClInclude Include="cPhysX.h" />
     <ClInclude Include="cPhysXManager.h" />
+    <ClInclude Include="cPickUp.h" />
     <ClInclude Include="cStringUtil.h" />
+    <ClInclude Include="cStuff.h" />
     <ClInclude Include="cTrack.h" />
     <ClInclude Include="cTransform.h" />
-    <ClInclude Include="DEBUG_RENDER.h" />
+    <ClInclude Include="cWheel.h" />
+    <ClInclude Include="DEBUG_RENDERER.h" />
     <ClInclude Include="DeviceManager.h" />
     <ClInclude Include="FontManager.h" />
-<<<<<<< HEAD
-=======
-    <ClInclude Include="ProfileList.h" />
-    <ClInclude Include="FrustomView.h" />
->>>>>>> e84f34b5edd056e61e186699892b3e8bdc8a97b8
     <ClInclude Include="Grid.h" />
     <ClInclude Include="InGameUI.h" />
     <ClInclude Include="InlineFunction.h" />
@@ -180,6 +182,7 @@
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="ObjectMap.h" />
     <ClInclude Include="PickUpObject.h" />
+    <ClInclude Include="ProfileList.h" />
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RevoltProject.h" />
@@ -191,10 +194,7 @@
     <ClInclude Include="TextManager.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Thing.h" />
-<<<<<<< HEAD
     <ClInclude Include="ThingManager.h" />
-=======
->>>>>>> e84f34b5edd056e61e186699892b3e8bdc8a97b8
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="UIButton.h" />
     <ClInclude Include="UIImageView.h" />
@@ -211,20 +211,22 @@
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="CarBox.cpp" />
     <ClCompile Include="CarTextLoader.cpp" />
+    <ClCompile Include="cCar.cpp" />
+    <ClCompile Include="cCheckBox.cpp" />
+    <ClCompile Include="cFollowPoint.cpp" />
+    <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cMesh.cpp" />
     <ClCompile Include="cPhysX.cpp" />
     <ClCompile Include="cPhysXManager.cpp" />
+    <ClCompile Include="cPickUp.cpp" />
     <ClCompile Include="cStringUtil.cpp" />
+    <ClCompile Include="cStuff.cpp" />
     <ClCompile Include="cTrack.cpp" />
     <ClCompile Include="cTransform.cpp" />
-    <ClCompile Include="DEBUG_RENDER.cpp" />
+    <ClCompile Include="cWheel.cpp" />
+    <ClCompile Include="DEBUG_RENDERER.cpp" />
     <ClCompile Include="DeviceManager.cpp" />
     <ClCompile Include="FontManager.cpp" />
-<<<<<<< HEAD
-=======
-    <ClCompile Include="ProfileList.cpp" />
-    <ClCompile Include="FrustomView.cpp" />
->>>>>>> e84f34b5edd056e61e186699892b3e8bdc8a97b8
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="InGameUI.cpp" />
     <ClCompile Include="KeyManager.cpp" />
@@ -238,6 +240,7 @@
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="ObjectMap.cpp" />
     <ClCompile Include="PickUpObject.cpp" />
+    <ClCompile Include="ProfileList.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="RevoltProject.cpp" />
     <ClCompile Include="SelectMap.cpp" />
@@ -251,10 +254,7 @@
     <ClCompile Include="TextManager.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Thing.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="ThingManager.cpp" />
-=======
->>>>>>> e84f34b5edd056e61e186699892b3e8bdc8a97b8
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UIImageView.cpp" />

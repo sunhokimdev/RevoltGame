@@ -100,7 +100,7 @@ enum LOBBY {
 enum CAR_CLASS { CLASS_NONE, CAR_ELECTRIC, CAR_GLOW, CAR_OTHER };
 enum CAR_RATING { RATING_NONE, RATING_ROOKIE, RATING_AMATEUR, RATING_SEMI_PRO, RATING_PRO };
 enum MAP_TYPE { NONE = 0, SUPERMARKET, NHOOD, MUSEUM, SHIP };
-
+enum FONTFILE{FONT1=2001, FONT2};
 //======================================
 // - ## 10.14.17 ##
 // - written by �輱ȣ

@@ -1,4 +1,5 @@
 #pragma once
+#include "Camera.h"
 
 class MtlTex;
 class Thing;
@@ -16,16 +17,19 @@ class cTrack;
 class Map
 {
 private:
+	
 	int m_stage;
 
 	std::vector<std::string> m_vecMapName;		// 맵 이름을 저장하는 벡터 변수
 
+		// 맵 이름을 저장하는 벡터 변수
+	Camera* m_pCamera;
 	//Front 전용 맵
 	LPD3DXMESH				m_pObjMesh;
 	std::vector<MtlTex*>	m_vecObjMtlTex;
 	std::vector<Thing*>		m_vecThing;
 
-	cTrack* m_map;				
+//	cTrack* m_map;				
 
 	//트랙 전용 맵
 	std::map<int, cTrack*> m_track;
@@ -42,5 +46,6 @@ public:
 	void Render();
 
 	void SetupThing();
+	void SetUpCamera(Camera* camera) { m_pCamera = camera; }
 };
 
