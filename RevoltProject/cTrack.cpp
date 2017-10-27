@@ -117,6 +117,9 @@ void cTrack::LoadTrack(std::string FileName)
 				bool isStatic_ = false;
 				bool isGravity = true;
 
+				NxVec3 worldPosition(0, 0, 0);
+				NxVec3 localPosition(0, 0, 0);
+
 				//Obj->SetPhysXData(physx);
 
 				std::string strName;
@@ -151,6 +154,9 @@ void cTrack::LoadTrack(std::string FileName)
 						float x, y, z;
 						sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
 						Obj->SetPosition(D3DXVECTOR3(x, y, z));
+						worldPosition.x = x;
+						worldPosition.y = y;
+						worldPosition.z = z;
 					}
 					else if (szTemp[0] == 'S') //Scale
 					{
@@ -195,6 +201,10 @@ void cTrack::LoadTrack(std::string FileName)
 							position.y = y;
 							position.z = z;
 
+							localPosition.x = x;
+							localPosition.y = y;
+							localPosition.z = z;
+
 						}
 						else if (szTemp[2] == 'S')
 						{
@@ -219,7 +229,7 @@ void cTrack::LoadTrack(std::string FileName)
 					{
 						NxActor* pActor = MgrPhysX->CreateActor(
 							type,
-							position,
+							position + worldPosition + localPosition,
 							matR,
 							sizeValue,
 							pUserData,
