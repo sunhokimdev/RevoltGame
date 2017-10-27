@@ -64,6 +64,8 @@ void Map::Render()
 	g_pD3DDevice->SetTexture(0, NULL);
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 
+	// ¸Ê ·»´õ
+
 	D3DXMATRIXA16	matWorld, matS, matR;
 	D3DXMatrixIdentity(&matWorld);
 
@@ -75,7 +77,9 @@ void Map::Render()
 
 		if (m_vecObjMtlTex[i]->GetTexture() != NULL)
 		{
+
 			g_pD3DDevice->SetTexture(0, m_vecObjMtlTex[i]->GetTexture());
+
 		}
 		m_pObjMesh->DrawSubset(i);
 	}
@@ -171,3 +175,5 @@ void Map::SetupThing()
 	m_vecThing.push_back(tThing10);
 	m_vecThing.push_back(tThing11);
 }
+
+

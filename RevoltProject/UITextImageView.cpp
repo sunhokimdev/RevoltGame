@@ -1,10 +1,18 @@
 #include "stdafx.h"
 #include "UITextImageView.h"
+
 #include "CarBox.h"
 #include "WheelTire.h"
 
+#include "Thing.h"
+#include "UserFileLoader.h"
+
+
 int* UITextImageView::m_Select;
 int* UITextImageView::m_LeftAndRightSelect;
+std::string	UITextImageView::m_PlayerName;
+bool* UITextImageView::m_isCreate;
+bool* UITextImageView::m_isflag;
 
 UITextImageView::UITextImageView()
 	: m_pTexture(NULL)
@@ -12,6 +20,7 @@ UITextImageView::UITextImageView()
 	, m_ySize(1)
 	, m_color(D3DCOLOR_ARGB(255, 255, 255, 255))
 	, m_isVectorText(false)
+	, m_isVectorText2(false)
 	, m_isChatingText(false)
 	, m_chatText("")
 	, m_cursorTime(0.0f)
@@ -25,6 +34,7 @@ UITextImageView::~UITextImageView()
 	SAFE_RELEASE(m_pTexture);
 	SAFE_DELETE(m_Select);
 	SAFE_DELETE(m_LeftAndRightSelect);
+	SAFE_DELETE(m_isCreate);
 }
 
 void UITextImageView::SetTexture(char * szFullPath)
@@ -56,6 +66,13 @@ void UITextImageView::SetTexture(char * szFullPath)
 void UITextImageView::KeyEvent()
 {
 	int tSize = m_chatText.size();
+	
+	if (!(*m_isflag))
+	{
+		*m_isflag = true;
+		m_chatText = "";
+		m_chatText += m_PlayerName;
+	}
 
 	if (g_pKeyManager->isOnceKeyDown('A'))
 		m_chatText += 'a';
@@ -118,14 +135,13 @@ void UITextImageView::KeyEvent()
 			return;
 		}
 	}
-
 	if (tSize != m_chatText.size())
 	{
 		//g_pSoundManager->Play("honkgood.wav", 1.0f);
 
 		if (m_chatText.size() == 1)
 		{
-			int temp;
+			int temp = 0;
 
 			if (m_chatText[0] >= 97)
 				temp = m_chatText[0] - 97;
@@ -153,6 +169,7 @@ void UITextImageView::KeyEvent()
 
 	if (m_chatText.size() != 0 && m_chatText[0] >= 97)
 		m_chatText[0] -= 32;
+
 }
 
 void UITextImageView::Update()
@@ -160,6 +177,13 @@ void UITextImageView::Update()
 	if (m_isChatingText)
 	{
 		KeyEvent();
+
+		if (*m_isCreate && (m_chatText.size() > 0))
+		{
+			*m_isCreate = false;
+			UserFileLoader* Create = new UserFileLoader;
+			Create->CreateProfile(m_chatText);
+		}
 
 		if ((m_cursorTime / CURSORRENDER) % 2 == 1)
 			m_isCursorRender = true;
@@ -171,7 +195,7 @@ void UITextImageView::Update()
 		if (m_cursorTime > 1000000)
 			m_cursorTime = 0;
 	}
-
+	
 	UIObject::Update();
 }
 
@@ -195,6 +219,8 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 
 	if (m_isVectorText)
 		tStr = m_vecText[*m_LeftAndRightSelect];
+	else if(m_isVectorText2)
+		tStr = m_vecText[*m_Select];
 	else if (m_isChatingText)
 		tStr = m_chatText;
 	else if (m_isRealTime)			// 실시간으로 그려야할 텍스트인 경우

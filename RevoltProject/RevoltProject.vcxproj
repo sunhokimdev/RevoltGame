@@ -160,6 +160,11 @@
     <ClInclude Include="DEBUG_RENDER.h" />
     <ClInclude Include="DeviceManager.h" />
     <ClInclude Include="FontManager.h" />
+<<<<<<< HEAD
+=======
+    <ClInclude Include="ProfileList.h" />
+    <ClInclude Include="FrustomView.h" />
+>>>>>>> e84f34b5edd056e61e186699892b3e8bdc8a97b8
     <ClInclude Include="Grid.h" />
     <ClInclude Include="InGameUI.h" />
     <ClInclude Include="InlineFunction.h" />
@@ -186,7 +191,10 @@
     <ClInclude Include="TextManager.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Thing.h" />
+<<<<<<< HEAD
     <ClInclude Include="ThingManager.h" />
+=======
+>>>>>>> e84f34b5edd056e61e186699892b3e8bdc8a97b8
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="UIButton.h" />
     <ClInclude Include="UIImageView.h" />
@@ -194,6 +202,7 @@
     <ClInclude Include="UITextChating.h" />
     <ClInclude Include="UITextImageView.h" />
     <ClInclude Include="UITextView.h" />
+    <ClInclude Include="UserFileLoader.h" />
     <ClInclude Include="UserStream.h" />
     <ClInclude Include="WheelTire.h" />
   </ItemGroup>
@@ -211,6 +220,11 @@
     <ClCompile Include="DEBUG_RENDER.cpp" />
     <ClCompile Include="DeviceManager.cpp" />
     <ClCompile Include="FontManager.cpp" />
+<<<<<<< HEAD
+=======
+    <ClCompile Include="ProfileList.cpp" />
+    <ClCompile Include="FrustomView.cpp" />
+>>>>>>> e84f34b5edd056e61e186699892b3e8bdc8a97b8
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="InGameUI.cpp" />
     <ClCompile Include="KeyManager.cpp" />
@@ -237,7 +251,10 @@
     <ClCompile Include="TextManager.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Thing.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="ThingManager.cpp" />
+=======
+>>>>>>> e84f34b5edd056e61e186699892b3e8bdc8a97b8
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UIImageView.cpp" />
@@ -245,6 +262,7 @@
     <ClCompile Include="UITextChating.cpp" />
     <ClCompile Include="UITextImageView.cpp" />
     <ClCompile Include="UITextView.cpp" />
+    <ClCompile Include="UserFileLoader.cpp" />
     <ClCompile Include="UserStream.cpp" />
     <ClCompile Include="WheelTire.cpp" />
   </ItemGroup>

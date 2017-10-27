@@ -4,9 +4,9 @@
 class UITextChating : public UIObject
 {
 private:
-	bool							m_isLButtonDown;
+	bool				m_isLButtonDown;
 	LPDIRECT3DTEXTURE9	m_aTexture;
-	ST_SIZE						m_stSize;
+	ST_SIZE				m_stSize;
 public:
 	UITextChating();
 	virtual ~UITextChating();

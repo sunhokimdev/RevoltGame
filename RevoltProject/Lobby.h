@@ -1,4 +1,5 @@
 #pragma once
+<<<<<<< HEAD
 
 class UIObject;					// UI오브젝트를 사용하기 위한 전방선언 클래스
 class MtlTex;					// 재질을 사용하기 위한 전방선언 클래스
@@ -10,8 +11,11 @@ class Thing;					// 오브젝트 클래스
 class SelectMap;				// SelectMap Class
 class InGameUI;
 
+class UIObject;		// UI오브젝트를 사용하기 위한 전방선언 클래스
+class MtlTex;		// 재질을 사용하기 위한 전방선언 클래스
+class Camera;		// 카메라 클래스를 사용하기 위한 전방선언 클래스
+class ProfileList;
 //===================================================================
-// - ## 10.15.17 ##
 // - written by 김선호
 // - 로비 창 구현
 // - 로비 구현 할 때 이 클래스 내부에서만 처리할 것
@@ -70,6 +74,14 @@ protected:
 	InGameUI*			m_pInGameUI;			// InGame UI;
 
 	std::vector<std::string> m_vString;
+
+	std::vector<std::string> m_vProfileList;	// 프로필 목록
+	std::string				 m_PlayerName;		// 선택된 이름
+	bool					 m_isCreate;		// 프로필 생성할지 확인
+	bool					 m_isEnterName;		// 이름 입력 확인
+	bool					 m_isflag;			// 이름 불러오기
+
+	ProfileList*		 	 m_pfileList;		// 프로필 리스트
 public:
 	Lobby();
 	~Lobby();
@@ -83,6 +95,8 @@ public:
 	void KeyUpdate();				// 키 이벤트 발생 갱신 메서드
 	void TimeUpdate();				// 시간이 흐를 때 마다 발생 하는 이벤트를 갱신하는 메서드
 	void SetUpUI();					// UI 셋업작업
+
+	void CreateProfile();
 
 	D3DXVECTOR3 GetTarget() { return m_mapLobby[START_LOBBY]->m_target; }		// 카메라가 보는 방향을 반환해주는 메서드
 	void SetUpCamera(Camera* camera) { m_pCamera = camera; }		// 처음 카메라 변수를 지정하는 메서드

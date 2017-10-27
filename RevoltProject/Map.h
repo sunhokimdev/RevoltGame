@@ -2,7 +2,10 @@
 
 class MtlTex;
 class Thing;
+
 class cTrack;
+
+
 //===================================================================
 // - ## 10.15.20 ##
 // - written by 김선호
@@ -14,6 +17,7 @@ class Map
 {
 private:
 	int m_stage;
+
 	std::vector<std::string> m_vecMapName;		// 맵 이름을 저장하는 벡터 변수
 
 	//Front 전용 맵

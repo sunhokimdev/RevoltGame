@@ -35,15 +35,14 @@ void Camera::Setup(D3DXVECTOR3 * pvTarget)
 		D3DX_PI / 4.0f,
 		rc.right / (float)rc.bottom,
 		1.0f, 1000.0f);
-	g_pD3DDevice->SetTransform(D3DTS_PROJECTION,
-		&matProj);
+	g_pD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);
 }
 
 void Camera::Update()
 {
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
-	
+
 	m_fCamTime += 0.0005f;
 
 	D3DXMATRIXA16 matR, matRX, matRY;
@@ -56,11 +55,6 @@ void Camera::Update()
 	{
 		D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fCamTime);
 		D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
-	}
-
-	if (m_fCamTime > 1.0f)
-	{
-		m_fCamTime = 0.0f;
 	}
 
 	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matR);
