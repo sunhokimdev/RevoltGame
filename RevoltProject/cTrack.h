@@ -1,6 +1,7 @@
 #pragma once
 #include "Object.h"
 #include "Thing.h"
+#include "Camera.h"
 
 class cTrack : public Object
 {
@@ -9,11 +10,17 @@ public:
 	~cTrack();
 public:
 	int trackNum = 0;
-	//인게임 에 들어갈 장애물 등등
+	std::string trackName;
+
 	//인게임 에 들어갈 장애물 등등
 	std::vector<Object*>	m_vecObject;
+	Camera* pCamera;
 
 	void Update();
+	void LastUpdate();
 	void Render();
+
+	void LoadTrack(std::string FileName , Camera* pCam);
+	void CreateTrackPhysX();
 };
 

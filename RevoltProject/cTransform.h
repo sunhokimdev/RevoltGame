@@ -85,6 +85,26 @@ public:
 		VectorToQuaternion(vecDir, true, true);
 		ArrowVectorSetting();
 	}
+	void SetQuaternion(NxF32* mat9)
+	{
+		if (mat9[8] != NULL)
+		{
+			D3DXMATRIXA16 mat;
+			D3DXMatrixIdentity(&mat);
+
+			mat._11 = mat9[0];
+			mat._12 = mat9[1];
+			mat._13 = mat9[2];
+			mat._21 = mat9[3];
+			mat._22 = mat9[4];
+			mat._23 = mat9[5];
+			mat._31 = mat9[6];
+			mat._32 = mat9[7];
+			mat._33 = mat9[8];
+
+			SetQuaternion(mat);
+		}
+	}
 
 	void SetPosition(D3DXMATRIX matT)
 	{
@@ -95,6 +115,12 @@ public:
 		m_position.x = x;
 		m_position.y = y;
 		m_position.z = z;
+	}
+	void SetPosition(NxVec3 nxVec)
+	{
+		m_position.x = nxVec.x;
+		m_position.y = nxVec.y;
+		m_position.z = nxVec.z;
 	}
 
 
