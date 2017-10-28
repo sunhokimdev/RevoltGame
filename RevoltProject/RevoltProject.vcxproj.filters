@@ -85,6 +85,9 @@
     <Filter Include="Basic">
       <UniqueIdentifier>{68f0285e-643b-42fd-bae9-3439e804edfa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PhysXUtil">
+      <UniqueIdentifier>{abd75bca-cd6e-4d2f-b908-ce65947d00d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -264,6 +267,42 @@
     <ClInclude Include="cWheel.h">
       <Filter>Basic</Filter>
     </ClInclude>
+    <ClInclude Include="PhysX\cooking.h">
+      <Filter>PhysXUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxAllVehicles.h">
+      <Filter>PhysXUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicle.h">
+      <Filter>PhysXUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleDesc.h">
+      <Filter>PhysXUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleGearDesc.h">
+      <Filter>PhysXUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleGears.h">
+      <Filter>PhysXUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleMotor.h">
+      <Filter>PhysXUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleMotorDesc.h">
+      <Filter>PhysXUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxWheel.h">
+      <Filter>PhysXUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxWheelDesc.h">
+      <Filter>PhysXUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxLinearInterpolationValues.h">
+      <Filter>PhysXUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxLinearInterpolate3Values.h">
+      <Filter>PhysXUtil</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -424,6 +463,18 @@
     </ClCompile>
     <ClCompile Include="cWheel.cpp">
       <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\cooking.cpp">
+      <Filter>PhysXUtil</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxAllVehicles.cpp">
+      <Filter>PhysXUtil</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxVehicle.cpp">
+      <Filter>PhysXUtil</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxWheel.cpp">
+      <Filter>PhysXUtil</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
