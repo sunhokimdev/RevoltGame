@@ -16,7 +16,7 @@ public:
 	~cMesh();
 
 
-
+	//name 에 확장자를 포함 시킬 것.
 	void LoadMesh(std::string folder, std::string name);
 	void LoadSphere();
 	void LoadBox();

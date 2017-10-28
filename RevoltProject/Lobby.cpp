@@ -48,6 +48,7 @@ Lobby::~Lobby()
 		delete[] a.second->m_pNextLob;
 		SAFE_DELETE(a.second->m_pObject);
 	}
+	
 }
 
 void Lobby::Setup()

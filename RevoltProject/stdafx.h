@@ -67,6 +67,7 @@
 #include <NxCooking.h>
 #include <NxStream.h>
 
+
 /*   사운드 관련 헤더파일   */
 #pragma comment (lib, "fmodlib/fmodex_vc.lib")
 #include "fmodinc/fmod.hpp"
@@ -153,7 +154,7 @@ enum FONTFILE{FONT1=2001, FONT2};
 #include "SoundManager.h"
 #include "FontManager.h"
 #include "TimeManager.h"
-
+#include "cPhysXManager.h"
 
 //UTIL
 #include "cStringUtil.h"

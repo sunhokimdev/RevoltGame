@@ -358,7 +358,7 @@ LPD3DXMESH ObjectLoader::LoadMesh(OUT std::vector<MtlTex*>& vecMtlTex, IN const 
 	return pMesh;
 }
 
-
+//szFile 에 확장자를 포함해야 하는 경로
 void ObjectLoader::LoadMesh(OUT cMesh * pMesh, IN std::string szFolder, IN std::string szFile)
 {
 	// : vertex, texture, normal

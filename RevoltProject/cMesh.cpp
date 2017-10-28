@@ -16,6 +16,7 @@ cMesh::~cMesh()
 {
 }
 
+
 void cMesh::LoadMesh(std::string folder, std::string name)
 {
 	ObjectLoader::LoadMesh(this, folder, name);
