@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Car.h" />
     <ClInclude Include="CarBox.h" />
     <ClInclude Include="CarTextLoader.h" />
@@ -167,11 +168,13 @@
     <ClInclude Include="DEBUG_RENDERER.h" />
     <ClInclude Include="DeviceManager.h" />
     <ClInclude Include="FontManager.h" />
+    <ClInclude Include="GameNode.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="InGameUI.h" />
     <ClInclude Include="InlineFunction.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Lobby.h" />
+    <ClInclude Include="LobbyScene.h" />
     <ClInclude Include="MacroFunction.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Map.h" />
@@ -202,8 +205,10 @@
     <ClInclude Include="PickUpObject.h" />
     <ClInclude Include="ProfileList.h" />
     <ClInclude Include="Pyramid.h" />
+    <ClInclude Include="RacingScene.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RevoltProject.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SelectMap.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="StandardStructure.h" />
@@ -226,6 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="CarBox.cpp" />
     <ClCompile Include="CarTextLoader.cpp" />
@@ -245,10 +251,12 @@
     <ClCompile Include="DEBUG_RENDERER.cpp" />
     <ClCompile Include="DeviceManager.cpp" />
     <ClCompile Include="FontManager.cpp" />
+    <ClCompile Include="GameNode.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="InGameUI.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Lobby.cpp" />
+    <ClCompile Include="LobbyScene.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapLoader.cpp" />
@@ -264,7 +272,9 @@
     <ClCompile Include="PickUpObject.cpp" />
     <ClCompile Include="ProfileList.cpp" />
     <ClCompile Include="Pyramid.cpp" />
+    <ClCompile Include="RacingScene.cpp" />
     <ClCompile Include="RevoltProject.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SelectMap.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="stdafx.cpp">

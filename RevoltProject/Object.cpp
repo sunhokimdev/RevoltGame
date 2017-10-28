@@ -15,7 +15,7 @@ void Object::Setup()
 {
 }
 
-void Object::Destory()
+void Object::Destroy()
 {
 	if (m_pMeshData) m_pMeshData->Destory(); m_pMeshData = NULL;
 	if (m_PhysXData) m_PhysXData->Destory(); m_PhysXData = NULL;

@@ -490,9 +490,9 @@ public:
 		{
 			NxArray<NxVec3> points;
 			NxArray<NxVec3> points2;
-			NxReal halfWidth = 1.3f;
-			NxReal halfLength = 2.4f;
-			NxReal halfHeight = 0.7f;
+			NxReal halfWidth = 0.7f;
+			NxReal halfLength = 1.2f;
+			NxReal halfHeight = 0.3f;
 			points.pushBack().set(halfLength, -halfHeight * 0.1f, 0.f);
 			points.pushBack().set(halfLength * 0.7f, 0.f, 0.f);
 			points.pushBack().set(0.2f * halfLength, halfHeight * 0.2f, 0.f);
@@ -591,7 +591,7 @@ public:
 			vehicleDesc.centerOfMass.set(0.f, -0.5f, 0.f);
 		}
 		else
-			vehicleDesc.centerOfMass.set(0.f, monsterTruck ? -2.f : 0.f, 0.f);
+			vehicleDesc.centerOfMass.set(0.f, monsterTruck ? -2.f : -2.f, 0.f);
 	
 	
 		NxWheelDesc wheelDesc[4];

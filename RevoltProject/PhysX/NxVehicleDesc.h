@@ -34,7 +34,7 @@ public:
 
 	NxReal					maxVelocity;
 	NxReal					cameraDistance;
-	//NxReal					digitalSteeringDeltaVelocityModifier;
+	//NxReal				digitalSteeringDeltaVelocityModifier;
 
 	void*					userData;
 

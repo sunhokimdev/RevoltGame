@@ -401,6 +401,7 @@ RevoltProject/fmodlib/libfmodexL.a
 RevoltProject/fmodlib/which library do I use.txt
 RevoltProject/Sound/honkgood.wav
 RevoltProject/Sound/boxslide.wav
+<<<<<<< HEAD
 RevoltProject/RevoltUIObject.h
 RevoltProject/RevoltUIObject.cpp
 RevoltProject/Maps/Front/Image/symbol.bmp
@@ -409,6 +410,41 @@ RevoltProject/Maps/Front/Image/nhood.bmp
 RevoltProject/Maps/Front/Image/muse.bmp
 RevoltProject/Maps/Front/Image/market.BMP
 RevoltProject/Cars/volken/Parameters.txt
+=======
+RevoltProject/Objects/wbomb/wbomb.png
+RevoltProject/Objects/wbomb/wbomb.mtl
+RevoltProject/Objects/star/star.png
+RevoltProject/Objects/star/star.mtl
+RevoltProject/Objects/pickup/pickup.png
+RevoltProject/Maps/Front/Image/blueRing.png
+RevoltProject/Maps/Front/Image/arrowup.png
+RevoltProject/Maps/Front/Image/arrowright.png
+RevoltProject/Maps/Front/Image/arrowleft.png
+RevoltProject/Maps/Front/Image/arrowdown.png
+RevoltProject/Maps/Front/FrontEndd.png
+RevoltProject/Cars/volken/Parameters.txt
+RevoltProject/Objects/football/football.png
+RevoltProject/Objects/football/football.mtl
+RevoltProject/Objects/firework/firework.png
+RevoltProject/Objects/firework/firework.mtl
+RevoltProject/Objects/cone/cone.png
+RevoltProject/Objects/cone/cone.mtl
+RevoltProject/Maps/Front/plainbox/plainbox.mtl
+RevoltProject/Maps/Front/plainbox/FrontEndd.png
+RevoltProject/Maps/Front/nametire/nametire.mtl
+RevoltProject/Maps/Front/nametire/FrontEndd.png
+RevoltProject/Maps/Front/Image/ring.png
+RevoltProject/Maps/Front/Image/revoltrogo.png
+RevoltProject/Maps/Front/Image/progressbar.png
+RevoltProject/Maps/Front/Image/nhood.bmp
+RevoltProject/Maps/Front/Image/muse.bmp
+RevoltProject/Maps/Front/Image/market.BMP
+RevoltProject/Maps/Front/Image/charcursor.png
+RevoltProject/Maps/Front/Image/bluetoy.png
+RevoltProject/Maps/Front/Image/bluesmallbar.png
+RevoltProject/Maps/Front/Image/blueflag.png
+RevoltProject/Maps/Front/Image/bluecar.png
+>>>>>>> 176348db30c19b7b9c486c3a6a2187b13ab64e82
 RevoltProject/Cars/toyeca/Parameters.txt
 RevoltProject/Cars/tc6/Parameters.txt
 RevoltProject/Cars/tc5/Parameters.txt
@@ -416,3 +452,29 @@ RevoltProject/Cars/tc4/Parameters.txt
 RevoltProject/Cars/tc3/Parameters.txt
 RevoltProject/Cars/tc2/Parameters.txt
 RevoltProject/Cars/tc1/Parameters.txt
+<<<<<<< HEAD
+=======
+RevoltProject/Maps/Front/namestand/FrontEndd.png
+RevoltProject/Maps/Front/frontendg.png
+RevoltProject/Maps/Front/carbox/frontende.png
+RevoltProject/Maps/Front/carbox/carbox3.png
+RevoltProject/Maps/Front/carbox/carbox2.png
+RevoltProject/Maps/Front/carbox/carbox1.png
+RevoltProject/Maps/Front/carbox/carbox.mtl
+RevoltProject/Maps/Front/box01/frontendb.png
+RevoltProject/Maps/Front/box01/box01.mtl
+RevoltProject/Maps/Front/Image/symbol.bmp
+RevoltProject/Maps/Front/Image/ship.BMP
+RevoltProject/Objects/pickup/pickup.mtl
+RevoltProject/Objects/horse/horse.png
+RevoltProject/Objects/horse/horse.mtl
+RevoltProject/Objects/gogo/gogo.png
+RevoltProject/Objects/gogo/gogo.mtl
+RevoltProject/Objects/go3/go3.png
+RevoltProject/Objects/go3/go3.mtl
+RevoltProject/Objects/go2/go2.png
+RevoltProject/Objects/go2/go2.mtl
+RevoltProject/Objects/go1/go1.png
+RevoltProject/Objects/go1/go1.mtl
+RevoltProject/Maps/Front/namestand/namestand.mtl
+>>>>>>> 176348db30c19b7b9c486c3a6a2187b13ab64e82

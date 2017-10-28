@@ -85,8 +85,14 @@
     <Filter Include="Basic">
       <UniqueIdentifier>{68f0285e-643b-42fd-bae9-3439e804edfa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PhysXUtil">
-      <UniqueIdentifier>{abd75bca-cd6e-4d2f-b908-ce65947d00d4}</UniqueIdentifier>
+    <Filter Include="Manager\SceneManager">
+      <UniqueIdentifier>{85adda33-7ce6-4bf9-a6a7-72ad40832b81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{34434625-d611-49fa-8a3d-ca20ea59a5dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\CameraManager">
+      <UniqueIdentifier>{f3901fe2-c7d8-4ad7-98cd-50d1de23ece8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -168,13 +174,7 @@
     <ClInclude Include="TextManager.h">
       <Filter>Manager\TextManager</Filter>
     </ClInclude>
-    <ClInclude Include="MacroFunction.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="StandardStructure.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="InlineFunction.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="UserStream.h">
@@ -267,41 +267,62 @@
     <ClInclude Include="cWheel.h">
       <Filter>Basic</Filter>
     </ClInclude>
+    <ClInclude Include="GameNode.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbyScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Manager\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>Manager\CameraManager</Filter>
+    </ClInclude>
+    <ClInclude Include="RacingScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
     <ClInclude Include="PhysX\cooking.h">
-      <Filter>PhysXUtil</Filter>
+      <Filter>PhysX</Filter>
     </ClInclude>
     <ClInclude Include="PhysX\NxAllVehicles.h">
-      <Filter>PhysXUtil</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysX\NxVehicle.h">
-      <Filter>PhysXUtil</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysX\NxVehicleDesc.h">
-      <Filter>PhysXUtil</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysX\NxVehicleGearDesc.h">
-      <Filter>PhysXUtil</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysX\NxVehicleGears.h">
-      <Filter>PhysXUtil</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysX\NxVehicleMotor.h">
-      <Filter>PhysXUtil</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysX\NxVehicleMotorDesc.h">
-      <Filter>PhysXUtil</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysX\NxWheel.h">
-      <Filter>PhysXUtil</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysX\NxWheelDesc.h">
-      <Filter>PhysXUtil</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysX\NxLinearInterpolationValues.h">
-      <Filter>PhysXUtil</Filter>
+      <Filter>PhysX</Filter>
     </ClInclude>
     <ClInclude Include="PhysX\NxLinearInterpolate3Values.h">
-      <Filter>PhysXUtil</Filter>
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxLinearInterpolationValues.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicle.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleDesc.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleGearDesc.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleGears.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleMotor.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleMotorDesc.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxWheel.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxWheelDesc.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="MacroFunction.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="InlineFunction.h">
+      <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -464,17 +485,32 @@
     <ClCompile Include="cWheel.cpp">
       <Filter>Basic</Filter>
     </ClCompile>
-    <ClCompile Include="PhysX\cooking.cpp">
-      <Filter>PhysXUtil</Filter>
+    <ClCompile Include="GameNode.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbyScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Manager\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>Manager\CameraManager</Filter>
+    </ClCompile>
+    <ClCompile Include="RacingScene.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="PhysX\NxAllVehicles.cpp">
-      <Filter>PhysXUtil</Filter>
+      <Filter>PhysX</Filter>
     </ClCompile>
     <ClCompile Include="PhysX\NxVehicle.cpp">
-      <Filter>PhysXUtil</Filter>
+      <Filter>PhysX</Filter>
     </ClCompile>
     <ClCompile Include="PhysX\NxWheel.cpp">
-      <Filter>PhysXUtil</Filter>
+      <Filter>PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\cooking.cpp">
+      <Filter>PhysX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

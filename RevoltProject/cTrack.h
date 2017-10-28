@@ -17,8 +17,10 @@ public:
 
 	//인게임 에 들어갈 장애물 등등
 	std::vector<Object*>	m_vecObject;
-	Camera* pCamera;
 
+
+	D3DXVECTOR3* camPos = new D3DXVECTOR3(0, 10, 0);
+	D3DXVECTOR3* camLookTarget = new D3DXVECTOR3(0, 0, 0);
 
 	cCar* pCar1;
 	NxVehicle* pVeh;
@@ -28,7 +30,7 @@ public:
 	void Render();
 
 	void SetData();
-	void LoadTrack(std::string FileName , Camera* pCam);
+	void LoadTrack(std::string FileName);
 	void CreateTrackPhysX();
 };
 

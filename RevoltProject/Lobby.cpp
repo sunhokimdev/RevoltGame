@@ -39,16 +39,7 @@ Lobby::Lobby()
 
 Lobby::~Lobby()
 {
-	SAFE_RELEASE(m_pSprite);
-	SAFE_RELEASE(m_pObjMesh);
-	SAFE_DELETE(m_pSelectMap);
-
-	for each(auto a in m_mapLobby)
-	{
-		delete[] a.second->m_pNextLob;
-		SAFE_DELETE(a.second->m_pObject);
-	}
-	
+	Destroy();
 }
 
 void Lobby::Setup()
@@ -110,6 +101,19 @@ void Lobby::Render()
 {
 	if (m_mapLobby[m_stateLobby]->m_pObject)
 		m_mapLobby[m_stateLobby]->m_pObject->Render(m_pSprite);
+}
+
+void Lobby::Destroy()
+{
+	SAFE_RELEASE(m_pSprite);
+	SAFE_RELEASE(m_pObjMesh);
+	SAFE_DELETE(m_pSelectMap);
+
+	for each(auto a in m_mapLobby)
+	{
+		delete[] a.second->m_pNextLob;
+		SAFE_DELETE(a.second->m_pObject);
+	}
 }
 
 void Lobby::KeyUpdate()
@@ -253,7 +257,7 @@ void Lobby::KeyUpdate()
 			if (m_stateLobby == SELECT_MAP_LOBBY)
 			{
 				m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
-				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+				g_CamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
 				m_time = 0.0f;
 				m_select = 0;
 				m_leftAndrightSelect = 0;
@@ -272,7 +276,7 @@ void Lobby::KeyUpdate()
 			else if (m_stateLobby == SELECT_CAR_LOBBY)
 			{
 				m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[0];
-				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+				g_CamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
 				m_time = 0.0f;
 
 				if (m_stateLobby > INTRO3)
@@ -284,7 +288,7 @@ void Lobby::KeyUpdate()
 				m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
 
 				if (m_stateLobby != MAIN_LOBBY3)
-					m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+					g_CamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
 				m_time = 0.0f;
 				m_select = 0;
 				m_leftAndrightSelect = 0;
@@ -297,8 +301,8 @@ void Lobby::KeyUpdate()
 			{
 				m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
 
-				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
-				m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+				g_CamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
+				g_CamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 				m_time = 0.0f;
 				m_select = 0;
 				m_leftAndrightSelect = 0;
@@ -315,17 +319,17 @@ void Lobby::KeyUpdate()
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
 
 			if (m_stateLobby != MAIN_LOBBY2)
-				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
+				g_CamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);
 
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
-			m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+			g_CamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			g_pSoundManager->Play("menuPrev.wav", 1.0f);
 		}
 	}
 
-	m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+	g_CamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 }
 
 void Lobby::TimeUpdate()
@@ -341,8 +345,8 @@ void Lobby::TimeUpdate()
 		else if (m_stateLobby == INTRO3)
 		{
 			m_stateLobby = START_LOBBY;
-			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
-			m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+			g_CamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);
+			g_CamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 		}
 	}
 	else
@@ -1064,8 +1068,8 @@ void Lobby::CreateProfile()
 		m_vProfileList = m_pfileList->GetUpdateList();
 		m_mapLobby[START_LOBBY]->m_count = m_vProfileList.size();
 		m_mapLobby[START_LOBBY]->m_pObject = m_pfileList->GetProfileList();
-		m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
-		m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+		g_CamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);
+		g_CamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 
 	}
 }
