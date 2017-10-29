@@ -50,9 +50,14 @@ void cMesh::Render()
 		for each (auto pMtlTex in m_vecMtlTex)
 		{
 			MgrD3DDevice->SetMaterial(&(pMtlTex->GetMaterial()));
-			if (pMtlTex->GetTexture())
-				MgrD3DDevice->SetTexture(0, pMtlTex->GetTexture());
 
+			if (pMtlTex->GetTexture())
+			{
+				MgrD3DDevice->SetTexture(0, pMtlTex->GetTexture());
+			}
+
+			g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
+			
 			m_pMesh->DrawSubset(index++);
 
 			if (pMtlTex->GetTexture())

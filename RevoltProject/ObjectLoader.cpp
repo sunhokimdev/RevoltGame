@@ -571,6 +571,8 @@ void ObjectLoader::LoadMtlLib(std::map<std::string, MtlTex*>* mtlTex,
 				//: >>
 				(*mtlTex)[sMtlName]->SetAttrID(nCnt);
 				nCnt++;
+
+				ZeroMemory(&(*mtlTex)[sMtlName]->GetMaterial(), sizeof(D3DMATERIAL9));
 				// : <<
 			}
 		}
@@ -578,11 +580,16 @@ void ObjectLoader::LoadMtlLib(std::map<std::string, MtlTex*>* mtlTex,
 		{
 			if (szTemp[lineCol + 1] == 'a')
 			{
-				float r, g, b;
-				sscanf_s(szTemp, "%*s %f %f %f", &r, &g, &b);
-				(*mtlTex)[sMtlName]->GetMaterial().Ambient.r = r;
-				(*mtlTex)[sMtlName]->GetMaterial().Ambient.g = g;
-				(*mtlTex)[sMtlName]->GetMaterial().Ambient.b = b;
+				//float r, g, b;
+				//sscanf_s(szTemp, "%*s %f %f %f", &r, &g, &b);
+				//(*mtlTex)[sMtlName]->GetMaterial().Ambient.r = r;
+				//(*mtlTex)[sMtlName]->GetMaterial().Ambient.g = g;
+				//(*mtlTex)[sMtlName]->GetMaterial().Ambient.b = b;
+				//(*mtlTex)[sMtlName]->GetMaterial().Ambient.a = 1.0f;
+
+				(*mtlTex)[sMtlName]->GetMaterial().Ambient.r = 0.8f;
+				(*mtlTex)[sMtlName]->GetMaterial().Ambient.g = 0.8f;
+				(*mtlTex)[sMtlName]->GetMaterial().Ambient.b = 0.8f;
 				(*mtlTex)[sMtlName]->GetMaterial().Ambient.a = 1.0f;
 			}
 			if (szTemp[lineCol + 1] == 'd')

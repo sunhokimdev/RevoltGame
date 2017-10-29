@@ -38,8 +38,8 @@ void MainGame::Setup()
 	// Camera 클래스 매니저로 등록
 	//======================================
 	
-	m_pGrid = new Grid;
-	m_pGrid->Setup();
+	//m_pGrid = new Grid;
+	//m_pGrid->Setup();
 
 	g_pCamManager->Setup(NULL);
 
@@ -66,7 +66,8 @@ void MainGame::Render()
 	g_pD3DDevice->BeginScene();
 	// 그리기 시작
 
-	SAFE_RENDER(m_pGrid);
+	//SAFE_RENDER(m_pGrid);
+	
 	SAFE_RENDER(g_SceneManager);
 
 
@@ -85,7 +86,7 @@ void MainGame::Render()
 
 void MainGame::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-
+	
 }
 
 void MainGame::SetAddSound()
