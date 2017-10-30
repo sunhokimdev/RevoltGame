@@ -7,6 +7,7 @@ class MtlTex;
 class Lobby;
 class Map;
 
+class cCar;
 //======================================
 // - ## 10.03.17 ##
 // - written by 김선호
@@ -29,6 +30,11 @@ public:
 	/*   사운드 트랙 추가 메서드   */
 	void SetAddSound();
 
+
+	ID3DXMesh* TestMesh;
+
+	
+
 private:
 	/*   기본 세팅   */
 	Camera* m_pCamera;
@@ -36,5 +42,8 @@ private:
 
 	Map* m_pMap;
 	Lobby* m_pLobby;
+
+
+	cCar* pCar;
 };
 

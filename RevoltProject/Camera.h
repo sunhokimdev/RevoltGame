@@ -1,4 +1,5 @@
 #pragma once
+
 class Camera
 {
 public:
@@ -9,7 +10,6 @@ public:
 	void Update();
 	void WndProc(HWND hWnd, UINT message,
 		WPARAM wParam, LPARAM lParam);
-
 
 	void SetLookAt(D3DXVECTOR3* pvLookAt) { m_vNextLootAt = *pvLookAt; }
 

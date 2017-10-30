@@ -6,8 +6,21 @@
 #include "cFollowPoint.h"
 #include "cPickUp.h"
 
+
+
 cTrack::cTrack()
+	:m_nLightIdx(11)
 {
+//	pVeh = NULL;
+
+	//임시 등록 데이터
+	cTrack::SetData();
+
+//	*camPos = D3DXVECTOR3(0 - 5, 0 + 5, 0);
+//	*camLookTarget = D3DXVECTOR3(0, 0, 0);
+//
+//	g_pCamManager->SetCamPos(camPos);
+//	g_pCamManager->SetLookAt(camLookTarget);
 }
 
 
@@ -17,14 +30,95 @@ cTrack::~cTrack()
 
 void cTrack::Update()
 {
-	pCamera->Setup(&D3DXVECTOR3(50, 100, 50));
-	pCamera->SetLookAt(&D3DXVECTOR3(50, 0, 50));
-
-
 	for each(Object* pObj in m_vecObject)
 	{
 		pObj->Update();
 	}
+	//if (pVeh)
+	//{
+	//	NxVec3 pos = pVeh->getGlobalPose().t;
+	//	*camPos = D3DXVECTOR3(pos.x - 5, pos.y + 5, pos.z);
+	//	*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 3, pos.z);
+	//	g_pCamManager->SetLookAt(camLookTarget);
+
+	//	static float angle = 0;
+	//	if (g_pKeyManager->isOnceKeyDown('A'))
+	//	{
+	//		angle += 0.1;
+	//	}
+	//	if (g_pKeyManager->isOnceKeyDown('D'))
+	//	{
+	//		angle -= 0.1;
+	//	}
+	//	NxWheel* wheel = pVeh->getWheel(0);
+	//	wheel->setAngle(angle);
+
+	//	wheel = pVeh->getWheel(1);
+	//	wheel->setAngle(angle);
+
+	//	pVeh->getActor()->addForce(NxVec3(0, 1, 0));
+
+	//	if (g_pKeyManager->isOnceKeyDown('S'))
+	//	{
+	//		NxWheel* wheel = pVeh->getWheel(0);
+	//		wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
+	//		wheel->setAngle(angle);
+
+	//		wheel = pVeh->getWheel(1);
+	//		wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
+	//		wheel->setAngle(angle);
+
+	//		wheel = pVeh->getWheel(2);
+	//		wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
+
+	//		wheel = pVeh->getWheel(3);
+	//		wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
+	//	}
+
+	//	if (g_pKeyManager->isOnceKeyDown(VK_SPACE))
+	//	{
+	//		NxWheel* wheel = pVeh->getWheel(0);
+	//		wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
+
+	//		wheel = pVeh->getWheel(1);
+	//		wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
+
+	//		wheel = pVeh->getWheel(2);
+	//		wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
+
+	//		wheel = pVeh->getWheel(3);
+	//		wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
+	//	}
+
+	//	if (g_pKeyManager->isOnceKeyDown('W'))
+	//	{
+	//		NxWheel* wheel = pVeh->getWheel(0);
+	//		wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
+
+	//		wheel = pVeh->getWheel(1);
+	//		wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
+
+	//		wheel = pVeh->getWheel(2);
+	//		wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
+
+	//		wheel = pVeh->getWheel(3);
+	//		wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
+	//	}
+
+	//}
+//	else
+//	{
+//		if (g_pKeyManager->isOnceKeyDown('W'))
+//		{
+//			camPos->x += 0.5;
+//		}
+//	}
+
+
+
+	//
+//	static float angle_ = D3DX_PI;
+//	pCar1->RotationUp(D3DXToRadian(angle_));
 }
 
 void cTrack::LastUpdate()
@@ -40,28 +134,32 @@ void cTrack::Render()
 	{
 		pObj->Render();
 	}
-
-	//	for (size_t i = 0; i < m_vecObject.size(); ++i)
-	//	{
-	//		g_pD3DDevice->SetMaterial(&m_vecObject[i]->GetMeshData()->m_vecMtlTex[i]->GetMaterial());
-	//
-	//		if (m_vecObject[i]->GetTexture() != NULL)
-	//		{
-	//			g_pD3DDevice->SetTexture(0, m_vecObjMtlTex[i]->GetTexture());
-	//		}
-	//		m_pObjMesh->DrawSubset(i);
-	//	}
 }
 
-void cTrack::LoadTrack(std::string FileName, Camera* pCam)
+void cTrack::SetData()
 {
-	//카메라 등록
-	pCamera = pCam;
+	//그저 메쉬일 뿐...
+	//pCar1 = new cCar;
+	//pCar1->LoadMesh("tc1");
+	//m_vecObject.push_back(pCar1);
 
 
-	Destory();// 기존에 가지고 있던 정보 버리기
+	////자동차 추가
+	//pVeh = MgrPhysX->createCarWithDesc(NxVec3(0, 2, 0), true, true, false, false, false, MgrPhysXSDK);
+
+
+
+
+}
+
+void cTrack::LoadTrack(std::string FileName)
+{
+	//<<<<<<< HEAD
+	//	//카메라 등록
+	//	pCamera = pCam;
+
+	Destroy();// 기존에 가지고 있던 정보 버리기
 	std::string fullpath = "Maps/" + FileName + ".scn";
-
 	std::fstream Load;
 	Load.open(fullpath);
 
@@ -76,7 +174,7 @@ void cTrack::LoadTrack(std::string FileName, Camera* pCam)
 			Load.getline(szTemp, 1024);
 			if (szTemp[0] == ' ' || szTemp[0] == '\t') continue;
 			else if (szTemp[0] == '/') continue;
-			else if (szTemp[0] == 'M') // Map Load 
+			else if (szTemp[0] == 'M') // Map Load
 			{
 				char szMapFile[1024];
 				sscanf_s(szTemp, "%*s %s", szMapFile, 1024);
@@ -85,6 +183,8 @@ void cTrack::LoadTrack(std::string FileName, Camera* pCam)
 				SetMeshData(new cMesh);
 				GetMeshData()->LoadMesh(Folder, Name);
 				CreateTrackPhysX();
+
+				return;
 			}
 			else if (szTemp[0] == 'O') //Object Load
 			{
@@ -121,6 +221,9 @@ void cTrack::LoadTrack(std::string FileName, Camera* pCam)
 				bool isStatic_ = false;
 				bool isGravity = true;
 
+				NxVec3 worldPosition(0, 0, 0);
+				NxVec3 localPosition(0, 0, 0);
+
 				//Obj->SetPhysXData(physx);
 
 				std::string strName;
@@ -155,6 +258,9 @@ void cTrack::LoadTrack(std::string FileName, Camera* pCam)
 						float x, y, z;
 						sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
 						Obj->SetPosition(D3DXVECTOR3(x, y, z));
+						worldPosition.x = x;
+						worldPosition.y = y;
+						worldPosition.z = z;
 					}
 					else if (szTemp[0] == 'S') //Scale
 					{
@@ -199,6 +305,10 @@ void cTrack::LoadTrack(std::string FileName, Camera* pCam)
 							position.y = y;
 							position.z = z;
 
+							localPosition.x = x;
+							localPosition.y = y;
+							localPosition.z = z;
+
 						}
 						else if (szTemp[2] == 'S')
 						{
@@ -221,22 +331,58 @@ void cTrack::LoadTrack(std::string FileName, Camera* pCam)
 					}
 					else if (szTemp[0] == '#') //Push
 					{
-						NxActor* pActor = MgrPhysX->CreateActor(
-							type,
-							position,
-							matR,
-							sizeValue,
-							pUserData,
-							isTrigger,
-							isStatic_,
-							isGravity);
-						if (pActor)
+						if (Obj->GetTag() == E_OBJECT_LIGHT)
 						{
-							physx->m_pActor = pActor;
-							Obj->SetPhysXData(physx);
+							// Light Manager에 등록
+							cLight* light = (cLight*)Obj;
+							light->SetupPoint(m_nLightIdx++, C_WHITE, light->GetPosition(), 20);
+							g_pLightManager->AddLight(light->GetLightIndex(), light);
 						}
-						m_vecObject.push_back(Obj);
+						else if (Obj->GetTag() == E_OBJECT_PICKUP)
+						{
+							NxActor* pActor = MgrPhysX->CreateActor(
+								type,
+								position + worldPosition + localPosition,
+								matR,
+								sizeValue,
+								pUserData,
+								isTrigger,
+								isStatic_,
+								isGravity);
+							if (pActor)
+							{
+								physx->m_pActor = pActor;
+								Obj->SetPhysXData(physx);
+							}
+
+							m_vecObject.push_back(Obj);
+
+							//픽업오브젝트의 경우 조명이 필요하기때문에 생성해준다.
+							cLight* light = new cLight;
+							light->SetupPoint(m_nLightIdx++, C_YELLOW, light->GetPosition(), 5);
+							g_pLightManager->AddLight(light->GetLightIndex(), light);
+						}
+						else
+						{
+							NxActor* pActor = MgrPhysX->CreateActor(
+								type,
+								position + worldPosition + localPosition,
+								matR,
+								sizeValue,
+								pUserData,
+								isTrigger,
+								isStatic_,
+								isGravity);
+							if (pActor)
+							{
+								physx->m_pActor = pActor;
+								Obj->SetPhysXData(physx);
+							}
+
+							m_vecObject.push_back(Obj);
+						}
 						break;
+						
 					}
 				} // << : while Object
 			}
@@ -249,6 +395,19 @@ void cTrack::LoadTrack(std::string FileName, Camera* pCam)
 	}
 
 	Load.close();
+
+
+
+	NxActorDesc aDesc;
+	NxPlaneShapeDesc sDesc;
+
+	aDesc.setToDefault();
+	sDesc.setToDefault();
+
+	aDesc.shapes.pushBack(&sDesc);
+	aDesc.globalPose.t = NxVec3(0, 0, 0);
+
+	MgrPhysXScene->createActor(aDesc);
 
 }
 

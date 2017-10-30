@@ -61,6 +61,8 @@ Lobby::~Lobby()
 		delete[] a.second->m_pNextLob;
 		SAFE_DELETE(a.second->m_pObject);
 	}
+
+	Destroy();
 }
 
 void Lobby::Setup()
@@ -132,6 +134,19 @@ void Lobby::Render()
 		m_mapLobby[m_stateLobby]->m_pObject->Render(m_pSprite);
 }
 
+void Lobby::Destroy()
+{
+	SAFE_RELEASE(m_pSprite);
+	SAFE_RELEASE(m_pObjMesh);
+	SAFE_DELETE(m_pSelectMap);
+
+	for each(auto a in m_mapLobby)
+	{
+		delete[] a.second->m_pNextLob;
+		SAFE_DELETE(a.second->m_pObject);
+	}
+}
+
 void Lobby::KeyUpdate()
 {
 	if (g_pKeyManager->isOnceKeyDown(VK_DOWN))
@@ -171,8 +186,7 @@ void Lobby::KeyUpdate()
 	if (g_pKeyManager->isOnceKeyDown(VK_RIGHT))
 	{
 		if (m_stateLobby == START_LOBBY ||
-			m_stateLobby == SELECT_CAR_LOBBY ||
-			m_stateLobby == SELECT_MAP_LOBBY)
+			m_stateLobby == SELECT_CAR_LOBBY)
 		{
 			m_leftAndrightSelect++;
 
@@ -228,11 +242,15 @@ void Lobby::KeyUpdate()
 		if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
-			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
-			m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+			g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+			g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
+
+			//유저데이터에 자동차 선택한거 넘겨주고
+			//씬변경
+			//g_SceneManager->ChangeScene("Race");
 			return;
 		}
 
@@ -273,8 +291,8 @@ void Lobby::KeyUpdate()
 		if (m_stateLobby > INTRO3)
 		{
 			g_pSoundManager->Play("menuNext.wav", 1.0f);
-			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
-			m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+			g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
+			g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			m_time = 0.0f;
 			m_select = 0;
 			if(m_stateLobby != VIEW_CAR_LOBBY)
@@ -289,12 +307,12 @@ void Lobby::KeyUpdate()
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
 
 			if (m_stateLobby != MAIN_LOBBY2)
-				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
+				g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);
 
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
-			m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+			g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			g_pSoundManager->Play("menuPrev.wav", 1.0f);
 		}
 	}
@@ -304,7 +322,7 @@ void Lobby::KeyUpdate()
 		if (m_stateLobby == NETWORK_LOBBY)
 		{
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[0];
-			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		 // 카메라 변경
+			g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);		 // 카메라 변경
 
 			m_time = 0.0f;
 			m_select = 0;
@@ -312,7 +330,7 @@ void Lobby::KeyUpdate()
 		}
 	}
 
-	m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+	g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 }
 
 void Lobby::TimeUpdate()
@@ -328,8 +346,8 @@ void Lobby::TimeUpdate()
 		else if (m_stateLobby == INTRO3)
 		{
 			m_stateLobby = START_LOBBY;
-			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
-			m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+			g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);
+			g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 		}
 	}
 	else

@@ -15,3 +15,11 @@ void cWheel::SetBody(cCar * body)
 {
 	m_body = body;
 }
+
+void cWheel::Update()
+{
+}
+
+void cWheel::Render()
+{
+}

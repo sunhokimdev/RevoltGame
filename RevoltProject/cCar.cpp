@@ -4,15 +4,19 @@
 
 cCar::cCar()
 {
+	
 }
 
 
 cCar::~cCar()
 {
+	
 }
 
 void cCar::RegisteWheel(cWheel_ID id, cWheel* pWheel)
 {
+	if(mapWheels.size()!=4) mapWheels.resize(4);
+
 	if (pWheel)
 	{
 		mapWheels[id] = pWheel;
@@ -22,12 +26,5 @@ void cCar::RegisteWheel(cWheel_ID id, cWheel* pWheel)
 
 void cCar::LoadMesh(std::string carName)
 {
-	GetMeshData()->LoadMesh("Cars", carName);
-	std::string texturePach = "Cars/" + carName + "/car.png";
-	for (int i = 0; GetMeshData()->m_vecMtlTex.size(); i++)
-	{
-		GetMeshData()->m_vecMtlTex[i]->SetTexture(g_pTextureManager->GetTexture(texturePach));
-		//파일명 문제로 텍스쳐를 다시한번 입힌다.
-	}
-
+	GetMeshData()->LoadMesh("Cars/" + carName, carName + ".obj");
 }

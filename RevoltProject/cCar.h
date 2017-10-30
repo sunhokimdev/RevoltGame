@@ -12,8 +12,8 @@ enum cWheel_ID
 
 class cCar :public Object
 {
+	std::vector<cWheel*> mapWheels;
 
-	std::map<cWheel_ID, cWheel*> mapWheels;
 public:
 	cCar();
 	~cCar();
