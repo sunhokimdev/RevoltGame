@@ -27,7 +27,7 @@ void MainGame::Setup()
 	//PhysX 초가화
 	g_pPhysX->InitNxPhysX();
 
-	g_CamManager->Setup(NULL);
+	g_pCamManager->Setup(NULL);
 	//======================================
 	// - written by 김선호
 	// - MainGame -> 초기화 작업
@@ -41,15 +41,14 @@ void MainGame::Setup()
 	// Camera 클래스 매니저로 등록
 	//======================================
 	
-	m_pGrid = new Grid;
-	m_pGrid->Setup();
-
+	//m_pGrid = new Grid;
+	//m_pGrid->Setup();
 
 	g_SceneManager->AddScene("Lobby", new LobbyScene);
 	g_SceneManager->AddScene("Race", new RacingScene);
 
-	//g_SceneManager->ChangeScene("Lobby"); // 최초 시작은 로비
-	g_SceneManager->ChangeScene("Race");
+	g_SceneManager->ChangeScene("Race"); // 최초 시작은 로비
+	//g_SceneManager->ChangeScene("Race");
 
 	/*   사운드 초기화 작업   */
 	SetAddSound();
@@ -79,7 +78,8 @@ void MainGame::Setup()
 
 void MainGame::Update()
 {
-	SAFE_UPDATE(g_CamManager);
+	SAFE_UPDATE(g_pLightManager);
+	SAFE_UPDATE(g_pCamManager);
 	SAFE_UPDATE(g_SceneManager);
 }
 
@@ -89,6 +89,7 @@ void MainGame::Render()
 	g_pD3DDevice->BeginScene();
 	// 그리기 시작
 
+	//SAFE_RENDER(m_pGrid);
 	SAFE_RENDER(g_SceneManager);
 
 	SAFE_RENDER(m_pGrid);
@@ -111,7 +112,7 @@ void MainGame::Render()
 
 void MainGame::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-
+	
 }
 
 void MainGame::SetAddSound()

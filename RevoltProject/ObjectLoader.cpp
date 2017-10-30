@@ -566,7 +566,6 @@ void ObjectLoader::LoadMtlLib(std::map<std::string, MtlTex*>* mtlTex,
 				(*mtlTex)[sMtlName]->SetAttrID(nCnt);
 				nCnt++;
 
-				//추가하면 해결됨.
 				ZeroMemory(&(*mtlTex)[sMtlName]->GetMaterial(), sizeof(D3DMATERIAL9));
 			}
 		}
@@ -580,8 +579,6 @@ void ObjectLoader::LoadMtlLib(std::map<std::string, MtlTex*>* mtlTex,
 				(*mtlTex)[sMtlName]->GetMaterial().Ambient.g = 0.8f;//g;
 				(*mtlTex)[sMtlName]->GetMaterial().Ambient.b = 0.8f;//b;
 				(*mtlTex)[sMtlName]->GetMaterial().Ambient.a = 1.0f;
-
-			//	std::cout<<
 			}
 			if (szTemp[lineCol + 1] == 'd')
 			{

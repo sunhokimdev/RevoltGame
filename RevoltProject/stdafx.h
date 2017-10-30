@@ -78,6 +78,7 @@
 /*   전역변수 설정   */
 extern HWND			g_hWnd;
 extern HINSTANCE	g_hInst;
+extern POINT		g_ptMouse;
 
 /*   열거체 형 설정   */
 /*   현재 로비상태를 저장하는 열거형 구조체   */
@@ -157,6 +158,7 @@ enum FONTFILE{FONT1=2001, FONT2};
 #include "cPhysXManager.h"
 #include "SceneManager.h"
 #include "CameraManager.h"
+#include "LightManager.h"
 
 //UTIL
 #include "cStringUtil.h"

@@ -6,5 +6,9 @@ class cPickUp :
 public:
 	cPickUp();
 	~cPickUp();
+
+	int m_nLightIndex;
+
+	void Update();
 };
 

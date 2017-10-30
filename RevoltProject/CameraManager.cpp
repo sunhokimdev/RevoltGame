@@ -2,7 +2,7 @@
 #include "CameraManager.h"
 
 CameraManager::CameraManager()
-	: m_vEye(1, 2, -55)
+	: m_vEye(0, 2, -20)
 	, m_vLookAt(0, 0, 0)
 	, m_vUp(0, 1, 0)
 	, m_pvTarget(NULL)
@@ -26,21 +26,19 @@ void CameraManager::Setup(D3DXVECTOR3* pvTarget)
 
 	m_fCamTime = 0.0f;
 
-	RECT rc;
-	GetClientRect(g_hWnd, &rc);
-
 	D3DXMATRIXA16	matProj;
 	D3DXMatrixPerspectiveFovLH(&matProj,
 		D3DX_PI / 4.0f,
-		rc.right / (float)rc.bottom,
+		WINSIZEX / (float)WINSIZEY,
 		1.0f, 1000.0f);
 	g_pD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);
 }
 
 void CameraManager::Update()
 {
-	RECT rc;
-	GetClientRect(g_hWnd, &rc);
+	//RECT rc;
+	//GetClientRect(g_hWnd, &rc);
+	Move();
 
 	m_fCamTime += 0.0005f;
 
@@ -117,5 +115,49 @@ void CameraManager::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 		//	m_fCameraDistance = 0.0001f;
 
 		break;
+	}
+}
+
+void CameraManager::Move()
+{
+	//if (g_pKeyManager->isOnceKeyDown(VK_RBUTTON))
+	//{
+	//	m_ptPrevMouse = g_ptMouse;
+	//}
+	float KeyMoveSpd = 0.5f;
+
+	if(g_pKeyManager->isStayKeyDown(VK_LEFT))
+	{
+		m_vEye.x -= KeyMoveSpd;
+		m_vLookAt.x -= KeyMoveSpd;
+	}
+	if (g_pKeyManager->isStayKeyDown(VK_RIGHT))
+	{
+		m_vEye.x += KeyMoveSpd;
+		m_vLookAt.x += KeyMoveSpd;
+	}
+	if (g_pKeyManager->isStayKeyDown(VK_DOWN))
+	{
+		if (g_pKeyManager->isStayKeyDown(VK_CONTROL))
+		{
+			m_vEye.y -= KeyMoveSpd;
+		}
+		else
+		{
+			m_vEye.z -= KeyMoveSpd;
+			m_vLookAt.z -= KeyMoveSpd;
+		}
+	}
+	if (g_pKeyManager->isStayKeyDown(VK_UP))
+	{
+		if (g_pKeyManager->isStayKeyDown(VK_CONTROL))
+		{
+			m_vEye.y += KeyMoveSpd;
+		}
+		else
+		{
+			m_vEye.z += KeyMoveSpd;
+			m_vLookAt.z += KeyMoveSpd;
+		}
 	}
 }
