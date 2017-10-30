@@ -41,14 +41,16 @@ void MainGame::Setup()
 	// Camera 클래스 매니저로 등록
 	//======================================
 	
-	//m_pGrid = new Grid;
-	//m_pGrid->Setup();
+	m_pGrid = new Grid;
+	m_pGrid->Setup();
 
 	g_SceneManager->AddScene("Lobby", new LobbyScene);
 	g_SceneManager->AddScene("Race", new RacingScene);
 
 	g_SceneManager->ChangeScene("Race"); // 최초 시작은 로비
 	//g_SceneManager->ChangeScene("Race");
+
+	g_pItemManager->Init();
 
 	/*   사운드 초기화 작업   */
 	SetAddSound();
@@ -59,6 +61,7 @@ void MainGame::Update()
 	SAFE_UPDATE(g_pLightManager);
 	SAFE_UPDATE(g_pCamManager);
 	SAFE_UPDATE(g_SceneManager);
+	SAFE_UPDATE(g_pItemManager);
 }
 
 void MainGame::Render()
@@ -68,6 +71,10 @@ void MainGame::Render()
 	// 그리기 시작
 
 	SAFE_RENDER(g_SceneManager);
+
+
+	m_pGrid->Render();
+	g_pItemManager->Render();
 
 	g_pPhysX->Render();
 	g_pD3DDevice->EndScene();

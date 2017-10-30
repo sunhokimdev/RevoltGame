@@ -334,7 +334,7 @@ public:
 
 			desc.setToDefault();
 			desc.radius = sizeValue.x;
-			desc.materialIndex = 0;
+			desc.materialIndex = 1;
 			shapeDesc = &desc;
 
 			if (isKinematic)
