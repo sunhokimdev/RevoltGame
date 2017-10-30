@@ -15,7 +15,7 @@ cTrack::cTrack()
 	//임시 등록 데이터
 	cTrack::SetData();
 
-	*camPos = D3DXVECTOR3(0 - 20, 0 + 20, 0);
+	*camPos = D3DXVECTOR3(0 - 5, 0 + 5, 0);
 	*camLookTarget = D3DXVECTOR3(0, 0, 0);
 
 	g_CamManager->SetCamPos(camPos);
@@ -36,8 +36,8 @@ void cTrack::Update()
 	if (pVeh)
 	{
 		NxVec3 pos = pVeh->getGlobalPose().t;
-		*camPos = D3DXVECTOR3(pos.x - 20, pos.y + 20, pos.z);
-		*camLookTarget = D3DXVECTOR3(pos.x, pos.y, pos.z);
+		*camPos = D3DXVECTOR3(pos.x - 5, pos.y + 5, pos.z);
+		*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 3, pos.z);
 		g_CamManager->SetLookAt(camLookTarget);
 
 		static float angle = 0;
@@ -56,6 +56,7 @@ void cTrack::Update()
 		wheel->setAngle(angle);
 
 		pVeh->getActor()->addForce(NxVec3(0, 1, 0));
+
 		if (g_pKeyManager->isOnceKeyDown('S'))
 		{
 			NxWheel* wheel = pVeh->getWheel(0);
@@ -181,6 +182,8 @@ void cTrack::LoadTrack(std::string FileName)
 				SetMeshData(new cMesh);
 				GetMeshData()->LoadMesh(Folder, Name);
 				CreateTrackPhysX();
+
+				return;
 			}
 			else if (szTemp[0] == 'O') //Object Load
 			{

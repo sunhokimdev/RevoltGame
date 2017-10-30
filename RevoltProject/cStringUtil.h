@@ -105,12 +105,16 @@ public:
 				if ((*text)[i] == (*cutChars)[j])
 				{
 					std::string pushData = text->substr(startIndex, i - startIndex);
-					if (pushData.length ()> 0) datas->push_back(pushData);
+					if (pushData.length() > 0)
+					{
+						datas->push_back(pushData);
+						startIndex = i + 1;
+					}
 					break;
 				}
 			}
 		}
-		datas->push_back(text->substr(startIndex, text->length() - startIndex));
+	//	datas->push_back(text->substr(startIndex, text->length() - startIndex));
 	}
 	static void Split(std::vector<std::string>* datas, CHAR* cutChar, std::string* text)
 	{
@@ -121,12 +125,38 @@ public:
 			if ((*text)[i] == *cutChar)
 			{
 				std::string pushData = text->substr(startIndex, i - startIndex);
-				if (pushData.length() > 0) datas->push_back(pushData);
-				startIndex = i + 1;
+				if (pushData.length() > 0)
+				{
+					datas->push_back(pushData);
+					startIndex = i + 1;
+				}
 			}
 		}
 		datas->push_back(text->substr(startIndex, text->length() - startIndex));
 	}
+
+
+	static void CutStartEnd(std::string* text, std::vector<CHAR>* startChars, std::vector<CHAR>* endChars)
+	{
+		int startIndex=0;
+		int endIndex = text->length();
+		for (int i = 0; i < text->length(); i++)
+		{
+			if (startChars != NULL)
+			{
+				for (int j = 0; j < startChars->size(); j++)
+				{
+					if ((*text)[i] == (*startChars)[j])
+					{
+						startIndex = i;
+					}
+				}
+			}
+		}
+
+		*text = text->substr(startIndex, endIndex);
+	}
+
 
 private:
 	void TestFunc()

@@ -59,10 +59,15 @@ void CameraManager::Update()
 	}
 	else m_vEye = D3DXVECTOR3(0, 0, 0);
 
+
+//	m_vEye = D3DXVECTOR3(3, 3, -3);
+//	m_vLookAt = D3DXVECTOR3(0, 0, 0);
+
 	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matR);
 
 
 	D3DXMATRIXA16 matView;
+	D3DXMatrixIdentity(&matView);
 	D3DXMatrixLookAtLH(&matView, &m_vEye,
 		&m_vLookAt, &m_vUp);
 

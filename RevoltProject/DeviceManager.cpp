@@ -31,12 +31,15 @@ DeviceManager::DeviceManager()
 	stD3DPP.EnableAutoDepthStencil = TRUE;
 	stD3DPP.AutoDepthStencilFormat = D3DFMT_D16;
 
+
 	m_pD3D->CreateDevice(D3DADAPTER_DEFAULT,
 		D3DDEVTYPE_HAL,
 		g_hWnd,
 		nVertexProcessing,
 		&stD3DPP,
 		&m_pD3DDevice);
+	
+	m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 }
 
 
