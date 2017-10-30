@@ -50,10 +50,10 @@ void CameraManager::Update()
 
 	if (m_pvTarget)
 	{
-		m_vEye = *m_pvTarget;
-		m_vLookAt = m_vNextLootAt;
-	//	D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fCamTime);
-	//	D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
+	//	m_vEye = *m_pvTarget;
+	//	m_vLookAt = m_vNextLootAt;
+		D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fCamTime);
+		D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
 	}
 	else m_vEye = D3DXVECTOR3(0, 0, 0);
 
