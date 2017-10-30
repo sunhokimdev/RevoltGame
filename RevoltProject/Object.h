@@ -41,7 +41,7 @@ enum eOBJECT_ID
 
 class Object : public cTransform
 {
-public:
+protected:
 
 	Object();
 	~Object();
@@ -52,9 +52,10 @@ public:
 	SYNTHESIZE(eOBJECT_TAG, m_objTag, Tag);
 	SYNTHESIZE(eOBJECT_ID, m_eID, ID);
 	SYNTHESIZE(std::string, m_objName, ObjName);
+	SYNTHESIZE(bool, m_isEnable, m_isEnable);
 public:
 	virtual void Setup();
-	virtual void Destory();
+	virtual void Destroy();
 	virtual void Update();
 	virtual void LastUpdate();
 	virtual void Render();

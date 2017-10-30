@@ -277,6 +277,13 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, NxTriggerFlag status)
 {
 
+	USERDATA* pUserData0 = NULL;
+	USERDATA* pUserData1 = NULL;
+
+
+	pUserData0 = (USERDATA*)triggerShape.getActor().userData;
+	pUserData1 = (USERDATA*)otherShape.getActor().userData;
+
 	// other actor is a trigger too?
 	if ((NxI32)(otherShape.getActor().userData) < 0)
 		return;

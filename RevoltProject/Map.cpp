@@ -52,18 +52,19 @@ void Map::Update()
 		{
 			pth->Update();
 		}
-
-		if (*g_LobbyState - IN_GAME_MAP < 0) m_stage = 0;
+		if (*g_LobbyState - IN_GAME_MAP < 0)
+		{
+			m_stage = 0;
+		}
 		else
 		{
 			if (m_stage != (*g_LobbyState - IN_GAME_MAP))
 			{
 				m_stage = *g_LobbyState - IN_GAME_MAP;
 
-				m_track[m_stage]->LoadTrack(m_track[m_stage]->trackName , m_pCamera);
+				//m_track[m_stage]->LoadTrack(m_track[m_stage]->trackName , g_pCamManager);
 
 //				ObjectLoader::LoadMesh(m_track[m_stage]->GetMeshData(), "Maps", m_track[m_stage]->trackName.c_str());
-				
 			}
 		}
 	}
@@ -101,6 +102,7 @@ void Map::Render()
 		{
 			g_pD3DDevice->SetMaterial(&m_vecObjMtlTex[i]->GetMaterial());
 			if (m_vecObjMtlTex[i]->GetTexture() != NULL) g_pD3DDevice->SetTexture(0, m_vecObjMtlTex[i]->GetTexture());
+
 			m_pObjMesh->DrawSubset(i);
 
 			if (m_vecObjMtlTex[i]->GetTexture() != NULL) g_pD3DDevice->SetTexture(0, NULL);

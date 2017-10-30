@@ -88,19 +88,30 @@ struct ST_ASTAR
 };
 
 /*   자동차 정보 구조체   */
-struct ST_CAR
+struct  ST_WHEEL
 {
-	std::string name;		// 자동차의 이름
-	std::string car_class;	// 자동차의 종류
-	std::string car_skill_level;		// 자동차 레벨
-	float speed;		// 최대 속도
-	float acc;			// 가속도
-	float weight;	// 가중치
-	std::string trans;	// Transition
-	D3DXVECTOR3 fl;	// 앞의 타이어 왼쪽 위치
-	D3DXVECTOR3 fr; // 앞의 타이어 오른쪽 위치
-	D3DXVECTOR3 bl; // 뒤의 타이어 왼쪽 위치
-	D3DXVECTOR3 br; // 뒤의 타이어 오른쪽 위치
+	NxVec3 offset;		//car 로부터 위치
+	float engineRatio;	//엔진 출력
+	float radius;		//자동차 반지름
+	float mass;			//무게??
+	float skidWidth;	//넓이
+	float grip;			//그립
 };
 
+struct ST_CAR
+{
+	std::string name;				// 자동차의 이름
+	std::string car_class;			// 자동차의 종류
+	std::string car_skill_level ;	// 자동차 레벨
+	float speed;					// 최대 속도
+	float acc;						// 가속도
+	float weight ;					// 가중치
+	std::string trans;				// Transition
+	float a = 0;
+
+	ST_WHEEL wheel00;
+	ST_WHEEL wheel01;
+	ST_WHEEL wheel02;
+	ST_WHEEL wheel03;
+};
 /*   맵 정보 구조체   */

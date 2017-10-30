@@ -100,6 +100,27 @@
     <Filter Include="Car\Item">
       <UniqueIdentifier>{002755df-2fcd-4585-a20d-ba657430f491}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NewClass">
+      <UniqueIdentifier>{92ea350d-78be-45e7-91bc-e1a14aae6bf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\LightManager">
+      <UniqueIdentifier>{1379161c-5a0c-4a2a-a084-e0215577d405}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\CameraManager">
+      <UniqueIdentifier>{587a0870-1bb6-48cd-961c-a13383a740cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PhysX\Basic">
+      <UniqueIdentifier>{834fe347-aa20-40e9-84e0-994a5e7b8596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\SceneManager">
+      <UniqueIdentifier>{19692273-e00a-4fdb-a8b6-be9c1bdb2ec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{236645a6-b63a-4e85-9c06-9eebf628489f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PhysX\NxFile">
+      <UniqueIdentifier>{bf8fb7d6-8a6e-4a8f-910f-f69845dcbb6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -318,6 +339,60 @@
     <ClInclude Include="ItemManager.h">
       <Filter>Manager\ItemManager</Filter>
     </ClInclude>
+    <ClInclude Include="LightManager.h">
+      <Filter>Manager\LightManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>Manager\CameraManager</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\cooking.h">
+      <Filter>PhysX\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Manager\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="RacingScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbyScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameNode.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxAllVehicles.h">
+      <Filter>PhysX\NxFile</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxLinearInterpolate3Values.h">
+      <Filter>PhysX\NxFile</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxLinearInterpolationValues.h">
+      <Filter>PhysX\NxFile</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicle.h">
+      <Filter>PhysX\NxFile</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleDesc.h">
+      <Filter>PhysX\NxFile</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleGearDesc.h">
+      <Filter>PhysX\NxFile</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleGears.h">
+      <Filter>PhysX\NxFile</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleMotor.h">
+      <Filter>PhysX\NxFile</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxVehicleMotorDesc.h">
+      <Filter>PhysX\NxFile</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxWheel.h">
+      <Filter>PhysX\NxFile</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysX\NxWheelDesc.h">
+      <Filter>PhysX\NxFile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -517,6 +592,36 @@
     </ClCompile>
     <ClCompile Include="ItemManager.cpp">
       <Filter>Manager\ItemManager</Filter>
+    </ClCompile>
+    <ClCompile Include="LightManager.cpp">
+      <Filter>Manager\LightManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>Manager\CameraManager</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\cooking.cpp">
+      <Filter>PhysX\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Manager\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="RacingScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbyScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameNode.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxWheel.cpp">
+      <Filter>PhysX\NxFile</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxVehicle.cpp">
+      <Filter>PhysX\NxFile</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysX\NxAllVehicles.cpp">
+      <Filter>PhysX\NxFile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

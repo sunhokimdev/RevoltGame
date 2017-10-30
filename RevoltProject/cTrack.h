@@ -3,6 +3,9 @@
 #include "Thing.h"
 #include "Camera.h"
 
+#include "cCar.h"
+
+
 class cTrack : public Object
 {
 public:
@@ -12,15 +15,20 @@ public:
 	int trackNum = 0;
 	std::string trackName;
 
+	int m_nLightIdx;
+
 	//인게임 에 들어갈 장애물 등등
 	std::vector<Object*>	m_vecObject;
-	Camera* pCamera;
+
+
+	//NxVehicle* pVeh;
 
 	void Update();
 	void LastUpdate();
 	void Render();
 
-	void LoadTrack(std::string FileName , Camera* pCam);
+	void SetData();
+	void LoadTrack(std::string FileName);
 	void CreateTrackPhysX();
 };
 

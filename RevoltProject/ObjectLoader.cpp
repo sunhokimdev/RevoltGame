@@ -71,7 +71,7 @@ void ObjectLoader::LoadMtlLib(const char * szFolder, char * szFile)
 		}
 		else if (szTemp[sI] == 'K')
 		{
-			if (szTemp[sI+1] == 'a')
+			if (szTemp[sI + 1] == 'a')
 			{
 				float r, g, b;
 				sscanf_s(szTemp, "%*s %f %f %f", &r, &g, &b);
@@ -80,7 +80,7 @@ void ObjectLoader::LoadMtlLib(const char * szFolder, char * szFile)
 				m_mapMtlTex[sMtlName]->GetMaterial().Ambient.b = b;
 				m_mapMtlTex[sMtlName]->GetMaterial().Ambient.a = 1.0f;
 			}
-			else if (szTemp[sI+1] == 'd')
+			else if (szTemp[sI + 1] == 'd')
 			{
 				float r, g, b;
 				sscanf_s(szTemp, "%*s %f %f %f", &r, &g, &b);
@@ -89,7 +89,7 @@ void ObjectLoader::LoadMtlLib(const char * szFolder, char * szFile)
 				m_mapMtlTex[sMtlName]->GetMaterial().Diffuse.b = b;
 				m_mapMtlTex[sMtlName]->GetMaterial().Diffuse.a = 1.0f;
 			}
-			else if (szTemp[sI+1] == 's')
+			else if (szTemp[sI + 1] == 's')
 			{
 				float r, g, b;
 				sscanf_s(szTemp, "%*s %f %f %f", &r, &g, &b);
@@ -110,8 +110,8 @@ void ObjectLoader::LoadMtlLib(const char * szFolder, char * szFile)
 			char szTexFile[1024];
 			std::string szFullPath = "";
 			sscanf_s(szTemp, "%*s %s", szTexFile, 1024);
-			szFullPath = std::string(szFolder) +  std::string("/") + std::string(szTexFile);
-			
+			szFullPath = std::string(szFolder) + std::string("/") + std::string(szTexFile);
+
 			isMaterial = false;
 
 			LPDIRECT3DTEXTURE9 pTexture =
@@ -201,7 +201,7 @@ void ObjectLoader::LoadSurface(OUT std::vector<D3DXVECTOR3>& vecSurface, IN char
 				&vecSurface[i],
 				&vecSurface[i],
 				pmat
-				);
+			);
 		}
 	}
 }
@@ -233,9 +233,9 @@ LPD3DXMESH ObjectLoader::LoadMesh(OUT std::vector<MtlTex*>& vecMtlTex, IN const 
 		int sI = 0; // startIndex;
 		while (true)
 		{
-			if (szTemp[sI] == ' ' || szTemp[sI] == '\t') 
+			if (szTemp[sI] == ' ' || szTemp[sI] == '\t')
 				sI++;
-			
+
 			else break;
 		}
 
@@ -253,39 +253,39 @@ LPD3DXMESH ObjectLoader::LoadMesh(OUT std::vector<MtlTex*>& vecMtlTex, IN const 
 		}
 		else if (szTemp[sI] == 'v')
 		{
-			if (szTemp[sI+1] == ' ')
+			if (szTemp[sI + 1] == ' ')
 			{
 				float x, y, z;
 				sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
 				vecV.push_back(D3DXVECTOR3(-x, y, z));
 			}
-			else if (szTemp[sI+1] == 't')
+			else if (szTemp[sI + 1] == 't')
 			{
 				float u, v;
 				sscanf_s(szTemp, "%*s %f %f %*f", &u, &v);
 				vecVT.push_back(D3DXVECTOR2(u, 1.0f - v));
 			}
-			else if (szTemp[sI+1] == 'n')
+			else if (szTemp[sI + 1] == 'n')
 			{
 				float x, y, z;
 				sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
 				vecVN.push_back(D3DXVECTOR3(-x, y, z));
 			}
 		}
-		else if (szTemp[sI+0] == 'u')
+		else if (szTemp[sI + 0] == 'u')
 		{
 			char szMtlName[1024];
 			sscanf_s(szTemp, "%*s %s", szMtlName, 1024);
 			sMtlName = std::string(szMtlName);
 		}
-		else if (szTemp[sI+0] == 'f')
+		else if (szTemp[sI + 0] == 'f')
 		{
 			int nIndex[3][3];
 			sscanf_s(szTemp, "%*s %d/%d/%d %d/%d/%d %d/%d/%d",
 				&nIndex[0][0], &nIndex[0][1], &nIndex[0][2],
 				&nIndex[1][0], &nIndex[1][1], &nIndex[1][2],
 				&nIndex[2][0], &nIndex[2][1], &nIndex[2][2]
-				);
+			);
 
 			for (int i = 2; i >= 0; i--)
 			{
@@ -340,8 +340,8 @@ LPD3DXMESH ObjectLoader::LoadMesh(OUT std::vector<MtlTex*>& vecMtlTex, IN const 
 	memcpy(
 		pA,
 		&vecAttrBuf[0],
-		vecAttrBuf.size()  * sizeof(DWORD)
-		);
+		vecAttrBuf.size() * sizeof(DWORD)
+	);
 	pMesh->UnlockAttributeBuffer();
 
 	// : 
@@ -358,7 +358,7 @@ LPD3DXMESH ObjectLoader::LoadMesh(OUT std::vector<MtlTex*>& vecMtlTex, IN const 
 	return pMesh;
 }
 
-
+//szFile 에 확장자를 포함해야 하는 경로
 void ObjectLoader::LoadMesh(OUT cMesh * pMesh, IN std::string szFolder, IN std::string szFile)
 {
 	// : vertex, texture, normal
@@ -394,10 +394,6 @@ void ObjectLoader::LoadMesh(OUT cMesh * pMesh, IN std::string szFolder, IN std::
 
 				else break;
 			}
-
-
-
-
 			if (szTemp[sI] == '#')
 			{
 				continue;
@@ -417,19 +413,19 @@ void ObjectLoader::LoadMesh(OUT cMesh * pMesh, IN std::string szFolder, IN std::
 			}
 			else if (szTemp[sI] == 'v')
 			{
-				if (szTemp[sI+1] == ' ')
+				if (szTemp[sI + 1] == ' ')
 				{
 					float x, y, z;
 					sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
 					vecV.push_back(D3DXVECTOR3(-x, y, z));
 				}
-				else if (szTemp[sI+1] == 't')
+				else if (szTemp[sI + 1] == 't')
 				{
 					float u, v;
 					sscanf_s(szTemp, "%*s %f %f %*f", &u, &v);
 					vecVT.push_back(D3DXVECTOR2(u, 1.0f - v));
 				}
-				else if (szTemp[sI+1] == 'n')
+				else if (szTemp[sI + 1] == 'n')
 				{
 					float x, y, z;
 					sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
@@ -493,7 +489,6 @@ void ObjectLoader::LoadMesh(OUT cMesh * pMesh, IN std::string szFolder, IN std::
 		g_pD3DDevice,
 		&(pMesh->m_pMesh));
 
-
 	ST_PNT_VERTEX* pV = NULL;
 	pMesh->m_pMesh->LockVertexBuffer(0, (LPVOID*)&pV);
 	memcpy(pV, &vecVertex[0], sizeof(ST_PNT_VERTEX) * vecVertex.size());
@@ -514,13 +509,13 @@ void ObjectLoader::LoadMesh(OUT cMesh * pMesh, IN std::string szFolder, IN std::
 	memcpy(pA, &vecAttribute[0], sizeof(DWORD) * vecAttribute.size());
 	pMesh->m_pMesh->UnlockAttributeBuffer();
 
-	std::vector<DWORD> vecAdj(vecVertex.size());
-	pMesh->m_pMesh->GenerateAdjacency(0.0f, &vecAdj[0]);
-	pMesh->m_pMesh->OptimizeInplace(D3DXMESHOPT_ATTRSORT |
-		D3DXMESHOPT_COMPACT |
-		D3DXMESHOPT_VERTEXCACHE,
-		&vecAdj[0],
-		0, 0, 0);
+	//	std::vector<DWORD> vecAdj(vecVertex.size());
+	//	pMesh->m_pMesh->GenerateAdjacency(0.0f, &vecAdj[0]);
+	//	pMesh->m_pMesh->OptimizeInplace(D3DXMESHOPT_ATTRSORT |
+	//		D3DXMESHOPT_COMPACT |
+	//		D3DXMESHOPT_VERTEXCACHE,
+	//		&vecAdj[0],
+	//		0, 0, 0);
 }
 
 
@@ -568,10 +563,10 @@ void ObjectLoader::LoadMtlLib(std::map<std::string, MtlTex*>* mtlTex,
 			{
 				(*mtlTex)[sMtlName] = new MtlTex;
 
-				//: >>
 				(*mtlTex)[sMtlName]->SetAttrID(nCnt);
 				nCnt++;
-				// : <<
+
+				ZeroMemory(&(*mtlTex)[sMtlName]->GetMaterial(), sizeof(D3DMATERIAL9));
 			}
 		}
 		else if (szTemp[lineCol] == 'K')
@@ -580,9 +575,9 @@ void ObjectLoader::LoadMtlLib(std::map<std::string, MtlTex*>* mtlTex,
 			{
 				float r, g, b;
 				sscanf_s(szTemp, "%*s %f %f %f", &r, &g, &b);
-				(*mtlTex)[sMtlName]->GetMaterial().Ambient.r = r;
-				(*mtlTex)[sMtlName]->GetMaterial().Ambient.g = g;
-				(*mtlTex)[sMtlName]->GetMaterial().Ambient.b = b;
+				(*mtlTex)[sMtlName]->GetMaterial().Ambient.r = 0.8f;//r;
+				(*mtlTex)[sMtlName]->GetMaterial().Ambient.g = 0.8f;//g;
+				(*mtlTex)[sMtlName]->GetMaterial().Ambient.b = 0.8f;//b;
 				(*mtlTex)[sMtlName]->GetMaterial().Ambient.a = 1.0f;
 			}
 			if (szTemp[lineCol + 1] == 'd')

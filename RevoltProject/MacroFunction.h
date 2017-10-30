@@ -3,6 +3,9 @@
 #define SAFE_RELEASE(p) { if(p) p->Release() ; p = NULL ;}
 #define SAFE_DELETE(p) { if(p) delete p ; p = NULL ; }
 #define SAFE_DELETE_ARRAY(p) {if(p) delete[] p; p = NULL;}
+#define SAFE_DESTROY(p) {if(p) p->Destroy();}
+#define SAFE_UPDATE(p) {if(p) p->Update();}
+#define SAFE_RENDER(p) {if(p) p->Render();}
 
 #define SINGLETONE(class_name) \
 	private : \

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "targetver.h"
-
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console") 
 //======================================
 // - ## 10.11.17 ##
 // - written by 김선호
@@ -67,6 +67,7 @@
 #include <NxCooking.h>
 #include <NxStream.h>
 
+
 /*   사운드 관련 헤더파일   */
 #pragma comment (lib, "fmodlib/fmodex_vc.lib")
 #include "fmodinc/fmod.hpp"
@@ -81,6 +82,7 @@
 /*   전역변수 설정   */
 extern HWND			g_hWnd;
 extern HINSTANCE	g_hInst;
+extern POINT		g_ptMouse;
 
 /*   열거체 형 설정   */
 /*   현재 로비상태를 저장하는 열거형 구조체   */
@@ -173,6 +175,11 @@ enum FONTFILE{FONT1=2001, FONT2};
 #include "FontManager.h"
 #include "TimeManager.h"
 #include "cNetworkManager.h"
+#include "cPhysXManager.h"
+#include "SceneManager.h"
+#include "CameraManager.h"
+#include "LightManager.h"
+
 
 //UTIL
 #include "cStringUtil.h"
