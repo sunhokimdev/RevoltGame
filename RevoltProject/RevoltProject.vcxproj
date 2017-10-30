@@ -157,6 +157,7 @@
     <ClInclude Include="cCreateProfile.h" />
     <ClInclude Include="cFollowPoint.h" />
     <ClInclude Include="cIntroLob.h" />
+    <ClInclude Include="cItem.h" />
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cMesh.h" />
     <ClInclude Include="cNetwork.h" />
@@ -181,6 +182,7 @@
     <ClInclude Include="iLobby.h" />
     <ClInclude Include="InGameUI.h" />
     <ClInclude Include="InlineFunction.h" />
+    <ClInclude Include="ItemManager.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Lobby.h" />
     <ClInclude Include="MacroFunction.h" />
@@ -228,6 +230,7 @@
     <ClCompile Include="cCreateProfile.cpp" />
     <ClCompile Include="cFollowPoint.cpp" />
     <ClCompile Include="cIntroLob.cpp" />
+    <ClCompile Include="cItem.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cMesh.cpp" />
     <ClCompile Include="cNetwork.cpp" />
@@ -251,6 +254,7 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="iLobby.cpp" />
     <ClCompile Include="InGameUI.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="MainGame.cpp" />

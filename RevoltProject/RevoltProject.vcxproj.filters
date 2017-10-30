@@ -91,6 +91,15 @@
     <Filter Include="Lobby\GameUI\iLobby">
       <UniqueIdentifier>{4bd2d0cf-02fe-46be-b056-1640dc528541}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager\NetworkManager">
+      <UniqueIdentifier>{f315a42a-f2a4-4d57-826e-39e128166c2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\ItemManager">
+      <UniqueIdentifier>{52227257-6077-4203-b22e-ab035207dd7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Car\Item">
+      <UniqueIdentifier>{002755df-2fcd-4585-a20d-ba657430f491}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -270,9 +279,6 @@
     <ClInclude Include="cWheel.h">
       <Filter>Basic</Filter>
     </ClInclude>
-    <ClInclude Include="cNetworkManager.h">
-      <Filter>Lobby\Network</Filter>
-    </ClInclude>
     <ClInclude Include="cNetwork.h">
       <Filter>Lobby\Network</Filter>
     </ClInclude>
@@ -302,6 +308,15 @@
     </ClInclude>
     <ClInclude Include="cNetworkInRoom.h">
       <Filter>Lobby\GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="cNetworkManager.h">
+      <Filter>Manager\NetworkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="cItem.h">
+      <Filter>Car\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemManager.h">
+      <Filter>Manager\ItemManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -464,9 +479,6 @@
     <ClCompile Include="cWheel.cpp">
       <Filter>Basic</Filter>
     </ClCompile>
-    <ClCompile Include="cNetworkManager.cpp">
-      <Filter>Lobby\Network</Filter>
-    </ClCompile>
     <ClCompile Include="cNetwork.cpp">
       <Filter>Lobby\Network</Filter>
     </ClCompile>
@@ -496,6 +508,15 @@
     </ClCompile>
     <ClCompile Include="cNetworkInRoom.cpp">
       <Filter>Lobby\GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="cNetworkManager.cpp">
+      <Filter>Manager\NetworkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="cItem.cpp">
+      <Filter>Car\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemManager.cpp">
+      <Filter>Manager\ItemManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
