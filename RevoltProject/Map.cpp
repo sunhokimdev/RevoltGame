@@ -85,6 +85,11 @@ void Map::Render()
 	D3DXMatrixIdentity(&matWorld);
 	if (m_stage == 0)
 	{
+		/*   오브젝트를 그리는 작업   */
+		if(*g_LobbyState != VIEW_CAR_LOBBY)
+			for each(Thing* pth in m_vecThing) pth->Render();
+
+		/*	 맵 그리는 작업			 */
 		g_pD3DDevice->SetTexture(0, NULL);
 		g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 
@@ -101,8 +106,14 @@ void Map::Render()
 			if (m_vecObjMtlTex[i]->GetTexture() != NULL) g_pD3DDevice->SetTexture(0, NULL);
 		}
 
+		/*   오브젝트 거울을 그리는 작업   */
+		if (*g_LobbyState >= MAIN_LOBBY3)
+			for each(Thing* pth in m_vecThing) pth->MirrorRender();
+		
 		/*   오브젝트를 그리는 작업   */
-		for each(Thing* pth in m_vecThing) pth->Render();
+		if (*g_LobbyState == VIEW_CAR_LOBBY)
+			for each(Thing* pth in m_vecThing) pth->Render();
+
 	}
 	else
 	{

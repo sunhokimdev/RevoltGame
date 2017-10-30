@@ -90,6 +90,7 @@ void Lobby::Setup()
 	m_pCreateProfileLobby = new cCreateProfile;
 	m_pCreateProfileLobby->Setup();
 	
+<<<<<<< HEAD
 	m_pSelectCarLobbby = new cSelectCarLob;
 	m_pSelectCarLobbby->Setup();
 
@@ -102,6 +103,15 @@ void Lobby::Setup()
 	m_pInRoom = new cNetworkInRoom;
 	m_pInRoom->Setup();
 
+=======
+//	if (m_vProfileList.size() == 0)
+//	{
+//		UserFileLoader*	pCreate = new UserFileLoader;
+//		pCreate->CreateProfile("Player1");
+//	}
+*/
+//===================================================================
+>>>>>>> de2ec926608a3a0b3cf80fc1eec562ffc4093cb8
 	SetUpUI();
 }
 
@@ -648,7 +658,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[START_LOBBY]->m_prevLob = LOBBY_NONE;
 	m_mapLobby[START_LOBBY]->m_time = 50.0f;
 	m_mapLobby[START_LOBBY]->m_pNextLob[0] = MAIN_LOBBY;
-	m_mapLobby[START_LOBBY]->m_pNextLob[1] = CREATE_PROFILE_LOBBY2;
+	m_mapLobby[START_LOBBY]->m_pNextLob[1] = CREATE_PROFILE_LOBBY;
 	m_mapLobby[START_LOBBY]->m_pNextLob[2] = START_LOBBY;
 	m_mapLobby[START_LOBBY]->m_pObject = pImageView4;
 	m_mapLobby[START_LOBBY]->m_prevLob = START_LOBBY;

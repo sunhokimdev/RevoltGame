@@ -16,6 +16,8 @@ UIImageView::UIImageView()
 	, m_isMove(false)
 	, m_isNoise(false)
 	, m_isItem(false)
+	, m_isSpeed(false)
+	, m_isSpeedFrame(false)
 	, LeftNoiseX(LEFT_NOISE_X)
 	, RightNoiseX(RIGHT_NOISE_X)
 	, UpNoiseY(-256.0f)
@@ -24,7 +26,12 @@ UIImageView::UIImageView()
 	, m_itemPrevID(8)
 	, m_alpha(0)
 	, m_updateTIme(500)
+	, m_alphaValue(sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]))
 {
+	for (int i = 0; i < sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]); i++)
+	{
+		m_speedAlpha[i] = 0;
+	}
 }
 
 UIImageView::~UIImageView()
@@ -88,6 +95,41 @@ void UIImageView::Update()
 
 			m_updateTIme-=2;
 		}
+	}
+	else if (m_isSpeed)
+	{
+		if (g_pKeyManager->isStayKeyDown(VK_UP) || g_pKeyManager->isStayKeyDown(VK_DOWN))
+		{
+			m_alphaValue = sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]);
+			for (int i = 0; i < sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]); i++)
+			{
+				m_speedAlpha[i] = m_speedAlpha[i] + (m_alphaValue * 2);
+				m_alphaValue--;
+				if (m_alphaValue < 1)
+					m_alphaValue = sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]);
+				if (m_speedAlpha[i] >= 250)
+				{
+					m_speedAlpha[i] = 250;
+				}
+			}
+		}
+		else
+		{
+			for (int i = (sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0])) - 1; i >= 0; i--)
+			{
+				
+				m_speedAlpha[i] = m_speedAlpha[i] - (m_alphaValue * 2); // °¨¼Ò
+				m_alphaValue--;
+				if (m_alphaValue < 1)
+					m_alphaValue = sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]);
+				if (m_speedAlpha[i] <= 0)
+				{
+					m_speedAlpha[i] = 0;
+				}
+				
+			}
+		}
+	
 	}
 
 	UIObject::Update();
@@ -204,6 +246,84 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(255 - m_alpha, 255, 255, 255));
 	}
 
+	else if (m_isSpeedFrame || m_isSpeed)
+	{
+		RECT rc;
+
+		m_xSize = 1.5f;
+		m_ySize = 1.5f;
+
+		if (m_isSpeedFrame)
+		{
+			for (int i = 0; i < sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]); i++)
+			{
+				m_speedAlpha[i] = 230;
+			}
+		}
+
+		tMat = m_matWorld;
+		tMat._11 = m_xSize;
+		tMat._22 = m_ySize;
+
+		pSprite->SetTransform(&tMat);
+		SetRect(&rc, 0, 0, 22, 22);
+		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(m_speedAlpha[0], 255, 255, 255));
+
+		tMat = m_matWorld;
+		tMat._11 = m_xSize;
+		tMat._22 = m_ySize;
+		tMat._41 = tMat._41 + 20;
+		tMat._42 = tMat._42 - 20;
+		pSprite->SetTransform(&tMat);
+		SetRect(&rc, 22, 0, 44, 22);
+		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(m_speedAlpha[1], 255, 255, 255));
+
+		tMat = m_matWorld;
+		tMat._11 = m_xSize;
+		tMat._22 = m_ySize;
+		tMat._41 = tMat._41 + 44;
+		tMat._42 = tMat._42 - 37;
+		pSprite->SetTransform(&tMat);
+		SetRect(&rc, 44, 0, 66, 22);
+		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(m_speedAlpha[2], 255, 255, 255));
+
+		tMat = m_matWorld;
+		tMat._11 = m_xSize;
+		tMat._22 = m_ySize;
+		tMat._41 = tMat._41 + 70;
+		tMat._42 = tMat._42 - 47;
+		pSprite->SetTransform(&tMat);
+		SetRect(&rc, 66, 0, 88, 22);
+		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(m_speedAlpha[3], 255, 255, 255));
+
+		tMat = m_matWorld;
+		tMat._11 = m_xSize;
+		tMat._22 = m_ySize;
+		tMat._41 = tMat._41 + 100;
+		tMat._42 = tMat._42 - 54;
+		pSprite->SetTransform(&tMat);
+		SetRect(&rc, 88, 0, 110, 22);
+		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(m_speedAlpha[4], 255, 255, 255));
+
+		tMat = m_matWorld;
+		tMat._11 = m_xSize;
+		tMat._22 = m_ySize;
+		tMat._41 = tMat._41 + 131;
+		tMat._42 = tMat._42 - 59;
+		pSprite->SetTransform(&tMat);
+		SetRect(&rc, 110, 0, 132, 22);
+		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(m_speedAlpha[5], 255, 255, 255));
+
+		tMat = m_matWorld;
+		tMat._11 = m_xSize;
+		tMat._22 = m_ySize;
+		tMat._41 = tMat._41 + 168;
+		tMat._42 = tMat._42 - 61;
+		pSprite->SetTransform(&tMat);
+		SetRect(&rc, 132, 0, 154, 22);
+		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(m_speedAlpha[6], 255, 255, 255));
+
+	}
 	else if ((!m_isBoard || !m_isNoise) && !m_isMove)
 	{
 		RECT rc;
@@ -215,7 +335,6 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 		SetRect(&rc, 0, 0, m_stSize.nWitdh, m_stSize.nHeight);
 		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
 	}
-
 	pSprite->End();
 
 	UIObject::Render(pSprite);

@@ -50,8 +50,6 @@ std::vector<std::string> UserFileLoader::LoadProfileList()
 	intptr_t	handle;
 	handle = _findfirst(sFullPath.c_str(), &fd);
 
-	MessageBoxA(g_hWnd, fd.name, fd.name, MB_OK);
-
 	do
 	{
 		m_ProfileList.push_back(fd.name);

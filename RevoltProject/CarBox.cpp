@@ -121,6 +121,33 @@ void CarBox::Render()
 	g_pD3DDevice->DrawPrimitive(D3DPT_TRIANGLELIST, 0, 2);
 }
 
+void CarBox::MirrorRender()
+{
+	if (*g_select == m_index && *g_LobbyState == VIEW_CAR_LOBBY)
+	{
+		D3DXMatrixRotationX(&m_matWorld, 0.0f);
+		D3DXMatrixRotationY(&m_matWorld, m_prevYAngle);
+	
+		m_matWorld._41 = m_vPrevPosition.x;
+		m_matWorld._42 = m_vPrevPosition.y;
+		m_matWorld._43 = m_vPrevPosition.z;
+	
+		m_car->MirrorRender();
+	}
+
+	Thing::MirrorRender();
+
+	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
+
+	/*   자동차 표지 그리기   */
+	g_pD3DDevice->SetStreamSource(0, VB, 0, sizeof(ST_PNT_VERTEX));
+	g_pD3DDevice->SetFVF(ST_PNT_VERTEX::FVF);
+	g_pD3DDevice->SetTexture(0, m_carboxTexture);
+	g_pD3DDevice->DrawPrimitive(D3DPT_TRIANGLELIST, 0, 2);
+
+	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+}
+
 void CarBox::SetTextFile(char * szFolder)
 {
 	ST_CAR tCar;
