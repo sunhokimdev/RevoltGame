@@ -89,8 +89,7 @@ void Lobby::Setup()
 
 	m_pCreateProfileLobby = new cCreateProfile;
 	m_pCreateProfileLobby->Setup();
-	
-<<<<<<< HEAD
+
 	m_pSelectCarLobbby = new cSelectCarLob;
 	m_pSelectCarLobbby->Setup();
 
@@ -103,24 +102,21 @@ void Lobby::Setup()
 	m_pInRoom = new cNetworkInRoom;
 	m_pInRoom->Setup();
 
-=======
-//	if (m_vProfileList.size() == 0)
-//	{
-//		UserFileLoader*	pCreate = new UserFileLoader;
-//		pCreate->CreateProfile("Player1");
-//	}
-*/
-//===================================================================
->>>>>>> de2ec926608a3a0b3cf80fc1eec562ffc4093cb8
 	SetUpUI();
 }
 
 void Lobby::Update()
 {
+
+	// Set Map Type Update
 	if (m_stateLobby == SELECT_MAP_LOBBY)
 	{
 		m_pSelectMap->SetMapType(&m_stateMapType, m_leftAndrightSelect);
 	}
+
+	if (m_stateLobby == MARKET_MAP)
+		m_pInGameUI->UpdateTimeLab();
+
 
 	TimeUpdate();   // 시간 갱신 메서드
 	KeyUpdate();   // 키 이벤트 갱신 메서드
@@ -185,11 +181,22 @@ void Lobby::KeyUpdate()
 		
 			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
 		}
-		else if (m_stateLobby == CREATE_PROFILE_LOBBY || 
-				m_stateLobby == CREATE_PROFILE_LOBBY2 )
+		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
 		{
 			WheelTire::g_xRotAngle += D3DX_PI / 15.0f;
 			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
+		}
+
+		else if (m_stateLobby == SELECT_MAP_LOBBY)
+		{
+			m_leftAndrightSelect--;
+
+			m_pSelectMap->GetmagImage()->SetIsMove(true);
+
+			if (m_leftAndrightSelect < 0)
+				m_leftAndrightSelect = m_mapLobby[m_stateLobby]->m_selectCnt - 1;
+
+			g_pSoundManager->Play("boxslide.wav", 1.0f);
 		}
 	}
 
@@ -205,8 +212,7 @@ void Lobby::KeyUpdate()
 
 			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
 		}
-		else if (m_stateLobby == CREATE_PROFILE_LOBBY || 
-				m_stateLobby == CREATE_PROFILE_LOBBY2)
+		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
 		{
 			WheelTire::g_xRotAngle -= D3DX_PI / 15.0f;
 			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
@@ -232,20 +238,11 @@ void Lobby::KeyUpdate()
 		{
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
 			m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+			m_pCamera->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
-		}
-		else if (m_stateLobby == CREATE_PROFILE_LOBBY2)
-		{
-			m_isCreate = true;
-			UITextImageView::m_isCreate = &m_isCreate;
-
-			if (!m_isEnterName)
-			{
-				m_isEnterName = true;
-				m_stateLobby = m_mapLobby[START_LOBBY]->m_pNextLob[1];
-			}
+			return;
 		}
 
 		else if (m_stateLobby == MAIN_LOBBY2)
@@ -756,7 +753,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[SELECT_MAP_LOBBY]->m_time = 5000.0f;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_pObject = m_pSelectMap->GetmapParent();
 	m_mapLobby[SELECT_MAP_LOBBY]->m_camLookAt = D3DXVECTOR3(23, 5, -12);
-	m_mapLobby[SELECT_MAP_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_prevLob = VIEW_CAR_LOBBY;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob[0] = MARKET_MAP;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob[1] = GARDEN_MAP;
 

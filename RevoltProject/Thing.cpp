@@ -98,9 +98,7 @@ void Thing::Update()
 	}
 
 	for each(auto p in m_vecChild)	
-		if (*g_LobbyState == CREATE_PROFILE_LOBBY ||
-		*g_LobbyState == CREATE_PROFILE_LOBBY2)
-
+		if (*g_LobbyState == CREATE_PROFILE_LOBBY)
 	{
 		p->Update();
 	}

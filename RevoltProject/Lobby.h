@@ -111,13 +111,8 @@ public:
 	void TimeUpdate();				// 시간이 흐를 때 마다 발생 하는 이벤트를 갱신하는 메서드
 	void SetUpUI();					// UI 셋업작업
 
-<<<<<<< HEAD
 	D3DXVECTOR3 GetTarget() { return m_mapLobby[m_stateLobby]->m_target; }		// 카메라가 보는 방향을 반환해주는 메서드
-=======
-	//void CreateProfile();
 
-	D3DXVECTOR3 GetTarget() { return m_mapLobby[START_LOBBY]->m_target; }		// 카메라가 보는 방향을 반환해주는 메서드
->>>>>>> de2ec926608a3a0b3cf80fc1eec562ffc4093cb8
 	void SetUpCamera(Camera* camera) { m_pCamera = camera; }		// 처음 카메라 변수를 지정하는 메서드
 };
 

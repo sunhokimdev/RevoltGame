@@ -62,6 +62,7 @@ void MainGame::Setup()
 
 void MainGame::Update()
 {
+	g_pTimeManager->Update();
 	if(m_pCamera)	m_pCamera->Update();
 	if(m_pMap)		m_pMap->Update();
 	if(m_pLobby)	m_pLobby->Update();

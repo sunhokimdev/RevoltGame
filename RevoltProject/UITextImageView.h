@@ -39,7 +39,7 @@ public:
 	SYNTHESIZE(bool, m_isVectorText, IsVectorText);		// 벡터 텍스트로 사용 할 것인지 확인하는 작업
 	SYNTHESIZE(bool, m_isVectorText2, IsVectorText2);	// 벡터 텍스트(위, 아래)로 사용 할 것인지 확인하는 작업
 	SYNTHESIZE(bool, m_isChatingText, IsChatingText);	// 키 입력을 받을 것인지 확인하는 작업
-	SYNTHESIZE(bool, m_isRealTime, IsRealTime);		// 실시간으로 그려줄 텍스트인지 확인
+	SYNTHESIZE(bool, m_isRealTime, IsRealTime);			// 실시간으로 그려줄 텍스트인지 확인
 	SYNTHESIZE(int, m_carIndex, CarIndex);				// 자동차의 어떤 위치의 특성을 보여줄 변수 -> m_isRealTime이 true여야 한다. 
 
 
