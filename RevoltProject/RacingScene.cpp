@@ -16,13 +16,19 @@ void RacingScene::Setup()
 		m_pTrack->Setup();
 		m_pTrack->LoadTrack("Market2");
 	}
-	
-	m_pLightSun = new cLight;
-	if (m_pLightSun)
-	{
-		m_pLightSun->Setup(0, D3DLIGHT_POINT, C_YELLOW, { 0,1,0 });
-		m_pLightSun->Switch(true);
-	}
+	m_nLightIDCount = 0;
+
+	D3DLIGHT9 light;
+	light.Type = D3DLIGHT_DIRECTIONAL;
+	light.Ambient = D3DXCOLOR(0.8,0.8,0.8,1);
+	light.Diffuse = D3DXCOLOR(0.8, 0.8, 0.8, 1);
+	light.Specular = D3DXCOLOR(0.8, 0.8, 0.8, 1);
+	D3DXVECTOR3 dir = { 0,-1,0 };
+	D3DXVec3Normalize(&dir, &dir);
+	light.Direction = dir;
+	g_pD3DDevice->SetLight(0, &light);
+	g_pD3DDevice->LightEnable(0, true);
+
 }
 
 void RacingScene::Destroy()
@@ -34,13 +40,15 @@ void RacingScene::Destroy()
 
 void RacingScene::Update()
 {
+	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
 }
 
 void RacingScene::Render()
 {
-	//g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, 0x00202020);
-	//g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(200,200,200));
+	//¾Úºñ¾ğÆ®
+	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
+
 	if (m_pTrack)
 	{
 		m_pTrack->Render();

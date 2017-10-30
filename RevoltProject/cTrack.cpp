@@ -7,6 +7,7 @@
 #include "cPickUp.h"
 
 cTrack::cTrack()
+	:m_nLightIdx(11)
 {
 }
 
@@ -227,22 +228,58 @@ void cTrack::LoadTrack(std::string FileName)
 					}
 					else if (szTemp[0] == '#') //Push
 					{
-						NxActor* pActor = MgrPhysX->CreateActor(
-							type,
-							position + worldPosition + localPosition,
-							matR,
-							sizeValue,
-							pUserData,
-							isTrigger,
-							isStatic_,
-							isGravity);
-						if (pActor)
+						if (Obj->GetTag() == E_OBJECT_LIGHT)
 						{
-							physx->m_pActor = pActor;
-							Obj->SetPhysXData(physx);
+							// Light Manager에 등록
+							cLight* light = (cLight*)Obj;
+							light->SetupPoint(m_nLightIdx++, C_WHITE, light->GetPosition(), 20);
+							g_pLightManager->AddLight(light->GetLightIndex(), light);
 						}
-						m_vecObject.push_back(Obj);
+						else if (Obj->GetTag() == E_OBJECT_PICKUP)
+						{
+							NxActor* pActor = MgrPhysX->CreateActor(
+								type,
+								position + worldPosition + localPosition,
+								matR,
+								sizeValue,
+								pUserData,
+								isTrigger,
+								isStatic_,
+								isGravity);
+							if (pActor)
+							{
+								physx->m_pActor = pActor;
+								Obj->SetPhysXData(physx);
+							}
+
+							m_vecObject.push_back(Obj);
+
+							//픽업오브젝트의 경우 조명이 필요하기때문에 생성해준다.
+							cLight* light = new cLight;
+							light->SetupPoint(m_nLightIdx++, C_YELLOW, light->GetPosition(), 5);
+							g_pLightManager->AddLight(light->GetLightIndex(), light);
+						}
+						else
+						{
+							NxActor* pActor = MgrPhysX->CreateActor(
+								type,
+								position + worldPosition + localPosition,
+								matR,
+								sizeValue,
+								pUserData,
+								isTrigger,
+								isStatic_,
+								isGravity);
+							if (pActor)
+							{
+								physx->m_pActor = pActor;
+								Obj->SetPhysXData(physx);
+							}
+
+							m_vecObject.push_back(Obj);
+						}
 						break;
+						
 					}
 				} // << : while Object
 			}

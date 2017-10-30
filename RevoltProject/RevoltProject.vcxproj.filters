@@ -94,6 +94,9 @@
     <Filter Include="Manager\CameraManager">
       <UniqueIdentifier>{f3901fe2-c7d8-4ad7-98cd-50d1de23ece8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager\LightManager">
+      <UniqueIdentifier>{de9ed106-446d-469e-bb4a-a6f6cc2aea8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -288,6 +291,9 @@
     <ClInclude Include="RacingScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="LightManager.h">
+      <Filter>Manager\LightManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -463,6 +469,9 @@
     </ClCompile>
     <ClCompile Include="RacingScene.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="LightManager.cpp">
+      <Filter>Manager\LightManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

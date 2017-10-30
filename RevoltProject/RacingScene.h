@@ -10,8 +10,7 @@ private:
 
 	cTrack* m_pTrack;
 	cLight* m_pLightSun;
-
-	LPD3DXMESH TestMesh;
+	int m_nLightIDCount;
 
 public:
 

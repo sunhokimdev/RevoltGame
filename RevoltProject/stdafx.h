@@ -152,6 +152,7 @@ enum FONTFILE{FONT1=2001, FONT2};
 #include "TimeManager.h"
 #include "SceneManager.h"
 #include "CameraManager.h"
+#include "LightManager.h"
 
 //UTIL
 #include "cStringUtil.h"

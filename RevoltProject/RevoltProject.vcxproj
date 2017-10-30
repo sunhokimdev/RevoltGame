@@ -173,6 +173,7 @@
     <ClInclude Include="InGameUI.h" />
     <ClInclude Include="InlineFunction.h" />
     <ClInclude Include="KeyManager.h" />
+    <ClInclude Include="LightManager.h" />
     <ClInclude Include="Lobby.h" />
     <ClInclude Include="LobbyScene.h" />
     <ClInclude Include="MacroFunction.h" />
@@ -237,6 +238,7 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="InGameUI.cpp" />
     <ClCompile Include="KeyManager.cpp" />
+    <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="LobbyScene.cpp" />
     <ClCompile Include="MainGame.cpp" />

@@ -56,6 +56,7 @@ void MainGame::Setup()
 
 void MainGame::Update()
 {
+	SAFE_UPDATE(g_pLightManager);
 	SAFE_UPDATE(g_pCamManager);
 	SAFE_UPDATE(g_SceneManager);
 }
