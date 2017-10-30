@@ -194,50 +194,55 @@ void InGameUI::Render(LPD3DXSPRITE pSprite)
 
 void InGameUI::UpdateTimeLab()
 {
-	// 59 = :
-	std::string ElaseTime;
-	std::string DotTenth;
-	std::string DotMilth;
+	// Add String For UITextImage Text
+	std::string ElapseTime;								// Elase(x.xx0)
+	std::string DotTenth;								//		 x.x0x
+	std::string DotMilth;								//		 x.0xx
 
-	std::string SecOneth;
-	std::string SecTenth;
+	std::string SecOneth;								//		 0.xxx
+	std::string SecTenth;								//		0x.xxx
 
-	std::string MinOneth;
-	std::string MinTenth;
+	std::string MinOneth;								//	  0.xx.xxx
+	std::string MinTenth;								//	 0x.xx.xxx
 
-	m_ElapseTime += g_pTimeManager->GetElapsedTime();
+	m_ElapseTime += g_pTimeManager->GetElapsedTime();	// Uptate ElapsedTime
 
-	if (m_ElapseTime > TIMEMAX)
+	if (m_ElapseTime > TIMEMAX)							// After 60 Second
 	{
-		m_ElapseTime -= TIMEMAX;
-		m_MinOneth += 1;
+		m_ElapseTime -= TIMEMAX;						// ElapsedTime = 0
+		m_MinOneth += 1;								// Add 1 Minute
 	}
-	if (m_MinOneth > FONT2_NUM9)
+	if (m_MinOneth > FONT2_NUM9)						// After 10 Minute
 	{
-		m_MinOneth = FONT2_NUM0;
-		m_MinTenth += 1;
+		m_MinOneth = FONT2_NUM0;						// MinuteOneth = 0; 
+		m_MinTenth += 1;								// Add MinuteTenth ( 09:59 -> 10:00 )
 	}
-	m_SecTenth = (m_ElapseTime / 10) + FONT2_NUM0;
-	m_SecOneth = ((int)m_ElapseTime % 10) + FONT2_NUM0;
+	m_SecTenth = (m_ElapseTime / 10) + FONT2_NUM0;		// Ex : m_ElapseTime = 59
+	m_SecOneth = ((int)m_ElapseTime % 10) + FONT2_NUM0; //      m_ElapseTime / 10 = 5;	
+														//      m_ElapseTime % 10 = 9;
+														//      Therefore Current Second : 59
 
 
-	
-	float fTime = (m_ElapseTime - (int)m_ElapseTime) * 10.0f;
-	DotMilth = (int)(fTime) +FONT2_NUM0;
-	fTime -= (int)fTime;
-	fTime *= 10.0f;
-	DotTenth = (int)fTime + FONT2_NUM0;
-	fTime -= (int)fTime;
-	fTime *= 10.0f;
-	ElaseTime = (int)fTime  + FONT2_NUM0;
+																//		EX : m_ElapseTime = 9.876
+	float CalcDP = (m_ElapseTime - (int)m_ElapseTime) * 10.0f;	//		CalcDP = (9.876 - 9) * 10 = 8.76
+	DotMilth = (int)(CalcDP) + FONT2_NUM0;						//		x.?xx = x.8xx
+	CalcDP -= (int)CalcDP;										//		CalcDP = 8.76 - 8 = 0.76
+	CalcDP *= 10.0f;											//		CalcDP = 0.76 * 10 = 7.6
+	DotTenth = (int)CalcDP + FONT2_NUM0;						//		x.8?x = x.87x
+	CalcDP -= (int)CalcDP;										//		CalcDP = 7.6 - 7 = 0.6
+	CalcDP *= 10.0f;											//		CalcDP = 0.6 * 10 = 6
+	ElapseTime = (int)CalcDP + FONT2_NUM0;						//		x.87? = x.876
+																//		Therefore Calculation Decimal Point = .0876
 
+	/*          Add String          */
 	SecOneth = m_SecOneth;
 	SecTenth = m_SecTenth;
 
 	MinOneth = m_MinOneth;
 	MinTenth = m_MinTenth;
 
-	m_pElapseTime->SetText(ElaseTime);
+	/*          Set Text          */
+	m_pElapseTime->SetText(ElapseTime);
 	m_pDotTenth->SetText(DotTenth);
 	m_pDotMilth->SetText(DotMilth);
 	m_pSecOneth->SetText(SecOneth);
