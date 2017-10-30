@@ -52,7 +52,7 @@ public:
 	virtual void Render();
 	virtual void Destroy();
 
-	void MirrorRender();
+	virtual void MirrorRender();
 
 };
 

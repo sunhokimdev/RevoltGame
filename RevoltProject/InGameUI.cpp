@@ -86,14 +86,41 @@ void InGameUI::Setup()
 	m_pItemImage->SetIsItem(true);
 	m_pItemImage->SetTexture("Maps/Front/Image/itemlist.png");
 
+
+	// 속도계 추가
+	UIImageView* pSpeedFrame = new UIImageView;
+	pSpeedFrame->SetIsSpeedFrame(true);
+	pSpeedFrame->SetXSize(1.2f);
+	pSpeedFrame->SetYSize(1.2f);
+	pSpeedFrame->SetPosition(750, 650);
+	pSpeedFrame->SetTexture("Maps/Front/Image/speedFrame.png");
+
+	UIImageView* pSpeedometerImage = new UIImageView;
+	pSpeedometerImage->SetIsSpeed(true);
+	pSpeedometerImage->SetXSize(1.2f);
+	pSpeedometerImage->SetYSize(1.2f);
+	pSpeedometerImage->SetPosition(0, 0);
+	pSpeedometerImage->SetTexture("Maps/Front/Image/speed.png");
+
+	UITextImageView* pSpeed_mph = new UITextImageView;
+	pSpeed_mph->SetTexture("Maps/Front/Image/font2.png");
+	pSpeed_mph->SetText("mph");
+	pSpeed_mph->SetXSize(1.0f);
+	pSpeed_mph->SetYSize(1.0f);
+	pSpeed_mph->SetPosition(170, 8);
+	pSpeed_mph->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+
 	m_pRootUI->AddChild(pImageView1);
 	m_pRootUI->AddChild(pImageView2);
 	m_pRootUI->AddChild(pImageView7);
+	m_pRootUI->AddChild(pSpeedFrame);
 	pImageView1->AddChild(pImageView6);
 	pImageView2->AddChild(pImageView3);
 	pImageView2->AddChild(pImageView4);
 	pImageView2->AddChild(pImageView5);
 	pImageView6->AddChild(m_pItemImage);
+	pSpeedFrame->AddChild(pSpeedometerImage);
+	pSpeedFrame->AddChild(pSpeed_mph);
 }
 
 void InGameUI::Update()

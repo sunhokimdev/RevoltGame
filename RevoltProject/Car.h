@@ -29,6 +29,8 @@ public:
 	virtual void Update();
 	virtual void Render();
 
+	virtual void MirrorRender();
+
 	void SetSTCar(ST_CAR car);
 	void SetMeshWheel(char* szFolder, char* szName);
 	void WheelRender();

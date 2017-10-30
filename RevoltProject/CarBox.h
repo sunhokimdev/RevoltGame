@@ -24,6 +24,8 @@ public:
 	virtual void Update();
 	virtual void Render();
 
+	virtual void MirrorRender();
+
 	void SetTextFile(char* szFile);
 	void SetIndex(int index);
 };

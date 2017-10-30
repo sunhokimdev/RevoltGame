@@ -19,6 +19,10 @@ protected:
 	int m_fTime;			// 알파 값 갱신 해주기 위한 시간 값
 	int m_updateTIme;
 
+	/*	속도계	*/
+	int m_speedAlpha[7];
+	int m_alphaValue;		// 알파값 변경
+
 	LPDIRECT3DTEXTURE9		m_pTexture;			// 이미지 그리기 작업
 public:
 	UIImageView();
@@ -31,6 +35,8 @@ public:
 	SYNTHESIZE(bool, m_isBoard, IsBoard);		
 	SYNTHESIZE(bool, m_isNoise, IsNoise);
 	SYNTHESIZE(bool, m_isItem, IsItem);
+	SYNTHESIZE(bool, m_isSpeedFrame, IsSpeedFrame);
+	SYNTHESIZE(bool, m_isSpeed, IsSpeed);
 	SYNTHESIZE(float, m_xSize, XSize);
 	SYNTHESIZE(float, m_ySize, YSize);
 	SYNTHESIZE(D3DXCOLOR, m_color, Color);

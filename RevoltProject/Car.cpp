@@ -32,6 +32,16 @@ void Car::Render()
 	}
 }
 
+void Car::MirrorRender()
+{
+	Thing::MirrorRender();
+
+	for each(auto p in m_vecChild)
+	{
+		p->MirrorRender();
+	}
+}
+
 void Car::SetSTCar(ST_CAR car)
 {
 	m_stCar = car;

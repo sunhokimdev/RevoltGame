@@ -86,7 +86,6 @@ void Lobby::Setup()
 //		pCreate->CreateProfile("Player1");
 //	}
 */
-
 //===================================================================
 	SetUpUI();
 }
@@ -943,7 +942,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[START_LOBBY]->m_prevLob = LOBBY_NONE;
 	m_mapLobby[START_LOBBY]->m_time = 50.0f;
 	m_mapLobby[START_LOBBY]->m_pNextLob[0] = MAIN_LOBBY;
-	m_mapLobby[START_LOBBY]->m_pNextLob[1] = CREATE_PROFILE_LOBBY2;
+	m_mapLobby[START_LOBBY]->m_pNextLob[1] = CREATE_PROFILE_LOBBY;
 	m_mapLobby[START_LOBBY]->m_pNextLob[2] = START_LOBBY;
 	m_mapLobby[START_LOBBY]->m_pObject = pImageView4;
 	m_mapLobby[START_LOBBY]->m_prevLob = START_LOBBY;
