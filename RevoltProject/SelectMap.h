@@ -11,10 +11,8 @@ public:
 	~SelectMap();
 	void Setup();
 
-	bool GetIsLockState(int LeftAndRight);
-
-	void SetMapType(MAP_TYPE* mapType, int SelectNum);
-	void MapTypeUpdate(int SelectNum);												   // Map Update;
+	void SetMapType(MAP_TYPE* mapType, int SelectNum);					   // Map Set
+	void MapTypeUpdate(int SelectNum);									   // Map Update;
 
 	SYNTHESIZE(MAP_TYPE, m_mapType, mapType);							   // Map Type
 

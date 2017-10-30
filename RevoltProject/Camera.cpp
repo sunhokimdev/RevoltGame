@@ -45,6 +45,9 @@ void Camera::Update()
 
 	m_fCamTime += 0.0005f;
 
+	if (m_fCamTime > 1.0f)
+		m_fCamTime = 0.0f;
+
 	D3DXMATRIXA16 matR, matRX, matRY;
 	D3DXMatrixRotationX(&matRX, m_vCamRotAngle.x);
 	D3DXMatrixRotationY(&matRY, m_vCamRotAngle.y);

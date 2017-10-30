@@ -93,10 +93,16 @@ void Lobby::Setup()
 
 void Lobby::Update()
 {
+
+	// Set Map Type Update
 	if (m_stateLobby == SELECT_MAP_LOBBY)
 	{
 		m_pSelectMap->SetMapType(&m_stateMapType, m_leftAndrightSelect);
 	}
+
+	if (m_stateLobby == MARKET_MAP)
+		m_pInGameUI->UpdateTimeLab();
+
 
 	TimeUpdate();   // 시간 갱신 메서드
 	KeyUpdate();   // 키 이벤트 갱신 메서드
@@ -249,15 +255,7 @@ void Lobby::KeyUpdate()
 	/*   엔터 키 눌렀을 때 다음 로비로 들어가는 이벤트   */
 	if (g_pKeyManager->isOnceKeyDown(VK_RETURN))
 	{
-			if (m_stateLobby == SELECT_MAP_LOBBY)
-			{
-				m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
-				m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
-				m_time = 0.0f;
-				m_select = 0;
-				m_leftAndrightSelect = 0;
-			}
-			else if (m_stateLobby == CREATE_PROFILE_LOBBY2)
+			if (m_stateLobby == CREATE_PROFILE_LOBBY2)
 			{
 				m_isCreate = true;
 				UITextImageView::m_isCreate = &m_isCreate;
@@ -280,14 +278,34 @@ void Lobby::KeyUpdate()
 
 			else if (m_mapLobby[m_stateLobby]->m_pNextLob[m_select] != LOBBY_NONE)
 			{
-				m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
-
-				if (m_stateLobby != MAIN_LOBBY3)
+				if (m_stateLobby == SELECT_MAP_LOBBY)
+				{
+					//m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
 					m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
-				m_time = 0.0f;
-				m_select = 0;
-				m_leftAndrightSelect = 0;
+					m_time = 0.0f;
+					m_select = 0;
+					m_leftAndrightSelect = 0;
 
+					if (m_pSelectMap->GetUnLocked())
+					{
+						m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
+						m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);
+						m_pSelectMap->SetmapType(m_stateMapType);
+					}
+					else
+					{
+					}
+				}
+				else
+				{
+					m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
+
+					if (m_stateLobby != MAIN_LOBBY3)
+						m_pCamera->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
+					m_time = 0.0f;
+					m_select = 0;
+					m_leftAndrightSelect = 0;
+				}
 				if (m_stateLobby > INTRO3)
 					g_pSoundManager->Play("menuNext.wav", 1.0f);
 			}
@@ -1009,7 +1027,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[SELECT_MAP_LOBBY]->m_time = 5000.0f;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_pObject = m_pSelectMap->GetmapParent();
 	m_mapLobby[SELECT_MAP_LOBBY]->m_camLookAt = D3DXVECTOR3(23, 5, -12);
-	m_mapLobby[SELECT_MAP_LOBBY]->m_prevLob = SELECT_CAR_LOBBY;
+	m_mapLobby[SELECT_MAP_LOBBY]->m_prevLob = VIEW_CAR_LOBBY;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob[0] = MARKET_MAP;
 	m_mapLobby[SELECT_MAP_LOBBY]->m_pNextLob[1] = GARDEN_MAP;
 
