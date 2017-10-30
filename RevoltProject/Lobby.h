@@ -3,17 +3,19 @@
 class UIObject;					// UI오브젝트를 사용하기 위한 전방선언 클래스
 class MtlTex;					// 재질을 사용하기 위한 전방선언 클래스
 class Camera;					// 카메라 클래스를 사용하기 위한 전방선언 클래스
-class UIObject;					// UI오브젝트를 사용하기 위한 전방선언 클래스
-class MtlTex;					// 재질을 사용하기 위한 전방선언 클래스
-class Camera;					// 카메라 클래스를 사용하기 위한 전방선언 클래스
 class Thing;					// 오브젝트 클래스
 class SelectMap;				// SelectMap Class
-class InGameUI;
 
-class UIObject;		// UI오브젝트를 사용하기 위한 전방선언 클래스
-class MtlTex;		// 재질을 사용하기 위한 전방선언 클래스
-class Camera;		// 카메라 클래스를 사용하기 위한 전방선언 클래스
 class ProfileList;	
+
+/*   로비 UI 클래스   */
+class cCreateProfile;			// 유저 파일 만들기 클래스
+class cNetworkLobby;			// 멀티플레이어 로비 상태
+class InGameUI;					// InGameUI
+class cSelectCarLob;			// 자동차 선택UI클래스
+class cViewCarLob;				// 자동차 보여주는 
+class cNetworkCreateRoom;		// 방 생성 클래스
+class cNetworkInRoom;			// 방 클래스
 //===================================================================
 // - written by 김선호
 // - 로비 창 구현
@@ -83,6 +85,18 @@ protected:
 	bool					 m_isflag;			// 이름 불러오기
 
 	ProfileList*		 	 m_pfileList;		// 프로필 리스트
+
+	//===================================================================
+	// - written by 김선호
+	// - 멀티 플레이 작업
+	// - 멀티 맵 로비 구현
+	//===================================================================
+	cNetworkLobby*		m_multiLobby;				// 멀티 로비 생성
+	cCreateProfile*		m_pCreateProfileLobby;		// 사용자 생성 로비 클래스
+	cSelectCarLob*		m_pSelectCarLobbby;			// 자동차 생성 로비 클래스
+	cViewCarLob*		m_pViewCarLobby;			// 자동차 뷰어 로비 클래스
+	cNetworkCreateRoom* m_pCreateRoom;				// 멀티 방 생성 클래스
+	cNetworkInRoom*		m_pInRoom;					// 멀티 방 클래스
 public:
 	Lobby();
 	~Lobby();
@@ -97,9 +111,7 @@ public:
 	void TimeUpdate();				// 시간이 흐를 때 마다 발생 하는 이벤트를 갱신하는 메서드
 	void SetUpUI();					// UI 셋업작업
 
-	void CreateProfile();
-
-	D3DXVECTOR3 GetTarget() { return m_mapLobby[START_LOBBY]->m_target; }		// 카메라가 보는 방향을 반환해주는 메서드
+	D3DXVECTOR3 GetTarget() { return m_mapLobby[m_stateLobby]->m_target; }		// 카메라가 보는 방향을 반환해주는 메서드
 	void SetUpCamera(Camera* camera) { m_pCamera = camera; }		// 처음 카메라 변수를 지정하는 메서드
 };
 

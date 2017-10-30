@@ -267,7 +267,6 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 		if (m_LockedTime > 1000000)
 			m_LockedTime = 0;
 
-
 		if (m_isLockedRender)
 		{
 			m_LockedRing->SetTexture("");
@@ -280,5 +279,4 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 			m_LockedTextImage->SetText("Locked");
 		}
 	}
-
 }

@@ -4,7 +4,6 @@
 #include "UIImageView.h"
 
 InGameUI::InGameUI()
-	: m_pLobby(NULL)
 {
 }
 
@@ -12,7 +11,6 @@ InGameUI::~InGameUI()
 {
 	SAFE_DELETE(m_pRootUI);
 	SAFE_DELETE(m_pItemImage);
-	SAFE_DELETE(m_pLobby);
 }
 
 void InGameUI::Setup()
@@ -98,15 +96,10 @@ void InGameUI::Setup()
 
 void InGameUI::Update()
 {
-	if (m_pRootUI)
-		m_pRootUI->Update();
-
-
+	iLobby::Update();
 }
 
 void InGameUI::Render(LPD3DXSPRITE pSprite)
 {
-	if (m_pRootUI)
-		m_pRootUI->Render(pSprite);
-
+	iLobby::Render(pSprite);
 }

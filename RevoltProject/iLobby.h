@@ -1,25 +1,23 @@
 #pragma once
 
-#include "iLobby.h"
-
 class UIObject;
-class UITextImageView;
-class UIImageView;
 
 //===================================================================
 // - written by 김선호
-// - 자동차가 달리는 인게임 내의 클래스 구현
-// - 인게임의 이 UI가 실행이 된다.
+// - 모든 UI가 상속받는 기본 UI 클래스
 //===================================================================
 
-class InGameUI : public iLobby
+class iLobby
 {
-private:
-	UIImageView*	m_pItemImage;
-
+protected:
+	UIObject* m_pRootUI;
 public:
-	InGameUI();
-	virtual ~InGameUI();
+	iLobby();
+	virtual ~iLobby();
+
+	static LOBBY* m_gLobbyState;
+
+	UIObject* GetUIRoot() { return m_pRootUI; }
 
 	virtual void Setup();
 	virtual void Update();

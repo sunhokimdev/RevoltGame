@@ -62,6 +62,11 @@ void UITextImageView::SetTexture(char * szFullPath)
 	}
 }
 
+std::string UITextImageView::GetCarName()
+{
+	return CarBox::g_vecCar[*m_LeftAndRightSelect].name;
+}
+
 void UITextImageView::KeyEvent()
 {
 	int tSize = m_chatText.size();
@@ -75,57 +80,59 @@ void UITextImageView::KeyEvent()
 
 	if (g_pKeyManager->isOnceKeyDown('A'))
 		m_chatText += 'a';
-	if (g_pKeyManager->isOnceKeyDown('B'))
+	else if (g_pKeyManager->isOnceKeyDown('B'))
 		m_chatText += 'b';
-	if (g_pKeyManager->isOnceKeyDown('C'))
+	else if (g_pKeyManager->isOnceKeyDown('C'))
 		m_chatText += 'c';
-	if (g_pKeyManager->isOnceKeyDown('D'))
+	else if (g_pKeyManager->isOnceKeyDown('D'))
 		m_chatText += 'd';
-	if (g_pKeyManager->isOnceKeyDown('E'))
+	else if (g_pKeyManager->isOnceKeyDown('E'))
 		m_chatText += 'e';
-	if (g_pKeyManager->isOnceKeyDown('F'))
+	else if (g_pKeyManager->isOnceKeyDown('F'))
 		m_chatText += 'f';
-	if (g_pKeyManager->isOnceKeyDown('G'))
+	else if (g_pKeyManager->isOnceKeyDown('G'))
 		m_chatText += 'g';
-	if (g_pKeyManager->isOnceKeyDown('H'))
+	else if (g_pKeyManager->isOnceKeyDown('H'))
 		m_chatText += 'h';
-	if (g_pKeyManager->isOnceKeyDown('I'))
+	else if (g_pKeyManager->isOnceKeyDown('I'))
 		m_chatText += 'i';
-	if (g_pKeyManager->isOnceKeyDown('J'))
+	else if (g_pKeyManager->isOnceKeyDown('J'))
 		m_chatText += 'j';
-	if (g_pKeyManager->isOnceKeyDown('K'))
+	else if (g_pKeyManager->isOnceKeyDown('K'))
 		m_chatText += 'k';
-	if (g_pKeyManager->isOnceKeyDown('L'))
+	else if (g_pKeyManager->isOnceKeyDown('L'))
 		m_chatText += 'l';
-	if (g_pKeyManager->isOnceKeyDown('M'))
+	else if (g_pKeyManager->isOnceKeyDown('M'))
 		m_chatText += 'm';
-	if (g_pKeyManager->isOnceKeyDown('N'))
+	else if (g_pKeyManager->isOnceKeyDown('N'))
 		m_chatText += 'n';
-	if (g_pKeyManager->isOnceKeyDown('O'))
+	else if (g_pKeyManager->isOnceKeyDown('O'))
 		m_chatText += 'o';
-	if (g_pKeyManager->isOnceKeyDown('P'))
+	else if (g_pKeyManager->isOnceKeyDown('P'))
 		m_chatText += 'p';
-	if (g_pKeyManager->isOnceKeyDown('Q'))
+	else if (g_pKeyManager->isOnceKeyDown('Q'))
 		m_chatText += 'q';
-	if (g_pKeyManager->isOnceKeyDown('R'))
+	else if (g_pKeyManager->isOnceKeyDown('R'))
 		m_chatText += 'r';
-	if (g_pKeyManager->isOnceKeyDown('S'))
+	else if (g_pKeyManager->isOnceKeyDown('S'))
 		m_chatText += 's';
-	if (g_pKeyManager->isOnceKeyDown('T'))
+	else if (g_pKeyManager->isOnceKeyDown('T'))
 		m_chatText += 't';
-	if (g_pKeyManager->isOnceKeyDown('U'))
+	else if (g_pKeyManager->isOnceKeyDown('U'))
 		m_chatText += 'u';
-	if (g_pKeyManager->isOnceKeyDown('V'))
+	else if (g_pKeyManager->isOnceKeyDown('V'))
 		m_chatText += 'v';
-	if (g_pKeyManager->isOnceKeyDown('W'))
+	else if (g_pKeyManager->isOnceKeyDown('W'))
 		m_chatText += 'w';
-	if (g_pKeyManager->isOnceKeyDown('X'))
+	else if (g_pKeyManager->isOnceKeyDown('X'))
 		m_chatText += 'x';
-	if (g_pKeyManager->isOnceKeyDown('Y'))
+	else if (g_pKeyManager->isOnceKeyDown('Y'))
 		m_chatText += 'y';
-	if (g_pKeyManager->isOnceKeyDown('Z'))
+	else if (g_pKeyManager->isOnceKeyDown('Z'))
 		m_chatText += 'z';
-	if (g_pKeyManager->isOnceKeyDown(VK_BACK))
+	else if (g_pKeyManager->isOnceKeyDown(' '))
+		m_chatText += ' ';
+	else if (g_pKeyManager->isOnceKeyDown(VK_BACK))
 	{
 		if (m_chatText.size() != 0)
 		{

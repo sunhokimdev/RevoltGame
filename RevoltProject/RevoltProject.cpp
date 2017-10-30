@@ -104,3 +104,4 @@ int APIENTRY WINAPI wWinMain(_In_ HINSTANCE hInstance,
 	UnregisterClass(L"Revolt", wc.hInstance);
 	return 0;
 }
+

@@ -74,6 +74,10 @@
 /*   윈도우가 실행중인 시간을 알려주는 라이부러리   */
 #pragma comment(lib, "winmm.lib")
 
+/*   네트워크 소켓 관련 라이브러리   */
+#pragma comment(lib,"ws2_32.lib")
+#include <WinSock2.h>
+
 /*   전역변수 설정   */
 extern HWND			g_hWnd;
 extern HINSTANCE	g_hInst;
@@ -93,6 +97,9 @@ enum LOBBY {
 	, MAIN_LOBBY4
 	, CREATE_PROFILE_LOBBY
 	, CREATE_PROFILE_LOBBY2
+	, NETWORK_LOBBY
+	, NETWORK_CREATE_LOBBY
+	, NETWORK_IN_LOBBY
 	, GAME_QUIT
 	, SELECT_MAP_LOBBY
 	, SELECT_CAR_LOBBY
@@ -153,7 +160,7 @@ enum FONTFILE{FONT1=2001, FONT2};
 #include "SoundManager.h"
 #include "FontManager.h"
 #include "TimeManager.h"
-
+#include "cNetworkManager.h"
 
 //UTIL
 #include "cStringUtil.h"
