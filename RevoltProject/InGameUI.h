@@ -19,14 +19,14 @@ private:
 
 	LOBBY*			m_pLobby;
 
-	float m_ElapseTime;						// Elase(x.xx0)
-	int m_DotTenth;							//		 x.x0x
-	int m_DotMilth;							//		 x.0xx
+	float m_ElapseTime;						// Elase(x.xxx.xx0)
+	int m_DotTenth;							//		 x.xxx.x0x
+	int m_DotMilth;							//		 x.xxx.0xx
 											
-	int m_SecOneth;							//		 0.xxx
-	int m_SecTenth;							//		0x.xxx
-	int	m_MinOneth;							//	  0.xx.xxx
-	int	m_MinTenth;							//	 0x.xx.xxx
+	int m_SecOneth;							//  		 0.xxx
+	int m_SecTenth;							//  		0x.xxx
+	int	m_MinOneth;							//  	  0.xx.xxx
+	int	m_MinTenth;							//  	 0x.xx.xxx
 						
 	int m_SecColon;
 	int m_MinColon;
@@ -50,7 +50,7 @@ public:
 	virtual void Render(LPD3DXSPRITE pSprite);
 	UIObject* GetUIObject() { return m_pRootUI; }
 	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
-	void UpdateTimeLab();
+	void UpdateTimeLab();									// UpdateTimer
 
 };
 

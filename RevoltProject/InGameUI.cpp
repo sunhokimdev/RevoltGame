@@ -232,7 +232,7 @@ void InGameUI::UpdateTimeLab()
 	CalcDP -= (int)CalcDP;										//		CalcDP = 7.6 - 7 = 0.6
 	CalcDP *= 10.0f;											//		CalcDP = 0.6 * 10 = 6
 	ElapseTime = (int)CalcDP + FONT2_NUM0;						//		x.87? = x.876
-																//		Therefore Calculation Decimal Point = .0876
+																//		Therefore Calculation Decimal Point = 0.876
 
 	/*          Add String          */
 	SecOneth = m_SecOneth;
@@ -240,6 +240,7 @@ void InGameUI::UpdateTimeLab()
 
 	MinOneth = m_MinOneth;
 	MinTenth = m_MinTenth;
+
 
 	/*          Set Text          */
 	m_pElapseTime->SetText(ElapseTime);
