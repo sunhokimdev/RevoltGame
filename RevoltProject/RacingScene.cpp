@@ -20,27 +20,28 @@ void RacingScene::Setup()
 
 	D3DLIGHT9 light;
 	light.Type = D3DLIGHT_DIRECTIONAL;
-	light.Ambient = D3DXCOLOR(0.8,0.8,0.8,1);
-	light.Diffuse = D3DXCOLOR(0.8, 0.8, 0.8, 1);
-	light.Specular = D3DXCOLOR(0.8, 0.8, 0.8, 1);
+	light.Ambient = D3DXCOLOR(0.6,0.6,0.6,1);
+	light.Diffuse = D3DXCOLOR(0.6, 0.6, 0.6, 1);
+	light.Specular = D3DXCOLOR(0.6, 0.6, 0.6, 1);
 	D3DXVECTOR3 dir = { 0,-1,0 };
 	D3DXVec3Normalize(&dir, &dir);
 	light.Direction = dir;
 	g_pD3DDevice->SetLight(0, &light);
 	g_pD3DDevice->LightEnable(0, true);
 
-
-
 	pCar1 = new cCar;
 	pCar1->LoadMesh("tc1");
 //	m_vecObject.push_back(pCar1);
-
 
 	//자동차 추가
 	pVeh = MgrPhysX->createCarWithDesc(NxVec3(0, 2, 0), true, true, false, false, false, MgrPhysXSDK);
 
 	g_pCamManager->SetCamPos(camPos);
 	g_pCamManager->SetLookAt(camLookTarget);
+
+	//앰비언트
+	//g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
+	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
 
 }
 
@@ -134,8 +135,7 @@ void RacingScene::Update()
 
 void RacingScene::Render()
 {
-	//앰비언트
-	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
+
 
 	if (m_pTrack)
 	{

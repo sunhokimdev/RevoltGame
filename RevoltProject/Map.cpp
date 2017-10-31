@@ -12,6 +12,8 @@
 #include "Camera.h"
 LOBBY* Map::g_LobbyState;
 
+
+
 Map::Map()
 	: m_stage(0)
 {
@@ -78,7 +80,7 @@ void Map::Update()
 void Map::Render()
 {
 	g_pD3DDevice->SetTexture(0, NULL);
-	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
 
 	// ¸Ê ·»´õ
 
@@ -92,7 +94,7 @@ void Map::Render()
 
 		/*	 ¸Ê ±×¸®´Â ÀÛ¾÷			 */
 		g_pD3DDevice->SetTexture(0, NULL);
-		g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+		//g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 
 		D3DXMATRIXA16	matWorld;  D3DXMatrixIdentity(&matWorld);
 
@@ -208,5 +210,6 @@ void Map::SetupThing()
 	m_vecThing.push_back(tThing10);
 	m_vecThing.push_back(tThing11);
 }
+
 
 
