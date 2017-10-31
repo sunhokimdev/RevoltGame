@@ -154,10 +154,6 @@ void cTrack::SetData()
 
 void cTrack::LoadTrack(std::string FileName)
 {
-	//<<<<<<< HEAD
-	//	//카메라 등록
-	//	pCamera = pCam;
-
 	Destroy();// 기존에 가지고 있던 정보 버리기
 	std::string fullpath = "Maps/" + FileName + ".scn";
 	std::fstream Load;
@@ -184,7 +180,7 @@ void cTrack::LoadTrack(std::string FileName)
 				GetMeshData()->LoadMesh(Folder, Name);
 				CreateTrackPhysX();
 
-				return;
+				
 			}
 			else if (szTemp[0] == 'O') //Object Load
 			{
