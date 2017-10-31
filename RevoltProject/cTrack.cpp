@@ -123,8 +123,10 @@ void cTrack::Update()
 
 void cTrack::LastUpdate()
 {
-	if (!GetPhysXData()) return;
-
+	for each(Object* pObj in m_vecObject)
+	{
+		pObj->LastUpdate();
+	}
 }
 
 void cTrack::Render()
@@ -183,8 +185,6 @@ void cTrack::LoadTrack(std::string FileName)
 				SetMeshData(new cMesh);
 				GetMeshData()->LoadMesh(Folder, Name);
 				CreateTrackPhysX();
-
-				return;
 			}
 			else if (szTemp[0] == 'O') //Object Load
 			{

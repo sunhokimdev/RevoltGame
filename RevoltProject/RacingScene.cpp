@@ -131,6 +131,7 @@ void RacingScene::Update()
 			wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
 		}
 	}
+	LastUpdate();
 }
 
 void RacingScene::Render()
@@ -141,4 +142,9 @@ void RacingScene::Render()
 	{
 		m_pTrack->Render();
 	}
+}
+
+void RacingScene::LastUpdate()
+{
+	m_pTrack->LastUpdate();
 }

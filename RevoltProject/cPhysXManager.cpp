@@ -54,9 +54,6 @@ BOOL cPhysXManager::InitNxPhysX()
 	newPhysXUserData->Init();
 	SetPhysXData(newPhysXUserData);
 
-
-
-
 	NxMaterialDesc defaultMaterial;
 	defaultMaterial.setToDefault();
 	defaultMaterial.restitution = 0.6f;
