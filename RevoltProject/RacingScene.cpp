@@ -29,13 +29,6 @@ void RacingScene::Setup()
 	g_pD3DDevice->SetLight(0, &light);
 	g_pD3DDevice->LightEnable(0, true);
 
-	pCar1 = new cCar;
-	pCar1->LoadMesh("tc1");
-//	m_vecObject.push_back(pCar1);
-
-	//자동차 추가
-	pVeh = MgrPhysX->createCarWithDesc(NxVec3(0, 2, 0), true, true, false, false, false, MgrPhysXSDK);
-
 	g_pCamManager->SetCamPos(camPos);
 	g_pCamManager->SetLookAt(camLookTarget);
 
@@ -56,83 +49,8 @@ void RacingScene::Update()
 {
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
-
-	//TEST
-	if (pVeh)
-	{
-		NxVec3 pos = pVeh->getGlobalPose().t;
-
-		*camPos = D3DXVECTOR3(pos.x - 5, pos.y + 5, pos.z);
-		*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 3, pos.z);
-		g_pCamManager->SetCamPos(camPos);
-		g_pCamManager->SetLookAt(camLookTarget);
-
-		static float angle = 0;
-		if (g_pKeyManager->isOnceKeyDown('A'))
-		{
-			angle += 0.1;
-		}
-		if (g_pKeyManager->isOnceKeyDown('D'))
-		{
-			angle -= 0.1;
-		}
-		NxWheel* wheel = pVeh->getWheel(0);
-		wheel->setAngle(angle);
-
-		wheel = pVeh->getWheel(1);
-		wheel->setAngle(angle);
-
-		pVeh->getActor()->addForce(NxVec3(0, 1, 0));
-
-		if (g_pKeyManager->isOnceKeyDown('S'))
-		{
-			NxWheel* wheel = pVeh->getWheel(0);
-			wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
-			wheel->setAngle(angle);
-
-			wheel = pVeh->getWheel(1);
-			wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
-			wheel->setAngle(angle);
-
-			wheel = pVeh->getWheel(2);
-			wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
-
-			wheel = pVeh->getWheel(3);
-			wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
-		}
-
-		if (g_pKeyManager->isOnceKeyDown(VK_SPACE))
-		{
-			NxWheel* wheel = pVeh->getWheel(0);
-			wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
-
-			wheel = pVeh->getWheel(1);
-			wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
-
-			wheel = pVeh->getWheel(2);
-			wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
-
-			wheel = pVeh->getWheel(3);
-			wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
-		}
-
-		if (g_pKeyManager->isOnceKeyDown('W'))
-		{
-			NxWheel* wheel = pVeh->getWheel(0);
-			wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
-
-			wheel = pVeh->getWheel(1);
-			wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
-
-			wheel = pVeh->getWheel(2);
-			wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
-
-			wheel = pVeh->getWheel(3);
-			wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
-		}
-	}
-	LastUpdate();
 }
+
 
 void RacingScene::Render()
 {
@@ -142,6 +60,7 @@ void RacingScene::Render()
 	{
 		m_pTrack->Render();
 	}
+
 }
 
 void RacingScene::LastUpdate()

@@ -4,27 +4,124 @@
 
 cCar::cCar()
 {
-	
+
 }
 
 
 cCar::~cCar()
 {
-	
+
 }
 
-void cCar::RegisteWheel(cWheel_ID id, cWheel* pWheel)
+void cCar::SetCarValue(float moterPower, float moterAcc, float breakPower, float 元heelAngle, float wheelAcc)
 {
-	if(mapWheels.size()!=4) mapWheels.resize(4);
+	m_maxMoterPower = moterPower;
+	m_moterAcc = moterAcc;
+//	m_breakPower = breakPower;
+	m_maxWheelAngle = 元heelAngle;
+	m_wheelAcc - wheelAcc;
 
-	if (pWheel)
+	m_wheelAngle = 0;
+	m_moterPower = 0;
+}
+
+void cCar::CreatePhsyX()
+{
+	m_carNxVehicle = MgrPhysX->createCarWithDesc(NxVec3(0, 0, 0), true, true);
+	if (m_carNxVehicle)
 	{
-		mapWheels[id] = pWheel;
-		pWheel->SetBody(this);
+		cPhysX* physX = new cPhysX;
+		physX->m_pActor = m_carNxVehicle->getActor();
+		physX->m_pUserData = new USERDATA();
+
+		SetPhysXData(physX);
 	}
 }
 
 void cCar::LoadMesh(std::string carName)
 {
 	GetMeshData()->LoadMesh("Cars/" + carName, carName + ".obj");
+}
+
+void cCar::Update()
+{
+	if (m_carNxVehicle)
+	{
+		NxVec3 pos = m_carNxVehicle->getGlobalPose().t;
+
+		float targetAngle = 0;
+		if (g_pKeyManager->isStayKeyDown(VK_LEFT))
+		{
+			m_wheelAngle -= m_wheelAcc;
+			if (m_wheelAngle < -1.f) m_wheelAngle = -1.f;
+
+			targetAngle -= m_maxWheelAngle;
+		}
+		if (g_pKeyManager->isStayKeyDown(VK_RIGHT))
+		{
+			m_wheelAngle += m_wheelAcc;
+			if (m_wheelAngle > 1.f) m_wheelAngle = 1.f;
+
+			targetAngle += m_maxWheelAngle;
+		}
+		targetAngle = m_wheelAngle * targetAngle;
+
+
+		float targetPower = 0;
+		if (g_pKeyManager->isStayKeyDown(VK_UP))
+		{
+			m_moterPower += m_moterAcc;
+			if (m_moterPower > 1.f) m_moterPower = 1.f;
+
+			targetPower += m_maxMoterPower;
+		}
+		if (g_pKeyManager->isStayKeyDown(VK_DOWN))
+		{
+			m_moterPower -= m_moterAcc;
+			if (m_moterPower < -1.f) m_moterPower = -1.f;
+
+			targetPower -= m_maxMoterPower;
+		}
+		targetPower = m_moterPower * targetPower;
+
+		m_carNxVehicle->getActor()->addForce(NxVec3(0, -0.001, 0));
+
+		for (int i = 0; i < 4; i++)
+		{
+			NxWheel* wheel = m_carNxVehicle->getWheel(i);
+			if (i < 2)
+			{
+				wheel->setAngle(targetAngle);
+			}
+			wheel->tick(false, targetPower, 0, 1.f / 60.f);
+
+
+			if (i == 0 || i == 2)//謝難
+			{
+			//	m_carNxVehicle->getActor()->addLocalTorque(NxVec3(10, 0, 0));
+			}
+			else//辦難
+			{
+
+			}
+		}
+
+	}
+}
+
+void cCar::LastUpdate()
+{
+	Object::LastUpdate();
+}
+
+void cCar::Render()
+{
+
+	Object::Render();
+}
+
+void cCar::Destory()
+{
+
+	Object::Destroy();
 }

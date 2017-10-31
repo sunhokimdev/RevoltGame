@@ -43,9 +43,25 @@ struct PHYSXDATA
 		RaycastClosestShapePosition = NxVec3(0, 0, 0);
 	}
 };
+
+enum ePhysXTag
+{
+	E_PHYSX_TAG_NONE = 0		//충돌 이벤트에서 딱히 해줄게 없는 것들...
+	, E_PHYSX_TAG_CHECKBOX		//체크 박스
+	, E_PHYSX_TAG_CAR			//
+	, E_PHYSX_TAG_FIREWORK
+	, E_PHYSX_TAG_WHATEBOMB
+	, E_PHYSX_TAG_METALBALL
+	, E_PHYSX_TAG_GRIVATEBALL
+	, E_PHYSX_TAG_END
+};
+
 struct USERDATA
 {
+	ePhysXTag USER_TAG;
 	NxU32 ContactPairFlag;
+	NxU32 TriggerPairFlag;
+
 	NX_BOOL RaycastClosestShape;
 	NX_BOOL RaycastAllShape;
 	NxVec3	RayHitPos;
@@ -501,36 +517,36 @@ public:
 			points.pushBack().set(0.1f*halfLength, halfHeight * 0.2f, -halfWidth * 0.9f);
 			points.pushBack().set(-0.8f*halfLength, halfHeight * 0.2f, halfWidth * 0.9f);
 			points.pushBack().set(-0.8f*halfLength, halfHeight * 0.2f, -halfWidth * 0.9f);
-	
+
 			points.pushBack().set(halfLength * 0.9f, -halfHeight * 0.25f, halfWidth * 0.8f);
 			points.pushBack().set(halfLength * 0.9f, -halfHeight * 0.25f, -halfWidth * 0.8f);
 			points.pushBack().set(0.f, -halfHeight * 0.2f, halfWidth);
 			points.pushBack().set(0.f, -halfHeight * 0.2f, -halfWidth);
 			points.pushBack().set(-halfLength * 0.9f, -halfHeight * 0.2f, halfWidth * 0.9f);
 			points.pushBack().set(-halfLength * 0.9f, -halfHeight * 0.2f, -halfWidth * 0.9f);
-	
+
 			points.pushBack().set(halfLength * 0.8f, -halfHeight, halfWidth * 0.79f);
 			points.pushBack().set(halfLength * 0.8f, -halfHeight, -halfWidth * 0.79f);
 			points.pushBack().set(-halfLength * 0.8f, -halfHeight, halfWidth * 0.79f);
 			points.pushBack().set(-halfLength * 0.8f, -halfHeight, -halfWidth * 0.79f);
-	
+
 			for (NxU32 i = 2; i < 8; i++)
 			{
 				points2.pushBack(points[i]);
 			}
-	
+
 			points2.pushBack().set(-0.5f*halfLength, halfHeight*0.8f, halfWidth*0.7f);
 			points2.pushBack().set(-0.5f*halfLength, halfHeight*0.8f, -halfWidth*0.7f);
 			points2.pushBack().set(-0.7f*halfLength, halfHeight*0.7f, halfWidth*0.7f);
 			points2.pushBack().set(-0.7f*halfLength, halfHeight*0.7f, -halfWidth*0.7f);
 
-	
+
 			static NxConvexMeshDesc convexMesh;
 			convexMesh.numVertices = points.size();
 			convexMesh.points = &(points[0].x);
 			convexMesh.pointStrideBytes = sizeof(NxVec3);
 			convexMesh.flags |= NX_CF_COMPUTE_CONVEX;
-	
+
 			MemoryWriteBuffer buf;
 			bool status = CookConvexMesh(convexMesh, buf);
 			if (status)
@@ -538,13 +554,13 @@ public:
 				carShape[0].meshData = physicsSDK->createConvexMesh(MemoryReadBuffer(buf.data));
 				vehicleDesc.carShapes.pushBack(&carShape[0]);
 			}
-	
+
 			static NxConvexMeshDesc convexMesh2;
 			convexMesh2.numVertices = points2.size();
 			convexMesh2.points = (&points2[0].x);
 			convexMesh2.pointStrideBytes = sizeof(NxVec3);
 			convexMesh2.flags = NX_CF_COMPUTE_CONVEX;
-	
+
 			MemoryWriteBuffer buf2;
 			status = CookConvexMesh(convexMesh2, buf2);
 			if (status)
@@ -552,7 +568,7 @@ public:
 				carShape[1].meshData = physicsSDK->createConvexMesh(MemoryReadBuffer(buf2.data));
 				vehicleDesc.carShapes.pushBack(&carShape[1]);
 			}
-	
+
 		}
 		else {
 			boxShapes[0].dimensions.set(2.5f, 0.4f, 1.2f);
@@ -561,7 +577,7 @@ public:
 			vehicleDesc.carShapes.pushBack(&boxShapes[0]);
 			vehicleDesc.carShapes.pushBack(&boxShapes[1]);
 		}
-	
+
 		vehicleDesc.position = pos;
 		vehicleDesc.mass = 1200;//monsterTruck ? 12000 : 
 		vehicleDesc.digitalSteeringDelta = 0.04f;
@@ -569,7 +585,7 @@ public:
 		vehicleDesc.motorForce = 3500.f;//monsterTruck?180.f:
 		vehicleDesc.maxVelocity = 30.f;//(monsterTruck)?20.f:
 		vehicleDesc.cameraDistance = 8.0f;
-	
+
 		NxVehicleMotorDesc motorDesc;
 		NxVehicleGearDesc gearDesc;
 		NxReal wheelRadius = 0.4f;
@@ -592,10 +608,10 @@ public:
 		}
 		else
 			vehicleDesc.centerOfMass.set(0.f, monsterTruck ? -2.f : -2.f, 0.f);
-	
-	
+
+
 		NxWheelDesc wheelDesc[4];
-		for (NxU32 i = 0; i<4; i++)
+		for (NxU32 i = 0; i < 4; i++)
 		{
 			//wheelDesc[i].wheelAxis.set(0,0,1);
 			//wheelDesc[i].downAxis.set(0,-1,0);
@@ -630,10 +646,10 @@ public:
 		wheelDesc[1].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
 		wheelDesc[2].wheelFlags |= (backWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_AFFECTED_BY_HANDBRAKE | flags;
 		wheelDesc[3].wheelFlags |= (backWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_AFFECTED_BY_HANDBRAKE | flags;
-	
+
 		vehicleDesc.steeringSteerPoint.set(1.8f, 0, 0);
 		vehicleDesc.steeringTurnPoint.set(-1.5f, 0, 0);
-	
+
 		NxVehicle* vehicle = NxVehicle::createVehicle(MgrPhysXScene, &vehicleDesc);
 		NxQuat q;
 		q.fromAngleAxis(0.f, NxVec3(0.0f, 1.0f, 0.0f));
@@ -641,5 +657,90 @@ public:
 
 		if (vehicle) return vehicle;
 		else NULL;
+
+	}
+
+
+	NxVehicle* createCarWithDesc(NxVec3 pos, bool frontWheelDrive, bool backWheelDrive)
+	{
+		//monsterTruck = true;
+		NxVehicleDesc vehicleDesc;
+		NxBoxShapeDesc boxShapes[2];
+		NxConvexShapeDesc carShape[2];
+
+		boxShapes[0].dimensions.set(0.34f, 0.2, 0.21f);
+		boxShapes[1].dimensions.set(0.12f, 0.1f, 0.21f);
+		boxShapes[1].localPose.t.set(-0.0f, 0.2f, 0.f);
+		vehicleDesc.carShapes.pushBack(&boxShapes[0]);
+		vehicleDesc.carShapes.pushBack(&boxShapes[1]);
+
+		vehicleDesc.position = pos;
+		vehicleDesc.mass = 1200;//monsterTruck ? 12000 : 
+		vehicleDesc.digitalSteeringDelta = 0.04f;
+		vehicleDesc.steeringMaxAngle = 30.f;
+		vehicleDesc.motorForce = 3500.f;//monsterTruck?180.f:
+		vehicleDesc.maxVelocity = 30.f;//(monsterTruck)?20.f:
+		vehicleDesc.cameraDistance = 8.0f;
+
+		NxReal wheelRadius = 0.2;
+		NxReal wheelWidth = 0.1f;
+		NxReal wheelSuspension = 0.2f;
+		NxReal springRestitution = 0;
+		NxReal springDamping = 800;
+		NxReal springBias = 0.0f;
+		NxReal maxBrakeForce = 1.f;
+		vehicleDesc.centerOfMass.set(0.f, -2.f, 0.f);
+
+		wheelRadius = 0.4f;
+		wheelWidth = 0.1f;
+		wheelSuspension = 0.f;
+		springRestitution = 1;
+		springDamping = 1;
+		springBias = 0.0f;
+		maxBrakeForce = 0;
+
+		NxWheelDesc wheelDesc[4];
+		for (NxU32 i = 0; i < 4; i++)
+		{
+
+			//wheelDesc[i].downAxis.set(0,-1,0);
+			wheelDesc[i].wheelApproximation = 10;
+			//wheelDesc[i].wheelFlags |= NX_WF_BUILD_LOWER_HALF;
+			wheelDesc[i].wheelRadius = 0.11;
+			wheelDesc[i].wheelWidth = 0.13;
+			wheelDesc[i].wheelSuspension = 0.2f;
+			wheelDesc[i].springRestitution = 7000;
+			wheelDesc[i].springDamping = 800;
+			wheelDesc[i].springBias = 0.0f;
+			wheelDesc[i].maxBrakeForce = 1.f;
+			wheelDesc[i].wheelFlags |= NX_WF_USE_WHEELSHAPE;
+			vehicleDesc.carWheels.pushBack(&wheelDesc[i]);
+		}
+
+		wheelDesc[0].position.set(0.34f, -0.04f, -0.21f);
+		wheelDesc[1].position.set(0.34f, -0.04f, 0.21f);
+		wheelDesc[2].position.set(-0.44f, -0.04f, -0.21f);
+		wheelDesc[3].position.set(-0.44f, -0.04f, 0.21f);
+
+		NxU32 flags = NX_WF_BUILD_LOWER_HALF;
+		wheelDesc[0].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
+		wheelDesc[1].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
+		wheelDesc[2].wheelFlags |= (backWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_AFFECTED_BY_HANDBRAKE | flags;
+		wheelDesc[3].wheelFlags |= (backWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_AFFECTED_BY_HANDBRAKE | flags;
+
+		vehicleDesc.steeringSteerPoint.set(1.8f, 0, 0);
+		vehicleDesc.steeringTurnPoint.set(-1.5f, 0, 0);
+
+		NxVehicle* vehicle = NxVehicle::createVehicle(MgrPhysXScene, &vehicleDesc);
+		NxQuat q;
+		q.fromAngleAxis(0.f, NxVec3(0.0f, 1.0f, 0.0f));
+		vehicle->getActor()->setGlobalOrientationQuat(q);
+
+		if (vehicle) return vehicle;
+		else
+		{
+			std::string pritfOut("자동차가의 물리정보가 생성되지 않았습니다.");
+			MessageBoxA(g_hWnd, pritfOut.c_str(), "오류", MB_OK);
+		}
 	}
 };
