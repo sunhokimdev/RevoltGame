@@ -54,15 +54,20 @@ BOOL cPhysXManager::InitNxPhysX()
 	newPhysXUserData->Init();
 	SetPhysXData(newPhysXUserData);
 
+	NxMaterialDesc defaultMaterial;
+	defaultMaterial.setToDefault();
+	defaultMaterial.restitution = 0.6f;
+	defaultMaterial.staticFriction = 10.f;
+	defaultMaterial.dynamicFriction = 8.f;
+	m_pNxScene->createMaterial(defaultMaterial);
 
 
-
-	//NxMaterialDesc defaultMaterial;
-	//defaultMaterial.setToDefault();
-	//defaultMaterial.restitution = 1.0f;
-	//defaultMaterial.staticFriction = 10.f;
-	//defaultMaterial.dynamicFriction = 8.f;
-	//m_pNxScene->createMaterial(defaultMaterial);
+//	NxMaterialDesc defaultMaterial2;
+//	defaultMaterial2.setToDefault();
+//	defaultMaterial2.restitution = 0.6f;
+//	defaultMaterial2.staticFriction = 10.f;
+//	defaultMaterial2.dynamicFriction = 8.f;
+//	m_pNxScene->createMaterial(defaultMaterial2);
 
 //	m_pNxPhysicsSDK->setParameter(NX_VISUALIZATION_SCALE, 2);
 
