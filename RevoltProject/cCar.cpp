@@ -13,13 +13,13 @@ cCar::~cCar()
 
 }
 
-void cCar::SetCarValue(float moterPower, float moterAcc, float breakPower, float 元heelAngle, float wheelAcc)
+void cCar::SetCarValue(float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc)
 {
 	m_maxMoterPower = moterPower;
 	m_moterAcc = moterAcc;
-//	m_breakPower = breakPower;
-	m_maxWheelAngle = 元heelAngle;
-	m_wheelAcc - wheelAcc;
+	//	m_breakPower = breakPower;
+	m_maxWheelAngle = wheelAngle;
+	m_wheelAcc = wheelAcc;
 
 	m_wheelAngle = 0;
 	m_moterPower = 0;
@@ -49,40 +49,40 @@ void cCar::Update()
 	{
 		NxVec3 pos = m_carNxVehicle->getGlobalPose().t;
 
-		float targetAngle = 0;
+		float targetAngle = m_wheelAngle * m_maxWheelAngle;
+		bool handle = false;
 		if (g_pKeyManager->isStayKeyDown(VK_LEFT))
-		{
-			m_wheelAngle -= m_wheelAcc;
-			if (m_wheelAngle < -1.f) m_wheelAngle = -1.f;
-
-			targetAngle -= m_maxWheelAngle;
-		}
-		if (g_pKeyManager->isStayKeyDown(VK_RIGHT))
 		{
 			m_wheelAngle += m_wheelAcc;
 			if (m_wheelAngle > 1.f) m_wheelAngle = 1.f;
-
-			targetAngle += m_maxWheelAngle;
+			targetAngle = m_wheelAngle * m_maxWheelAngle;
+			handle = true;
 		}
-		targetAngle = m_wheelAngle * targetAngle;
+		if (g_pKeyManager->isStayKeyDown(VK_RIGHT))
+		{
+			m_wheelAngle -= m_wheelAcc;
+			if (m_wheelAngle < -1.f) m_wheelAngle = -1.f;
+			targetAngle = m_wheelAngle * m_maxWheelAngle;
+			handle = true;
+		}
+		if (!handle)
+		{
+			if (abs(m_wheelAngle) < 0.001) m_wheelAngle = 0;
+			else if (m_wheelAngle > 0) m_wheelAngle -= m_wheelAcc;
+			else if (m_wheelAngle < 0) m_wheelAngle += m_wheelAcc;
 
+			targetAngle = m_wheelAngle * m_maxWheelAngle;
+		}
 
-		float targetPower = 0;
+		float targetPower = 0.f;
 		if (g_pKeyManager->isStayKeyDown(VK_UP))
 		{
-			m_moterPower += m_moterAcc;
-			if (m_moterPower > 1.f) m_moterPower = 1.f;
-
 			targetPower += m_maxMoterPower;
 		}
 		if (g_pKeyManager->isStayKeyDown(VK_DOWN))
 		{
-			m_moterPower -= m_moterAcc;
-			if (m_moterPower < -1.f) m_moterPower = -1.f;
-
 			targetPower -= m_maxMoterPower;
 		}
-		targetPower = m_moterPower * targetPower;
 
 		m_carNxVehicle->getActor()->addForce(NxVec3(0, -0.001, 0));
 
@@ -98,7 +98,7 @@ void cCar::Update()
 
 			if (i == 0 || i == 2)//謝難
 			{
-			//	m_carNxVehicle->getActor()->addLocalTorque(NxVec3(10, 0, 0));
+				//	m_carNxVehicle->getActor()->addLocalTorque(NxVec3(10, 0, 0));
 			}
 			else//辦難
 			{

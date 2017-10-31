@@ -498,166 +498,166 @@ public:
 
 	NxVehicle* createCarWithDesc(const NxVec3& pos, bool frontWheelDrive, bool backWheelDrive, bool corvette, bool monsterTruck, bool oldStyle, NxPhysicsSDK* physicsSDK)
 	{
-		//monsterTruck = true;
-		NxVehicleDesc vehicleDesc;
-		NxBoxShapeDesc boxShapes[2];
-		NxConvexShapeDesc carShape[2];
-		if (corvette)
-		{
-			NxArray<NxVec3> points;
-			NxArray<NxVec3> points2;
-			NxReal halfWidth = 0.7f;
-			NxReal halfLength = 1.2f;
-			NxReal halfHeight = 0.3f;
-			points.pushBack().set(halfLength, -halfHeight * 0.1f, 0.f);
-			points.pushBack().set(halfLength * 0.7f, 0.f, 0.f);
-			points.pushBack().set(0.2f * halfLength, halfHeight * 0.2f, 0.f);
-			points.pushBack().set(-halfLength, halfHeight * 0.2f, 0);
-			points.pushBack().set(0.1f*halfLength, halfHeight * 0.2f, halfWidth * 0.9f);
-			points.pushBack().set(0.1f*halfLength, halfHeight * 0.2f, -halfWidth * 0.9f);
-			points.pushBack().set(-0.8f*halfLength, halfHeight * 0.2f, halfWidth * 0.9f);
-			points.pushBack().set(-0.8f*halfLength, halfHeight * 0.2f, -halfWidth * 0.9f);
-
-			points.pushBack().set(halfLength * 0.9f, -halfHeight * 0.25f, halfWidth * 0.8f);
-			points.pushBack().set(halfLength * 0.9f, -halfHeight * 0.25f, -halfWidth * 0.8f);
-			points.pushBack().set(0.f, -halfHeight * 0.2f, halfWidth);
-			points.pushBack().set(0.f, -halfHeight * 0.2f, -halfWidth);
-			points.pushBack().set(-halfLength * 0.9f, -halfHeight * 0.2f, halfWidth * 0.9f);
-			points.pushBack().set(-halfLength * 0.9f, -halfHeight * 0.2f, -halfWidth * 0.9f);
-
-			points.pushBack().set(halfLength * 0.8f, -halfHeight, halfWidth * 0.79f);
-			points.pushBack().set(halfLength * 0.8f, -halfHeight, -halfWidth * 0.79f);
-			points.pushBack().set(-halfLength * 0.8f, -halfHeight, halfWidth * 0.79f);
-			points.pushBack().set(-halfLength * 0.8f, -halfHeight, -halfWidth * 0.79f);
-
-			for (NxU32 i = 2; i < 8; i++)
-			{
-				points2.pushBack(points[i]);
-			}
-
-			points2.pushBack().set(-0.5f*halfLength, halfHeight*0.8f, halfWidth*0.7f);
-			points2.pushBack().set(-0.5f*halfLength, halfHeight*0.8f, -halfWidth*0.7f);
-			points2.pushBack().set(-0.7f*halfLength, halfHeight*0.7f, halfWidth*0.7f);
-			points2.pushBack().set(-0.7f*halfLength, halfHeight*0.7f, -halfWidth*0.7f);
-
-
-			static NxConvexMeshDesc convexMesh;
-			convexMesh.numVertices = points.size();
-			convexMesh.points = &(points[0].x);
-			convexMesh.pointStrideBytes = sizeof(NxVec3);
-			convexMesh.flags |= NX_CF_COMPUTE_CONVEX;
-
-			MemoryWriteBuffer buf;
-			bool status = CookConvexMesh(convexMesh, buf);
-			if (status)
-			{
-				carShape[0].meshData = physicsSDK->createConvexMesh(MemoryReadBuffer(buf.data));
-				vehicleDesc.carShapes.pushBack(&carShape[0]);
-			}
-
-			static NxConvexMeshDesc convexMesh2;
-			convexMesh2.numVertices = points2.size();
-			convexMesh2.points = (&points2[0].x);
-			convexMesh2.pointStrideBytes = sizeof(NxVec3);
-			convexMesh2.flags = NX_CF_COMPUTE_CONVEX;
-
-			MemoryWriteBuffer buf2;
-			status = CookConvexMesh(convexMesh2, buf2);
-			if (status)
-			{
-				carShape[1].meshData = physicsSDK->createConvexMesh(MemoryReadBuffer(buf2.data));
-				vehicleDesc.carShapes.pushBack(&carShape[1]);
-			}
-
-		}
-		else {
-			boxShapes[0].dimensions.set(2.5f, 0.4f, 1.2f);
-			boxShapes[1].dimensions.set(1.f, 0.3f, 1.1f);
-			boxShapes[1].localPose.t.set(-0.3f, 0.7f, 0.f);
-			vehicleDesc.carShapes.pushBack(&boxShapes[0]);
-			vehicleDesc.carShapes.pushBack(&boxShapes[1]);
-		}
-
-		vehicleDesc.position = pos;
-		vehicleDesc.mass = 1200;//monsterTruck ? 12000 : 
-		vehicleDesc.digitalSteeringDelta = 0.04f;
-		vehicleDesc.steeringMaxAngle = 30.f;
-		vehicleDesc.motorForce = 3500.f;//monsterTruck?180.f:
-		vehicleDesc.maxVelocity = 30.f;//(monsterTruck)?20.f:
-		vehicleDesc.cameraDistance = 8.0f;
-
-		NxVehicleMotorDesc motorDesc;
-		NxVehicleGearDesc gearDesc;
-		NxReal wheelRadius = 0.4f;
-		if (corvette)
-		{
-			vehicleDesc.maxVelocity = (monsterTruck) ? 40.f : 80.f;
-			motorDesc.setToCorvette();
-			vehicleDesc.motorDesc = &motorDesc;
-			gearDesc.setToCorvette();
-			vehicleDesc.gearDesc = &gearDesc;
-			vehicleDesc.differentialRatio = 3.42f;
-			if (monsterTruck)
-			{
-				vehicleDesc.differentialRatio *= 6.f;
-				vehicleDesc.mass *= 2.f;
-			}
-			//vehicleDesc.differentialRatio = 5.f;
-			wheelRadius = 0.33f;
-			vehicleDesc.centerOfMass.set(0.f, -0.5f, 0.f);
-		}
-		else
-			vehicleDesc.centerOfMass.set(0.f, monsterTruck ? -2.f : -2.f, 0.f);
-
-
-		NxWheelDesc wheelDesc[4];
-		for (NxU32 i = 0; i < 4; i++)
-		{
-			//wheelDesc[i].wheelAxis.set(0,0,1);
-			//wheelDesc[i].downAxis.set(0,-1,0);
-			wheelDesc[i].wheelApproximation = 10;
-			//wheelDesc[i].wheelFlags |= NX_WF_BUILD_LOWER_HALF;
-			wheelDesc[i].wheelRadius = (monsterTruck) ? wheelRadius*3.f : wheelRadius;
-			wheelDesc[i].wheelWidth = (monsterTruck) ? 0.3f : 0.1f;
-			wheelDesc[i].wheelSuspension = (monsterTruck) ? 0.6f : 0.2f;
-			wheelDesc[i].springRestitution = monsterTruck ? (corvette ? 5000 : 4000) : 7000;
-			wheelDesc[i].springDamping = 800;
-			wheelDesc[i].springBias = 0.0f;
-			wheelDesc[i].maxBrakeForce = monsterTruck ? 0.5f : 1.f;
-			if (oldStyle)
-			{
-				wheelDesc[i].frictionToFront = 0.1f;
-				wheelDesc[i].frictionToSide = corvette ? 0.1f : 0.99f;
-			}
-			else
-			{
-				wheelDesc[i].wheelFlags |= NX_WF_USE_WHEELSHAPE;
-			}
-			vehicleDesc.carWheels.pushBack(&wheelDesc[i]);
-		}
-		NxReal widthPos = (monsterTruck) ? 1.4f : 1.09f;
-		NxReal heightPos = -0.4f;	//(monsterTruck)?1.f:
-		wheelDesc[0].position.set(1.8f, heightPos, widthPos);
-		wheelDesc[1].position.set(1.8f, heightPos, -widthPos);
-		wheelDesc[2].position.set(-1.5f, heightPos, widthPos);
-		wheelDesc[3].position.set(-1.5f, heightPos, -widthPos);
-		NxU32 flags = NX_WF_BUILD_LOWER_HALF;
-		wheelDesc[0].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
-		wheelDesc[1].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
-		wheelDesc[2].wheelFlags |= (backWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_AFFECTED_BY_HANDBRAKE | flags;
-		wheelDesc[3].wheelFlags |= (backWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_AFFECTED_BY_HANDBRAKE | flags;
-
-		vehicleDesc.steeringSteerPoint.set(1.8f, 0, 0);
-		vehicleDesc.steeringTurnPoint.set(-1.5f, 0, 0);
-
-		NxVehicle* vehicle = NxVehicle::createVehicle(MgrPhysXScene, &vehicleDesc);
-		NxQuat q;
-		q.fromAngleAxis(0.f, NxVec3(0.0f, 1.0f, 0.0f));
-		vehicle->getActor()->setGlobalOrientationQuat(q);
-
-		if (vehicle) return vehicle;
-		else NULL;
-
+	//	//monsterTruck = true;
+	//	NxVehicleDesc vehicleDesc;
+	//	NxBoxShapeDesc boxShapes[2];
+	//	NxConvexShapeDesc carShape[2];
+	//	if (corvette)
+	//	{
+	//		NxArray<NxVec3> points;
+	//		NxArray<NxVec3> points2;
+	//		NxReal halfWidth = 0.7f;
+	//		NxReal halfLength = 1.2f;
+	//		NxReal halfHeight = 0.3f;
+	//		points.pushBack().set(halfLength, -halfHeight * 0.1f, 0.f);
+	//		points.pushBack().set(halfLength * 0.7f, 0.f, 0.f);
+	//		points.pushBack().set(0.2f * halfLength, halfHeight * 0.2f, 0.f);
+	//		points.pushBack().set(-halfLength, halfHeight * 0.2f, 0);
+	//		points.pushBack().set(0.1f*halfLength, halfHeight * 0.2f, halfWidth * 0.9f);
+	//		points.pushBack().set(0.1f*halfLength, halfHeight * 0.2f, -halfWidth * 0.9f);
+	//		points.pushBack().set(-0.8f*halfLength, halfHeight * 0.2f, halfWidth * 0.9f);
+	//		points.pushBack().set(-0.8f*halfLength, halfHeight * 0.2f, -halfWidth * 0.9f);
+	//
+	//		points.pushBack().set(halfLength * 0.9f, -halfHeight * 0.25f, halfWidth * 0.8f);
+	//		points.pushBack().set(halfLength * 0.9f, -halfHeight * 0.25f, -halfWidth * 0.8f);
+	//		points.pushBack().set(0.f, -halfHeight * 0.2f, halfWidth);
+	//		points.pushBack().set(0.f, -halfHeight * 0.2f, -halfWidth);
+	//		points.pushBack().set(-halfLength * 0.9f, -halfHeight * 0.2f, halfWidth * 0.9f);
+	//		points.pushBack().set(-halfLength * 0.9f, -halfHeight * 0.2f, -halfWidth * 0.9f);
+	//
+	//		points.pushBack().set(halfLength * 0.8f, -halfHeight, halfWidth * 0.79f);
+	//		points.pushBack().set(halfLength * 0.8f, -halfHeight, -halfWidth * 0.79f);
+	//		points.pushBack().set(-halfLength * 0.8f, -halfHeight, halfWidth * 0.79f);
+	//		points.pushBack().set(-halfLength * 0.8f, -halfHeight, -halfWidth * 0.79f);
+	//
+	//		for (NxU32 i = 2; i < 8; i++)
+	//		{
+	//			points2.pushBack(points[i]);
+	//		}
+	//
+	//		points2.pushBack().set(-0.5f*halfLength, halfHeight*0.8f, halfWidth*0.7f);
+	//		points2.pushBack().set(-0.5f*halfLength, halfHeight*0.8f, -halfWidth*0.7f);
+	//		points2.pushBack().set(-0.7f*halfLength, halfHeight*0.7f, halfWidth*0.7f);
+	//		points2.pushBack().set(-0.7f*halfLength, halfHeight*0.7f, -halfWidth*0.7f);
+	//
+	//
+	//		static NxConvexMeshDesc convexMesh;
+	//		convexMesh.numVertices = points.size();
+	//		convexMesh.points = &(points[0].x);
+	//		convexMesh.pointStrideBytes = sizeof(NxVec3);
+	//		convexMesh.flags |= NX_CF_COMPUTE_CONVEX;
+	//
+	//		MemoryWriteBuffer buf;
+	//		bool status = CookConvexMesh(convexMesh, buf);
+	//		if (status)
+	//		{
+	//			carShape[0].meshData = physicsSDK->createConvexMesh(MemoryReadBuffer(buf.data));
+	//			vehicleDesc.carShapes.pushBack(&carShape[0]);
+	//		}
+	//
+	//		static NxConvexMeshDesc convexMesh2;
+	//		convexMesh2.numVertices = points2.size();
+	//		convexMesh2.points = (&points2[0].x);
+	//		convexMesh2.pointStrideBytes = sizeof(NxVec3);
+	//		convexMesh2.flags = NX_CF_COMPUTE_CONVEX;
+	//
+	//		MemoryWriteBuffer buf2;
+	//		status = CookConvexMesh(convexMesh2, buf2);
+	//		if (status)
+	//		{
+	//			carShape[1].meshData = physicsSDK->createConvexMesh(MemoryReadBuffer(buf2.data));
+	//			vehicleDesc.carShapes.pushBack(&carShape[1]);
+	//		}
+	//
+	//	}
+	//	else {
+	//		boxShapes[0].dimensions.set(2.5f, 0.4f, 1.2f);
+	//		boxShapes[1].dimensions.set(1.f, 0.3f, 1.1f);
+	//		boxShapes[1].localPose.t.set(-0.3f, 0.7f, 0.f);
+	//		vehicleDesc.carShapes.pushBack(&boxShapes[0]);
+	//		vehicleDesc.carShapes.pushBack(&boxShapes[1]);
+	//	}
+	//
+	//	vehicleDesc.position = pos;
+	//	vehicleDesc.mass = 1200;//monsterTruck ? 12000 : 
+	//	vehicleDesc.digitalSteeringDelta = 0.04f;
+	//	vehicleDesc.steeringMaxAngle = 30.f;
+	//	vehicleDesc.motorForce = 3500.f;//monsterTruck?180.f:
+	//	vehicleDesc.maxVelocity = 30.f;//(monsterTruck)?20.f:
+	//	vehicleDesc.cameraDistance = 8.0f;
+	//
+	//	NxVehicleMotorDesc motorDesc;
+	//	NxVehicleGearDesc gearDesc;
+	//	NxReal wheelRadius = 0.4f;
+	//	if (corvette)
+	//	{
+	//		vehicleDesc.maxVelocity = (monsterTruck) ? 40.f : 80.f;
+	//		motorDesc.setToCorvette();
+	//		vehicleDesc.motorDesc = &motorDesc;
+	//		gearDesc.setToCorvette();
+	//		vehicleDesc.gearDesc = &gearDesc;
+	//		vehicleDesc.differentialRatio = 3.42f;
+	//		if (monsterTruck)
+	//		{
+	//			vehicleDesc.differentialRatio *= 6.f;
+	//			vehicleDesc.mass *= 2.f;
+	//		}
+	//		//vehicleDesc.differentialRatio = 5.f;
+	//		wheelRadius = 0.33f;
+	//		vehicleDesc.centerOfMass.set(0.f, -0.5f, 0.f);
+	//	}
+	//	else
+	//		vehicleDesc.centerOfMass.set(0.f, monsterTruck ? -2.f : -2.f, 0.f);
+	//
+	//
+	//	NxWheelDesc wheelDesc[4];
+	//	for (NxU32 i = 0; i < 4; i++)
+	//	{
+	//		//wheelDesc[i].wheelAxis.set(0,0,1);
+	//		//wheelDesc[i].downAxis.set(0,-1,0);
+	//		wheelDesc[i].wheelApproximation = 10;
+	//		//wheelDesc[i].wheelFlags |= NX_WF_BUILD_LOWER_HALF;
+	//		wheelDesc[i].wheelRadius = (monsterTruck) ? wheelRadius*3.f : wheelRadius;
+	//		wheelDesc[i].wheelWidth = (monsterTruck) ? 0.3f : 0.1f;
+	//		wheelDesc[i].wheelSuspension = (monsterTruck) ? 0.6f : 0.2f;
+	//		wheelDesc[i].springRestitution = monsterTruck ? (corvette ? 5000 : 4000) : 7000;
+	//		wheelDesc[i].springDamping = 800;
+	//		wheelDesc[i].springBias = 0.0f;
+	//		wheelDesc[i].maxBrakeForce = monsterTruck ? 0.5f : 1.f;
+	//		if (oldStyle)
+	//		{
+	//			wheelDesc[i].frictionToFront = 0.1f;
+	//			wheelDesc[i].frictionToSide = corvette ? 0.1f : 0.99f;
+	//		}
+	//		else
+	//		{
+	//			wheelDesc[i].wheelFlags |= NX_WF_USE_WHEELSHAPE;
+	//		}
+	//		vehicleDesc.carWheels.pushBack(&wheelDesc[i]);
+	//	}
+	//	NxReal widthPos = (monsterTruck) ? 1.4f : 1.09f;
+	//	NxReal heightPos = -0.4f;	//(monsterTruck)?1.f:
+	//	wheelDesc[0].position.set(1.8f, heightPos, widthPos);
+	//	wheelDesc[1].position.set(1.8f, heightPos, -widthPos);
+	//	wheelDesc[2].position.set(-1.5f, heightPos, widthPos);
+	//	wheelDesc[3].position.set(-1.5f, heightPos, -widthPos);
+	//	NxU32 flags = NX_WF_BUILD_LOWER_HALF;
+	//	wheelDesc[0].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
+	//	wheelDesc[1].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
+	//	wheelDesc[2].wheelFlags |= (backWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_AFFECTED_BY_HANDBRAKE | flags;
+	//	wheelDesc[3].wheelFlags |= (backWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_AFFECTED_BY_HANDBRAKE | flags;
+	//
+	//	vehicleDesc.steeringSteerPoint.set(1.8f, 0, 0);
+	//	vehicleDesc.steeringTurnPoint.set(-1.5f, 0, 0);
+	//
+	//	NxVehicle* vehicle = NxVehicle::createVehicle(MgrPhysXScene, &vehicleDesc);
+	//	NxQuat q;
+	//	q.fromAngleAxis(0.f, NxVec3(0.0f, 1.0f, 0.0f));
+	//	vehicle->getActor()->setGlobalOrientationQuat(q);
+	//
+	//	if (vehicle) return vehicle;
+	//	else NULL;
+	//
 	}
 
 
@@ -666,38 +666,23 @@ public:
 		//monsterTruck = true;
 		NxVehicleDesc vehicleDesc;
 		NxBoxShapeDesc boxShapes[2];
-		NxConvexShapeDesc carShape[2];
 
-		boxShapes[0].dimensions.set(0.34f, 0.2, 0.21f);
-		boxShapes[1].dimensions.set(0.12f, 0.1f, 0.21f);
-		boxShapes[1].localPose.t.set(-0.0f, 0.2f, 0.f);
+		boxShapes[0].dimensions.set(0.5, 0.1f, 0.2f);
+		boxShapes[0].localPose.t.set(0.f, 0.4f, 0.f);
+		//boxShapes[1].dimensions.set(1.f, 0.3f, 1.1f);
+		//boxShapes[1].localPose.t.set(-0.3f, 0.7f, 0.f);
+
 		vehicleDesc.carShapes.pushBack(&boxShapes[0]);
-		vehicleDesc.carShapes.pushBack(&boxShapes[1]);
+		//vehicleDesc.carShapes.pushBack(&boxShapes[1]);
 
 		vehicleDesc.position = pos;
-		vehicleDesc.mass = 1200;//monsterTruck ? 12000 : 
+		vehicleDesc.mass = 100000;//monsterTruck ? 12000 : 
 		vehicleDesc.digitalSteeringDelta = 0.04f;
 		vehicleDesc.steeringMaxAngle = 30.f;
 		vehicleDesc.motorForce = 3500.f;//monsterTruck?180.f:
 		vehicleDesc.maxVelocity = 30.f;//(monsterTruck)?20.f:
-		vehicleDesc.cameraDistance = 8.0f;
 
-		NxReal wheelRadius = 0.2;
-		NxReal wheelWidth = 0.1f;
-		NxReal wheelSuspension = 0.2f;
-		NxReal springRestitution = 0;
-		NxReal springDamping = 800;
-		NxReal springBias = 0.0f;
-		NxReal maxBrakeForce = 1.f;
-		vehicleDesc.centerOfMass.set(0.f, -2.f, 0.f);
-
-		wheelRadius = 0.4f;
-		wheelWidth = 0.1f;
-		wheelSuspension = 0.f;
-		springRestitution = 1;
-		springDamping = 1;
-		springBias = 0.0f;
-		maxBrakeForce = 0;
+		vehicleDesc.centerOfMass.set(0.f, -0.f, 0.f);
 
 		NxWheelDesc wheelDesc[4];
 		for (NxU32 i = 0; i < 4; i++)
@@ -706,9 +691,9 @@ public:
 			//wheelDesc[i].downAxis.set(0,-1,0);
 			wheelDesc[i].wheelApproximation = 10;
 			//wheelDesc[i].wheelFlags |= NX_WF_BUILD_LOWER_HALF;
-			wheelDesc[i].wheelRadius = 0.11;
-			wheelDesc[i].wheelWidth = 0.13;
-			wheelDesc[i].wheelSuspension = 0.2f;
+			wheelDesc[i].wheelRadius = 0.1f;
+			wheelDesc[i].wheelWidth = 0.05f;
+			wheelDesc[i].wheelSuspension = 0.00f;
 			wheelDesc[i].springRestitution = 7000;
 			wheelDesc[i].springDamping = 800;
 			wheelDesc[i].springBias = 0.0f;
@@ -717,10 +702,10 @@ public:
 			vehicleDesc.carWheels.pushBack(&wheelDesc[i]);
 		}
 
-		wheelDesc[0].position.set(0.34f, -0.04f, -0.21f);
-		wheelDesc[1].position.set(0.34f, -0.04f, 0.21f);
-		wheelDesc[2].position.set(-0.44f, -0.04f, -0.21f);
-		wheelDesc[3].position.set(-0.44f, -0.04f, 0.21f);
+		wheelDesc[0].position.set(0.4,  0.2f, -0.2);
+		wheelDesc[1].position.set(0.4,  0.2f, 0.2);
+		wheelDesc[2].position.set(-0.4, 0.2f, -0.2);
+		wheelDesc[3].position.set(-0.4, 0.2f, 0.2);
 
 		NxU32 flags = NX_WF_BUILD_LOWER_HALF;
 		wheelDesc[0].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
