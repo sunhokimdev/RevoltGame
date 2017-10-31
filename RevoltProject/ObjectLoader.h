@@ -27,6 +27,7 @@ public:
 	//Object
 	static void LoadMesh(OUT cMesh* pMesh, IN std::string szFolder, IN std::string szFile);
 	static void LoadMtlLib(std::map<std::string, MtlTex*>* mtlTex, std::string szFolder, std::string szFile);
+	static void LoadMeshRotation(OUT cMesh* pMesh, IN std::string szFolder, IN std::string szFile, D3DXVECTOR3 rotateAngle);
 
 
 

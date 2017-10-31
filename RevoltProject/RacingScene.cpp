@@ -2,6 +2,7 @@
 #include "RacingScene.h"
 #include "cTrack.h"
 #include "cLight.h"
+#include "cCar.h"
 
 RacingScene::RacingScene(){}
 
@@ -36,12 +37,10 @@ void RacingScene::Setup()
 	//g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
 	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
 
-
-
 	cCar* pCar = new cCar;
 	pCar->LoadMesh("tc1");
 	pCar->CreatePhsyX();
-	pCar->SetCarValue(2000, 0.01, 0, NxPi/4, NxPi * 0.01f);
+	pCar->SetCarValue(5000, 0.01, 0, NxPi/4, NxPi * 0.01f);
 	vecCars.push_back(pCar);
 }
 
@@ -63,6 +62,7 @@ void RacingScene::Update()
 	}
 
 	UpdateCamera();
+	LastUpdate();
 }
 
 
@@ -109,12 +109,13 @@ void RacingScene::UpdateCamera()
 	matR._32 = mat[7];
 	matR._33 = mat[8];
 
-	//πÊ«‚∫§≈Õ|
+
 	D3DXVECTOR3 dir = { 1,0,1 };
 	D3DXVec3TransformNormal(&dir, &dir, &matR);
 	D3DXVECTOR3 carPos = { pos.x,pos.y,pos.z };
 
 	float dist = 5;
+
 	float x = carPos.x - (dir.x * dist);
 	float y = carPos.y - (dir.y * dist) + 5;
 	float z = carPos.z - (dir.z * dist);

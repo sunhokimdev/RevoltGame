@@ -24,7 +24,6 @@ void cCar::SetCarValue(float moterPower, float moterAcc, float breakPower, float
 	m_wheelAngle = 0;
 	m_moterPower = 0;
 }
-
 void cCar::CreatePhsyX()
 {
 	m_carNxVehicle = MgrPhysX->createCarWithDesc(NxVec3(0, 0, 0), true, true);
@@ -40,7 +39,8 @@ void cCar::CreatePhsyX()
 
 void cCar::LoadMesh(std::string carName)
 {
-	GetMeshData()->LoadMesh("Cars/" + carName, carName + ".obj");
+	//GetMeshData()->LoadMesh("Cars/" + carName, carName + ".obj");
+	GetMeshData()->LoadCarMesh("Cars/" + carName, carName + ".obj");
 }
 
 void cCar::Update()

@@ -668,7 +668,7 @@ public:
 		NxBoxShapeDesc boxShapes[2];
 
 		boxShapes[0].dimensions.set(0.5, 0.1f, 0.2f);
-		boxShapes[0].localPose.t.set(0.f, 0.4f, 0.f);
+		boxShapes[0].localPose.t.set(0.f, 0.3f, 0.f);
 		//boxShapes[1].dimensions.set(1.f, 0.3f, 1.1f);
 		//boxShapes[1].localPose.t.set(-0.3f, 0.7f, 0.f);
 
@@ -676,11 +676,12 @@ public:
 		//vehicleDesc.carShapes.pushBack(&boxShapes[1]);
 
 		vehicleDesc.position = pos;
-		vehicleDesc.mass = 100000;//monsterTruck ? 12000 : 
+		vehicleDesc.mass = 1000;//monsterTruck ? 12000 : 
 		vehicleDesc.digitalSteeringDelta = 0.04f;
 		vehicleDesc.steeringMaxAngle = 30.f;
 		vehicleDesc.motorForce = 3500.f;//monsterTruck?180.f:
 		vehicleDesc.maxVelocity = 30.f;//(monsterTruck)?20.f:
+		
 
 		vehicleDesc.centerOfMass.set(0.f, -0.f, 0.f);
 
@@ -696,16 +697,16 @@ public:
 			wheelDesc[i].wheelSuspension = 0.00f;
 			wheelDesc[i].springRestitution = 7000;
 			wheelDesc[i].springDamping = 800;
-			wheelDesc[i].springBias = 0.0f;
+			wheelDesc[i].springBias = 0.2f;
 			wheelDesc[i].maxBrakeForce = 1.f;
 			wheelDesc[i].wheelFlags |= NX_WF_USE_WHEELSHAPE;
 			vehicleDesc.carWheels.pushBack(&wheelDesc[i]);
 		}
 
-		wheelDesc[0].position.set(0.4,  0.2f, -0.2);
-		wheelDesc[1].position.set(0.4,  0.2f, 0.2);
-		wheelDesc[2].position.set(-0.4, 0.2f, -0.2);
-		wheelDesc[3].position.set(-0.4, 0.2f, 0.2);
+		wheelDesc[0].position.set(0.4f,  0.2f, -0.25);
+		wheelDesc[1].position.set(0.4,  0.2f, 0.25);
+		wheelDesc[2].position.set(-0.4, 0.2f, -0.25);
+		wheelDesc[3].position.set(-0.4, 0.2f, 0.25);
 
 		NxU32 flags = NX_WF_BUILD_LOWER_HALF;
 		wheelDesc[0].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
