@@ -4,7 +4,7 @@
 class cWheel;
 enum cWheel_ID
 {
-	fl,	//자동차 바튀 위치
+	fl,	//자동차 바퀴 위치
 	fr,	//
 	bl,	//
 	br,	//

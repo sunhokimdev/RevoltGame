@@ -60,13 +60,6 @@ void RacingScene::Update()
 	//TEST
 	if (pVeh)
 	{
-		NxVec3 pos = pVeh->getGlobalPose().t;
-
-		*camPos = D3DXVECTOR3(pos.x - 5, pos.y + 5, pos.z);
-		*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 3, pos.z);
-		g_pCamManager->SetCamPos(camPos);
-		g_pCamManager->SetLookAt(camLookTarget);
-
 		static float angle = 0;
 		if (g_pKeyManager->isOnceKeyDown('A'))
 		{
@@ -130,6 +123,10 @@ void RacingScene::Update()
 			wheel = pVeh->getWheel(3);
 			wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
 		}
+
+		// Camera
+		UpdateCamera();
+		
 	}
 	LastUpdate();
 }
@@ -147,4 +144,41 @@ void RacingScene::Render()
 void RacingScene::LastUpdate()
 {
 	m_pTrack->LastUpdate();
+}
+
+void RacingScene::UpdateCamera()
+{
+	NxVec3 pos = pVeh->getGlobalPose().t;
+
+	NxF32 mat[9];
+
+	pVeh->getGlobalPose().M.getColumnMajor(mat);
+	D3DXMATRIXA16 matR;
+	D3DXMatrixIdentity(&matR);
+	matR._11 = mat[0];
+	matR._12 = mat[1];
+	matR._13 = mat[2];
+	matR._21 = mat[3];
+	matR._22 = mat[4];
+	matR._23 = mat[5];
+	matR._31 = mat[6];
+	matR._32 = mat[7];
+	matR._33 = mat[8];
+
+	//¹æÇâº¤ÅÍ|
+	D3DXVECTOR3 dir = { 1,0,0 };
+	D3DXVec3TransformNormal(&dir, &dir, &matR);
+	D3DXVECTOR3 carPos = { pos.x,pos.y,pos.z };
+
+	float dist = 10;
+	float x = carPos.x - (dir.x * dist);
+	float y = carPos.y - (dir.y * dist) + 5;
+	float z = carPos.z - (dir.z * dist);
+
+	*camPos = { x,y,z };
+
+	*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 1, pos.z);
+
+	g_pCamManager->SetCamPos(camPos);
+	g_pCamManager->SetLookAt(camLookTarget);
 }
