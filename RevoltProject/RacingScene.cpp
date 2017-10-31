@@ -36,6 +36,13 @@ void RacingScene::Setup()
 	//g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
 	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
 
+
+
+	cCar* pCar = new cCar;
+	pCar->LoadMesh("tc1");
+	pCar->CreatePhsyX();
+	pCar->SetCarValue(5000, 0.01, 0, D3DX_PI / 4, 0.01);
+	vecCars.push_back(pCar);
 }
 
 void RacingScene::Destroy()
@@ -49,21 +56,73 @@ void RacingScene::Update()
 {
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
+
+	for each(cCar* p in vecCars)
+	{
+		p->Update();
+	}
+
+	UpdateCamera();
 }
 
 
 void RacingScene::Render()
 {
-
-
 	if (m_pTrack)
 	{
 		m_pTrack->Render();
 	}
 
+	for each(cCar* p in vecCars)
+	{
+		p->Render();
+	}
 }
 
 void RacingScene::LastUpdate()
 {
 	m_pTrack->LastUpdate();
+
+	for each(cCar* p in vecCars)
+	{
+		p->LastUpdate();
+	}
+}
+
+void RacingScene::UpdateCamera()
+{
+	
+	NxVec3 pos = vecCars[0]->GetNxVehicle()->getGlobalPose().t;
+
+	NxF32 mat[9];
+
+	vecCars[0]->GetNxVehicle()->getGlobalPose().M.getColumnMajor(mat);
+	D3DXMATRIXA16 matR;
+	D3DXMatrixIdentity(&matR);
+	matR._11 = mat[0];
+	matR._12 = mat[1];
+	matR._13 = mat[2];
+	matR._21 = mat[3];
+	matR._22 = mat[4];
+	matR._23 = mat[5];
+	matR._31 = mat[6];
+	matR._32 = mat[7];
+	matR._33 = mat[8];
+
+	//¹æÇâº¤ÅÍ|
+	D3DXVECTOR3 dir = { 1,0,0 };
+	D3DXVec3TransformNormal(&dir, &dir, &matR);
+	D3DXVECTOR3 carPos = { pos.x,pos.y,pos.z };
+
+	float dist = 10;
+	float x = carPos.x - (dir.x * dist);
+	float y = carPos.y - (dir.y * dist) + 5;
+	float z = carPos.z - (dir.z * dist);
+
+	*camPos = { x,y,z };
+
+	*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 1, pos.z);
+
+	g_pCamManager->SetCamPos(camPos);
+	g_pCamManager->SetLookAt(camLookTarget);
 }

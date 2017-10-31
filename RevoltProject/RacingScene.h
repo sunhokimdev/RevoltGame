@@ -29,5 +29,6 @@ public:
 	void Update();
 	void Render();
 	void LastUpdate();
+	void UpdateCamera();
 };
 
