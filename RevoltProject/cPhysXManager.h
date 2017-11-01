@@ -19,9 +19,6 @@
 
 //#include <NxConvexMeshDesc.h>
 
-
-
-
 #define MgrPhysX		cPhysXManager::GetInstance()
 #define MgrPhysXScene	cPhysXManager::GetInstance()->GetPhysXScene()
 #define MgrPhysXSDK		cPhysXManager::GetInstance()->GetPhysXSDK()
@@ -383,15 +380,15 @@ public:
 		NxVehicleDesc vehicleDesc;
 		NxBoxShapeDesc boxShapes[2];
 
-		boxShapes[0].dimensions.set(0.5, 0.1f, 0.2f);
+		boxShapes[0].dimensions.set(0.7, 0.1f, 0.3f);
 		boxShapes[0].localPose.t.set(0.f, 0.3f, 0.f);
 		boxShapes[0].materialIndex = 1;
 		vehicleDesc.carShapes.pushBack(&boxShapes[0]);
 
-		//boxShapes[1].dimensions.set(1.f, 0.3f, 1.1f);
-		//boxShapes[1].localPose.t.set(-0.3f, 0.7f, 0.f);
-		//boxShapes[1].materialIndex = 1;
-		//vehicleDesc.carShapes.pushBack(&boxShapes[1]);
+		boxShapes[1].dimensions.set(0.7, 0.1f, 0.3f);
+		boxShapes[1].localPose.t.set(0.f, 0.6, 0.f);
+		boxShapes[1].materialIndex = 1;
+		vehicleDesc.carShapes.pushBack(&boxShapes[1]);
 
 		vehicleDesc.position = pos;
 		vehicleDesc.mass = 1000;//monsterTruck ? 12000 : 
@@ -407,7 +404,7 @@ public:
 		{
 			wheelDesc[i].wheelApproximation = 10;
 			wheelDesc[i].wheelRadius = 0.1f;
-			wheelDesc[i].wheelWidth = 0.05f;
+			wheelDesc[i].wheelWidth = 0.01f;
 			wheelDesc[i].wheelSuspension = 0.00f;
 			wheelDesc[i].springRestitution = 7000;
 			wheelDesc[i].springDamping = 800;
@@ -417,17 +414,17 @@ public:
 
 
 			//바퀴의 마찰력
-			wheelDesc[i].frictionToFront = 10.f;
-			wheelDesc[i].frictionToSide = 3.f;
+			wheelDesc[i].frictionToFront = 3.f;
+			wheelDesc[i].frictionToSide = 0.7f;
 
 			vehicleDesc.carWheels.pushBack(&wheelDesc[i]);
 		}
 
 
-		wheelDesc[0].position.set(0.3f, 0.2f, -0.15);
-		wheelDesc[1].position.set(0.3, 0.2f, 0.15);
-		wheelDesc[2].position.set(-0.3, 0.2f, -0.15);
-		wheelDesc[3].position.set(-0.3, 0.2f, 0.15);
+		wheelDesc[0].position.set(0.35f, 0.2f, -0.29f);
+		wheelDesc[1].position.set(0.35, 0.2f, 0.29);
+		wheelDesc[2].position.set(-0.45, 0.2f, -0.29);
+		wheelDesc[3].position.set(-0.45, 0.2f, 0.29);
 
 		NxU32 flags = NX_WF_BUILD_LOWER_HALF;
 		wheelDesc[0].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
@@ -449,7 +446,7 @@ public:
 		else
 		{
 			std::string pritfOut("자동차가의 물리정보가 생성되지 않았습니다.");
-			MessageBoxA(g_hWnd, pritfOut.c_str(), "오류", MB_OK);
+			MessageBoxA(g_hWnd, pritfOut.c_str(), "심각한 오류", MB_OK);
 		}
 	}
 };

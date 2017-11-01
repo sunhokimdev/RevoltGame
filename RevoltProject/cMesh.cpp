@@ -24,7 +24,7 @@ void cMesh::LoadMesh(std::string folder, std::string name)
 
 void cMesh::LoadCarMesh(std::string folder, std::string name)
 {
-	ObjectLoader::LoadMeshRotation(this, folder, name, { 0,D3DX_PI / 2,0 });
+	ObjectLoader::LoadMeshRotation(this, folder, name,{ 0,D3DX_PI / 2,0 });
 	//자동차 오브젝트 불러오기
 }
 
