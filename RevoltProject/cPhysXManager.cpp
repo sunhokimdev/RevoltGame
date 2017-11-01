@@ -10,7 +10,6 @@ cPhysXManager::cPhysXManager()
 {
 }
 
-
 cPhysXManager::~cPhysXManager()
 {
 }
@@ -54,22 +53,57 @@ BOOL cPhysXManager::InitNxPhysX()
 	newPhysXUserData->Init();
 	SetPhysXData(newPhysXUserData);
 
-	NxMaterialDesc defaultMaterial;
-	defaultMaterial.setToDefault();
-	defaultMaterial.restitution = 0.6f;
-	defaultMaterial.staticFriction = 10.f;
-	defaultMaterial.dynamicFriction = 8.f;
-	m_pNxScene->createMaterial(defaultMaterial);
+	E_PHYSX_MATERIAL_NONE; {/*default*/}
+	E_PHYSX_MATERIAL_MAP; {
+		NxMaterialDesc material;
+		material.setToDefault();
+		material.restitution = 0.3;
+		material.staticFriction = 0.5f;
+		material.dynamicFriction = 0.2f;
+		m_pNxScene->createMaterial(material);
 
+	}
+	E_PHYSX_MATERIAL_CAR; {
+		NxMaterialDesc material;
+		material.setToDefault();
+		material.restitution = 0.3f;
+		material.staticFriction = 5.f;
+		material.dynamicFriction = 3.f;
+		m_pNxScene->createMaterial(material);
+	}
+	E_PHYSX_MATERIAL_03; {
+		NxMaterialDesc material;
+		material.setToDefault();
+		material.restitution = 0.6f;
+		material.staticFriction = 10.f;
+		material.dynamicFriction = 8.f;
+		m_pNxScene->createMaterial(material);
+	}
+	E_PHYSX_MATERIAL_04; {
+		NxMaterialDesc material;
+		material.setToDefault();
+		material.restitution = 0.6f;
+		material.staticFriction = 10.f;
+		material.dynamicFriction = 8.f;
+		m_pNxScene->createMaterial(material);
+	}
+	E_PHYSX_MATERIAL_05; {
+		NxMaterialDesc material;
+		material.setToDefault();
+		material.restitution = 0.6f;
+		material.staticFriction = 10.f;
+		material.dynamicFriction = 8.f;
+		m_pNxScene->createMaterial(material);
+	}
+	E_PHYSX_MATERIAL_06; {
+		NxMaterialDesc material;
+		material.setToDefault();
+		material.restitution = 0.6f;
+		material.staticFriction = 10.f;
+		material.dynamicFriction = 8.f;
+		m_pNxScene->createMaterial(material);
+	}
 
-//	NxMaterialDesc defaultMaterial2;
-//	defaultMaterial2.setToDefault();
-//	defaultMaterial2.restitution = 0.6f;
-//	defaultMaterial2.staticFriction = 10.f;
-//	defaultMaterial2.dynamicFriction = 8.f;
-//	m_pNxScene->createMaterial(defaultMaterial2);
-
-//	m_pNxPhysicsSDK->setParameter(NX_VISUALIZATION_SCALE, 2);
 
 
 
@@ -251,6 +285,7 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 {
 	USERDATA* pUserData0 = (USERDATA*)pair.actors[0]->userData;
 	USERDATA* pUserData1 = (USERDATA*)pair.actors[1]->userData;
+
 	if (pUserData0 == NULL || pUserData1 == NULL) return;
 
 	switch (_event)
@@ -276,32 +311,41 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 
 
 	}break;
+	default:
+		pUserData0->ContactPairFlag = 0;
+		pUserData1->ContactPairFlag = 0;
+		break;
 	}
 }
 
 void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, NxTriggerFlag status)
 {
 
-	USERDATA* pUserData0 = (USERDATA*)triggerShape.getActor().userData;;
-	USERDATA* pUserData1 = (USERDATA*)otherShape.getActor().userData;;
+	USERDATA* pUserData0 = (USERDATA*)triggerShape.getActor().userData;
+	USERDATA* pUserData1 = (USERDATA*)otherShape.getActor().userData;
+
 	if (pUserData0 == NULL || pUserData1 == NULL) return;
 
 	if (status & NX_TRIGGER_ON_ENTER)
 	{
 		pUserData0->TriggerPairFlag = NX_TRIGGER_ON_ENTER;
 		pUserData1->TriggerPairFlag = NX_TRIGGER_ON_ENTER;
-	
+
 	}
-	if (status & NX_TRIGGER_ON_STAY)
+	else if (status & NX_TRIGGER_ON_STAY)
 	{
 		pUserData0->TriggerPairFlag = NX_TRIGGER_ON_STAY;
 		pUserData1->TriggerPairFlag = NX_TRIGGER_ON_STAY;
-		
+
 	}
-	if (status & NX_TRIGGER_ON_LEAVE)
+	else if (status & NX_TRIGGER_ON_LEAVE)
 	{
 		pUserData0->TriggerPairFlag = NX_TRIGGER_ON_LEAVE;
 		pUserData1->TriggerPairFlag = NX_TRIGGER_ON_LEAVE;
-		
+	}
+	else
+	{
+		pUserData0->TriggerPairFlag = 0;
+		pUserData1->TriggerPairFlag = 0;
 	}
 }

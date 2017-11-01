@@ -39,7 +39,6 @@ void cCar::CreatePhsyX()
 
 void cCar::LoadMesh(std::string carName)
 {
-	//GetMeshData()->LoadMesh("Cars/" + carName, carName + ".obj");
 	GetMeshData()->LoadCarMesh("Cars/" + carName, carName + ".obj");
 }
 
@@ -48,62 +47,67 @@ void cCar::Update()
 	if (m_carNxVehicle)
 	{
 		NxVec3 pos = m_carNxVehicle->getGlobalPose().t;
+		m_carNxVehicle->getActor()->addForce(NxVec3(0, -0.001, 0));
+
+		float targetPower = 0.f;
+		bool power = false;
+		if (g_pKeyManager->isStayKeyDown(VK_UP))
+		{
+			m_moterPower += m_moterAcc;
+			if (m_moterPower > 1.f) m_moterPower = 1.f;
+			targetPower = m_moterPower * m_maxMoterPower;
+			power = true;
+		}
+		if (g_pKeyManager->isStayKeyDown(VK_DOWN))
+		{
+			m_moterPower -= m_moterAcc;
+			if (m_moterPower < -1.f) m_moterPower = -1.f;
+			targetPower = m_moterPower * m_maxMoterPower;
+			power = true;
+		}
+		if (!power)
+		{
+			m_moterPower = 0.f;
+			targetPower = m_moterPower * m_maxMoterPower;
+		}
 
 		float targetAngle = m_wheelAngle * m_maxWheelAngle;
 		bool handle = false;
 		if (g_pKeyManager->isStayKeyDown(VK_LEFT))
 		{
-			m_wheelAngle += m_wheelAcc;
+			m_wheelAngle += (m_wheelAcc);
 			if (m_wheelAngle > 1.f) m_wheelAngle = 1.f;
 			targetAngle = m_wheelAngle * m_maxWheelAngle;
 			handle = true;
 		}
 		if (g_pKeyManager->isStayKeyDown(VK_RIGHT))
 		{
-			m_wheelAngle -= m_wheelAcc;
+			m_wheelAngle -= (m_wheelAcc);
 			if (m_wheelAngle < -1.f) m_wheelAngle = -1.f;
-			targetAngle = m_wheelAngle * m_maxWheelAngle;
+			targetAngle = m_wheelAngle * (m_maxWheelAngle);
 			handle = true;
 		}
 		if (!handle)
 		{
-			if (abs(m_wheelAngle) < 0.001) m_wheelAngle = 0;
-			else if (m_wheelAngle > 0) m_wheelAngle -= m_wheelAcc;
-			else if (m_wheelAngle < 0) m_wheelAngle += m_wheelAcc;
+			if (abs(m_wheelAngle) <= m_wheelAcc*2) m_wheelAngle = 0.0f;
+			else if (m_wheelAngle > 0) m_wheelAngle -= m_wheelAcc*2;
+			else if (m_wheelAngle < 0) m_wheelAngle += m_wheelAcc*2;
 
 			targetAngle = m_wheelAngle * m_maxWheelAngle;
 		}
 
-		float targetPower = 0.f;
-		if (g_pKeyManager->isStayKeyDown(VK_UP))
-		{
-			targetPower += m_maxMoterPower;
-		}
-		if (g_pKeyManager->isStayKeyDown(VK_DOWN))
-		{
-			targetPower -= m_maxMoterPower;
-		}
-
-		m_carNxVehicle->getActor()->addForce(NxVec3(0, -0.001, 0));
 
 		for (int i = 0; i < 4; i++)
 		{
 			NxWheel* wheel = m_carNxVehicle->getWheel(i);
 			if (i < 2)
 			{
-				wheel->setAngle(targetAngle);
+				float value = (1 - (wheel->getRpm() / m_maxRpm));
+				if (value < 0.5) value = 0.5f;
+				wheel->setAngle(targetAngle * value);
 			}
-			wheel->tick(false, targetPower, 0, 1.f / 60.f);
-
-
-			if (i == 0 || i == 2)//ÁÂÃø
-			{
-				//	m_carNxVehicle->getActor()->addLocalTorque(NxVec3(10, 0, 0));
-			}
-			else//¿ìÃø
-			{
-
-			}
+			if (wheel->getRpm() < m_maxRpm)
+				wheel->tick(false, targetPower, 100.f, 1.f / 60.f);
 		}
 
 	}

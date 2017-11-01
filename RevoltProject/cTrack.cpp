@@ -336,11 +336,13 @@ void cTrack::LoadTrack(std::string FileName)
 						}
 						else if (Obj->GetTag() == E_OBJECT_PICKUP)
 						{
+							//맵에 배치되어있는 장애물들...
 							NxActor* pActor = MgrPhysX->CreateActor(
 								type,
 								position + worldPosition + localPosition,
 								matR,
 								sizeValue,
+								E_PHYSX_MATERIAL_03,
 								pUserData,
 								isTrigger,
 								isStatic_,
@@ -365,6 +367,7 @@ void cTrack::LoadTrack(std::string FileName)
 								position + worldPosition + localPosition,
 								matR,
 								sizeValue,
+								E_PHYSX_MATERIAL_03,
 								pUserData,
 								isTrigger,
 								isStatic_,
@@ -394,16 +397,16 @@ void cTrack::LoadTrack(std::string FileName)
 
 
 
-	NxActorDesc aDesc;
-	NxPlaneShapeDesc sDesc;
-
-	aDesc.setToDefault();
-	sDesc.setToDefault();
-
-	aDesc.shapes.pushBack(&sDesc);
-	aDesc.globalPose.t = NxVec3(0, 0, 0);
-
-	MgrPhysXScene->createActor(aDesc);
+//	NxActorDesc aDesc;
+//	NxPlaneShapeDesc sDesc;
+//
+//	aDesc.setToDefault();
+//	sDesc.setToDefault();
+//
+//	aDesc.shapes.pushBack(&sDesc);
+//	aDesc.globalPose.t = NxVec3(0, 0, 0);
+//
+//	MgrPhysXScene->createActor(aDesc);
 
 }
 

@@ -4,9 +4,9 @@
 #include "cLight.h"
 #include "cCar.h"
 
-RacingScene::RacingScene(){}
+RacingScene::RacingScene() {}
 
-RacingScene::~RacingScene(){}
+RacingScene::~RacingScene() {}
 
 void RacingScene::Setup()
 {
@@ -21,7 +21,7 @@ void RacingScene::Setup()
 
 	D3DLIGHT9 light;
 	light.Type = D3DLIGHT_DIRECTIONAL;
-	light.Ambient = D3DXCOLOR(0.6,0.6,0.6,1);
+	light.Ambient = D3DXCOLOR(0.6, 0.6, 0.6, 1);
 	light.Diffuse = D3DXCOLOR(0.6, 0.6, 0.6, 1);
 	light.Specular = D3DXCOLOR(0.6, 0.6, 0.6, 1);
 	D3DXVECTOR3 dir = { 0,-1,0 };
@@ -37,11 +37,22 @@ void RacingScene::Setup()
 	//g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
 	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
 
-	cCar* pCar = new cCar;
-	pCar->LoadMesh("tc1");
-	pCar->CreatePhsyX();
-	pCar->SetCarValue(5000, 0.01, 0, NxPi/4, NxPi * 0.01f);
-	vecCars.push_back(pCar);
+	{
+		cCar* pCar = new cCar;
+		pCar->LoadMesh("tc1");
+		pCar->CreatePhsyX();
+		pCar->SetCarValue(5000, 0.1, 0, NxPi / 8, NxPi * 0.01f);
+		vecCars.push_back(pCar);
+	}
+	{
+		cCar* pCar = new cCar;
+		pCar->LoadMesh("tc2");
+		pCar->CreatePhsyX();
+		pCar->SetCarValue(7000, 0.1, 0, NxPi / 5, NxPi * 0.0001f);
+
+		pCar->GetPhysXData()->SetPosition(NxVec3(0, 0, 3));
+		vecCars.push_back(pCar);
+	}
 }
 
 void RacingScene::Destroy()
@@ -56,9 +67,12 @@ void RacingScene::Update()
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
 
-	for each(cCar* p in vecCars)
+	for (int i = 0; i < vecCars.size(); i++)
 	{
-		p->Update();
+		if (i == 0)	//Player
+		{
+			vecCars[i]->Update();
+		}
 	}
 
 	UpdateCamera();
@@ -91,7 +105,7 @@ void RacingScene::LastUpdate()
 
 void RacingScene::UpdateCamera()
 {
-	
+
 	NxVec3 pos = vecCars[0]->GetNxVehicle()->getGlobalPose().t;
 
 	NxF32 mat[9];
@@ -110,19 +124,19 @@ void RacingScene::UpdateCamera()
 	matR._33 = mat[8];
 
 
-	D3DXVECTOR3 dir = { 1,0,1 };
+	D3DXVECTOR3 dir = { 1,0,0 };
 	D3DXVec3TransformNormal(&dir, &dir, &matR);
 	D3DXVECTOR3 carPos = { pos.x,pos.y,pos.z };
 
 	float dist = 5;
 
 	float x = carPos.x - (dir.x * dist);
-	float y = carPos.y - (dir.y * dist) + 5;
+	float y = carPos.y - (dir.y * dist) + 2;
 	float z = carPos.z - (dir.z * dist);
 
 	*camPos = { x,y,z };
 
-	*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 1, pos.z);
+	*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 2, pos.z);
 
 	g_pCamManager->SetCamPos(camPos);
 	g_pCamManager->SetLookAt(camLookTarget);
