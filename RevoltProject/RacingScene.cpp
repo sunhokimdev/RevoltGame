@@ -43,7 +43,7 @@ void RacingScene::Setup()
 
 	pCar1 = new cCar;
 	pCar1->LoadMesh("tc1");
-//	m_vecObject.push_back(pCar1);
+	//	m_vecObject.push_back(pCar1);
 
 
 	//자동차 추가

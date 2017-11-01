@@ -91,7 +91,7 @@ void Effect::BillboardRender(LPD3DXSPRITE Sprite,
 	D3DXMATRIXA16 matR;
 	D3DXMATRIXA16 matT;
 
-	if (m_effectType == WATER)	D3DXMatrixTranslation(&matT, posX, posY + 5, posZ);
+	if (m_effectType == WATER)	D3DXMatrixTranslation(&matT, posX, posY + 3, posZ);
 	else D3DXMatrixTranslation(&matT, posX, posY, posZ);
 
 	D3DXMatrixScaling(&matS, sizeX, sizeY, sizeZ);
