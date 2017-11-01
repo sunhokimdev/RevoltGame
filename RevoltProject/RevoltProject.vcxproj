@@ -178,6 +178,8 @@
     <ClInclude Include="cWheel.h" />
     <ClInclude Include="DEBUG_RENDERER.h" />
     <ClInclude Include="DeviceManager.h" />
+    <ClInclude Include="Firework.h" />
+    <ClInclude Include="PFirework.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="GameNode.h" />
     <ClInclude Include="Grid.h" />
@@ -218,6 +220,7 @@
     <ClInclude Include="PhysX\NxWheelDesc.h" />
     <ClInclude Include="PickUpObject.h" />
     <ClInclude Include="ProfileList.h" />
+    <ClInclude Include="PSystem.h" />
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="RacingScene.h" />
     <ClInclude Include="Resource.h" />
@@ -275,6 +278,8 @@
     <ClCompile Include="cWheel.cpp" />
     <ClCompile Include="DEBUG_RENDERER.cpp" />
     <ClCompile Include="DeviceManager.cpp" />
+    <ClCompile Include="Firework.cpp" />
+    <ClCompile Include="PFirework.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="GameNode.cpp" />
     <ClCompile Include="Grid.cpp" />
@@ -299,6 +304,7 @@
     <ClCompile Include="PhysX\NxWheel.cpp" />
     <ClCompile Include="PickUpObject.cpp" />
     <ClCompile Include="ProfileList.cpp" />
+    <ClCompile Include="PSystem.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="RacingScene.cpp" />
     <ClCompile Include="RevoltProject.cpp" />

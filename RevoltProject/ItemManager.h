@@ -16,5 +16,9 @@ private:
 	std::vector<cItem*> m_vecItem;		// 아이템들을 관리하는 클래스
 public:
 	SINGLETONE(ItemManager);
+
+	void Setup();
+	void Update();
+	void Render();
 };
 

@@ -2,6 +2,8 @@
 #include "RacingScene.h"
 #include "cTrack.h"
 #include "cLight.h"
+#include "PFirework.h"
+#include "Firework.h"
 
 RacingScene::RacingScene(){}
 
@@ -29,8 +31,6 @@ void RacingScene::Setup()
 	g_pD3DDevice->SetLight(0, &light);
 	g_pD3DDevice->LightEnable(0, true);
 
-
-
 	pCar1 = new cCar;
 	pCar1->LoadMesh("tc1");
 //	m_vecObject.push_back(pCar1);
@@ -42,6 +42,14 @@ void RacingScene::Setup()
 	g_pCamManager->SetCamPos(camPos);
 	g_pCamManager->SetLookAt(camLookTarget);
 
+	srand((unsigned int)time(0));
+
+	m_pPFirework = new PFirework(&D3DXVECTOR3(15.0f, 4.0f, 0.0f), 100);
+	m_pPFirework->Init(g_pD3DDevice, "Maps/Front/Image/particle_flare2.bmp");
+
+	m_pFirework = new Firework;
+	m_pFirework->Setup();
+
 }
 
 void RacingScene::Destroy()
@@ -49,6 +57,7 @@ void RacingScene::Destroy()
 	SAFE_DESTROY(m_pTrack);
 	SAFE_DELETE(m_pTrack);
 	SAFE_DELETE(m_pLightSun);
+	SAFE_DELETE(m_pPFirework);
 }
 
 void RacingScene::Update()
@@ -130,6 +139,11 @@ void RacingScene::Update()
 			wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
 		}
 	}
+
+	m_pPFirework->Update(0.01f);
+
+	if (m_pPFirework->isDead())		// ¹İº¹
+		m_pPFirework->Reset();
 }
 
 void RacingScene::Render()
@@ -141,4 +155,7 @@ void RacingScene::Render()
 	{
 		m_pTrack->Render();
 	}
+
+	m_pPFirework->Render();
+	m_pFirework->Render();
 }

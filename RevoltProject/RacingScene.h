@@ -4,7 +4,8 @@
 class cTrack;
 class cLight;
 class cCar;
-
+class PSystem;
+class Firework;
 
 class RacingScene : public GameNode
 {
@@ -20,6 +21,8 @@ private:
 	cCar* pCar1;
 	NxVehicle* pVeh;
 
+	PSystem* m_pPFirework;
+	Firework* m_pFirework;
 public:
 
 	RacingScene();
