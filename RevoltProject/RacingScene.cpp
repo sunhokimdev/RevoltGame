@@ -91,9 +91,15 @@ void RacingScene::LastUpdate()
 
 void RacingScene::UpdateCamera()
 {
-	
+#define CAM_X (*camPos).x
+#define CAM_Y (*camPos).y
+#define CAM_Z (*camPos).z
+#define CAM_POS (*camPos)
+
+	//자동차 포지션
 	NxVec3 pos = vecCars[0]->GetNxVehicle()->getGlobalPose().t;
 
+	//회전 매트릭스 받아옴
 	NxF32 mat[9];
 
 	vecCars[0]->GetNxVehicle()->getGlobalPose().M.getColumnMajor(mat);
@@ -110,17 +116,40 @@ void RacingScene::UpdateCamera()
 	matR._33 = mat[8];
 
 
-	D3DXVECTOR3 dir = { 1,0,1 };
-	D3DXVec3TransformNormal(&dir, &dir, &matR);
+	float distToCar = 5; //차와의 거리
+	float Height = 2; //카메라 높이
+
+	float CamSpdOut = 0.1;
+	float CamSpdIn = 0.05;
+	float FollowRange = 1;
+	float FixRange = 0.5;
+	float MaxRange = 2;
+
+	D3DXVECTOR3 carDir = { 1,0,0 };
+	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
 	D3DXVECTOR3 carPos = { pos.x,pos.y,pos.z };
+	
+	float x = carPos.x - (carDir.x * distToCar);
+	float y = carPos.y - (carDir.y * distToCar) + Height;
+	float z = carPos.z - (carDir.z * distToCar);
+	D3DXVECTOR3 vDest = { x,y,z };
 
-	float dist = 5;
+	D3DXVECTOR3 moveDir;
+	moveDir = vDest - CAM_POS;
+	D3DXVec3Normalize(&moveDir, &moveDir);
+	
+	D3DXVECTOR3 distToDest = vDest - CAM_POS;
 
-	float x = carPos.x - (dir.x * dist);
-	float y = carPos.y - (dir.y * dist) + 5;
-	float z = carPos.z - (dir.z * dist);
+	D3DXVec3Lerp(camPos, camPos, &vDest, 0.1f);
 
-	*camPos = { x,y,z };
+	//D3DXQUATERNION camQuater = { CAM_X,CAM_Y,CAM_Z,0 };
+	//D3DXQUATERNION destQuater = { vDest.x,vDest.y,vDest.z,0 };
+
+	//D3DXQuaternionSlerp(&camQuater, &camQuater, &destQuater, 0.01);
+
+	//CAM_X = camQuater.x;
+	//CAM_Y = camQuater.y;
+	//CAM_Z = camQuater.z;
 
 	*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 1, pos.z);
 
