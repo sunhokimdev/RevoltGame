@@ -4,7 +4,7 @@
 class cTrack;
 class cLight;
 class cCar;
-
+class Effect;
 
 class RacingScene : public GameNode
 {
@@ -19,6 +19,10 @@ private:
 	D3DXVECTOR3* camLookTarget = new D3DXVECTOR3(0, 0, 0);
 	cCar* pCar1;
 	NxVehicle* pVeh;
+
+	LPD3DXSPRITE m_Sprite;
+	Effect*		 m_pEffect;
+
 
 public:
 

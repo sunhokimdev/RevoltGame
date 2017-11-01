@@ -178,6 +178,7 @@
     <ClInclude Include="cWheel.h" />
     <ClInclude Include="DEBUG_RENDERER.h" />
     <ClInclude Include="DeviceManager.h" />
+    <ClInclude Include="Effect.h" />
     <ClInclude Include="FontManager.h" />
     <ClInclude Include="GameNode.h" />
     <ClInclude Include="Grid.h" />
@@ -275,6 +276,7 @@
     <ClCompile Include="cWheel.cpp" />
     <ClCompile Include="DEBUG_RENDERER.cpp" />
     <ClCompile Include="DeviceManager.cpp" />
+    <ClCompile Include="Effect.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="GameNode.cpp" />
     <ClCompile Include="Grid.cpp" />

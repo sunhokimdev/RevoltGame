@@ -202,7 +202,12 @@ void Lobby::KeyUpdate()
 		}
 
 		if (m_stateLobby == SELECT_MAP_LOBBY)
+			m_leftAndrightSelect++;
+
 			m_pSelectMap->GetmagImage()->SetIsMove(true);
+
+		if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
+			m_leftAndrightSelect = 0;
 	}
 
 	if (g_pKeyManager->isOnceKeyDown(VK_LEFT))

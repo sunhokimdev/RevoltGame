@@ -393,6 +393,9 @@
     <ClInclude Include="PhysX\NxWheelDesc.h">
       <Filter>PhysX\NxFile</Filter>
     </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Car\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -622,6 +625,9 @@
     </ClCompile>
     <ClCompile Include="PhysX\NxAllVehicles.cpp">
       <Filter>PhysX\NxFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>Car\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
