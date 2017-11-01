@@ -4,9 +4,9 @@
 #include "cLight.h"
 #include "cCar.h"
 
-RacingScene::RacingScene(){}
+RacingScene::RacingScene() {}
 
-RacingScene::~RacingScene(){}
+RacingScene::~RacingScene() {}
 
 void RacingScene::Setup()
 {
@@ -21,7 +21,7 @@ void RacingScene::Setup()
 
 	D3DLIGHT9 light;
 	light.Type = D3DLIGHT_DIRECTIONAL;
-	light.Ambient = D3DXCOLOR(0.6,0.6,0.6,1);
+	light.Ambient = D3DXCOLOR(0.6, 0.6, 0.6, 1);
 	light.Diffuse = D3DXCOLOR(0.6, 0.6, 0.6, 1);
 	light.Specular = D3DXCOLOR(0.6, 0.6, 0.6, 1);
 	D3DXVECTOR3 dir = { 0,-1,0 };
@@ -37,11 +37,22 @@ void RacingScene::Setup()
 	//g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
 	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
 
-	cCar* pCar = new cCar;
-	pCar->LoadMesh("tc1");
-	pCar->CreatePhsyX();
-	pCar->SetCarValue(5000, 0.01, 0, NxPi/4, NxPi * 0.01f);
-	vecCars.push_back(pCar);
+	{
+		cCar* pCar = new cCar;
+		pCar->LoadMesh("tc1");
+		pCar->CreatePhsyX();
+		pCar->SetCarValue(5000, 0.1, 0, NxPi / 8, NxPi * 0.01f);
+		vecCars.push_back(pCar);
+	}
+	{
+		cCar* pCar = new cCar;
+		pCar->LoadMesh("tc2");
+		pCar->CreatePhsyX();
+		pCar->SetCarValue(7000, 0.1, 0, NxPi / 5, NxPi * 0.0001f);
+
+		pCar->GetPhysXData()->SetPosition(NxVec3(0, 0, 3));
+		vecCars.push_back(pCar);
+	}
 }
 
 void RacingScene::Destroy()
@@ -56,9 +67,12 @@ void RacingScene::Update()
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
 
-	for each(cCar* p in vecCars)
+	for (int i = 0; i < vecCars.size(); i++)
 	{
-		p->Update();
+		if (i == 0)	//Player
+		{
+			vecCars[i]->Update();
+		}
 	}
 
 	UpdateCamera();
@@ -91,12 +105,14 @@ void RacingScene::LastUpdate()
 
 void RacingScene::UpdateCamera()
 {
+
 #define CAM_X (*camPos).x
 #define CAM_Y (*camPos).y
 #define CAM_Z (*camPos).z
 #define CAM_POS (*camPos)
 
 	//자동차 포지션
+
 	NxVec3 pos = vecCars[0]->GetNxVehicle()->getGlobalPose().t;
 
 	//회전 매트릭스 받아옴
@@ -115,7 +131,6 @@ void RacingScene::UpdateCamera()
 	matR._32 = mat[7];
 	matR._33 = mat[8];
 
-
 	float distToCar = 5; //차와의 거리
 	float Height = 2; //카메라 높이
 
@@ -127,6 +142,7 @@ void RacingScene::UpdateCamera()
 
 	D3DXVECTOR3 carDir = { 1,0,0 };
 	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
+
 	D3DXVECTOR3 carPos = { pos.x,pos.y,pos.z };
 	
 	float x = carPos.x - (carDir.x * distToCar);
@@ -147,11 +163,12 @@ void RacingScene::UpdateCamera()
 
 	//D3DXQuaternionSlerp(&camQuater, &camQuater, &destQuater, 0.01);
 
+
 	//CAM_X = camQuater.x;
 	//CAM_Y = camQuater.y;
 	//CAM_Z = camQuater.z;
 
-	*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 1, pos.z);
+	*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 2, pos.z);
 
 	g_pCamManager->SetCamPos(camPos);
 	g_pCamManager->SetLookAt(camLookTarget);

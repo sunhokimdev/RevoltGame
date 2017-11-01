@@ -36,7 +36,7 @@ void ItemManager::Update()
 		pItem->SetMeshData(pMesh);
 		pItem->SetPhysXData(pPhysx);
 
-		pPhysx->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, NxVec3(5, 0, 3), NULL, NxVec3(1.0f, 0, 0), NULL,false);
+		pPhysx->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, NxVec3(5, 0, 3), NULL, NxVec3(1.0f, 0, 0), E_PHYSX_MATERIAL_CAR, NULL,false);
 		pPhysx->m_pActor->addLocalForce(NxVec3(40000, 0, 0));
 		
 		m_vecItem.push_back(pItem);
