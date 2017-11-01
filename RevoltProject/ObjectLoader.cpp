@@ -8,7 +8,6 @@ ObjectLoader::ObjectLoader()
 {
 }
 
-
 ObjectLoader::~ObjectLoader()
 {
 }

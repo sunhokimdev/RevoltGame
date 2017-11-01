@@ -393,6 +393,27 @@
     <ClInclude Include="PhysX\NxWheelDesc.h">
       <Filter>PhysX\NxFile</Filter>
     </ClInclude>
+    <ClInclude Include="cBillBoardEffect.h">
+      <Filter>NewClass</Filter>
+    </ClInclude>
+    <ClInclude Include="cContactUser.h">
+      <Filter>Car\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cImpact.h">
+      <Filter>Car\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cImapactManager.h">
+      <Filter>Car\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cWbomb.h">
+      <Filter>Car\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cFirework.h">
+      <Filter>Car\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cGravityball.h">
+      <Filter>Car\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -622,6 +643,27 @@
     </ClCompile>
     <ClCompile Include="PhysX\NxAllVehicles.cpp">
       <Filter>PhysX\NxFile</Filter>
+    </ClCompile>
+    <ClCompile Include="cBillBoardEffect.cpp">
+      <Filter>NewClass</Filter>
+    </ClCompile>
+    <ClCompile Include="cContactUser.cpp">
+      <Filter>Car\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cImpact.cpp">
+      <Filter>Car\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cImapactManager.cpp">
+      <Filter>Car\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cWbomb.cpp">
+      <Filter>Car\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cFirework.cpp">
+      <Filter>Car\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cGravityball.cpp">
+      <Filter>Car\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

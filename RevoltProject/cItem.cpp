@@ -15,9 +15,6 @@ void cItem::Setup()
 
 void cItem::Update()
 {
-	//물리적용
-	this->GetPhysXData()->m_pActor;
-
 	Object::Update();
 }
 

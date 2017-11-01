@@ -2,8 +2,13 @@
 #include "ItemManager.h"
 #include "cItem.h"
 #include "ObjectLoader.h"
+#include "cContactUser.h"
+#include "cImpact.h"
 
 ItemManager::ItemManager()
+	: box1(NULL)
+	, box2(NULL)
+	, box3(NULL)
 {
 }
 
@@ -13,7 +18,16 @@ ItemManager::~ItemManager()
 
 void ItemManager::Init()
 {
-	/*   Áß·ÂÅº ¼³Á¤   */
+	MgrPhysXScene->setUserTriggerReport(new TriggerCallback());
+
+	USERDATA* user1 = new USERDATA;
+	user1->ID = 1;
+
+	box1 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(6, 0, 5), NULL, NxVec3(3.0f, 3.0f, 3.0f), user1);
+	box2 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(5, 0, 0), NULL, NxVec3(3.0f, 3.0f, 3.0f), user1);
+	box3 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(4, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), user1);
+	
+	InitCollisionGroup();
 }
 
 void ItemManager::Update()
@@ -28,18 +42,8 @@ void ItemManager::Update()
 	}
 
 	if (g_pKeyManager->isOnceKeyDown(VK_CONTROL))
-	{
-		cItem* pItem = new cItem;
-		cMesh* pMesh = new cMesh;
-		cPhysX* pPhysx = new cPhysX;
-		ObjectLoader::LoadMesh(pMesh, "Objects/gravityball", "gravityball.obj");
-		pItem->SetMeshData(pMesh);
-		pItem->SetPhysXData(pPhysx);
-
-		pPhysx->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, NxVec3(5, 0, 3), NULL, NxVec3(1.0f, 0, 0), NULL,false);
-		pPhysx->m_pActor->addLocalForce(NxVec3(40000, 0, 0));
+	{	
 		
-		m_vecItem.push_back(pItem);
 	}
 }
 
@@ -50,3 +54,25 @@ void ItemManager::Render()
 		m_vecItem[i]->Render();
 	}
 }
+
+void ItemManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
+{
+	NxU32 nbShapes = actor->getNbShapes();
+	NxShape** shapes = (NxShape**)actor->getShapes();
+
+	while (nbShapes--)
+	{
+		shapes[nbShapes]->setGroup(group);
+	}
+}
+
+void ItemManager::InitCollisionGroup()
+{
+	SetActorGroup(box1, 1);
+	SetActorGroup(box2, 1);
+	SetActorGroup(box3, 1);
+
+	MgrPhysXScene->setGroupCollisionFlag(1, 2, false);
+	MgrPhysXScene->setGroupCollisionFlag(2, 2, false);
+}
+
