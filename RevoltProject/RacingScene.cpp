@@ -158,11 +158,8 @@ void RacingScene::UpdateCamera()
 
 	D3DXVec3Lerp(camPos, camPos, &vDest, 0.1f);
 
-	//D3DXQUATERNION camQuater = { CAM_X,CAM_Y,CAM_Z,0 };
-	//D3DXQUATERNION destQuater = { vDest.x,vDest.y,vDest.z,0 };
-
-	//D3DXQuaternionSlerp(&camQuater, &camQuater, &destQuater, 0.01);
-
+	//D3DXVECTOR3 vTemp = { ,Height,CAM_Z};
+	//D3DXVec3TransformCoord(camPos, &vTemp, &matR);
 
 	//CAM_X = camQuater.x;
 	//CAM_Y = camQuater.y;
