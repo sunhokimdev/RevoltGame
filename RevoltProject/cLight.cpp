@@ -34,7 +34,7 @@ void cLight::Setup(int nIndex, _D3DLIGHTTYPE type, D3DXCOLOR color, D3DXVECTOR3 
 	g_pD3DDevice->SetLight(nIndex, &m_stLight);
 }
 
-void cLight::SetupDirectional(int nIndex, D3DXCOLOR color, D3DXCOLOR direc)
+void cLight::SetupDirectional(int nIndex, D3DXCOLOR color, D3DXVECTOR3 direc)
 {
 	//Object::Setup();
 
@@ -70,7 +70,7 @@ void cLight::SetupPoint(int nIndex, D3DXCOLOR color, D3DXVECTOR3 position, float
 	g_pD3DDevice->SetLight(nIndex, &m_stLight);
 }
 
-void cLight::SetupSpot(int nIndex, D3DXCOLOR color, D3DXVECTOR3 position, D3DXCOLOR direc, float range, float Phi /*= D3DX_PI / 2*/, float Theta /*= D3DX_PI / 2*/)
+void cLight::SetupSpot(int nIndex, D3DXCOLOR color, D3DXVECTOR3 position, D3DXVECTOR3 direc, float range, float Phi /*= D3DX_PI / 2*/, float Theta /*= D3DX_PI / 2*/)
 {
 	//Object::Setup();
 

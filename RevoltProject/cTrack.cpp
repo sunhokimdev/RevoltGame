@@ -123,8 +123,10 @@ void cTrack::Update()
 
 void cTrack::LastUpdate()
 {
-	if (!GetPhysXData()) return;
-
+	for each(Object* pObj in m_vecObject)
+	{
+		pObj->LastUpdate();
+	}
 }
 
 void cTrack::Render()
@@ -183,8 +185,6 @@ void cTrack::LoadTrack(std::string FileName)
 				SetMeshData(new cMesh);
 				GetMeshData()->LoadMesh(Folder, Name);
 				CreateTrackPhysX();
-
-				return;
 			}
 			else if (szTemp[0] == 'O') //Object Load
 			{
@@ -423,7 +423,7 @@ void cTrack::CreateTrackPhysX()
 		//bodyDesc.flags |= NX_BF_KINEMATIC;
 
 		NxTriangleMeshShapeDesc shapeDesc = MgrPhysX->CreateTringleMesh(GetMeshData()->m_pMesh);
-		shapeDesc.materialIndex = 0; // 재질 : 0 (default)값
+		shapeDesc.materialIndex = 1; // 재질 : 0 (default)값
 		shapeDesc.localPose.t = NxVec3(0, 0, 0);
 
 		actorDesc.shapes.pushBack(&shapeDesc);

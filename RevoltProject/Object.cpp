@@ -37,7 +37,6 @@ void Object::LastUpdate()
 		GetPhysXData()->m_pActor->getGlobalPose().M.getColumnMajor(NxMat);
 
 		cTransform::SetQuaternion(NxMat);
-
 	}
 }
 

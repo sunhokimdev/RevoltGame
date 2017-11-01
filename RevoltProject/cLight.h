@@ -15,9 +15,9 @@ public:
 	virtual ~cLight();
 
 	virtual void Setup(int nIndex, _D3DLIGHTTYPE type, D3DXCOLOR color, D3DXVECTOR3 position);
-	void SetupDirectional(int nIndex, D3DXCOLOR color, D3DXCOLOR direc);
+	void SetupDirectional(int nIndex, D3DXCOLOR color, D3DXVECTOR3 direc);
 	void SetupPoint(int nIndex, D3DXCOLOR color, D3DXVECTOR3 position, float range);
-	void SetupSpot(int nIndex, D3DXCOLOR color, D3DXVECTOR3 position, D3DXCOLOR direc, float range, float Phi = (D3DX_PI / 2), float Theta = (D3DX_PI / 2));
+	void SetupSpot(int nIndex, D3DXCOLOR color, D3DXVECTOR3 position, D3DXVECTOR3 direc, float range, float Phi = (D3DX_PI / 2), float Theta = (D3DX_PI / 2));
 	virtual void Update();
 	virtual void Destroy();
 	virtual void Switch(bool on);

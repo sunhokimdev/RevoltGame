@@ -4,8 +4,14 @@
 
 class cItem : public Object
 {
+private:
+	int m_id;
 public:
 	cItem();
-	~cItem();
+	virtual ~cItem();
+
+	virtual void Setup();
+	virtual void Update();
+	virtual void Render();
 };
 

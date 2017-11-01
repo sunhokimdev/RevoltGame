@@ -33,6 +33,6 @@ public:
 	void Destroy();
 	void Update();
 	void Render();
-	
+	void LastUpdate();
 };
 

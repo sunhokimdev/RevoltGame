@@ -36,8 +36,6 @@ void CameraManager::Setup(D3DXVECTOR3* pvTarget)
 
 void CameraManager::Update()
 {
-	//RECT rc;
-	//GetClientRect(g_hWnd, &rc);
 	Move();
 
 	m_fCamTime += 0.0005f;
@@ -49,20 +47,19 @@ void CameraManager::Update()
 	matR = matRX * matRY;
 
 	if (m_pvTarget)
-	{
+	{   
 		m_vEye = *m_pvTarget;
 		m_vLookAt = m_vNextLootAt;
-	//	D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fCamTime);
-	//	D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
+
+		//D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fCamTime);
+		//D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
 	}
 	else m_vEye = D3DXVECTOR3(0, 0, 0);
-
 
 //	m_vEye = D3DXVECTOR3(3, 3, -3);
 //	m_vLookAt = D3DXVECTOR3(0, 0, 0);
 
 	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matR);
-
 
 	D3DXMATRIXA16 matView;
 	D3DXMatrixIdentity(&matView);
