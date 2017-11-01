@@ -265,7 +265,7 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 	//	std::cout << "NX_NOTIFY_ON_START_TOUCH" << std::endl;
 
 	}break;
-	case NX_NOTIFY_ON_END_TOUCH:
+	case NX_NOTIFY_ON_END_TOUCH:			// ¶³¾îÁ³À» ¶§
 	{
 		pUserData0 = (USERDATA*)pair.actors[0]->userData;
 		pUserData1 = (USERDATA*)pair.actors[1]->userData;
@@ -281,10 +281,8 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 
 void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, NxTriggerFlag status)
 {
-
 	USERDATA* pUserData0 = NULL;
 	USERDATA* pUserData1 = NULL;
-
 
 	pUserData0 = (USERDATA*)triggerShape.getActor().userData;
 	pUserData1 = (USERDATA*)otherShape.getActor().userData;
@@ -305,6 +303,17 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 	if (status & NX_TRIGGER_ON_ENTER)
 	{
 	//	std::cout << "NX_TRIGGER_ON_ENTER";
+		// 2°¡ Áß·ÂÀÚÅº
+		if (pUserData0->ID == 1 && pUserData1->ID == 2)
+		{
+			triggerShape.getActor().addForce(NxVec3(0, 300000, 0));
+			triggerShape.getActor().addTorque(NxVec3(1.5f, 0, 0));
+		}
+		else if (pUserData0->ID == 2 && pUserData1->ID == 1)
+		{
+			otherShape.getActor().addForce(NxVec3(0, 300000, 0));
+			otherShape.getActor().addLocalTorque(NxVec3(1.5f, 0, 0));
+		}
 	}
 	if (status & NX_TRIGGER_ON_STAY)
 	{

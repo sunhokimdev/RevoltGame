@@ -1,6 +1,6 @@
 //Revolt Scene File
 //Market2
-//Date : 2017-10-30
+//Date : 2017-10-31
 
 Map Market2
 
@@ -451,6 +451,51 @@ X_Type 1
 X_Option 1 1 0
 X_Pos 0 0 0
 X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 5
+Name fabric
+ID 4
+Position 9.86643 0.4987 3.44728
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 0 0 1
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 5
+Name cheese
+ID 2
+Position 10.213 0.498755 -6.98744
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 0 0 1
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 5
+Name kidride
+ID 5
+Position 6.21856 1.4987 -16.3023
+Scale 0.5 0.5 0.5
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 0 0 1
+X_Pos 0 0 0.2
+X_Size 3 3 4.5
 X_FXU32_[9] 1 0 0 0 1 0 0 0 1
 #
 

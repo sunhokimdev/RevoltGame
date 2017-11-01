@@ -49,6 +49,8 @@ struct USERDATA
 	NX_BOOL RaycastClosestShape;
 	NX_BOOL RaycastAllShape;
 	NxVec3	RayHitPos;
+	int ID;
+
 	USERDATA() { Init(); }
 	void Init()
 	{
