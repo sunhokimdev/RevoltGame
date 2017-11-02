@@ -227,6 +227,7 @@
     <ClInclude Include="RevoltProject.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SelectMap.h" />
+    <ClInclude Include="SkidMarks.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="StandardStructure.h" />
     <ClInclude Include="stdafx.h" />
@@ -310,6 +311,7 @@
     <ClCompile Include="RevoltProject.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SelectMap.cpp" />
+    <ClCompile Include="SkidMarks.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

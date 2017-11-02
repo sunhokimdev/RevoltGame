@@ -5,7 +5,7 @@ class cTrack;
 class cLight;
 class cCar;
 class PSystem;
-class Firework;
+class SkidMarks;
 
 class RacingScene : public GameNode
 {
@@ -22,7 +22,7 @@ private:
 	NxVehicle* pVeh;
 
 	PSystem* m_pPFirework;
-	Firework* m_pFirework;
+	SkidMarks* m_pSkid;
 public:
 
 	RacingScene();
@@ -32,6 +32,6 @@ public:
 	void Destroy();
 	void Update();
 	void Render();
-	
+	void LastUpdate();
 };
 

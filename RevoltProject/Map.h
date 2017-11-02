@@ -1,6 +1,8 @@
 #pragma once
 #include "Camera.h"
 
+#define WHELLTIRE_POSITION D3DXVECTOR3(10.0f, 4.8f, 18.0f)
+
 class MtlTex;
 class Thing;
 

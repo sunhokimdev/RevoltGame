@@ -3,7 +3,7 @@
 #include "cTrack.h"
 #include "cLight.h"
 #include "PFirework.h"
-#include "Firework.h"
+#include "SkidMarks.h"
 
 RacingScene::RacingScene(){}
 
@@ -22,9 +22,9 @@ void RacingScene::Setup()
 
 	D3DLIGHT9 light;
 	light.Type = D3DLIGHT_DIRECTIONAL;
-	light.Ambient = D3DXCOLOR(0.8,0.8,0.8,1);
-	light.Diffuse = D3DXCOLOR(0.8, 0.8, 0.8, 1);
-	light.Specular = D3DXCOLOR(0.8, 0.8, 0.8, 1);
+	light.Ambient = D3DXCOLOR(0.6,0.6,0.6,1);
+	light.Diffuse = D3DXCOLOR(0.6, 0.6, 0.6, 1);
+	light.Specular = D3DXCOLOR(0.6, 0.6, 0.6, 1);
 	D3DXVECTOR3 dir = { 0,-1,0 };
 	D3DXVec3Normalize(&dir, &dir);
 	light.Direction = dir;
@@ -35,21 +35,27 @@ void RacingScene::Setup()
 	pCar1->LoadMesh("tc1");
 //	m_vecObject.push_back(pCar1);
 
-
 	//ÀÚµ¿Â÷ Ãß°¡
 	pVeh = MgrPhysX->createCarWithDesc(NxVec3(0, 2, 0), true, true, false, false, false, MgrPhysXSDK);
 
 	g_pCamManager->SetCamPos(camPos);
 	g_pCamManager->SetLookAt(camLookTarget);
 
+
+	// ºÒ²É³îÀÌ ¼Â¾÷
+	
 	srand((unsigned int)time(0));
 
-	m_pPFirework = new PFirework(&D3DXVECTOR3(15.0f, 4.0f, 0.0f), 100);
+	m_pPFirework = new PFirework(&D3DXVECTOR3(15.0f, 4.0f, 5.0f), 30);
 	m_pPFirework->Init(g_pD3DDevice, "Maps/Front/Image/particle_flare2.bmp");
+	
 
-	m_pFirework = new Firework;
-	m_pFirework->Setup();
+	//¾Úºñ¾ðÆ®
+	//g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
+	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
 
+	m_pSkid = new SkidMarks;
+	m_pSkid->Setup();
 }
 
 void RacingScene::Destroy()
@@ -140,22 +146,32 @@ void RacingScene::Update()
 		}
 	}
 
-	m_pPFirework->Update(0.01f);
+	
+	// ºÒ²É³îÀÌ ¾÷µ¥ÀÌÆ®
+	m_pPFirework->Update(0.08f);
 
-	if (m_pPFirework->isDead())		// ¹Ýº¹
+	if (m_pPFirework->isDead())		// ÅÍÁøÈÄ ¹Ýº¹
 		m_pPFirework->Reset();
+	
+
+	LastUpdate();
+
 }
 
 void RacingScene::Render()
 {
-	//¾Úºñ¾ðÆ®
-	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
-
 	if (m_pTrack)
 	{
 		m_pTrack->Render();
 	}
 
+	// ºÒ²É³îÀÌ ·»´õ
 	m_pPFirework->Render();
-	m_pFirework->Render();
+
+	m_pSkid->Render();
+}
+
+void RacingScene::LastUpdate()
+{
+	m_pTrack->LastUpdate();
 }

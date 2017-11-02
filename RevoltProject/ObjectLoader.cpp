@@ -61,6 +61,7 @@ void ObjectLoader::LoadMtlLib(const char * szFolder, char * szFile)
 			if (m_mapMtlTex.find(sMtlName) == m_mapMtlTex.end())
 			{
 				m_mapMtlTex[sMtlName] = new MtlTex;
+				ZeroMemory(m_mapMtlTex[sMtlName], sizeof(MtlTex));
 				// >> : 
 				m_mapMtlTex[sMtlName]->SetAttrID(nCnt);
 				nCnt++;
@@ -75,9 +76,9 @@ void ObjectLoader::LoadMtlLib(const char * szFolder, char * szFile)
 			{
 				float r, g, b;
 				sscanf_s(szTemp, "%*s %f %f %f", &r, &g, &b);
-				m_mapMtlTex[sMtlName]->GetMaterial().Ambient.r = r;
-				m_mapMtlTex[sMtlName]->GetMaterial().Ambient.g = g;
-				m_mapMtlTex[sMtlName]->GetMaterial().Ambient.b = b;
+				m_mapMtlTex[sMtlName]->GetMaterial().Ambient.r = 0.8f;
+				m_mapMtlTex[sMtlName]->GetMaterial().Ambient.g = 0.8f;
+				m_mapMtlTex[sMtlName]->GetMaterial().Ambient.b = 0.8f;
 				m_mapMtlTex[sMtlName]->GetMaterial().Ambient.a = 1.0f;
 			}
 			else if (szTemp[sI + 1] == 'd')

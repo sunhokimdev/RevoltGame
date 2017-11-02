@@ -402,6 +402,9 @@
     <ClInclude Include="Firework.h">
       <Filter>Car\Item</Filter>
     </ClInclude>
+    <ClInclude Include="SkidMarks.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -640,6 +643,9 @@
     </ClCompile>
     <ClCompile Include="Firework.cpp">
       <Filter>Car\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="SkidMarks.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

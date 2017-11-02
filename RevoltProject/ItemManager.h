@@ -2,7 +2,7 @@
 
 class cItem;
 
-#define g_pItemManager ItemManager::GetInstance();
+#define g_pItemManager ItemManager::GetInstance()
 
 //===================================================================
 // - written by �輱ȣ
@@ -17,7 +17,7 @@ private:
 public:
 	SINGLETONE(ItemManager);
 
-	void Setup();
+	void Init();
 	void Update();
 	void Render();
 };

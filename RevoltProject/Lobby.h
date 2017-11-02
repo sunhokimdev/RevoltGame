@@ -69,7 +69,6 @@ protected:
 	// - 로비 구현 할 때 이 클래스 내부에서만 처리할 것
 	//===================================================================
 
-	Camera*				m_pCamera;				// 카메라 클래스
 	SelectMap*			m_pSelectMap;			// Select Map Class
 	InGameUI*			m_pInGameUI;			// InGame UI;
 
@@ -113,7 +112,5 @@ public:
 	void SetUpUI();					// UI 셋업작업
 
 	D3DXVECTOR3 GetTarget() { return m_mapLobby[m_stateLobby]->m_target; }		// 카메라가 보는 방향을 반환해주는 메서드
-
-	void SetUpCamera(Camera* camera) { m_pCamera = camera; }		// 처음 카메라 변수를 지정하는 메서드
 };
 

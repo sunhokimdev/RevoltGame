@@ -33,9 +33,8 @@ void PFirework::ResetParticle(ST_Attribute * attribute)
 	// 구체를 만들기 위한 정규화
 	D3DXVec3Normalize(&attribute->_velocity, &attribute->_velocity);
 
-	attribute->_velocity *= 9.0f;
-	
-	//attribute->_color = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
+	attribute->_velocity *= 1.0f;
+
 	attribute->_color = D3DXCOLOR(PSystem::GetRandomFloat(0.0f, 1.0f),
 								PSystem::GetRandomFloat(0.0f, 1.0f), 
 								PSystem::GetRandomFloat(0.0f, 1.0f),
@@ -55,6 +54,7 @@ void PFirework::Update(float timeDelta)
 		// 생존한 파티클만 갱신
 		if (i->_isAlive)
 		{
+			//i->_position += i->_velocity * timeDelta;
 			i->_position += i->_velocity * timeDelta;
 			i->_age += timeDelta;
 

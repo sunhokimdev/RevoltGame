@@ -15,7 +15,7 @@ Firework::~Firework()
 void Firework::Setup()
 {
 	ObjectLoader load;
-	m_pObjMesh = load.LoadMesh(m_vecObjMtlTex, "Objects/firework", "firework.obj");
+	m_pObjMesh = load.LoadMesh(m_vecObjMtlTex, "Objects/pickup", "pickup.obj");
 }
 
 void Firework::Update()

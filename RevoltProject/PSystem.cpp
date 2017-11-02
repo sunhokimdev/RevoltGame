@@ -79,6 +79,10 @@ void PSystem::Render()
 {
 	if (!_particles.empty())
 	{
+		D3DXMATRIXA16 matWorld;
+		D3DXMatrixIdentity(&matWorld);
+		g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+
 		PreRender();
 
 		_device->SetTexture(0, _tex);
