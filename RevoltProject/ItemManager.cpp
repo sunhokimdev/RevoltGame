@@ -54,15 +54,6 @@ void ItemManager::Update()
 	{
 		m_vecItem[i]->LastUpdate();
 	}
-
-	if (g_pKeyManager->isOnceKeyDown(VK_CONTROL))
-	{
-		m_vecItem[m_index]->Create();
-		m_index++;
-
-		if (m_index == m_max)
-			m_index = 0;
-	}
 }
 
 void ItemManager::Render()
@@ -71,6 +62,15 @@ void ItemManager::Render()
 	{
 		m_vecItem[i]->Render();
 	}
+}
+
+void ItemManager::SetFire(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
+{
+	m_vecItem[m_index]->Create(angle,pos);
+	m_index++;
+
+	if (m_index == m_max)
+		m_index = 0;
 }
 
 void ItemManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)

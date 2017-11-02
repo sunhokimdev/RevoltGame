@@ -5,11 +5,13 @@ class cTrack;
 class cLight;
 class cCar;
 class cBillBoardEffect;
+class InGameUI;
 
 class RacingScene : public GameNode
 {
 private:
 
+	InGameUI* m_pInGameUI;
 	cTrack* m_pTrack;
 	cLight* m_pLightSun;
 	std::vector<cCar*> vecCars;

@@ -2,6 +2,8 @@
 #include "cItem.h"
 
 cItem::cItem()
+	: m_fTime(0.0f)
+	, m_id(0)
 {
 }
 
@@ -23,7 +25,7 @@ void cItem::Render()
 	Object::Render();
 }
 
-void cItem::Create()
+void cItem::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {
 }
 

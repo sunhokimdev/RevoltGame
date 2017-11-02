@@ -171,6 +171,7 @@
     <ClInclude Include="cItem.h" />
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cMesh.h" />
+    <ClInclude Include="cMetalBall.h" />
     <ClInclude Include="cNetwork.h" />
     <ClInclude Include="cNetworkCreateRoom.h" />
     <ClInclude Include="cNetworkInRoom.h" />
@@ -279,6 +280,7 @@
     <ClCompile Include="cItem.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cMesh.cpp" />
+    <ClCompile Include="cMetalBall.cpp" />
     <ClCompile Include="cNetwork.cpp" />
     <ClCompile Include="cNetworkCreateRoom.cpp" />
     <ClCompile Include="cNetworkInRoom.cpp" />

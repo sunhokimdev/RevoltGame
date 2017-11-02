@@ -48,6 +48,7 @@ public:
 	void Update();
 	void Render();
 
+	void SetFire(D3DXVECTOR3 angle, D3DXVECTOR3 pos);
 	void SetActorGroup(NxActor* actor, NxCollisionGroup group);
 	void InitCollisionGroup();
 };

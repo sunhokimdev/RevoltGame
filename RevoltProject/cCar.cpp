@@ -153,6 +153,10 @@ void cCar::CtrlPlayer()
 			targetAngle = m_wheelAngle * (m_maxWheelAngle);
 			handle = true;
 		}
+		if (g_pKeyManager->isOnceKeyDown(VK_CONTROL))
+		{
+			g_pItemManager->SetFire(GetRightVec(), GetPosition());
+		}
 		if (!handle)
 		{
 			if (abs(m_wheelAngle) <= m_wheelAcc * 2) m_wheelAngle = 0.0f;

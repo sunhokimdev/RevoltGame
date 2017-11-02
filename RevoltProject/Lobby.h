@@ -11,7 +11,7 @@ class ProfileList;
 /*   로비 UI 클래스   */
 class cCreateProfile;			// 유저 파일 만들기 클래스
 class cNetworkLobby;			// 멀티플레이어 로비 상태
-class InGameUI;					// InGameUI
+//class InGameUI;					// InGameUI
 class cSelectCarLob;			// 자동차 선택UI클래스
 class cViewCarLob;				// 자동차 보여주는 
 class cNetworkCreateRoom;		// 방 생성 클래스
@@ -70,7 +70,7 @@ protected:
 	//===================================================================
 
 	SelectMap*			m_pSelectMap;			// Select Map Class
-	InGameUI*			m_pInGameUI;			// InGame UI;
+	//InGameUI*			m_pInGameUI;			// InGame UI;
 
 	//===================================================================
 	// - written by 정종훈
