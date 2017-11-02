@@ -250,6 +250,8 @@ void cCar::Update()
 	{
 		CtrlPlayer();
 	}
+
+	// PickUp 충돌
 	if (GetPhysXData()->m_pUserData->IsPickUp == NX_TRUE)
 	{
 		if (m_eHoldItem == ITEM_NONE)
@@ -259,6 +261,12 @@ void cCar::Update()
 			//GetPhysXData()->m_pUserData->IsPickUp == NX_FALSE;
 		}
 	}
+	// 과거 위치값
+	for (int i = 3; i >= 0; i--)
+	{
+		m_szPrevPos[i] = m_szPrevPos[i + 1];
+	}
+	m_szPrevPos[0] = m_position;
 	
 }
 

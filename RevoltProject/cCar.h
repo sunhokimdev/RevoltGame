@@ -27,6 +27,9 @@ class cCar : public Object
 	float m_maxWheelAngle;	//바퀴가 꺽이는 최대값. 
 	float m_wheelAcc;		//꺽이는 속도	(비율에 더해지는 값)
 
+	float m_fCurrentSpeed;
+	D3DXVECTOR3 m_szPrevPos[5];
+
 	//AI
 	std::vector<cAI*> m_vecAI;
 	bool m_isAI = false;
