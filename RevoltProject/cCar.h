@@ -35,6 +35,7 @@ public:
 	void SetNxVehicle(NxVehicle* pVehicle) { m_carNxVehicle = pVehicle; }
 	NxVehicle* GetNxVehicle() { return m_carNxVehicle; }
 
+	void LoadCar(std::string carName);
 	void SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc);
 	void CreatePhsyX();
 	void LoadMesh(std::string carName);

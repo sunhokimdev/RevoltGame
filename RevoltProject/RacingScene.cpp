@@ -141,7 +141,7 @@ void RacingScene::UpdateCamera()
 	float FixRange = 0.5;
 	float MaxRange = 2;
 
-	D3DXVECTOR3 carDir = { 1,0,0 };
+	D3DXVECTOR3 carDir = { 0,0,1 };
 	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
 
 	D3DXVECTOR3 carPos = { pos.x,pos.y,pos.z };
