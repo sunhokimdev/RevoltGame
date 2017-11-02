@@ -13,5 +13,8 @@ public:
 	virtual void Setup();
 	virtual void Update();
 	virtual void Render();
+	virtual void Create();
+
+	void SetActorGroup(NxActor * actor, NxCollisionGroup group);
 };
 

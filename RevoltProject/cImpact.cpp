@@ -14,7 +14,7 @@ cImpact::~cImpact()
 
 void cImpact::Setup()
 {
-	m_vecParticleVertex.resize(1000);
+	m_vecParticleVertex.resize(50);
 	for (int i = 0; i < m_vecParticleVertex.size(); ++i)
 	{
 		float fRadius = rand() % 100 / 10.0f;
@@ -79,7 +79,7 @@ void cImpact::Update()
 		{
 			if (i % 2)
 				continue;
-			m_vecParticleVertex[i].c = D3DCOLOR_ARGB(nAlpha, 107, 102, 255); /// : 알파값만 변경
+			m_vecParticleVertex[i].c = D3DCOLOR_ARGB(255, 180, 70, 20); /// : 알파값만 변경
 		}
 	}
 
@@ -104,7 +104,6 @@ void cImpact::Render()
 		g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
 		g_pD3DDevice->SetFVF(ST_PC_VERTEX::FVF);
 		g_pD3DDevice->SetTexture(0, g_pTextureManager->GetTexture("Objects/gravityball/Envstill.bmp"));
-		//g_pD3DDevice->DrawPrimitive(D3DPT_POINTLIST, 0, 100);
 		g_pD3DDevice->DrawPrimitiveUP(D3DPT_POINTLIST,
 			m_vecParticleVertex.size(),
 			&m_vecParticleVertex[0],
