@@ -93,7 +93,7 @@ public:
 	NxU32					nbChildren() { return _children.size(); }
 
 	NxU32					getNbWheels() { return _wheels.size(); }
-	NxWheel*			getWheel(NxU32 i) { NX_ASSERT(i < _wheels.size()); return _wheels[i]; }
+	NxWheel*				getWheel(NxU32 i) { NX_ASSERT(i < _wheels.size()); return _wheels[i]; }
 	NxReal					getCameraDistance() { return _cameraDistance; }
 
 	NxMat34 getGlobalPose() { return _bodyActor->getGlobalPose(); }

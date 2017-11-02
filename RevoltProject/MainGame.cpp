@@ -53,8 +53,11 @@ void MainGame::Setup()
 
 	g_pItemManager->Init();
 
-	/*   사운드 초기화 작업   */
 	SetAddSound();
+
+
+
+	MgrPhysXScene->setUserTriggerReport(new TriggerCallback());
 }
 
 void MainGame::Update()

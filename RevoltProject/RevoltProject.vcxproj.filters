@@ -121,6 +121,9 @@
     <Filter Include="PhysX\NxFile">
       <UniqueIdentifier>{bf8fb7d6-8a6e-4a8f-910f-f69845dcbb6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{975a44ab-b41d-4632-ba53-23a592bbc9b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -414,6 +417,18 @@
     <ClInclude Include="cGravityball.h">
       <Filter>Car\Item</Filter>
     </ClInclude>
+    <ClInclude Include="cAI_CtrlHandel.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="cAI_CtrlSpeed.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="cAI.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="cAI_Collider.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -664,6 +679,18 @@
     </ClCompile>
     <ClCompile Include="cGravityball.cpp">
       <Filter>Car\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_CtrlHandel.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_CtrlSpeed.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_Collider.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

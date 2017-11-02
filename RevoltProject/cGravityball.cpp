@@ -3,6 +3,7 @@
 #include "cImpact.h"
 
 cGravityball::cGravityball()
+	: m_impactIndex(0)
 {
 }
 
@@ -13,6 +14,15 @@ cGravityball::~cGravityball()
 
 void cGravityball::Setup()
 {
+	cItem::Setup();
+
+	m_vecImpact.resize(100);
+
+	for (int i = 0;i < m_vecImpact.size();i++)
+	{
+		m_vecImpact[i] = new cImpact;
+		m_vecImpact[i]->Setup();
+	}
 }
 
 void cGravityball::Update()
@@ -20,6 +30,11 @@ void cGravityball::Update()
 	for (int i = 0;i < m_vecImpact.size();++i)
 	{
 		m_vecImpact[i]->Update();
+	}
+
+	for (int i = 0;i < m_vecPhysX.size();++i)
+	{
+		MoveActorOnPath(m_vecPhysX[i]->pTrigger->m_pActor, i);
 	}
 }
 
@@ -29,6 +44,31 @@ void cGravityball::Render()
 	{
 		m_vecImpact[i]->Render();
 	}
+
+	cItem::Render();
+}
+
+void cGravityball::Create()
+{
+	ST_PHYSX* pPhysX = new ST_PHYSX;
+
+	USERDATA* user1 = new USERDATA;
+	user1->ID = 2;
+
+	pPhysX->pos = NxVec3(5, 0, 3);
+
+	pPhysX->pPhysX = new cPhysX;
+	pPhysX->pTrigger = new cPhysX;
+	
+	pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), user1);
+	pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(3.0f, 0.0f, 0.0f), user1, true);
+	pPhysX->pPhysX->m_pActor->addForce(NxVec3(30000, 0, 0));
+
+	this->SetPhysXData(pPhysX->pPhysX);
+
+	SetActorGroup(pPhysX->pPhysX->m_pActor, 2);
+
+	m_vecPhysX.push_back(pPhysX);
 }
 
 void cGravityball::MoveActorOnPath(NxActor * actor, int index)

@@ -25,8 +25,13 @@ void LobbyScene::Setup()
 	m_pLobby = new Lobby;
 	m_pLobby->Setup();
 
+	//앰비언트조명
 	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(100, 100, 100));
 
+	//===========================
+	// write by 이태섭
+	// 로비 조명효과 추가
+	// ==========================
 	SetupLight();
 	
 }
