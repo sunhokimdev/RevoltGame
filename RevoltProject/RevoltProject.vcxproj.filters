@@ -121,6 +121,9 @@
     <Filter Include="PhysX\NxFile">
       <UniqueIdentifier>{bf8fb7d6-8a6e-4a8f-910f-f69845dcbb6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{975a44ab-b41d-4632-ba53-23a592bbc9b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -393,17 +396,38 @@
     <ClInclude Include="PhysX\NxWheelDesc.h">
       <Filter>PhysX\NxFile</Filter>
     </ClInclude>
-    <ClInclude Include="cAI.h">
+    <ClInclude Include="cBillBoardEffect.h">
       <Filter>NewClass</Filter>
     </ClInclude>
-    <ClInclude Include="cAI_CtrlSpeed.h">
-      <Filter>NewClass</Filter>
+    <ClInclude Include="cContactUser.h">
+      <Filter>Car\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cImpact.h">
+      <Filter>Car\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cImapactManager.h">
+      <Filter>Car\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cWbomb.h">
+      <Filter>Car\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cFirework.h">
+      <Filter>Car\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cGravityball.h">
+      <Filter>Car\Item</Filter>
     </ClInclude>
     <ClInclude Include="cAI_CtrlHandel.h">
-      <Filter>NewClass</Filter>
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="cAI_CtrlSpeed.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="cAI.h">
+      <Filter>AI</Filter>
     </ClInclude>
     <ClInclude Include="cAI_Collider.h">
-      <Filter>NewClass</Filter>
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -635,17 +659,38 @@
     <ClCompile Include="PhysX\NxAllVehicles.cpp">
       <Filter>PhysX\NxFile</Filter>
     </ClCompile>
-    <ClCompile Include="cAI.cpp">
+    <ClCompile Include="cBillBoardEffect.cpp">
       <Filter>NewClass</Filter>
     </ClCompile>
-    <ClCompile Include="cAI_CtrlSpeed.cpp">
-      <Filter>NewClass</Filter>
+    <ClCompile Include="cContactUser.cpp">
+      <Filter>Car\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cImpact.cpp">
+      <Filter>Car\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cImapactManager.cpp">
+      <Filter>Car\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cWbomb.cpp">
+      <Filter>Car\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cFirework.cpp">
+      <Filter>Car\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cGravityball.cpp">
+      <Filter>Car\Item</Filter>
     </ClCompile>
     <ClCompile Include="cAI_CtrlHandel.cpp">
-      <Filter>NewClass</Filter>
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_CtrlSpeed.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
     <ClCompile Include="cAI_Collider.cpp">
-      <Filter>NewClass</Filter>
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

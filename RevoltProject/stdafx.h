@@ -66,7 +66,7 @@
 #include <NxDebugRenderable.h>
 #include <NxCooking.h>
 #include <NxStream.h>
-
+#include <NxUserContactReport.h>
 
 /*   사운드 관련 헤더파일   */
 #pragma comment (lib, "fmodlib/fmodex_vc.lib")

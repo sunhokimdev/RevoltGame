@@ -448,6 +448,7 @@ public:
 
 		if (pUserData)
 			vehicleDesc.userData = pUserData;
+		
 		else
 			vehicleDesc.userData = NULL;
 

@@ -320,9 +320,11 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 
 void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, NxTriggerFlag status)
 {
+	USERDATA* pUserData0 = NULL;
+	USERDATA* pUserData1 = NULL;
 
-	USERDATA* pUserData0 = (USERDATA*)triggerShape.getActor().userData;
-	USERDATA* pUserData1 = (USERDATA*)otherShape.getActor().userData;
+	pUserData0 = (USERDATA*)triggerShape.getActor().userData;
+	pUserData1 = (USERDATA*)otherShape.getActor().userData;
 
 	if (pUserData0 == NULL || pUserData1 == NULL) return;
 
@@ -346,12 +348,25 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 	}
 	else if (status & NX_TRIGGER_ON_LEAVE)
 	{
-		pUserData0->TriggerPairFlag = NX_TRIGGER_ON_LEAVE;
-		pUserData1->TriggerPairFlag = NX_TRIGGER_ON_LEAVE;
-	}
-	else
-	{
-		pUserData0->TriggerPairFlag = 0;
-		pUserData1->TriggerPairFlag = 0;
+
+		//	std::cout << "NX_TRIGGER_ON_ENTER";
+		// 2°¡ Áß·ÂÀÚÅº
+		if (pUserData0->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
+		{
+			triggerShape.getActor().addForce(NxVec3(0, 300000, 0));
+			triggerShape.getActor().addTorque(NxVec3(1.5f, 0, 0));
+		}
+		else if (pUserData1->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
+		{
+			otherShape.getActor().addForce(NxVec3(0, 300000, 0));
+			otherShape.getActor().addLocalTorque(NxVec3(1.5f, 0, 0));
+		}
+
+		else
+		{
+			pUserData0->TriggerPairFlag = 0;
+			pUserData1->TriggerPairFlag = 0;
+		}
 	}
 }
+

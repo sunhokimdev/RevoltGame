@@ -15,13 +15,25 @@ void cItem::Setup()
 
 void cItem::Update()
 {
-	//물리적용
-	this->GetPhysXData()->m_pActor;
-
 	Object::Update();
 }
 
 void cItem::Render()
 {
 	Object::Render();
+}
+
+void cItem::Create()
+{
+}
+
+void cItem::SetActorGroup(NxActor * actor, NxCollisionGroup group)
+{
+	NxU32 nbShapes = actor->getNbShapes();
+	NxShape** shapes = (NxShape**)actor->getShapes();
+
+	while (nbShapes--)
+	{
+		shapes[nbShapes]->setGroup(group);
+	}
 }
