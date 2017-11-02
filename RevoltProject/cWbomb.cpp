@@ -45,11 +45,13 @@ void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 
 	ObjectLoader::LoadMesh(pPhysX->pMesh, "Objects/wbomb", "wbomb.obj");
 
+
 	NxVec3 force;
 
 	force.x = angle.x * 10000;
 	force.y = 7000;
 	force.z = angle.z * 10000;
+
 
 	pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f),E_PHYSX_MATERIAL_CAR, user1);
 	pPhysX->pPhysX->m_pActor->addForce(force);
