@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "cPhysXManager.h"
 #include "DEBUG_RENDERER.h"
-#include "cCar.h"
+
 
 #include "NxCooking.h"
 
@@ -320,9 +320,11 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 
 void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, NxTriggerFlag status)
 {
+	USERDATA* pUserData0 = NULL;
+	USERDATA* pUserData1 = NULL;
 
-	USERDATA* pUserData0 = (USERDATA*)triggerShape.getActor().userData;
-	USERDATA* pUserData1 = (USERDATA*)otherShape.getActor().userData;
+	pUserData0 = (USERDATA*)triggerShape.getActor().userData;
+	pUserData1 = (USERDATA*)otherShape.getActor().userData;
 
 	if (pUserData0 == NULL || pUserData1 == NULL) return;
 
@@ -331,6 +333,11 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 		pUserData0->TriggerPairFlag = NX_TRIGGER_ON_ENTER;
 		pUserData1->TriggerPairFlag = NX_TRIGGER_ON_ENTER;
 
+
+		if (pUserData0->USER_TAG == 0)
+		{
+			pUserData1->IsPickUp = NX_TRUE;
+		}
 	}
 	else if (status & NX_TRIGGER_ON_STAY)
 	{
@@ -340,109 +347,25 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 	}
 	else if (status & NX_TRIGGER_ON_LEAVE)
 	{
-		pUserData0->TriggerPairFlag = NX_TRIGGER_ON_LEAVE;
-		pUserData1->TriggerPairFlag = NX_TRIGGER_ON_LEAVE;
-	}
-	else
-	{
-		pUserData0->TriggerPairFlag = 0;
-		pUserData1->TriggerPairFlag = 0;
-	}
-}
 
-//NxVehicle* createCarWithDesc(NxVec3 pos, bool frontWheelDrive, bool backWheelDrive)
-NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, bool frontWheelDrive, bool backWheelDrive)
-{
-	//monsterTruck = true;
-	NxVehicleDesc vehicleDesc;
-	NxBoxShapeDesc boxShapes[2];
+		//	std::cout << "NX_TRIGGER_ON_ENTER";
+		// 2가 중력자탄
+		if (pUserData0->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
+		{
+			triggerShape.getActor().addForce(NxVec3(0, 300000, 0));
+			triggerShape.getActor().addTorque(NxVec3(1.5f, 0, 0));
+		}
+		else if (pUserData1->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
+		{
+			otherShape.getActor().addForce(NxVec3(0, 300000, 0));
+			otherShape.getActor().addLocalTorque(NxVec3(1.5f, 0, 0));
+		}
 
-	if (carspec.vecBoxDesc.size() == 2)
-	{
-		vehicleDesc.carShapes.pushBack(&carspec.vecBoxDesc[0]);
-		vehicleDesc.carShapes.pushBack(&carspec.vecBoxDesc[1]);
-	}
-	else
-	{
-		boxShapes[0].dimensions.set(0.65, 0.1f, 0.3f);
-		boxShapes[0].localPose.t.set(0.f, 0.3f, 0.f);
-		boxShapes[0].materialIndex = 1;
-		vehicleDesc.carShapes.pushBack(&boxShapes[0]);
-
-		boxShapes[1].dimensions.set(0.3, 0.1f, 0.25f);
-		boxShapes[1].localPose.t.set(-0.1f, 0.4, 0.f);
-		boxShapes[1].materialIndex = 1;
-		vehicleDesc.carShapes.pushBack(&boxShapes[1]);
-	}
-
-	vehicleDesc.position = pos;
-	vehicleDesc.mass = 1000;//monsterTruck ? 12000 : 
-	vehicleDesc.digitalSteeringDelta = 0.04f;
-	vehicleDesc.steeringMaxAngle = 30.f;
-	vehicleDesc.motorForce = 3500.f;//monsterTruck?180.f:
-	vehicleDesc.maxVelocity = 30.f;//(monsterTruck)?20.f:
-
-	vehicleDesc.centerOfMass.set(0.f, 0.1f, 0.f);
-
-	NxWheelDesc wheelDesc[4];
-	for (NxU32 i = 0; i < 4; i++)
-	{
-		wheelDesc[i].wheelApproximation = 10;
-		wheelDesc[i].wheelRadius = 0.1f;
-		wheelDesc[i].wheelWidth = 0.01f;
-		wheelDesc[i].wheelSuspension = 0.00f;
-		wheelDesc[i].springRestitution = 7000;
-		wheelDesc[i].springDamping = 800;
-		wheelDesc[i].springBias = 0.2f;
-		wheelDesc[i].maxBrakeForce = 1.f;
-		wheelDesc[i].wheelFlags |= NX_WF_USE_WHEELSHAPE;
-
-
-		//바퀴의 마찰력
-		wheelDesc[i].frictionToFront = 3.f;
-		wheelDesc[i].frictionToSide = 0.7f;
-
-		vehicleDesc.carWheels.pushBack(&wheelDesc[i]);
-	}
-
-	if (carspec.vecWheelPos.size() == 4)
-	{
-#define WHEELPOS carspec.vecWheelPos
-
-		wheelDesc[0].position.set(WHEELPOS[0].x, WHEELPOS[0].y, WHEELPOS[0].z);
-		wheelDesc[1].position.set(WHEELPOS[1].x, WHEELPOS[1].y, WHEELPOS[1].z);
-		wheelDesc[2].position.set(WHEELPOS[2].x, WHEELPOS[2].y, WHEELPOS[2].z);
-		wheelDesc[3].position.set(WHEELPOS[3].x, WHEELPOS[3].y, WHEELPOS[3].z);
-	}
-	else
-	{
-		wheelDesc[0].position.set(0.35f, 0.2f, -0.29f);
-		wheelDesc[1].position.set(0.35, 0.2f, 0.29);
-		wheelDesc[2].position.set(-0.45, 0.2f, -0.29);
-		wheelDesc[3].position.set(-0.45, 0.2f, 0.29);
-	}
-
-
-	NxU32 flags = NX_WF_BUILD_LOWER_HALF;
-	wheelDesc[0].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
-	wheelDesc[1].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
-	wheelDesc[2].wheelFlags |= (backWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_AFFECTED_BY_HANDBRAKE | flags;
-	wheelDesc[3].wheelFlags |= (backWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_AFFECTED_BY_HANDBRAKE | flags;
-
-	vehicleDesc.steeringSteerPoint.set(1.8f, 0, 0);
-	vehicleDesc.steeringTurnPoint.set(-1.5f, 0, 0);
-
-
-
-	NxVehicle* vehicle = NxVehicle::createVehicle(MgrPhysXScene, &vehicleDesc);
-	NxQuat q;
-	q.fromAngleAxis(0.f, NxVec3(0.0f, 1.0f, 0.0f));
-	vehicle->getActor()->setGlobalOrientationQuat(q);
-
-	if (vehicle) return vehicle;
-	else
-	{
-		std::string pritfOut("자동차가의 물리정보가 생성되지 않았습니다.");
-		MessageBoxA(g_hWnd, pritfOut.c_str(), "심각한 오류", MB_OK);
+		else
+		{
+			pUserData0->TriggerPairFlag = 0;
+			pUserData1->TriggerPairFlag = 0;
+		}
 	}
 }
+

@@ -16,11 +16,10 @@ public:
 	std::string trackName;
 
 	int m_nLightIdx;
-
 	//인게임 에 들어갈 장애물 등등
 	std::vector<Object*>	m_vecObject;
-
-
+	//멥에 있는 체크박스
+	std::map<std::string, Object*>	m_mapCheckkBox;
 	//NxVehicle* pVeh;
 
 	void Update();
@@ -30,5 +29,7 @@ public:
 	void SetData();
 	void LoadTrack(std::string FileName);
 	void CreateTrackPhysX();
+
+	int GetTrackCheckBox() { return m_mapCheckkBox.size(); }
 };
 

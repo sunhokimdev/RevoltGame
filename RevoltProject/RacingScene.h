@@ -11,8 +11,9 @@ class RacingScene : public GameNode
 private:
 
 	cTrack* m_pTrack;
-	cLight* m_pLightSun;
 	std::vector<cCar*> vecCars;
+
+	cLight* m_pLightSun;
 	int m_nLightIDCount;
 
 	//

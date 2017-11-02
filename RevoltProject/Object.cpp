@@ -42,7 +42,7 @@ void Object::LastUpdate()
 
 void Object::Render()
 {
-	if (GetPhysXData()) GetPhysXData()->m_pUserData->Init();
+	if (GetPhysXData()) if(GetPhysXData()->m_pUserData) GetPhysXData()->m_pUserData->Init();
 
 	MgrD3DDevice->SetTransform(D3DTS_WORLD, &cTransform::GetMatrix());
 	if (GetMeshData()) GetMeshData()->Render();
