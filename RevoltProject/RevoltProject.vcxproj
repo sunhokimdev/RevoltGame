@@ -147,6 +147,10 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cAI.h" />
+    <ClInclude Include="cAI_Collider.h" />
+    <ClInclude Include="cAI_CtrlHandel.h" />
+    <ClInclude Include="cAI_CtrlSpeed.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Car.h" />
@@ -167,6 +171,7 @@
     <ClInclude Include="cItem.h" />
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cMesh.h" />
+    <ClInclude Include="cMetalBall.h" />
     <ClInclude Include="cNetwork.h" />
     <ClInclude Include="cNetworkCreateRoom.h" />
     <ClInclude Include="cNetworkInRoom.h" />
@@ -251,6 +256,10 @@
     <ClInclude Include="WheelTire.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cAI.cpp" />
+    <ClCompile Include="cAI_Collider.cpp" />
+    <ClCompile Include="cAI_CtrlHandel.cpp" />
+    <ClCompile Include="cAI_CtrlSpeed.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Car.cpp" />
@@ -271,6 +280,7 @@
     <ClCompile Include="cItem.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cMesh.cpp" />
+    <ClCompile Include="cMetalBall.cpp" />
     <ClCompile Include="cNetwork.cpp" />
     <ClCompile Include="cNetworkCreateRoom.cpp" />
     <ClCompile Include="cNetworkInRoom.cpp" />

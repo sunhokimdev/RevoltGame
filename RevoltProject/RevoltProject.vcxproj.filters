@@ -429,6 +429,9 @@
     <ClInclude Include="cAI_Collider.h">
       <Filter>AI</Filter>
     </ClInclude>
+    <ClInclude Include="cMetalBall.h">
+      <Filter>Car\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -691,6 +694,9 @@
     </ClCompile>
     <ClCompile Include="cAI_Collider.cpp">
       <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="cMetalBall.cpp">
+      <Filter>Car\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
