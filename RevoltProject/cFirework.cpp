@@ -28,7 +28,7 @@ void cFirework::Create()
 	ST_PHYSX* pPhysX = new ST_PHYSX;
 
 	USERDATA* user1 = new USERDATA;
-	user1->ID = 1;
+	user1->USER_TAG = ePhysXTag::E_PHYSX_TAG_FIREWORK;
 
 	pPhysX->pos = NxVec3(5, 0, 3);
 
@@ -38,7 +38,7 @@ void cFirework::Create()
 
 	ObjectLoader::LoadMesh(pPhysX->pMesh, "Objects/firework", "firework.obj");
 
-	pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), user1);
+	pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f),E_PHYSX_MATERIAL_NONE, user1);
 	pPhysX->pPhysX->m_pActor->addForce(NxVec3(10000, 7000, 0));
 
 

@@ -42,7 +42,7 @@ void cCar::CreatePhsyX()
 	{
 		cPhysX* physX = new cPhysX;
 		physX->m_pActor = m_carNxVehicle->getActor();
-		physX->m_pUserData = (USERDATA*)m_carNxVehicle->userData;
+		physX->m_pUserData = (USERDATA*)m_carNxVehicle->getActor()->userData;
 
 		SetPhysXData(physX);
 		physX->SetPosition(NxVec3(0, 0, 0));

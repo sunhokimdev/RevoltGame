@@ -25,13 +25,13 @@ class cCar :public Object
 	bool m_isAI = false;
 
 	//track ฐüทร
-
-	int countCheckTrack;
-
+	SYNTHESIZE(int, totalCountCheckBox, TotalChexkBox);
+	int countChectBox;
+	int countTrack;
 
 	//Item
-
-
+	enum ItemTag {a,b,c,d};
+	ItemTag m_IitemTag;
 
 public:
 	cCar();

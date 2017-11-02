@@ -67,6 +67,8 @@ struct PHYSXDATA
 struct USERDATA
 {
 	ePhysXTag USER_TAG;
+	NX_BOOL IsPickUp;
+
 	NxU32 ContactPairFlag;
 	NxU32 TriggerPairFlag;
 
@@ -446,16 +448,13 @@ public:
 		vehicleDesc.steeringTurnPoint.set(-1.5f, 0, 0);
 
 
-		if (pUserData)
-			vehicleDesc.userData = pUserData;
-		
-		else
-			vehicleDesc.userData = NULL;
-
 		NxVehicle* vehicle = NxVehicle::createVehicle(MgrPhysXScene, &vehicleDesc);
 		NxQuat q;
 		q.fromAngleAxis(0.f, NxVec3(0.0f, 1.0f, 0.0f));
 		vehicle->getActor()->setGlobalOrientationQuat(q);
+
+		if (pUserData) vehicle->getActor()->userData = pUserData;
+		else vehicle->getActor()->userData = NULL;
 
 		if (vehicle) return vehicle;
 		else

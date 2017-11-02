@@ -11,16 +11,16 @@
 cTrack::cTrack()
 	:m_nLightIdx(11)
 {
-//	pVeh = NULL;
+	//	pVeh = NULL;
 
-	//임시 등록 데이터
+		//임시 등록 데이터
 	cTrack::SetData();
 
-//	*camPos = D3DXVECTOR3(0 - 5, 0 + 5, 0);
-//	*camLookTarget = D3DXVECTOR3(0, 0, 0);
-//
-//	g_pCamManager->SetCamPos(camPos);
-//	g_pCamManager->SetLookAt(camLookTarget);
+	//	*camPos = D3DXVECTOR3(0 - 5, 0 + 5, 0);
+	//	*camLookTarget = D3DXVECTOR3(0, 0, 0);
+	//
+	//	g_pCamManager->SetCamPos(camPos);
+	//	g_pCamManager->SetLookAt(camLookTarget);
 }
 
 
@@ -62,12 +62,12 @@ void cTrack::SetData()
 void cTrack::LoadTrack(std::string FileName)
 {
 	Destroy();// 기존에 가지고 있던 정보 버리기
+
 	std::string fullpath = "Maps/" + FileName + ".scn";
 	std::fstream Load;
 	Load.open(fullpath);
 
 	char szTemp[1024];
-
 	if (Load.is_open())
 	{
 		while (1)
@@ -98,8 +98,11 @@ void cTrack::LoadTrack(std::string FileName)
 				ePhysXTag physxTag = E_PHYSX_TAG_NONE;
 				switch (tag)
 				{
-				case E_OBJECT_CHECKBOX:     
-					Obj = new cCheckBox;		physxTag = ePhysXTag::E_PHYSX_TAG_CHECKBOX;	break;
+				case E_OBJECT_CHECKBOX:
+				{
+					Obj = new cCheckBox;
+					physxTag = ePhysXTag::E_PHYSX_TAG_CHECKBOX;	break;
+				}
 				case E_OBJECT_FOLLOWPOINT:   Obj = new cFollowPoint;	physxTag = ePhysXTag::E_PHYSX_TAG_NONE;	break;
 				case E_OBJECT_CAR: break;
 				case E_OBJECT_MAP: break;
@@ -120,7 +123,7 @@ void cTrack::LoadTrack(std::string FileName)
 				NxVec3 position(0, 0, 0);
 				NxVec3 sizeValue(0, 0, 0);
 				NxF32 matR[9] = { 1,0,0,0,1,0,0,0,1 };
-				
+
 				bool isTrigger = false;
 				bool isStatic_ = false;
 				bool isGravity = true;
@@ -267,6 +270,27 @@ void cTrack::LoadTrack(std::string FileName)
 							light->SetupPoint(m_nLightIdx++, C_YELLOW, light->GetPosition(), 5);
 							g_pLightManager->AddLight(light->GetLightIndex(), light);
 						}
+						else if (Obj->GetTag() == E_OBJECT_CHECKBOX)
+						{
+							//맵에 배치되어있는 장애물들...
+							NxActor* pActor = MgrPhysX->CreateActor(
+								type,
+								position + worldPosition + localPosition,
+								matR,
+								sizeValue,
+								E_PHYSX_MATERIAL_NONE,
+								pUserData,
+								isTrigger,
+								isStatic_,
+								isGravity);
+							if (pActor)
+							{
+								physx->m_pActor = pActor;
+								Obj->SetPhysXData(physx);
+							}
+							std::string id = Obj->GetObjName();
+							m_mapCheckkBox[id] = Obj;
+						}
 						else
 						{
 							//맵에 배치되어있는 장애물들...
@@ -289,7 +313,7 @@ void cTrack::LoadTrack(std::string FileName)
 							m_vecObject.push_back(Obj);
 						}
 						break;
-						
+
 					}
 				} // << : while Object
 			}
@@ -305,16 +329,16 @@ void cTrack::LoadTrack(std::string FileName)
 
 
 
-//	NxActorDesc aDesc;
-//	NxPlaneShapeDesc sDesc;
-//
-//	aDesc.setToDefault();
-//	sDesc.setToDefault();
-//
-//	aDesc.shapes.pushBack(&sDesc);
-//	aDesc.globalPose.t = NxVec3(0, 0, 0);
-//
-//	MgrPhysXScene->createActor(aDesc);
+	//	NxActorDesc aDesc;
+	//	NxPlaneShapeDesc sDesc;
+	//
+	//	aDesc.setToDefault();
+	//	sDesc.setToDefault();
+	//
+	//	aDesc.shapes.pushBack(&sDesc);
+	//	aDesc.globalPose.t = NxVec3(0, 0, 0);
+	//
+	//	MgrPhysXScene->createActor(aDesc);
 
 }
 

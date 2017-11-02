@@ -328,17 +328,16 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 
 	if (pUserData0 == NULL || pUserData1 == NULL) return;
 
-	if (pUserData0->USER_TAG == ePhysXTag::E_PHYSX_TAG_CHECKBOX)
-	{
-		std::cout << pUserData0->USER_TAG << std::endl;
-		std::cout << pUserData1->USER_TAG << std::endl;
-		std::cout << "---------------" << std::endl;
-	}
 	if (status & NX_TRIGGER_ON_ENTER)
 	{
 		pUserData0->TriggerPairFlag = NX_TRIGGER_ON_ENTER;
 		pUserData1->TriggerPairFlag = NX_TRIGGER_ON_ENTER;
 
+
+		if (pUserData0->USER_TAG == 0)
+		{
+			pUserData1->IsPickUp = NX_TRUE;
+		}
 	}
 	else if (status & NX_TRIGGER_ON_STAY)
 	{

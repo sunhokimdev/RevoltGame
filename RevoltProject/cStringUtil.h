@@ -116,13 +116,13 @@ public:
 		}
 	//	datas->push_back(text->substr(startIndex, text->length() - startIndex));
 	}
-	static void Split(std::vector<std::string>* datas, CHAR* cutChar, std::string* text)
+	static void Split(std::vector<std::string>* datas, CHAR cutChar, std::string* text)
 	{
 		datas->clear();
 		int startIndex = 0;
 		for (int i = 0; i < text->length(); i++)
 		{
-			if ((*text)[i] == *cutChar)
+			if ((*text)[i] == cutChar)
 			{
 				std::string pushData = text->substr(startIndex, i - startIndex);
 				if (pushData.length() > 0)
