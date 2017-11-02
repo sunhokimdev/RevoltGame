@@ -47,13 +47,18 @@ void MainGame::Setup()
 	g_SceneManager->AddScene("Lobby", new LobbyScene);
 	g_SceneManager->AddScene("Race", new RacingScene);
 
+
+
 	g_SceneManager->ChangeScene("Race");
 
 
 	g_pItemManager->Init();
 
-	/*   사운드 초기화 작업   */
 	SetAddSound();
+
+
+
+	MgrPhysXScene->setUserTriggerReport(new TriggerCallback());
 }
 
 void MainGame::Update()

@@ -19,9 +19,6 @@
 
 //#include <NxConvexMeshDesc.h>
 
-
-
-
 #define MgrPhysX		cPhysXManager::GetInstance()
 #define MgrPhysXScene	cPhysXManager::GetInstance()->GetPhysXScene()
 #define MgrPhysXSDK		cPhysXManager::GetInstance()->GetPhysXSDK()
@@ -31,6 +28,28 @@
 #define  g_pPhysXScene	  MgrPhysXScene	
 #define  g_pPhysXSDK	  MgrPhysXSDK		
 #define  g_pPhysXData	  MgrPhysXData	
+enum ePhysXTag
+{
+	E_PHYSX_TAG_NONE = 0		//충돌 이벤트에서 딱히 해줄게 없는 것들...
+	, E_PHYSX_TAG_CHECKBOX		//체크 박스
+	, E_PHYSX_TAG_CAR			//
+	, E_PHYSX_TAG_FIREWORK
+	, E_PHYSX_TAG_WHATEBOMB
+	, E_PHYSX_TAG_METALBALL
+	, E_PHYSX_TAG_GRIVATEBALL
+	, E_PHYSX_TAG_END
+};
+
+enum eMaterialTag
+{
+	E_PHYSX_MATERIAL_NONE = 0 // 존재하지 않은 제질
+	, E_PHYSX_MATERIAL_MAP
+	, E_PHYSX_MATERIAL_CAR
+	, E_PHYSX_MATERIAL_03
+	, E_PHYSX_MATERIAL_04
+	, E_PHYSX_MATERIAL_05
+	, E_PHYSX_MATERIAL_06
+};
 
 struct PHYSXDATA
 {
@@ -43,19 +62,29 @@ struct PHYSXDATA
 		RaycastClosestShapePosition = NxVec3(0, 0, 0);
 	}
 };
+
 struct USERDATA
 {
+	ePhysXTag USER_TAG;
 	NxU32 ContactPairFlag;
+	NxU32 TriggerPairFlag;
+
 	NX_BOOL RaycastClosestShape;
 	NX_BOOL RaycastAllShape;
 	NxVec3	RayHitPos;
-	USERDATA() { Init(); }
-	void Init()
+	USERDATA()
 	{
+		USER_TAG = E_PHYSX_TAG_NONE;
 		ContactPairFlag = 0;
+		TriggerPairFlag = 0;
 		RaycastClosestShape = NX_FALSE;
 		RaycastAllShape = NX_FALSE;
-		//	RayHitPos = NxVec3(0, 0, 0);
+		RayHitPos = NxVec3(0, 0, 0);
+	}
+	void Init()
+	{
+		RaycastClosestShape = NX_FALSE;
+		RaycastAllShape = NX_FALSE;
 	}
 };
 
@@ -127,11 +156,6 @@ public:
 	NxTriangleMeshShapeDesc CreateTringleMesh(ID3DXMesh* pMesh, D3DXMATRIXA16* matS = NULL);
 	NxBoxShapeDesc CreateBoxShape(int materialIndex, NxVec3 boxSize);
 
-
-
-
-
-
 	NxVec3 D3DVecToNxVec(D3DXVECTOR3& d3d)
 	{
 		NxVec3 vec;
@@ -160,136 +184,6 @@ public:
 	//CreateActor Actor 를 만들어 매니저에 등록후 반환한다.
 	//1
 	//NxShapeType
-	//NX_SHAPE_SPHERE		:	NxVec3(radius, 0, 0);
-	//NX_SHAPE_BOX			:	NxVec3(width/2, height/2, deep/2);
-	//NX_SHAPE_CAPSULE		:	NxVec3(radius, height, 0);
-	//NX_SHAPE_WHEEL		:	NxVec3(radius, 0, 0);
-	//2
-	//NxU32 : NxBodyFlag
-	//0, NULL							:	정적 객체
-	//NX_BF_DISABLE_GRAVITY				:	중력무력화
-	//(default) NX_BF_VISUALIZATION		:	시각화
-	//NX_BF_KINEMATIC					:	다른 객체와 물리적 충돌을 하지 않음.					
-	//NX_BF_ENERGY_SLEEP_TEST			:	에너지 기반 절전 알고리즘을 활성화 (default)
-	//NX_BF_FILTER_SLEEP_VEL			:	순간적인 움직임 끄기
-	//3
-	//USERDATA*							:	유저 데이터(충돌체크)
-	//4	
-	//NxVec3 (x, y, z);					:	type 에 다른 설정값
-	//5	
-	//materialIndex						:	재질정보(미리 메니저에 등록외어있어야 한다)
-	//density							:	밀도 정보 (크기가 커지면 당연이 총 무게는 증가한다.)
-	//6	
-	//trMatrix							:	엑터의 Matrix정보 ( = matR * matT) 
-	NxActor* CreateActor(NxShapeType type, NxU32 shapeFlag, NxU32 bodyFlag, bool isStatic,
-		USERDATA* pUserData, NxVec3 sizeValue, int materialIndex, float density
-		, D3DXMATRIX trMatrix)
-	{
-
-		NxActorDesc actorDesc;	actorDesc.setToDefault();
-		NxBodyDesc bodyDesc;	bodyDesc.setToDefault();
-		NxShapeDesc* shapeDesc = NULL;
-
-		switch (type)
-		{
-		case NX_SHAPE_PLANE: {
-			break;
-		}
-		case NX_SHAPE_SPHERE: {
-			NxSphereShapeDesc desc; desc.setToDefault();
-			desc.materialIndex - materialIndex;
-			desc.radius = sizeValue.x;
-			break;
-		}
-		case NX_SHAPE_BOX: {
-			NxBoxShapeDesc desc; desc.setToDefault();
-			desc.materialIndex = materialIndex;
-			desc.dimensions = sizeValue;
-			desc.shapeFlags |= shapeFlag;
-			shapeDesc = &desc;
-			break;
-		}
-		case NX_SHAPE_CAPSULE: {
-			NxCapsuleShapeDesc desc; desc.setToDefault();
-			desc.materialIndex = materialIndex;
-			desc.radius = sizeValue.x;
-			desc.height = sizeValue.y;
-			shapeDesc = &desc;
-			break;
-		}
-		case NX_SHAPE_WHEEL: {
-			NxWheelShapeDesc desc; desc.setToDefault();
-			desc.materialIndex = materialIndex;
-			desc.radius = 0;
-			shapeDesc = &desc;
-			break;
-		}
-		case NX_SHAPE_CONVEX: {
-			break;
-		}
-		case NX_SHAPE_MESH: {
-			break;
-		}
-		case NX_SHAPE_HEIGHTFIELD: {
-			break;
-		}
-		case NX_SHAPE_RAW_MESH: {
-			break;
-		}
-		case NX_SHAPE_COMPOUND: {
-			break;
-		}
-		case NX_SHAPE_COUNT: {
-			break;
-		}
-		case NX_SHAPE_FORCE_DWORD: {
-			break;
-		}
-		default:
-			break;
-		}
-		actorDesc.shapes.pushBack(shapeDesc);
-
-		if (isStatic)
-		{
-			bodyDesc.flags |= bodyFlag;
-			actorDesc.body = &bodyDesc;
-			actorDesc.density = density;
-		}
-		else
-		{
-			actorDesc.body = NULL;
-		}
-
-		actorDesc.globalPose.t = NxVec3(trMatrix._41, trMatrix._42, trMatrix._43);
-		NxF32 mtl[9];
-		mtl[0] = trMatrix._11;
-		mtl[1] = trMatrix._12;
-		mtl[2] = trMatrix._13;
-		mtl[3] = trMatrix._21;
-		mtl[4] = trMatrix._22;
-		mtl[5] = trMatrix._23;
-		mtl[6] = trMatrix._31;
-		mtl[7] = trMatrix._32;
-		mtl[8] = trMatrix._33;
-		actorDesc.globalPose.M.setColumnMajor(mtl);
-
-		//		mtl = NULL;
-
-		if (pUserData)
-		{
-			pUserData->ContactPairFlag = 0;
-			pUserData->RaycastClosestShape = NX_FALSE;
-			actorDesc.userData = pUserData;
-		}
-
-		return MgrPhysXScene->createActor(actorDesc);
-	}
-
-
-	//CreateActor
-	//1
-	//NxShapeType				sizeValue
 	//NX_SHAPE_SPHERE		:	NxVec3(지름값, 0, 0);
 	//NX_SHAPE_BOX			:	NxVec3(width, height, deep);
 	//NX_SHAPE_CAPSULE		:	NxVec3(지름값, 지름값, 0);
@@ -311,7 +205,9 @@ public:
 	// (T,T)    /        /        /        O
 	//
 	//
-	NxActor* CreateActor(NxShapeType type, NxVec3 position, NxF32* mat, NxVec3 sizeValue, USERDATA* pUserData,
+	// eMaterialTag 
+	// E_PHYSX_MATERIAL_NONE 값은 Default 값으로 사용하지는 말 것.
+	NxActor* CreateActor(NxShapeType type, NxVec3 position, NxF32* mat, NxVec3 sizeValue, eMaterialTag materialTag = E_PHYSX_MATERIAL_NONE, USERDATA* pUserData = NULL,
 		bool IsTrigger = false, bool isStatic = false, bool isGravaty = true)
 	{
 		sizeValue *= 0.5f;
@@ -334,9 +230,8 @@ public:
 
 			desc.setToDefault();
 			desc.radius = sizeValue.x;
-			desc.materialIndex = 1;
 			shapeDesc = &desc;
-
+			
 			if (isKinematic)
 			{
 				NxSphereShapeDesc dummyShape;
@@ -350,7 +245,6 @@ public:
 			NxBoxShapeDesc desc;
 			desc.setToDefault();
 			desc.dimensions.set(sizeValue);
-			desc.materialIndex = 0;
 			shapeDesc = &desc;
 
 			if (isKinematic)
@@ -364,7 +258,6 @@ public:
 		}
 		case NX_SHAPE_CAPSULE: {
 			NxCapsuleShapeDesc desc; desc.setToDefault();
-			//	desc.materialIndex = materialIndex;
 			desc.radius = sizeValue.x;
 			desc.height = sizeValue.y;
 			shapeDesc = &desc;
@@ -419,7 +312,10 @@ public:
 		}
 		default:break;
 		}
+
 		if (shapeDesc == NULL) return NULL;
+
+		shapeDesc->materialIndex = (int)materialTag;
 
 		NxBodyDesc triggerBody;
 		triggerBody.setToDefault();
@@ -478,168 +374,79 @@ public:
 
 	}
 
-
-
-	NxVehicle* createCarWithDesc(const NxVec3& pos, bool frontWheelDrive, bool backWheelDrive, bool corvette, bool monsterTruck, bool oldStyle, NxPhysicsSDK* physicsSDK)
+	NxVehicle* createCarWithDesc(NxVec3 pos, bool frontWheelDrive, bool backWheelDrive)
 	{
 		//monsterTruck = true;
 		NxVehicleDesc vehicleDesc;
 		NxBoxShapeDesc boxShapes[2];
-		NxConvexShapeDesc carShape[2];
-		if (corvette)
-		{
-			NxArray<NxVec3> points;
-			NxArray<NxVec3> points2;
-			NxReal halfWidth = 0.7f;
-			NxReal halfLength = 1.2f;
-			NxReal halfHeight = 0.3f;
-			points.pushBack().set(halfLength, -halfHeight * 0.1f, 0.f);
-			points.pushBack().set(halfLength * 0.7f, 0.f, 0.f);
-			points.pushBack().set(0.2f * halfLength, halfHeight * 0.2f, 0.f);
-			points.pushBack().set(-halfLength, halfHeight * 0.2f, 0);
-			points.pushBack().set(0.1f*halfLength, halfHeight * 0.2f, halfWidth * 0.9f);
-			points.pushBack().set(0.1f*halfLength, halfHeight * 0.2f, -halfWidth * 0.9f);
-			points.pushBack().set(-0.8f*halfLength, halfHeight * 0.2f, halfWidth * 0.9f);
-			points.pushBack().set(-0.8f*halfLength, halfHeight * 0.2f, -halfWidth * 0.9f);
-	
-			points.pushBack().set(halfLength * 0.9f, -halfHeight * 0.25f, halfWidth * 0.8f);
-			points.pushBack().set(halfLength * 0.9f, -halfHeight * 0.25f, -halfWidth * 0.8f);
-			points.pushBack().set(0.f, -halfHeight * 0.2f, halfWidth);
-			points.pushBack().set(0.f, -halfHeight * 0.2f, -halfWidth);
-			points.pushBack().set(-halfLength * 0.9f, -halfHeight * 0.2f, halfWidth * 0.9f);
-			points.pushBack().set(-halfLength * 0.9f, -halfHeight * 0.2f, -halfWidth * 0.9f);
-	
-			points.pushBack().set(halfLength * 0.8f, -halfHeight, halfWidth * 0.79f);
-			points.pushBack().set(halfLength * 0.8f, -halfHeight, -halfWidth * 0.79f);
-			points.pushBack().set(-halfLength * 0.8f, -halfHeight, halfWidth * 0.79f);
-			points.pushBack().set(-halfLength * 0.8f, -halfHeight, -halfWidth * 0.79f);
-	
-			for (NxU32 i = 2; i < 8; i++)
-			{
-				points2.pushBack(points[i]);
-			}
-	
-			points2.pushBack().set(-0.5f*halfLength, halfHeight*0.8f, halfWidth*0.7f);
-			points2.pushBack().set(-0.5f*halfLength, halfHeight*0.8f, -halfWidth*0.7f);
-			points2.pushBack().set(-0.7f*halfLength, halfHeight*0.7f, halfWidth*0.7f);
-			points2.pushBack().set(-0.7f*halfLength, halfHeight*0.7f, -halfWidth*0.7f);
 
-	
-			static NxConvexMeshDesc convexMesh;
-			convexMesh.numVertices = points.size();
-			convexMesh.points = &(points[0].x);
-			convexMesh.pointStrideBytes = sizeof(NxVec3);
-			convexMesh.flags |= NX_CF_COMPUTE_CONVEX;
-	
-			MemoryWriteBuffer buf;
-			bool status = CookConvexMesh(convexMesh, buf);
-			if (status)
-			{
-				carShape[0].meshData = physicsSDK->createConvexMesh(MemoryReadBuffer(buf.data));
-				vehicleDesc.carShapes.pushBack(&carShape[0]);
-			}
-	
-			static NxConvexMeshDesc convexMesh2;
-			convexMesh2.numVertices = points2.size();
-			convexMesh2.points = (&points2[0].x);
-			convexMesh2.pointStrideBytes = sizeof(NxVec3);
-			convexMesh2.flags = NX_CF_COMPUTE_CONVEX;
-	
-			MemoryWriteBuffer buf2;
-			status = CookConvexMesh(convexMesh2, buf2);
-			if (status)
-			{
-				carShape[1].meshData = physicsSDK->createConvexMesh(MemoryReadBuffer(buf2.data));
-				vehicleDesc.carShapes.pushBack(&carShape[1]);
-			}
-	
-		}
-		else {
-			boxShapes[0].dimensions.set(2.5f, 0.4f, 1.2f);
-			boxShapes[1].dimensions.set(1.f, 0.3f, 1.1f);
-			boxShapes[1].localPose.t.set(-0.3f, 0.7f, 0.f);
-			vehicleDesc.carShapes.pushBack(&boxShapes[0]);
-			vehicleDesc.carShapes.pushBack(&boxShapes[1]);
-		}
-	
+		boxShapes[0].dimensions.set(0.7, 0.1f, 0.3f);
+		boxShapes[0].localPose.t.set(0.f, 0.3f, 0.f);
+		boxShapes[0].materialIndex = 1;
+		vehicleDesc.carShapes.pushBack(&boxShapes[0]);
+
+		boxShapes[1].dimensions.set(0.7, 0.1f, 0.3f);
+		boxShapes[1].localPose.t.set(0.f, 0.6, 0.f);
+		boxShapes[1].materialIndex = 1;
+		vehicleDesc.carShapes.pushBack(&boxShapes[1]);
+
 		vehicleDesc.position = pos;
-		vehicleDesc.mass = 1200;//monsterTruck ? 12000 : 
+		vehicleDesc.mass = 1000;//monsterTruck ? 12000 : 
 		vehicleDesc.digitalSteeringDelta = 0.04f;
 		vehicleDesc.steeringMaxAngle = 30.f;
 		vehicleDesc.motorForce = 3500.f;//monsterTruck?180.f:
 		vehicleDesc.maxVelocity = 30.f;//(monsterTruck)?20.f:
-		vehicleDesc.cameraDistance = 8.0f;
-	
-		NxVehicleMotorDesc motorDesc;
-		NxVehicleGearDesc gearDesc;
-		NxReal wheelRadius = 0.4f;
-		if (corvette)
-		{
-			vehicleDesc.maxVelocity = (monsterTruck) ? 40.f : 80.f;
-			motorDesc.setToCorvette();
-			vehicleDesc.motorDesc = &motorDesc;
-			gearDesc.setToCorvette();
-			vehicleDesc.gearDesc = &gearDesc;
-			vehicleDesc.differentialRatio = 3.42f;
-			if (monsterTruck)
-			{
-				vehicleDesc.differentialRatio *= 6.f;
-				vehicleDesc.mass *= 2.f;
-			}
-			//vehicleDesc.differentialRatio = 5.f;
-			wheelRadius = 0.33f;
-			vehicleDesc.centerOfMass.set(0.f, -0.5f, 0.f);
-		}
-		else
-			vehicleDesc.centerOfMass.set(0.f, monsterTruck ? -2.f : -2.f, 0.f);
-	
-	
+
+		vehicleDesc.centerOfMass.set(0.f, 0.1f, 0.f);
+
 		NxWheelDesc wheelDesc[4];
-		for (NxU32 i = 0; i<4; i++)
+		for (NxU32 i = 0; i < 4; i++)
 		{
-			//wheelDesc[i].wheelAxis.set(0,0,1);
-			//wheelDesc[i].downAxis.set(0,-1,0);
 			wheelDesc[i].wheelApproximation = 10;
-			//wheelDesc[i].wheelFlags |= NX_WF_BUILD_LOWER_HALF;
-			wheelDesc[i].wheelRadius = (monsterTruck) ? wheelRadius*3.f : wheelRadius;
-			wheelDesc[i].wheelWidth = (monsterTruck) ? 0.3f : 0.1f;
-			wheelDesc[i].wheelSuspension = (monsterTruck) ? 0.6f : 0.2f;
-			wheelDesc[i].springRestitution = monsterTruck ? (corvette ? 5000 : 4000) : 7000;
+			wheelDesc[i].wheelRadius = 0.1f;
+			wheelDesc[i].wheelWidth = 0.01f;
+			wheelDesc[i].wheelSuspension = 0.00f;
+			wheelDesc[i].springRestitution = 7000;
 			wheelDesc[i].springDamping = 800;
-			wheelDesc[i].springBias = 0.0f;
-			wheelDesc[i].maxBrakeForce = monsterTruck ? 0.5f : 1.f;
-			if (oldStyle)
-			{
-				wheelDesc[i].frictionToFront = 0.1f;
-				wheelDesc[i].frictionToSide = corvette ? 0.1f : 0.99f;
-			}
-			else
-			{
-				wheelDesc[i].wheelFlags |= NX_WF_USE_WHEELSHAPE;
-			}
+			wheelDesc[i].springBias = 0.2f;
+			wheelDesc[i].maxBrakeForce = 1.f;
+			wheelDesc[i].wheelFlags |= NX_WF_USE_WHEELSHAPE;
+
+
+			//바퀴의 마찰력
+			wheelDesc[i].frictionToFront = 3.f;
+			wheelDesc[i].frictionToSide = 0.7f;
+
 			vehicleDesc.carWheels.pushBack(&wheelDesc[i]);
 		}
-		NxReal widthPos = (monsterTruck) ? 1.4f : 1.09f;
-		NxReal heightPos = -0.4f;	//(monsterTruck)?1.f:
-		wheelDesc[0].position.set(1.8f, heightPos, widthPos);
-		wheelDesc[1].position.set(1.8f, heightPos, -widthPos);
-		wheelDesc[2].position.set(-1.5f, heightPos, widthPos);
-		wheelDesc[3].position.set(-1.5f, heightPos, -widthPos);
+
+
+		wheelDesc[0].position.set(0.35f, 0.2f, -0.29f);
+		wheelDesc[1].position.set(0.35, 0.2f, 0.29);
+		wheelDesc[2].position.set(-0.45, 0.2f, -0.29);
+		wheelDesc[3].position.set(-0.45, 0.2f, 0.29);
+
 		NxU32 flags = NX_WF_BUILD_LOWER_HALF;
 		wheelDesc[0].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
 		wheelDesc[1].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
 		wheelDesc[2].wheelFlags |= (backWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_AFFECTED_BY_HANDBRAKE | flags;
 		wheelDesc[3].wheelFlags |= (backWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_AFFECTED_BY_HANDBRAKE | flags;
-	
+
 		vehicleDesc.steeringSteerPoint.set(1.8f, 0, 0);
 		vehicleDesc.steeringTurnPoint.set(-1.5f, 0, 0);
-	
+
+
+
 		NxVehicle* vehicle = NxVehicle::createVehicle(MgrPhysXScene, &vehicleDesc);
 		NxQuat q;
 		q.fromAngleAxis(0.f, NxVec3(0.0f, 1.0f, 0.0f));
 		vehicle->getActor()->setGlobalOrientationQuat(q);
 
 		if (vehicle) return vehicle;
-		else NULL;
+		else
+		{
+			std::string pritfOut("자동차가의 물리정보가 생성되지 않았습니다.");
+			MessageBoxA(g_hWnd, pritfOut.c_str(), "심각한 오류", MB_OK);
+		}
 	}
 };

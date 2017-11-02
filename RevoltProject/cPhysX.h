@@ -16,7 +16,7 @@ public:
 
 	void SetPosition(NxVec3 pos)
 	{
-		m_pActor->getGlobalPose().t = pos;
+		m_pActor->setGlobalPosition(pos);
 	}
 	void SetPosition(D3DXVECTOR3 vec3)
 	{

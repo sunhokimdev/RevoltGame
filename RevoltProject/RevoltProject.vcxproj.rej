@@ -1,9 +1,8 @@
 diff a/RevoltProject/RevoltProject.vcxproj b/RevoltProject/RevoltProject.vcxproj	(rejected hunks)
-@@ -178,6 +178,8 @@
-     <ClInclude Include="targetver.h" />
+@@ -179,6 +179,7 @@
      <ClInclude Include="TextManager.h" />
      <ClInclude Include="TextureManager.h" />
-+    <ClInclude Include="Thing.h" />
+     <ClInclude Include="Thing.h" />
 +    <ClInclude Include="ThingManager.h" />
      <ClInclude Include="TimeManager.h" />
      <ClInclude Include="UIButton.h" />

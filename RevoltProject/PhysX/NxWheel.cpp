@@ -380,6 +380,11 @@ void NxWheel1::setAngle(NxReal angle)
 	setWheelOrientation(wheelOrientation);
 }
 
+NxReal NxWheel1::getAngle()
+{
+	return _angle;
+}
+
 /*---------------------------------------------------------------------------------------*\
 |
 |Wheel 2 - uses NxWheelShape
@@ -406,7 +411,6 @@ NxWheel2::NxWheel2(NxActor* a, NxWheelDesc* wheelDesc) : actor(a)
 	wheelShapeDesc.localPose.M.fromQuat(q);
 	wheelShapeDesc.materialIndex = wsm->getMaterialIndex();
 	wheelFlags = wheelDesc->wheelFlags;
-
 
 
 	NxReal heightModifier = (wheelDesc->wheelSuspension + wheelDesc->wheelRadius) / wheelDesc->wheelSuspension;
@@ -457,6 +461,11 @@ NxVec3 NxWheel2::getWheelPos() const
 void NxWheel2::setAngle(NxReal angle)
 {
 	wheelShape->setSteerAngle(-angle);
+}
+
+NxReal NxWheel2::getAngle()
+{
+	return wheelShape->getSteerAngle();
 }
 
 void NxWheel2::drawWheel(NxReal approx, bool debug) const

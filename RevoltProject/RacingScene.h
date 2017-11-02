@@ -4,8 +4,7 @@
 class cTrack;
 class cLight;
 class cCar;
-class PSystem;
-class SkidMarks;
+class cBillBoardEffect;
 
 class RacingScene : public GameNode
 {
@@ -13,16 +12,17 @@ private:
 
 	cTrack* m_pTrack;
 	cLight* m_pLightSun;
+	std::vector<cCar*> vecCars;
 	int m_nLightIDCount;
 
 	//
 	D3DXVECTOR3* camPos = new D3DXVECTOR3(0, 10, 0);
 	D3DXVECTOR3* camLookTarget = new D3DXVECTOR3(0, 0, 0);
-	cCar* pCar1;
-	NxVehicle* pVeh;
 
-	PSystem* m_pPFirework;
-	SkidMarks* m_pSkid;
+	LPD3DXSPRITE m_Sprite;
+	cBillBoardEffect*		 m_pBillBoardEffect;
+
+	bool m_isDrift;
 public:
 
 	RacingScene();
@@ -33,5 +33,6 @@ public:
 	void Update();
 	void Render();
 	void LastUpdate();
+	void UpdateCamera();
 };
 

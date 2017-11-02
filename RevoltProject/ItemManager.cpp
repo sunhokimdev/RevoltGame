@@ -2,8 +2,17 @@
 #include "ItemManager.h"
 #include "cItem.h"
 #include "ObjectLoader.h"
+#include "cContactUser.h"
+#include "cImpact.h"
+#include "cGravityball.h"
+#include "cWbomb.h"
 
 ItemManager::ItemManager()
+	: box1(NULL)
+	, box2(NULL)
+	, box3(NULL)
+	, m_max(50)
+	, m_index(0)
 {
 }
 
@@ -13,43 +22,76 @@ ItemManager::~ItemManager()
 
 void ItemManager::Init()
 {
-	/*   Áß·ÂÅº ¼³Á¤   */
+	MgrPhysXScene->setUserTriggerReport(new TriggerCallback());
 
+	USERDATA* user1 = new USERDATA;
+	user1->USER_TAG = E_PHYSX_TAG_NONE;
+
+	box1 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(6, 0, 5), NULL, NxVec3(3.0f, 3.0f, 3.0f), E_PHYSX_MATERIAL_CAR, user1);
+	box2 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(5, 0, 0), NULL, NxVec3(3.0f, 3.0f, 3.0f), E_PHYSX_MATERIAL_CAR, user1);
+	box3 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(4, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
+	box4 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(20, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
+
+	std::vector<cItem*> vecGravity;
+
+	for (int i = 0;i < m_max;i++)
+	{
+		cWbomb* pItem = new cWbomb;
+		pItem->Setup();
+		m_vecItem.push_back(pItem);
+	}
+
+	InitCollisionGroup();
 }
 
 void ItemManager::Update()
 {
-	for (int i = 0;i < m_vecItem.size();++i)
+	for (int i = 0;i < m_index;++i)
 	{
 		m_vecItem[i]->Update();
 	}
-	for (int i = 0;i < m_vecItem.size();++i)
+	for (int i = 0;i < m_index;++i)
 	{
 		m_vecItem[i]->LastUpdate();
 	}
-
-	if (g_pKeyManager->isOnceKeyDown(VK_CONTROL))
-	{
-		cItem* pItem = new cItem;
-		cMesh* pMesh = new cMesh;
-		cPhysX* pPhysx = new cPhysX;
-		ObjectLoader::LoadMesh(pMesh, "Objects/gravityball", "gravityball.obj");
-		pItem->SetMeshData(pMesh);
-		pItem->SetPhysXData(pPhysx);
-
-		pPhysx->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, NxVec3(5, 0, 3), NULL, NxVec3(1.0f, 0, 0), NULL,false);
-		pPhysx->m_pActor->addLocalForce(NxVec3(40000, 0, 0));
-		
-		m_vecItem.push_back(pItem);
-	}
-
 }
 
 void ItemManager::Render()
 {
-
-	for (int i = 0;i < m_vecItem.size();++i)
+	for (int i = 0;i < m_index;++i)
 	{
 		m_vecItem[i]->Render();
 	}
 }
+
+void ItemManager::SetFire(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
+{
+	m_vecItem[m_index]->Create(angle,pos);
+	m_index++;
+
+	if (m_index == m_max)
+		m_index = 0;
+}
+
+void ItemManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
+{
+	NxU32 nbShapes = actor->getNbShapes();
+	NxShape** shapes = (NxShape**)actor->getShapes();
+
+	while (nbShapes--)
+	{
+		shapes[nbShapes]->setGroup(group);
+	}
+}
+
+void ItemManager::InitCollisionGroup()
+{
+	SetActorGroup(box1, 1);
+	SetActorGroup(box2, 1);
+	SetActorGroup(box3, 1);
+	SetActorGroup(box4, 1);
+
+	MgrPhysXScene->setGroupCollisionFlag(1, 2, false);
+	MgrPhysXScene->setGroupCollisionFlag(2, 2, false);
+}
+

@@ -156,10 +156,6 @@ void cTrack::SetData()
 
 void cTrack::LoadTrack(std::string FileName)
 {
-	//<<<<<<< HEAD
-	//	//카메라 등록
-	//	pCamera = pCam;
-
 	Destroy();// 기존에 가지고 있던 정보 버리기
 	std::string fullpath = "Maps/" + FileName + ".scn";
 	std::fstream Load;
@@ -340,11 +336,13 @@ void cTrack::LoadTrack(std::string FileName)
 						}
 						else if (Obj->GetTag() == E_OBJECT_PICKUP)
 						{
+							//맵에 배치되어있는 장애물들...
 							NxActor* pActor = MgrPhysX->CreateActor(
 								type,
 								position + worldPosition + localPosition,
 								matR,
 								sizeValue,
+								E_PHYSX_MATERIAL_03,
 								pUserData,
 								isTrigger,
 								isStatic_,
@@ -369,6 +367,7 @@ void cTrack::LoadTrack(std::string FileName)
 								position + worldPosition + localPosition,
 								matR,
 								sizeValue,
+								E_PHYSX_MATERIAL_03,
 								pUserData,
 								isTrigger,
 								isStatic_,
@@ -398,16 +397,16 @@ void cTrack::LoadTrack(std::string FileName)
 
 
 
-	NxActorDesc aDesc;
-	NxPlaneShapeDesc sDesc;
-
-	aDesc.setToDefault();
-	sDesc.setToDefault();
-
-	aDesc.shapes.pushBack(&sDesc);
-	aDesc.globalPose.t = NxVec3(0, 0, 0);
-
-	MgrPhysXScene->createActor(aDesc);
+//	NxActorDesc aDesc;
+//	NxPlaneShapeDesc sDesc;
+//
+//	aDesc.setToDefault();
+//	sDesc.setToDefault();
+//
+//	aDesc.shapes.pushBack(&sDesc);
+//	aDesc.globalPose.t = NxVec3(0, 0, 0);
+//
+//	MgrPhysXScene->createActor(aDesc);
 
 }
 

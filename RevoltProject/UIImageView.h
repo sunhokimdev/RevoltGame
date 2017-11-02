@@ -37,6 +37,8 @@ public:
 	SYNTHESIZE(bool, m_isItem, IsItem);
 	SYNTHESIZE(bool, m_isSpeedFrame, IsSpeedFrame);
 	SYNTHESIZE(bool, m_isSpeed, IsSpeed);
+	SYNTHESIZE(bool, m_isFrameRender, FrameRender);
+	SYNTHESIZE(bool, m_isBomb, Bomb);
 	SYNTHESIZE(float, m_xSize, XSize);
 	SYNTHESIZE(float, m_ySize, YSize);
 	SYNTHESIZE(D3DXCOLOR, m_color, Color);

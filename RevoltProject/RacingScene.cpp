@@ -2,12 +2,11 @@
 #include "RacingScene.h"
 #include "cTrack.h"
 #include "cLight.h"
-#include "PFirework.h"
-#include "SkidMarks.h"
+#include "cCar.h"
 
-RacingScene::RacingScene(){}
+RacingScene::RacingScene() {}
 
-RacingScene::~RacingScene(){}
+RacingScene::~RacingScene() {}
 
 void RacingScene::Setup()
 {
@@ -22,7 +21,7 @@ void RacingScene::Setup()
 
 	D3DLIGHT9 light;
 	light.Type = D3DLIGHT_DIRECTIONAL;
-	light.Ambient = D3DXCOLOR(0.6,0.6,0.6,1);
+	light.Ambient = D3DXCOLOR(0.6, 0.6, 0.6, 1);
 	light.Diffuse = D3DXCOLOR(0.6, 0.6, 0.6, 1);
 	light.Specular = D3DXCOLOR(0.6, 0.6, 0.6, 1);
 	D3DXVECTOR3 dir = { 0,-1,0 };
@@ -31,31 +30,30 @@ void RacingScene::Setup()
 	g_pD3DDevice->SetLight(0, &light);
 	g_pD3DDevice->LightEnable(0, true);
 
-	pCar1 = new cCar;
-	pCar1->LoadMesh("tc1");
-//	m_vecObject.push_back(pCar1);
-
-	//자동차 추가
-	pVeh = MgrPhysX->createCarWithDesc(NxVec3(0, 2, 0), true, true, false, false, false, MgrPhysXSDK);
-
 	g_pCamManager->SetCamPos(camPos);
 	g_pCamManager->SetLookAt(camLookTarget);
-
-
-	// 불꽃놀이 셋업
-	
-	srand((unsigned int)time(0));
-
-	m_pPFirework = new PFirework(&D3DXVECTOR3(15.0f, 4.0f, 5.0f), 30);
-	m_pPFirework->Init(g_pD3DDevice, "Maps/Front/Image/particle_flare2.bmp");
-	
 
 	//앰비언트
 	//g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
 	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
 
-	m_pSkid = new SkidMarks;
-	m_pSkid->Setup();
+	/// car 생성
+	{
+		cCar* pCar = new cCar;
+		pCar->LoadMesh("tc1");
+		pCar->CreatePhsyX();
+		pCar->SetCarValue(2000, 7000, 0.1, 0, NxPi / 8, NxPi * 0.05f);
+		vecCars.push_back(pCar);
+	}
+	{
+		cCar* pCar = new cCar;
+		pCar->LoadMesh("tc2");
+		pCar->CreatePhsyX();
+		pCar->SetCarValue(1000, 5000, 0.1, 0, NxPi / 8, NxPi * 0.05f);
+
+		pCar->GetPhysXData()->SetPosition(NxVec3(0, 0, 3));
+		vecCars.push_back(pCar);
+	}
 }
 
 void RacingScene::Destroy()
@@ -63,7 +61,6 @@ void RacingScene::Destroy()
 	SAFE_DESTROY(m_pTrack);
 	SAFE_DELETE(m_pTrack);
 	SAFE_DELETE(m_pLightSun);
-	SAFE_DELETE(m_pPFirework);
 }
 
 void RacingScene::Update()
@@ -71,92 +68,18 @@ void RacingScene::Update()
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
 
-	//TEST
-	if (pVeh)
+	for (int i = 0; i < vecCars.size(); i++)
 	{
-		NxVec3 pos = pVeh->getGlobalPose().t;
-
-		*camPos = D3DXVECTOR3(pos.x - 5, pos.y + 5, pos.z);
-		*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 3, pos.z);
-		g_pCamManager->SetCamPos(camPos);
-		g_pCamManager->SetLookAt(camLookTarget);
-
-		static float angle = 0;
-		if (g_pKeyManager->isOnceKeyDown('A'))
+		if (i == 0)	//Player
 		{
-			angle += 0.1;
-		}
-		if (g_pKeyManager->isOnceKeyDown('D'))
-		{
-			angle -= 0.1;
-		}
-		NxWheel* wheel = pVeh->getWheel(0);
-		wheel->setAngle(angle);
-
-		wheel = pVeh->getWheel(1);
-		wheel->setAngle(angle);
-
-		pVeh->getActor()->addForce(NxVec3(0, 1, 0));
-
-		if (g_pKeyManager->isOnceKeyDown('S'))
-		{
-			NxWheel* wheel = pVeh->getWheel(0);
-			wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
-			wheel->setAngle(angle);
-
-			wheel = pVeh->getWheel(1);
-			wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
-			wheel->setAngle(angle);
-
-			wheel = pVeh->getWheel(2);
-			wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
-
-			wheel = pVeh->getWheel(3);
-			wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
-		}
-
-		if (g_pKeyManager->isOnceKeyDown(VK_SPACE))
-		{
-			NxWheel* wheel = pVeh->getWheel(0);
-			wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
-
-			wheel = pVeh->getWheel(1);
-			wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
-
-			wheel = pVeh->getWheel(2);
-			wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
-
-			wheel = pVeh->getWheel(3);
-			wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
-		}
-
-		if (g_pKeyManager->isOnceKeyDown('W'))
-		{
-			NxWheel* wheel = pVeh->getWheel(0);
-			wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
-
-			wheel = pVeh->getWheel(1);
-			wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
-
-			wheel = pVeh->getWheel(2);
-			wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
-
-			wheel = pVeh->getWheel(3);
-			wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
+			vecCars[i]->Update();
 		}
 	}
 
-	
-	// 불꽃놀이 업데이트
-	m_pPFirework->Update(0.08f);
-
-	if (m_pPFirework->isDead())		// 터진후 반복
-		m_pPFirework->Reset();
-	
-
+	UpdateCamera();
 	LastUpdate();
-
 }
+
 
 void RacingScene::Render()
 {
@@ -165,13 +88,86 @@ void RacingScene::Render()
 		m_pTrack->Render();
 	}
 
-	// 불꽃놀이 렌더
-	m_pPFirework->Render();
-
-	m_pSkid->Render();
+	for each(cCar* p in vecCars)
+	{
+		p->Render();
+	}
 }
 
 void RacingScene::LastUpdate()
 {
 	m_pTrack->LastUpdate();
+
+	for each(cCar* p in vecCars)
+	{
+		p->LastUpdate();
+	}
+}
+
+void RacingScene::UpdateCamera()
+{
+
+#define CAM_X (*camPos).x
+#define CAM_Y (*camPos).y
+#define CAM_Z (*camPos).z
+#define CAM_POS (*camPos)
+
+	//자동차 포지션
+
+	NxVec3 pos = vecCars[0]->GetNxVehicle()->getGlobalPose().t;
+
+	//회전 매트릭스 받아옴
+	NxF32 mat[9];
+
+	vecCars[0]->GetNxVehicle()->getGlobalPose().M.getColumnMajor(mat);
+	D3DXMATRIXA16 matR;
+	D3DXMatrixIdentity(&matR);
+	matR._11 = mat[0];
+	matR._12 = mat[1];
+	matR._13 = mat[2];
+	matR._21 = mat[3];
+	matR._22 = mat[4];
+	matR._23 = mat[5];
+	matR._31 = mat[6];
+	matR._32 = mat[7];
+	matR._33 = mat[8];
+
+	float distToCar = 5; //차와의 거리
+	float Height = 2; //카메라 높이
+
+	float CamSpdOut = 0.1;
+	float CamSpdIn = 0.05;
+	float FollowRange = 1;
+	float FixRange = 0.5;
+	float MaxRange = 2;
+
+	D3DXVECTOR3 carDir = { 1,0,0 };
+	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
+
+	D3DXVECTOR3 carPos = { pos.x,pos.y,pos.z };
+
+	float x = carPos.x - (carDir.x * distToCar);
+	float y = carPos.y - (carDir.y * distToCar) + Height;
+	float z = carPos.z - (carDir.z * distToCar);
+	D3DXVECTOR3 vDest = { x,y,z };
+
+	D3DXVECTOR3 moveDir;
+	moveDir = vDest - CAM_POS;
+	D3DXVec3Normalize(&moveDir, &moveDir);
+
+	D3DXVECTOR3 distToDest = vDest - CAM_POS;
+
+	D3DXVec3Lerp(camPos, camPos, &vDest, 0.1f);
+
+	//D3DXVECTOR3 vTemp = { ,Height,CAM_Z};
+	//D3DXVec3TransformCoord(camPos, &vTemp, &matR);
+
+	//CAM_X = camQuater.x;
+	//CAM_Y = camQuater.y;
+	//CAM_Z = camQuater.z;
+
+	*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 2, pos.z);
+
+	g_pCamManager->SetCamPos(camPos);
+	g_pCamManager->SetLookAt(camLookTarget);
 }
