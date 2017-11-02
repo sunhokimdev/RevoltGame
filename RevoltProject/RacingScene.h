@@ -4,7 +4,7 @@
 class cTrack;
 class cLight;
 class cCar;
-class Effect;
+class cBillBoardEffect;
 
 class RacingScene : public GameNode
 {
@@ -21,9 +21,9 @@ private:
 	NxVehicle* pVeh;
 
 	LPD3DXSPRITE m_Sprite;
-	Effect*		 m_pEffect;
+	cBillBoardEffect*		 m_pBillBoardEffect;
 
-
+	bool m_isDrift;
 public:
 
 	RacingScene();

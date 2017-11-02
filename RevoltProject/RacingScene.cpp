@@ -2,10 +2,11 @@
 #include "RacingScene.h"
 #include "cTrack.h"
 #include "cLight.h"
-#include "Effect.h"
+#include "cBillBoardEffect.h"
 
 RacingScene::RacingScene()
 	: m_Sprite(NULL)
+	, m_isDrift(false)
 {}
 
 RacingScene::~RacingScene(){}
@@ -14,9 +15,10 @@ void RacingScene::Setup()
 {
 	D3DXCreateSprite(g_pD3DDevice, &m_Sprite);
 
-	m_pEffect = new Effect;
-	m_pEffect->SetFrameRender(true);
-	m_pEffect->SetFrameTexture("Objects/wbomb/wbombEffect.png", 16);
+	m_pBillBoardEffect = new cBillBoardEffect;
+	m_pBillBoardEffect->SetFrameRender(true);
+	m_pBillBoardEffect->SetFrameTexture("Objects/wbomb/wbombEffect.png", 16);
+	m_pBillBoardEffect->SetEffectType(1);
 
 	g_pCamManager->SetLookAt(&D3DXVECTOR3(0, 0, 0));
 	m_pTrack = new cTrack;
@@ -67,35 +69,31 @@ void RacingScene::Update()
 {
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
-	m_pEffect->FrameUpdate();
+	m_pBillBoardEffect->FrameUpdate();
 
 	if (g_pKeyManager->isOnceKeyDown('Z'))
 	{
-		if (!m_pEffect->GetActive())
-			m_pEffect->SetActive(true);
-		else
-			m_pEffect->SetActive(false);
+		if (!m_pBillBoardEffect->GetActive())
+			m_pBillBoardEffect->SetActive(true);
 	}
 
 	//TEST
 	if (pVeh)
 	{
 		NxVec3 pos = pVeh->getGlobalPose().t;
-		//*camPos = D3DXVECTOR3(pos.x - 5, pos.y + 5, pos.z);
-		//*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 3, pos.z);
-		//g_pCamManager->SetCamPos(camPos);
-		//g_pCamManager->SetLookAt(camLookTarget);
+		*camPos = D3DXVECTOR3(pos.x - 5, pos.y + 5, pos.z);
+		*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 3, pos.z);
+		g_pCamManager->SetCamPos(camPos);
+		g_pCamManager->SetLookAt(camLookTarget);
 
 		static float angle = 0;
 		if (g_pKeyManager->isStayKeyDown('A'))
 		{
 			angle += 0.1;
-			camPos->z -= 1.0f;
 		}
 		if (g_pKeyManager->isStayKeyDown('D'))
 		{
 			angle -= 0.1;
-			camPos->z += 1.0f;
 		}
 		NxWheel* wheel = pVeh->getWheel(0);
 		wheel->setAngle(angle);
@@ -105,9 +103,8 @@ void RacingScene::Update()
 
 		pVeh->getActor()->addForce(NxVec3(0, 1, 0));
 
-		if (g_pKeyManager->isStayKeyDown('S'))
+		if (g_pKeyManager->isOnceKeyDown('S'))
 		{
-			camPos->x += 1.0f;
 			NxWheel* wheel = pVeh->getWheel(0);
 			wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
 			wheel->setAngle(angle);
@@ -121,6 +118,7 @@ void RacingScene::Update()
 
 			wheel = pVeh->getWheel(3);
 			wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
+			
 		}
 
 		if (g_pKeyManager->isOnceKeyDown(VK_SPACE))
@@ -138,9 +136,8 @@ void RacingScene::Update()
 			wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
 		}
 
-		if (g_pKeyManager->isStayKeyDown('W'))
+		if (g_pKeyManager->isOnceKeyDown('W'))
 		{
-			camPos->x -= 1.0f;
 			NxWheel* wheel = pVeh->getWheel(0);
 			wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
 
@@ -152,6 +149,15 @@ void RacingScene::Update()
 
 			wheel = pVeh->getWheel(3);
 			wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
+			
+		}
+		if (g_pKeyManager->isOnceKeyDown(VK_LSHIFT))
+		{
+			//m_isDrift = true;
+		}
+		else if (g_pKeyManager->isOnceKeyUp(VK_LSHIFT))
+		{
+			//m_isDrift = false;
 		}
 	}
 }
@@ -161,7 +167,7 @@ void RacingScene::Render()
 	//¾Úºñ¾ðÆ®
 	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
 
-	m_pEffect->BillboardRender(m_Sprite, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f);
+	m_pBillBoardEffect->BillboardRender(m_Sprite, 10.0f, 0.0f, 1.0f, 0.1f, 0.1f, 0.1f);
 
 	if (m_pTrack)
 	{
