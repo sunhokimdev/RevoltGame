@@ -659,6 +659,7 @@
     <ClCompile Include="PhysX\NxAllVehicles.cpp">
       <Filter>PhysX\NxFile</Filter>
     </ClCompile>
+
     <ClCompile Include="cBillBoardEffect.cpp">
       <Filter>NewClass</Filter>
     </ClCompile>

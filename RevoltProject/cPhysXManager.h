@@ -17,6 +17,8 @@
 #include "PhysX/NxWheelDesc.h"
 #include "PhysX/cooking.h"
 
+struct stCARSPEC;
+
 //#include <NxConvexMeshDesc.h>
 
 #define MgrPhysX		cPhysXManager::GetInstance()
@@ -385,8 +387,9 @@ public:
 		//TEST
 
 	}
+	NxVehicle* createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERDATA* pUserData, bool frontWheelDrive, bool backWheelDrive);
 
-	NxVehicle* createCarWithDesc(NxVec3 pos, USERDATA* pUserData, bool frontWheelDrive, bool backWheelDrive)
+/*	NxVehicle* createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERDATA* pUserData, bool frontWheelDrive, bool backWheelDrive)
 	{
 		//monsterTruck = true;
 		NxVehicleDesc vehicleDesc;
@@ -463,4 +466,5 @@ public:
 			MessageBoxA(g_hWnd, pritfOut.c_str(), "심각한 오류", MB_OK);
 		}
 	}
+	*/
 };

@@ -2,16 +2,180 @@
 #include "cCar.h"
 #include "cWheel.h"
 #include "cAI.h"
+#include <fstream>
 
 cCar::cCar()
 {
 
 }
 
-
 cCar::~cCar()
 {
 
+}
+
+void cCar::LoadCar(std::string carName)
+{
+	std::string FullPath = "Cars/" + carName + "/" + carName + ".car";
+
+	std::fstream LOAD;
+	LOAD.open(FullPath);
+
+	if (LOAD.is_open())
+	{
+		char szTemp[1024];
+
+		while (1)
+		{
+			if (LOAD.eof()) break;
+
+			LOAD >> szTemp;
+
+			
+			if (strcmp(szTemp, " ") == 0 || strcmp(szTemp, "\n") == 0)
+			{
+				continue;
+			}
+			else if (strcmp(szTemp, "NAME") == 0)
+			{
+				LOAD >> szTemp;
+
+				LoadMesh(szTemp);
+			}
+			else if (strcmp(szTemp, "SPECIFICATION") == 0)
+			{
+				float maxRpm;
+				float moterPower;
+				float moterAcc;
+				float breakPower;
+				float wheelAngle;
+				float wheelAcc;
+
+				while (1)
+				{
+					LOAD >> szTemp;
+
+					if (strcmp(szTemp, "MaxRPM") == 0)
+					{
+						LOAD >> szTemp;
+						maxRpm = atof(szTemp);
+					}
+					else if (strcmp(szTemp, "MoterPower") == 0)
+					{
+						LOAD >> szTemp;
+						moterPower = atof(szTemp);
+					}
+					else if (strcmp(szTemp, "MoterAcc") == 0)
+					{
+						LOAD >> szTemp;
+						moterAcc = atof(szTemp);
+					}
+					else if (strcmp(szTemp, "BreakPower") == 0)
+					{
+						LOAD >> szTemp;
+						breakPower = atof(szTemp);
+					}
+					else if (strcmp(szTemp, "WheelAngle") == 0)
+					{
+						LOAD >> szTemp;
+						wheelAngle = atof(szTemp);
+					}
+					else if (strcmp(szTemp, "WheelAcc") == 0)
+					{
+						LOAD >> szTemp;
+						wheelAcc = atof(szTemp);
+					}
+					else if (strcmp(szTemp, "#") == 0)
+					{
+						break;
+					}
+				} // while
+				SetCarValue(maxRpm, moterPower, moterAcc, breakPower, wheelAngle, wheelAcc);
+			}
+			else if (strcmp(szTemp, "MODEL") == 0)
+			{
+				stCARSPEC spec;
+				ZeroMemory(&spec, sizeof(stCARSPEC));
+				while (1)
+				{
+					LOAD >> szTemp;
+
+					if (strcmp(szTemp, "BOX") == 0)
+					{
+						NxBoxShapeDesc boxDesc;
+						while (1)
+						{
+							
+							LOAD >> szTemp;
+
+							if (strcmp(szTemp, "Dimensions") == 0)
+							{
+								LOAD >> szTemp;
+								float x = atof(szTemp);
+								LOAD >> szTemp;
+								float y = atof(szTemp);
+								LOAD >> szTemp;
+								float z = atof(szTemp);
+
+								boxDesc.dimensions.set(x, y, z);
+							}
+							else if (strcmp(szTemp, "LocalPose") == 0)
+							{
+								LOAD >> szTemp;
+								float x = atof(szTemp);
+								LOAD >> szTemp;
+								float y = atof(szTemp);
+								LOAD >> szTemp;
+								float z = atof(szTemp);
+
+								boxDesc.localPose.t.set(x, y, z);
+							}
+							else if (strcmp(szTemp, "MaterialIndex") == 0)
+							{
+								LOAD >> szTemp;
+
+								boxDesc.materialIndex = atoi(szTemp);
+							}
+							else if (strcmp(szTemp, "#") == 0)
+							{
+								spec.vecBoxDesc.push_back(boxDesc);
+								break;
+							}
+						} // while
+					}
+					else if (strcmp(szTemp, "WHEEL") == 0)
+					{
+						D3DXVECTOR3 pos;
+						while (1)
+						{
+							LOAD >> szTemp;
+							if (strcmp(szTemp, "Position") == 0)
+							{
+								LOAD >> szTemp;
+								pos.x = atof(szTemp);
+								LOAD >> szTemp;
+								pos.y = atof(szTemp);
+								LOAD >> szTemp;
+								pos.z = atof(szTemp);
+
+								spec.vecWheelPos.push_back(pos);
+							}
+							else if (strcmp(szTemp, "#") == 0)
+							{
+								break;
+							}
+						} // while;
+					}
+					else if (strcmp(szTemp, "#") == 0)
+					{
+						break;
+					}
+				} // while
+
+				CreatePhsyX(spec);
+			}
+		} // << while
+	}
 }
 
 void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc, bool isAI)
@@ -34,10 +198,10 @@ void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float bre
 		m_vecAI.push_back(new cAI);
 	}
 }
-void cCar::CreatePhsyX()
+void cCar::CreatePhsyX(stCARSPEC carspec)
 {
 	USERDATA* pUserdata = new USERDATA(E_PHYSX_TAG_CAR);
-	m_carNxVehicle = MgrPhysX->createCarWithDesc(NxVec3(0, 1, 0), pUserdata, true, true);
+	m_carNxVehicle = MgrPhysX->createCarWithDesc(NxVec3(0, 1, 0), carspec, pUserdata, true, true);
 	if (m_carNxVehicle)
 	{
 		cPhysX* physX = new cPhysX;
@@ -53,8 +217,6 @@ void cCar::CreatePhsyX()
 void cCar::LoadMesh(std::string carName)
 {
 	GetMeshData()->LoadCarMesh("Cars/" + carName, carName + ".obj");
-
-
 }
 
 void cCar::Update()
