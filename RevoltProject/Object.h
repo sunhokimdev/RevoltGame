@@ -74,7 +74,12 @@ public:
 			{
 				m_PhysXData->Destory();
 			}
-			m_PhysXData = pPhysX;
+			else
+			{
+				m_PhysXData = new cPhysX;
+			}
+			m_PhysXData->m_pActor = pPhysX->m_pActor;
+			m_PhysXData->m_pUserData = pPhysX->m_pUserData;
 		}
 	}
 

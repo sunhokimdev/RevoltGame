@@ -29,6 +29,9 @@ class cCar :public Object
 	int countCheckTrack;
 
 
+	//Item
+
+
 
 public:
 	cCar();

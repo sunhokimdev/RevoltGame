@@ -5,7 +5,7 @@
 cPhysX::cPhysX()
 {
 	m_pActor = NULL;
-	m_pUserData = new USERDATA;
+	m_pUserData = NULL;
 }
 
 

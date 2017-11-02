@@ -29,19 +29,20 @@ void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float bre
 	m_isAI = isAI;
 
 	m_vecAI.clear();
-	if (m_isAI)
+	if (isAI)
 	{
 		m_vecAI.push_back(new cAI);
 	}
 }
 void cCar::CreatePhsyX()
 {
-	m_carNxVehicle = MgrPhysX->createCarWithDesc(NxVec3(0, 1, 0), true, true);
+	USERDATA* pUserdata = new USERDATA(E_PHYSX_TAG_CAR);
+	m_carNxVehicle = MgrPhysX->createCarWithDesc(NxVec3(0, 1, 0), pUserdata, true, true);
 	if (m_carNxVehicle)
 	{
 		cPhysX* physX = new cPhysX;
 		physX->m_pActor = m_carNxVehicle->getActor();
-		physX->m_pUserData = new USERDATA();
+		physX->m_pUserData = (USERDATA*)m_carNxVehicle->userData;
 
 		SetPhysXData(physX);
 		physX->SetPosition(NxVec3(0, 0, 0));

@@ -34,91 +34,7 @@ void cTrack::Update()
 	{
 		pObj->Update();
 	}
-	//if (pVeh)
-	//{
-	//	NxVec3 pos = pVeh->getGlobalPose().t;
-	//	*camPos = D3DXVECTOR3(pos.x - 5, pos.y + 5, pos.z);
-	//	*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 3, pos.z);
-	//	g_pCamManager->SetLookAt(camLookTarget);
 
-	//	static float angle = 0;
-	//	if (g_pKeyManager->isOnceKeyDown('A'))
-	//	{
-	//		angle += 0.1;
-	//	}
-	//	if (g_pKeyManager->isOnceKeyDown('D'))
-	//	{
-	//		angle -= 0.1;
-	//	}
-	//	NxWheel* wheel = pVeh->getWheel(0);
-	//	wheel->setAngle(angle);
-
-	//	wheel = pVeh->getWheel(1);
-	//	wheel->setAngle(angle);
-
-	//	pVeh->getActor()->addForce(NxVec3(0, 1, 0));
-
-	//	if (g_pKeyManager->isOnceKeyDown('S'))
-	//	{
-	//		NxWheel* wheel = pVeh->getWheel(0);
-	//		wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
-	//		wheel->setAngle(angle);
-
-	//		wheel = pVeh->getWheel(1);
-	//		wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
-	//		wheel->setAngle(angle);
-
-	//		wheel = pVeh->getWheel(2);
-	//		wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
-
-	//		wheel = pVeh->getWheel(3);
-	//		wheel->tick(false, (NxReal)-1000, (NxReal)0, (NxReal)1.f / 60.f);
-	//	}
-
-	//	if (g_pKeyManager->isOnceKeyDown(VK_SPACE))
-	//	{
-	//		NxWheel* wheel = pVeh->getWheel(0);
-	//		wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
-
-	//		wheel = pVeh->getWheel(1);
-	//		wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
-
-	//		wheel = pVeh->getWheel(2);
-	//		wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
-
-	//		wheel = pVeh->getWheel(3);
-	//		wheel->tick(false, (NxReal)0, (NxReal)1000, (NxReal)1.f / 60.f);
-	//	}
-
-	//	if (g_pKeyManager->isOnceKeyDown('W'))
-	//	{
-	//		NxWheel* wheel = pVeh->getWheel(0);
-	//		wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
-
-	//		wheel = pVeh->getWheel(1);
-	//		wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
-
-	//		wheel = pVeh->getWheel(2);
-	//		wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
-
-	//		wheel = pVeh->getWheel(3);
-	//		wheel->tick(false, (NxReal)1000, (NxReal)0, (NxReal)1.f / 60.f);
-	//	}
-
-	//}
-//	else
-//	{
-//		if (g_pKeyManager->isOnceKeyDown('W'))
-//		{
-//			camPos->x += 0.5;
-//		}
-//	}
-
-
-
-	//
-//	static float angle_ = D3DX_PI;
-//	pCar1->RotationUp(D3DXToRadian(angle_));
 }
 
 void cTrack::LastUpdate()
@@ -140,17 +56,6 @@ void cTrack::Render()
 
 void cTrack::SetData()
 {
-	//그저 메쉬일 뿐...
-	//pCar1 = new cCar;
-	//pCar1->LoadMesh("tc1");
-	//m_vecObject.push_back(pCar1);
-
-
-	////자동차 추가
-	//pVeh = MgrPhysX->createCarWithDesc(NxVec3(0, 2, 0), true, true, false, false, false, MgrPhysXSDK);
-
-
-
 
 }
 
@@ -190,29 +95,32 @@ void cTrack::LoadTrack(std::string FileName)
 				Load.getline(szTemp, 1024);
 				sscanf_s(szTemp, "%*s %d", &tag);
 
+				ePhysXTag physxTag = E_PHYSX_TAG_NONE;
 				switch (tag)
 				{
-				case E_OBJECT_CHECKBOX:      Obj = new cCheckBox; break;
-				case E_OBJECT_FOLLOWPOINT:   Obj = new cFollowPoint; break;
+				case E_OBJECT_CHECKBOX:     
+					Obj = new cCheckBox;		physxTag = ePhysXTag::E_PHYSX_TAG_CHECKBOX;	break;
+				case E_OBJECT_FOLLOWPOINT:   Obj = new cFollowPoint;	physxTag = ePhysXTag::E_PHYSX_TAG_NONE;	break;
 				case E_OBJECT_CAR: break;
 				case E_OBJECT_MAP: break;
-				case E_OBJECT_LIGHT:      Obj = new cLight; break;
-				case E_OBJECT_STUFF:      Obj = new cStuff; break;
+				case E_OBJECT_LIGHT:		Obj = new cLight;			physxTag = ePhysXTag::E_PHYSX_TAG_NONE;	break;
+				case E_OBJECT_STUFF:		Obj = new cStuff;			physxTag = ePhysXTag::E_PHYSX_TAG_NONE;	break;
 				case E_OBJECT_CAMERA: break;
-				case E_OBJECT_PICKUP:      Obj = new cPickUp; break;
+				case E_OBJECT_PICKUP:		Obj = new cPickUp;			physxTag = ePhysXTag::E_PHYSX_TAG_PICKUP;	break;
 				case E_OBJECT_END: break;
 				case E_OBJECT_NONE:   break;
 				default: break;
 				}
 
 				Obj->SetTag((eOBJECT_TAG)tag);
-
+				USERDATA* pUserData = new USERDATA;
+				pUserData->USER_TAG = physxTag;
 				cPhysX* physx = new cPhysX;
 				NxShapeType type((NxShapeType)0);
 				NxVec3 position(0, 0, 0);
 				NxVec3 sizeValue(0, 0, 0);
 				NxF32 matR[9] = { 1,0,0,0,1,0,0,0,1 };
-				USERDATA* pUserData = new USERDATA;
+				
 				bool isTrigger = false;
 				bool isStatic_ = false;
 				bool isGravity = true;
@@ -336,13 +244,12 @@ void cTrack::LoadTrack(std::string FileName)
 						}
 						else if (Obj->GetTag() == E_OBJECT_PICKUP)
 						{
-							//맵에 배치되어있는 장애물들...
 							NxActor* pActor = MgrPhysX->CreateActor(
 								type,
 								position + worldPosition + localPosition,
 								matR,
 								sizeValue,
-								E_PHYSX_MATERIAL_03,
+								E_PHYSX_MATERIAL_NONE,
 								pUserData,
 								isTrigger,
 								isStatic_,
@@ -362,6 +269,7 @@ void cTrack::LoadTrack(std::string FileName)
 						}
 						else
 						{
+							//맵에 배치되어있는 장애물들...
 							NxActor* pActor = MgrPhysX->CreateActor(
 								type,
 								position + worldPosition + localPosition,
@@ -415,7 +323,8 @@ void cTrack::CreateTrackPhysX()
 	if (GetMeshData()->m_pMesh)	//맵은 특별한 인자값을 주고 받지 않는다. (굳이 있다면 재질값 정도)
 	{
 		cPhysX* physx = new cPhysX;
-		physx->m_pUserData = new USERDATA;
+
+		USERDATA* userData = new USERDATA;
 		NxActorDesc actorDesc;	actorDesc.setToDefault();
 		NxBodyDesc  bodyDesc;	bodyDesc.setToDefault();
 
@@ -429,7 +338,7 @@ void cTrack::CreateTrackPhysX()
 		//actorDesc.body = &bodyDesc;
 
 		actorDesc.globalPose.t = NxVec3(0, 0, 0);
-		actorDesc.userData = (physx->m_pUserData);
+		actorDesc.userData = (userData);
 
 		physx->m_pActor = MgrPhysXScene->createActor(actorDesc);
 

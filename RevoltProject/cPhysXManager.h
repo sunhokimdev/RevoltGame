@@ -32,7 +32,8 @@ enum ePhysXTag
 {
 	E_PHYSX_TAG_NONE = 0		//충돌 이벤트에서 딱히 해줄게 없는 것들...
 	, E_PHYSX_TAG_CHECKBOX		//체크 박스
-	, E_PHYSX_TAG_CAR			//
+	, E_PHYSX_TAG_CAR			//차
+	, E_PHYSX_TAG_PICKUP		//아이템
 	, E_PHYSX_TAG_FIREWORK
 	, E_PHYSX_TAG_WHATEBOMB
 	, E_PHYSX_TAG_METALBALL
@@ -72,6 +73,15 @@ struct USERDATA
 	NX_BOOL RaycastClosestShape;
 	NX_BOOL RaycastAllShape;
 	NxVec3	RayHitPos;
+	USERDATA(ePhysXTag tag)
+	{
+		USER_TAG = tag;
+		ContactPairFlag = 0;
+		TriggerPairFlag = 0;
+		RaycastClosestShape = NX_FALSE;
+		RaycastAllShape = NX_FALSE;
+		RayHitPos = NxVec3(0, 0, 0);
+	}
 	USERDATA()
 	{
 		USER_TAG = E_PHYSX_TAG_NONE;
@@ -231,7 +241,7 @@ public:
 			desc.setToDefault();
 			desc.radius = sizeValue.x;
 			shapeDesc = &desc;
-			
+
 			if (isKinematic)
 			{
 				NxSphereShapeDesc dummyShape;
@@ -374,7 +384,7 @@ public:
 
 	}
 
-	NxVehicle* createCarWithDesc(NxVec3 pos, bool frontWheelDrive, bool backWheelDrive)
+	NxVehicle* createCarWithDesc(NxVec3 pos, USERDATA* pUserData, bool frontWheelDrive, bool backWheelDrive)
 	{
 		//monsterTruck = true;
 		NxVehicleDesc vehicleDesc;
@@ -436,6 +446,10 @@ public:
 		vehicleDesc.steeringTurnPoint.set(-1.5f, 0, 0);
 
 
+		if (pUserData)
+			vehicleDesc.userData = pUserData;
+		else
+			vehicleDesc.userData = NULL;
 
 		NxVehicle* vehicle = NxVehicle::createVehicle(MgrPhysXScene, &vehicleDesc);
 		NxQuat q;
