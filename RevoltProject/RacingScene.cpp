@@ -37,18 +37,19 @@ void RacingScene::Setup()
 	//g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
 	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
 
+	/// car »ý¼º
 	{
 		cCar* pCar = new cCar;
 		pCar->LoadMesh("tc1");
 		pCar->CreatePhsyX();
-		pCar->SetCarValue(5000, 0.1, 0, NxPi / 8, NxPi * 0.01f);
+		pCar->SetCarValue(2000, 7000, 0.1, 0, NxPi / 8, NxPi * 0.05f);
 		vecCars.push_back(pCar);
 	}
 	{
 		cCar* pCar = new cCar;
 		pCar->LoadMesh("tc2");
 		pCar->CreatePhsyX();
-		pCar->SetCarValue(7000, 0.1, 0, NxPi / 5, NxPi * 0.0001f);
+		pCar->SetCarValue(1000, 5000, 0.1, 0, NxPi / 8, NxPi * 0.05f);
 
 		pCar->GetPhysXData()->SetPosition(NxVec3(0, 0, 3));
 		vecCars.push_back(pCar);
@@ -144,7 +145,7 @@ void RacingScene::UpdateCamera()
 	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
 
 	D3DXVECTOR3 carPos = { pos.x,pos.y,pos.z };
-	
+
 	float x = carPos.x - (carDir.x * distToCar);
 	float y = carPos.y - (carDir.y * distToCar) + Height;
 	float z = carPos.z - (carDir.z * distToCar);
@@ -153,7 +154,7 @@ void RacingScene::UpdateCamera()
 	D3DXVECTOR3 moveDir;
 	moveDir = vDest - CAM_POS;
 	D3DXVec3Normalize(&moveDir, &moveDir);
-	
+
 	D3DXVECTOR3 distToDest = vDest - CAM_POS;
 
 	D3DXVec3Lerp(camPos, camPos, &vDest, 0.1f);

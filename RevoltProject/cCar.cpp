@@ -13,8 +13,9 @@ cCar::~cCar()
 
 }
 
-void cCar::SetCarValue(float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc)
+void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc)
 {
+	m_maxRpm = maxRpm;
 	m_maxMoterPower = moterPower;
 	m_moterAcc = moterAcc;
 	//	m_breakPower = breakPower;
@@ -26,7 +27,7 @@ void cCar::SetCarValue(float moterPower, float moterAcc, float breakPower, float
 }
 void cCar::CreatePhsyX()
 {
-	m_carNxVehicle = MgrPhysX->createCarWithDesc(NxVec3(0, 0, 0), true, true);
+	m_carNxVehicle = MgrPhysX->createCarWithDesc(NxVec3(0, 1, 0), true, true);
 	if (m_carNxVehicle)
 	{
 		cPhysX* physX = new cPhysX;
@@ -34,12 +35,16 @@ void cCar::CreatePhsyX()
 		physX->m_pUserData = new USERDATA();
 
 		SetPhysXData(physX);
+		physX->SetPosition(NxVec3(0, 0, 0));
 	}
+
 }
 
 void cCar::LoadMesh(std::string carName)
 {
 	GetMeshData()->LoadCarMesh("Cars/" + carName, carName + ".obj");
+
+
 }
 
 void cCar::Update()
@@ -51,6 +56,7 @@ void cCar::Update()
 
 		float targetPower = 0.f;
 		bool power = false;
+		m_breakPower = 0.f;
 		if (g_pKeyManager->isStayKeyDown(VK_UP))
 		{
 			m_moterPower += m_moterAcc;
@@ -69,7 +75,9 @@ void cCar::Update()
 		{
 			m_moterPower = 0.f;
 			targetPower = m_moterPower * m_maxMoterPower;
+			m_breakPower = m_maxMoterPower;
 		}
+
 
 		float targetAngle = m_wheelAngle * m_maxWheelAngle;
 		bool handle = false;
@@ -89,17 +97,19 @@ void cCar::Update()
 		}
 		if (!handle)
 		{
-			if (abs(m_wheelAngle) <= m_wheelAcc*2) m_wheelAngle = 0.0f;
-			else if (m_wheelAngle > 0) m_wheelAngle -= m_wheelAcc*2;
-			else if (m_wheelAngle < 0) m_wheelAngle += m_wheelAcc*2;
+			if (abs(m_wheelAngle) <= m_wheelAcc * 2) m_wheelAngle = 0.0f;
+			else if (m_wheelAngle > 0) m_wheelAngle -= m_wheelAcc * 2;
+			else if (m_wheelAngle < 0) m_wheelAngle += m_wheelAcc * 2;
 
 			targetAngle = m_wheelAngle * m_maxWheelAngle;
 		}
 
-
+		std::cout << m_carNxVehicle->getWheel(0)->getAngle() << std::endl;
 		for (int i = 0; i < 4; i++)
 		{
 			NxWheel* wheel = m_carNxVehicle->getWheel(i);
+			
+
 			if (i < 2)
 			{
 				float value = (1 - (wheel->getRpm() / m_maxRpm));
@@ -107,7 +117,9 @@ void cCar::Update()
 				wheel->setAngle(targetAngle * value);
 			}
 			if (wheel->getRpm() < m_maxRpm)
-				wheel->tick(false, targetPower, 100.f, 1.f / 60.f);
+				wheel->tick(false, targetPower, m_breakPower, 1.f / 60.f);
+			else
+				wheel->tick(false, 0, m_breakPower, 1.f / 60.f);
 		}
 
 	}
@@ -115,7 +127,22 @@ void cCar::Update()
 
 void cCar::LastUpdate()
 {
-	Object::LastUpdate();
+	if (GetPhysXData())
+	{
+		//물리데이터와 메쉬 데이터동기화
+
+		NxVec3 pos = GetPhysXData()->m_pActor->getGlobalPosition();
+		D3DXVECTOR3 dPos;
+		dPos.x = pos.x;
+		dPos.y = pos.y;
+		dPos.z = pos.z;
+
+		NxF32 NxMat[9] = { 1,0,0,0,1,0,0,0,1 };
+		GetPhysXData()->m_pActor->getGlobalPose().M.getColumnMajor(NxMat);
+
+		cTransform::SetQuaternion(NxMat);
+		cTransform::SetPosition(dPos + cTransform::GetUpVec() * 0.2f);
+	}
 }
 
 void cCar::Render()
