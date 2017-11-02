@@ -52,6 +52,10 @@ void MainGame::Setup()
 	g_pItemManager->Init();
 
 	SetAddSound();
+
+
+
+	MgrPhysXScene->setUserTriggerReport(new TriggerCallback());
 }
 
 void MainGame::Update()

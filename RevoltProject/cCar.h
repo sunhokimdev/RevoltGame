@@ -1,17 +1,10 @@
 #pragma once
 #include "Object.h"
 
-class cWheel;
-enum cWheel_ID
-{
-	fl,	//자동차 바퀴 위치
-	fr,	//
-	bl,	//
-	br,	//
-};
-
+class cAI;
 class cCar :public Object
 {
+	//자동차 능력치 관련
 	NxVehicle* m_carNxVehicle;
 
 	std::vector<Object*> vecWheels;
@@ -27,6 +20,15 @@ class cCar :public Object
 	float m_maxWheelAngle;	//바퀴가 꺽이는 최대값. 
 	float m_wheelAcc;		//꺽이는 속도	(비율에 더해지는 값)
 
+	//AI
+	std::vector<cAI*> m_vecAI;
+	bool m_isAI = false;
+
+	//track 관련
+
+	int countCheckTrack;
+
+
 
 public:
 	cCar();
@@ -35,7 +37,7 @@ public:
 	void SetNxVehicle(NxVehicle* pVehicle) { m_carNxVehicle = pVehicle; }
 	NxVehicle* GetNxVehicle() { return m_carNxVehicle; }
 
-	void SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc);
+	void SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc , bool isAI = false);
 	void CreatePhsyX();
 	void LoadMesh(std::string carName);
 
@@ -44,5 +46,10 @@ public:
 	void Render();
 	void Destory();
 
+
+	void CtrlPlayer();
+	void CtrlAI();
+
+	void GetRpm();
 };
 
