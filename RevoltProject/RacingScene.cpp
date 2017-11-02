@@ -40,15 +40,16 @@ void RacingScene::Setup()
 	/// car »ý¼º
 	{
 		cCar* pCar = new cCar;
-		pCar->LoadMesh("tc1");
-		pCar->CreatePhsyX();
-		pCar->SetCarValue(2000, 7000, 0.1, 0, NxPi / 8, NxPi * 0.05f);
+		pCar->LoadCar("tc1");
+		//pCar->LoadMesh("tc3");
+		//pCar->CreatePhsyX();
+		//pCar->SetCarValue(2000, 7000, 0.1, 0, NxPi / 8, NxPi * 0.05f);
 		vecCars.push_back(pCar);
 	}
 	{
 		cCar* pCar = new cCar;
 		pCar->LoadMesh("tc2");
-		pCar->CreatePhsyX();
+		pCar->CreatePhsyX(stCARSPEC());
 		pCar->SetCarValue(1000, 5000, 0.1, 0, NxPi / 8, NxPi * 0.05f);
 
 		pCar->GetPhysXData()->SetPosition(NxVec3(0, 0, 3));
@@ -141,7 +142,7 @@ void RacingScene::UpdateCamera()
 	float FixRange = 0.5;
 	float MaxRange = 2;
 
-	D3DXVECTOR3 carDir = { 0,0,1 };
+	D3DXVECTOR3 carDir = { 1,0,0 };
 	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
 
 	D3DXVECTOR3 carPos = { pos.x,pos.y,pos.z };

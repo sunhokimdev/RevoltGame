@@ -393,6 +393,18 @@
     <ClInclude Include="PhysX\NxWheelDesc.h">
       <Filter>PhysX\NxFile</Filter>
     </ClInclude>
+    <ClInclude Include="cAI.h">
+      <Filter>NewClass</Filter>
+    </ClInclude>
+    <ClInclude Include="cAI_Collider.h">
+      <Filter>NewClass</Filter>
+    </ClInclude>
+    <ClInclude Include="cAI_CtrlHandel.h">
+      <Filter>NewClass</Filter>
+    </ClInclude>
+    <ClInclude Include="cAI_CtrlSpeed.h">
+      <Filter>NewClass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -622,6 +634,18 @@
     </ClCompile>
     <ClCompile Include="PhysX\NxAllVehicles.cpp">
       <Filter>PhysX\NxFile</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI.cpp">
+      <Filter>NewClass</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_Collider.cpp">
+      <Filter>NewClass</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_CtrlHandel.cpp">
+      <Filter>NewClass</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_CtrlSpeed.cpp">
+      <Filter>NewClass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
