@@ -4,8 +4,9 @@
 
 class cItem : public Object
 {
-private:
-	int m_id;
+protected:
+	int m_id;					// 아이템 아이디
+	float m_fTime;			// 아이템 시간
 public:
 	cItem();
 	virtual ~cItem();
@@ -13,7 +14,7 @@ public:
 	virtual void Setup();
 	virtual void Update();
 	virtual void Render();
-	virtual void Create();
+	virtual void Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos);
 
 	void SetActorGroup(NxActor * actor, NxCollisionGroup group);
 };

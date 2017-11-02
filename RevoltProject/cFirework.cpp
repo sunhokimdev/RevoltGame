@@ -23,12 +23,12 @@ void cFirework::Render()
 {
 }
 
-void cFirework::Create()
+void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {
 	ST_PHYSX* pPhysX = new ST_PHYSX;
 
 	USERDATA* user1 = new USERDATA;
-	user1->ID = 1;
+	user1->USER_TAG = E_PHYSX_TAG_FIREWORK;
 
 	pPhysX->pos = NxVec3(5, 0, 3);
 
@@ -38,7 +38,7 @@ void cFirework::Create()
 
 	ObjectLoader::LoadMesh(pPhysX->pMesh, "Objects/firework", "firework.obj");
 
-	pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), user1);
+	pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f),E_PHYSX_MATERIAL_CAR, user1);
 	pPhysX->pPhysX->m_pActor->addForce(NxVec3(10000, 7000, 0));
 
 

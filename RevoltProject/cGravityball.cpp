@@ -48,20 +48,20 @@ void cGravityball::Render()
 	cItem::Render();
 }
 
-void cGravityball::Create()
+void cGravityball::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {
 	ST_PHYSX* pPhysX = new ST_PHYSX;
 
 	USERDATA* user1 = new USERDATA;
-	user1->ID = 2;
+	user1->USER_TAG = E_PHYSX_TAG_GRIVATEBALL;
 
 	pPhysX->pos = NxVec3(5, 0, 3);
 
 	pPhysX->pPhysX = new cPhysX;
 	pPhysX->pTrigger = new cPhysX;
 	
-	pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), user1);
-	pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(3.0f, 0.0f, 0.0f), user1, true);
+	pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, user1);
+	pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(3.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, user1, true);
 	pPhysX->pPhysX->m_pActor->addForce(NxVec3(30000, 0, 0));
 
 	this->SetPhysXData(pPhysX->pPhysX);
