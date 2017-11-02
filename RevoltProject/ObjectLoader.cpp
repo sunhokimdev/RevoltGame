@@ -618,3 +618,169 @@ void ObjectLoader::LoadMtlLib(std::map<std::string, MtlTex*>* mtlTex,
 	} // << while 끝
 	fclose(fp);
 }
+
+void ObjectLoader::LoadMeshRotation(OUT cMesh * pMesh, IN std::string szFolder, IN std::string szFile, D3DXVECTOR3 rotateAngle)
+{
+	// : vertex, texture, normal
+	std::vector<D3DXVECTOR3> vecV;
+	std::vector<D3DXVECTOR2> vecVT;
+	std::vector<D3DXVECTOR3> vecVN;
+	std::vector<ST_PNT_VERTEX> vecVertex;
+	std::vector<DWORD> vecAttribute;         //: <<
+	std::map<std::string, MtlTex*> mapMtlTex;
+
+	std::string sFullPath = szFolder + std::string("/") + szFile;// +std::string(".scn");
+
+
+	FILE* fp;
+	fopen_s(&fp, sFullPath.c_str(), "r");
+
+	std::string sMtlName;
+
+	if (fp)
+	{
+		while (true)
+		{
+			if (feof(fp)) break;
+
+			char szTemp[1024];
+			fgets(szTemp, 1024, fp);
+
+			int sI = 0; // startIndex;
+			while (true)
+			{
+				if (szTemp[sI] == ' ' || szTemp[sI] == '\t')
+					sI++;
+
+				else break;
+			}
+			if (szTemp[sI] == '#')
+			{
+				continue;
+			}
+			else if (szTemp[sI] == 'm')
+			{
+				char szMtlFile[1024];
+				sscanf_s(szTemp, "%*s %s", szMtlFile, 1024);
+				LoadMtlLib(&(mapMtlTex), szFolder, szMtlFile);
+			}
+			else if (szTemp[sI] == 'g')
+			{
+				//	if (!vecVertex.empty())
+				//	{
+				//		// 삭제
+				//	}
+			}
+			else if (szTemp[sI] == 'v')
+			{
+				if (szTemp[sI + 1] == ' ')
+				{
+					float x, y, z;
+					sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
+					vecV.push_back(D3DXVECTOR3(-x, y, z));
+				}
+				else if (szTemp[sI + 1] == 't')
+				{
+					float u, v;
+					sscanf_s(szTemp, "%*s %f %f %*f", &u, &v);
+					vecVT.push_back(D3DXVECTOR2(u, 1.0f - v));
+				}
+				else if (szTemp[sI + 1] == 'n')
+				{
+					float x, y, z;
+					sscanf_s(szTemp, "%*s %f %f %f", &x, &y, &z);
+					vecVN.push_back(D3DXVECTOR3(x, y, z));
+				}
+			}
+			else if (szTemp[sI] == 'u')
+			{
+				char szMtlName[1024];
+				sscanf_s(szTemp, "%*s %s", szMtlName, 1024);
+				sMtlName = std::string(szMtlName);
+
+			}
+			else if (szTemp[sI] == 'f')
+			{
+				int nIndex[3][3];
+				sscanf_s(szTemp, "%*s %d/%d/%d %d/%d/%d %d/%d/%d",
+					&nIndex[0][0], &nIndex[0][1], &nIndex[0][2],
+					&nIndex[1][0], &nIndex[1][1], &nIndex[1][2],
+					&nIndex[2][0], &nIndex[2][1], &nIndex[2][2]);
+
+				for (int i = 2; i >= 0; i--)
+				{
+					ST_PNT_VERTEX v;
+					v.p = vecV[nIndex[i][0] - 1];
+					v.t = vecVT[nIndex[i][1] - 1];
+					v.n = vecVN[nIndex[i][2] - 1];
+					vecVertex.push_back(v);
+				}
+
+				vecAttribute.push_back((mapMtlTex)[sMtlName]->GetAttrID());
+			}
+		} // : << while 끝
+	}
+	else
+	{
+		std::string text = sFullPath + "경로를 찾을 수 없습니다.";
+		MessageBoxA(g_hWnd, text.c_str(), "", MB_OK);
+	}
+	if (fp) fclose(fp);
+
+	D3DXMATRIXA16 matR, matRX, matRY, matRZ;
+	D3DXMatrixIdentity(&matR);
+	D3DXMatrixIdentity(&matRX);
+	D3DXMatrixIdentity(&matRY);
+	D3DXMatrixIdentity(&matRZ);
+	D3DXMatrixRotationX(&matRX, rotateAngle.x);
+	D3DXMatrixRotationY(&matRY, rotateAngle.y);
+	D3DXMatrixRotationZ(&matRZ, rotateAngle.z);
+
+	matR = matRX * matRY * matRZ;
+	
+	for (int i = 0; i < vecVertex.size(); i++)
+	{
+		D3DXVec3TransformCoord(&vecVertex[i].p, &vecVertex[i].p, &matR);
+	}
+
+	pMesh->m_vecMtlTex.resize(mapMtlTex.size());
+	for each(auto it in mapMtlTex)
+	{
+		pMesh->m_vecMtlTex[it.second->GetAttrID()] = it.second;
+	}
+
+	/*vecMtlTex.resize((pMesh->m_mapMtlTex).size());
+
+	for each(auto it in (pMesh->m_mapMtlTex))
+	{
+	vecMtlTex[it.second->GetMtlTexID()] = it.second;
+	}*/
+
+	//	LPD3DXMESH newMesh = NULL;
+	D3DXCreateMeshFVF(vecAttribute.size(),
+		vecVertex.size(),
+		D3DXMESH_MANAGED,
+		ST_PNT_VERTEX::FVF,
+		g_pD3DDevice,
+		&(pMesh->m_pMesh));
+
+	ST_PNT_VERTEX* pV = NULL;
+	pMesh->m_pMesh->LockVertexBuffer(0, (LPVOID*)&pV);
+	memcpy(pV, &vecVertex[0], sizeof(ST_PNT_VERTEX) * vecVertex.size());
+	pMesh->m_pMesh->UnlockVertexBuffer();
+
+	WORD* pI = NULL;
+	pMesh->m_pMesh->LockIndexBuffer(0, (LPVOID*)&pI);
+
+	for (size_t i = 0; i < vecVertex.size(); i++)
+	{
+		pI[i] = i;
+	}
+
+	pMesh->m_pMesh->UnlockIndexBuffer();
+
+	DWORD* pA = NULL;
+	pMesh->m_pMesh->LockAttributeBuffer(0, &pA);
+	memcpy(pA, &vecAttribute[0], sizeof(DWORD) * vecAttribute.size());
+	pMesh->m_pMesh->UnlockAttributeBuffer();
+}

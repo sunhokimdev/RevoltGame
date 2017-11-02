@@ -25,12 +25,12 @@ void ItemManager::Init()
 	MgrPhysXScene->setUserTriggerReport(new TriggerCallback());
 
 	USERDATA* user1 = new USERDATA;
-	user1->ID = 1;
+	user1->USER_TAG = E_PHYSX_TAG_NONE;
 
-	box1 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(6, 0, 5), NULL, NxVec3(3.0f, 3.0f, 3.0f), user1);
-	box2 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(5, 0, 0), NULL, NxVec3(3.0f, 3.0f, 3.0f), user1);
-	box3 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(4, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), user1);
-	box4 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(20, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), user1);
+	box1 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(6, 0, 5), NULL, NxVec3(3.0f, 3.0f, 3.0f), E_PHYSX_MATERIAL_CAR, user1);
+	box2 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(5, 0, 0), NULL, NxVec3(3.0f, 3.0f, 3.0f), E_PHYSX_MATERIAL_CAR, user1);
+	box3 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(4, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
+	box4 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(20, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
 
 	std::vector<cItem*> vecGravity;
 
@@ -46,11 +46,6 @@ void ItemManager::Init()
 
 void ItemManager::Update()
 {
-	for (int i = WBOMEB;i < ITEMLAST;i++)
-	{
-
-	}
-
 	for (int i = 0;i < m_index;++i)
 	{
 		m_vecItem[i]->Update();

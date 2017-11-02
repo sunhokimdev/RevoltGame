@@ -32,6 +32,7 @@ class NxWheel
 	virtual NxActor *		getTouchedActor() const = 0;
 	virtual NxVec3			getWheelPos() const = 0;
 	virtual void			setAngle(NxReal angle) = 0;
+	virtual NxReal			getAngle() = 0;
 	virtual void			drawWheel(NxReal approx, bool debug = false) const = 0;
 	virtual NxReal			getRpm() const = 0;
 	virtual NxVec3			getGroundContactPos() const = 0;
@@ -61,6 +62,7 @@ public:
 	virtual NxActor *		getTouchedActor() const		{ return contactInfo.otherActor; }
 	virtual NxVec3			getWheelPos() const { return wheelCapsule->getLocalPosition(); }
 	virtual void			setAngle(NxReal angle);
+	virtual NxReal			getAngle();
 	virtual void			drawWheel(NxReal approx, bool debug = false) const;
 	virtual NxReal			getRpm() const { return NxMath::abs(_turnVelocity * 60.f); }
 	virtual NxVec3			getGroundContactPos() const { return getWheelPos(); }
@@ -106,6 +108,7 @@ class NxWheel2 : public NxWheel
 	virtual NxActor *		getTouchedActor() const;
 	virtual NxVec3			getWheelPos() const;
 	virtual void			setAngle(NxReal angle);
+	virtual NxReal			getAngle();
 	virtual void			drawWheel(NxReal approx, bool debug = false) const;
 	virtual NxReal			getRpm() const;
 	virtual NxVec3			getGroundContactPos() const { return getWheelPos()+NxVec3(0, -wheelShape->getRadius(), 0); }

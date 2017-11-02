@@ -44,6 +44,6 @@ private:
 	Lobby* m_pLobby;
 
 
-	cCar* pCar;
+//	cCar* pCar;
 };
 

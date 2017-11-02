@@ -46,14 +46,38 @@ protected:
 	Object();
 	~Object();
 
-	SYNTHESIZE(cMesh*, m_pMeshData, MeshData);
-	SYNTHESIZE(cPhysX*, m_PhysXData, PhysXData);
+	cMesh* m_pMeshData;
+	cPhysX* m_PhysXData;
 
 	SYNTHESIZE(eOBJECT_TAG, m_objTag, Tag);
 	SYNTHESIZE(eOBJECT_ID, m_eID, ID);
 	SYNTHESIZE(std::string, m_objName, ObjName);
 	SYNTHESIZE(bool, m_isEnable, m_isEnable);
 public:
+	cMesh* GetMeshData() { return m_pMeshData; }
+	void SetMeshData(cMesh* pMesh) {
+		if (pMesh)
+		{
+			if (m_pMeshData)
+			{
+				m_pMeshData->Destory();
+			}
+			m_pMeshData = pMesh;
+		}
+	}
+	cPhysX*	GetPhysXData() { return m_PhysXData; }
+	void SetPhysXData(cPhysX* pPhysX)
+	{
+		if (pPhysX)
+		{
+			if (m_PhysXData)
+			{
+				m_PhysXData->Destory();
+			}
+			m_PhysXData = pPhysX;
+		}
+	}
+
 	virtual void Setup();
 	virtual void Destroy();
 	virtual void Update();
