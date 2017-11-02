@@ -24,6 +24,7 @@
 #include "cSelectCarLob.h"
 #include "cCreateProfile.h"
 #include "cViewCarLob.h"
+#include "cImpact.h"
 
 /*   멀티 플레이어 작업   */
 #include "cNetworkLobby.h"
@@ -77,7 +78,6 @@ void Lobby::Setup()
 	Thing::g_LobbyState = &m_stateLobby;
 	CarBox::g_select = &m_leftAndrightSelect;
 	Map::g_LobbyState = &m_stateLobby;
-
 	iLobby::m_gLobbyState = &m_stateLobby;
 
 	m_pSelectMap = new SelectMap;

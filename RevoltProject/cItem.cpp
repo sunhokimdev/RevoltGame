@@ -3,7 +3,7 @@
 
 cItem::cItem()
 	: m_fTime(0.0f)
-	, m_id(0);
+	, m_id(0)
 {
 }
 
@@ -13,11 +13,14 @@ cItem::~cItem()
 
 void cItem::Setup()
 {
+	Object::Setup();
 }
 
 void cItem::Update()
 {
 	Object::Update();
+
+	m_fTime++;
 }
 
 void cItem::Render()

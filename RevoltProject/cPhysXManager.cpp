@@ -342,18 +342,17 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 	}
 	else if (status & NX_TRIGGER_ON_LEAVE)
 	{
-
 		//	std::cout << "NX_TRIGGER_ON_ENTER";
 		// 2°¡ Áß·ÂÀÚÅº
 		if (pUserData0->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
-			triggerShape.getActor().addForce(NxVec3(0, 300000, 0));
-			triggerShape.getActor().addTorque(NxVec3(1.5f, 0, 0));
+			//triggerShape.getActor().addForce(NxVec3(0, 300000, 0));
+			//triggerShape.getActor().addTorque(NxVec3(1.5f, 0, 0));
 		}
 		else if (pUserData1->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
-			otherShape.getActor().addForce(NxVec3(0, 300000, 0));
-			otherShape.getActor().addLocalTorque(NxVec3(1.5f, 0, 0));
+			//otherShape.getActor().addForce(NxVec3(0, 300000, 0));
+			//otherShape.getActor().addLocalTorque(NxVec3(1.5f, 0, 0));
 		}
 
 		else

@@ -1,19 +1,16 @@
 #pragma once
 class cImpact
 {
-private:
-	IDirect3DVertexBuffer9* VB;
-	D3DXMATRIXA16	m_matWorld;
-	D3DXVECTOR3 m_itemPos;
-	std::vector<ST_PC_VERTEX>m_vecParticleVertex;
+protected:
+	D3DXVECTOR3 m_itemPos;						// 아이템 위치
 public:
 	cImpact();
-	~cImpact();
+	virtual ~cImpact();
 
-	void Setup();
-	void Update();
-	void Render();
-	void SetPosition(D3DXVECTOR3 pos) { m_itemPos = pos; };
+	virtual void Setup();
+	virtual void Update();
+	virtual void Render();
+	virtual void SetPosition(D3DXVECTOR3 pos) { m_itemPos = pos; };
 	DWORD FtoDw(float f)
 	{
 		return *((DWORD*)&f);

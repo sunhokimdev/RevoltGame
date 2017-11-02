@@ -16,6 +16,7 @@ public:
 	virtual void Render();
 	virtual void Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos);
 
+	SYNTHESIZE(bool, m_isUse, Use);		// 사용 가능한 아이템인지 확인
 	void SetActorGroup(NxActor * actor, NxCollisionGroup group);
 };
 

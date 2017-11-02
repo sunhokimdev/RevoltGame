@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "cGravityball.h"
 #include "cImpact.h"
+#include "GravityBallImpact.h"
 
 cGravityball::cGravityball()
 	: m_impactIndex(0)
@@ -20,29 +21,35 @@ void cGravityball::Setup()
 
 	for (int i = 0;i < m_vecImpact.size();i++)
 	{
-		m_vecImpact[i] = new cImpact;
+		m_vecImpact[i] = new GravityBallImpact;
 		m_vecImpact[i]->Setup();
 	}
 }
 
 void cGravityball::Update()
 {
-	for (int i = 0;i < m_vecImpact.size();++i)
+	if (m_isUse)
 	{
-		m_vecImpact[i]->Update();
-	}
+		for (int i = 0;i < m_vecImpact.size();++i)
+		{
+			m_vecImpact[i]->Update();
+		}
 
-	for (int i = 0;i < m_vecPhysX.size();++i)
-	{
-		MoveActorOnPath(m_vecPhysX[i]->pTrigger->m_pActor, i);
+		for (int i = 0;i < m_vecPhysX.size();++i)
+		{
+			MoveActorOnPath(m_vecPhysX[i]->pTrigger->m_pActor, i);
+		}
 	}
 }
 
 void cGravityball::Render()
 {
-	for (int i = 0;i < m_vecImpact.size();++i)
+	if (m_isUse)
 	{
-		m_vecImpact[i]->Render();
+		for (int i = 0;i < m_vecImpact.size();++i)
+		{
+			m_vecImpact[i]->Render();
+		}
 	}
 
 	cItem::Render();
@@ -55,7 +62,9 @@ void cGravityball::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	USERDATA* user1 = new USERDATA;
 	user1->USER_TAG = E_PHYSX_TAG_GRIVATEBALL;
 
-	pPhysX->pos = NxVec3(5, 0, 3);
+	pPhysX->pos.x = pos.x + angle.x;
+	pPhysX->pos.y = pos.y;
+	pPhysX->pos.z = pos.z + angle.z;
 
 	pPhysX->pPhysX = new cPhysX;
 	pPhysX->pTrigger = new cPhysX;

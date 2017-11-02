@@ -1,31 +1,58 @@
 #include "stdafx.h"
 #include "cWbomb.h"
 #include "ObjectLoader.h"
+#include "cWaterBombImpact.h"
 
 cWbomb::cWbomb()
+	: m_pPhysX(NULL)
+	, m_pImapt(NULL)
 {
 }
 
 cWbomb::~cWbomb()
 {
+	SAFE_DELETE(m_pImapt);
 }
 
 void cWbomb::Setup()
 {
 	cItem::Setup();
+
+	m_pImapt = new cWaterBombImpact;
+	m_pImapt->Setup();
 }
 
 void cWbomb::Update()
 {
 	cItem::Update();
+
+	if (m_isUse && m_fTime > WATERIMPACT)
+	{
+		m_pPhysX->pPhysX->m_pActor->putToSleep();
+		m_pPhysX->pPhysX->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
+		NxVec3 n = m_pPhysX->pPhysX->m_pActor->getGlobalPose().t;
+		D3DXVECTOR3 v;
+		v.x = n.x;
+		v.y = n.y;
+		v.z = n.z;
+		m_pImapt->SetIsUse(true);
+		m_pImapt->SetPosition(v);
+		m_isUse = false;
+	}
+
+	if (!m_isUse && m_pImapt->GetIsUse())
+		m_pImapt->Update();
 }
 
 void cWbomb::Render()
 {
 	cItem::Render();
 
-	for (int i = 0;i < m_vecPhysX.size();++i)
-		m_vecPhysX[i]->pMesh->Render();
+	if(m_isUse)
+		m_pPhysX->pMesh->Render();
+
+	if (!m_isUse && m_pImapt->GetIsUse())
+		m_pImapt->Render();
 }
 
 void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
@@ -48,15 +75,16 @@ void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	NxVec3 force;
 
 	force.x = angle.x * 10000;
-	force.y = 7000;
+	force.y = 3000;
 	force.z = angle.z * 10000;
 
 	pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f),E_PHYSX_MATERIAL_CAR, user1);
 	pPhysX->pPhysX->m_pActor->addForce(force);
+	pPhysX->pPhysX->m_pActor->addTorque(NxVec3(angle.x, angle.y, angle.z));
 
 	this->SetPhysXData(pPhysX->pPhysX);
 
 	SetActorGroup(pPhysX->pPhysX->m_pActor, 1);
 
-	m_vecPhysX.push_back(pPhysX);
+	m_pPhysX = pPhysX;
 }

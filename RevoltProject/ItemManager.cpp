@@ -2,7 +2,6 @@
 #include "ItemManager.h"
 #include "cItem.h"
 #include "ObjectLoader.h"
-#include "cContactUser.h"
 #include "cImpact.h"
 #include "cGravityball.h"
 #include "cWbomb.h"
@@ -32,11 +31,16 @@ void ItemManager::Init()
 	box3 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(4, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
 	box4 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(20, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
 
-	std::vector<cItem*> vecGravity;
+	//for (int i = 0;i < 10;i++)
+	//{
+	//	cWbomb* pItem = new cWbomb;
+	//	pItem->Setup();
+	//	m_vecItem.push_back(pItem);
+	//}
 
-	for (int i = 0;i < m_max;i++)
+	for (int i = 0;i < 10;i++)
 	{
-		cWbomb* pItem = new cWbomb;
+		cGravityball* pItem = new cGravityball;
 		pItem->Setup();
 		m_vecItem.push_back(pItem);
 	}
@@ -67,9 +71,10 @@ void ItemManager::Render()
 void ItemManager::SetFire(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {
 	m_vecItem[m_index]->Create(angle,pos);
+	m_vecItem[m_index]->SetUse(true);
 	m_index++;
 
-	if (m_index == m_max)
+	if (m_index == m_vecItem.size())
 		m_index = 0;
 }
 
