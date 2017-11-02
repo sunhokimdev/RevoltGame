@@ -45,7 +45,7 @@ void cWbomb::Create()
 
 	pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), user1);
 	pPhysX->pPhysX->m_pActor->addForce(NxVec3(10000, 7000, 0));
-
+	
 
 	this->SetPhysXData(pPhysX->pPhysX);
 
