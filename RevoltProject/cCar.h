@@ -2,7 +2,14 @@
 #include "Object.h"
 
 class cAI;
-class cCar :public Object
+
+struct stCARSPEC
+{
+	std::vector<NxBoxShapeDesc> vecBoxDesc;
+	std::vector<D3DXVECTOR3> vecWheelPos;
+};
+
+class cCar : public Object
 {
 	//자동차 능력치 관련
 	NxVehicle* m_carNxVehicle;
@@ -29,9 +36,10 @@ class cCar :public Object
 	int countChectBox;
 	int countTrack;
 
-	//Item
-	enum ItemTag {a,b,c,d};
-	ItemTag m_IitemTag;
+	SYNTHESIZE(eITEM_LIST, m_eHoldItem, HoldItem);
+	SYNTHESIZE(int, m_nItemCount, ItemCount);
+	
+	int countCheckTrack;
 
 public:
 	cCar();
@@ -42,7 +50,10 @@ public:
 
 	void LoadCar(std::string carName);
 	void SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc , bool isAI = false);
-	void CreatePhsyX();
+	
+	void CreateItem();
+
+	void CreatePhsyX(stCARSPEC carspec);
 	void LoadMesh(std::string carName);
 
 	void Update();
@@ -56,4 +67,3 @@ public:
 
 	void GetRpm();
 };
-

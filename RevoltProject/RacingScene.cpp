@@ -67,7 +67,11 @@ void RacingScene::Destroy()
 void RacingScene::Update()
 {
 	GameNode::Update();
-	SAFE_UPDATE(m_pTrack);
+	
+	if (m_pTrack)
+	{
+		m_pTrack->Update();
+	}
 
 	for (int i = 0; i < vecCars.size(); i++)
 	{
