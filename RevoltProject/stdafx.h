@@ -151,16 +151,17 @@ enum FONTFILE{FONT1=2001, FONT2};
 #define WINSIZEY 760
 
 // = FONT2NUMBER
-#define FONT2_NUM0 48
-#define FONT2_NUM1 49
-#define FONT2_NUM2 50
-#define FONT2_NUM3 51
-#define FONT2_NUM4 52
-#define FONT2_NUM5 53
-#define FONT2_NUM6 54
-#define FONT2_NUM7 55
-#define FONT2_NUM8 56
-#define FONT2_NUM9 57
+#define FONT2_START 47
+#define FONT2_NUM0	48
+#define FONT2_NUM1	49
+#define FONT2_NUM2	50
+#define FONT2_NUM3	51
+#define FONT2_NUM4	52
+#define FONT2_NUM5	53
+#define FONT2_NUM6	54
+#define FONT2_NUM7	55
+#define FONT2_NUM8	56
+#define FONT2_NUM9	57
 
 
 //======================================
