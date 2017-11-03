@@ -517,9 +517,9 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 
 		if (pUserData0->USER_TAG == E_PHYSX_TAG_PICKUP)
 		{
-			pUserData0->IsPickUp = NX_TRUE;
 			if (pUserData1->IsPickUp == NX_FALSE)
 			{
+				pUserData0->IsPickUp = NX_TRUE;
 				pUserData1->IsPickUp = NX_TRUE;
 				std::cout << "GetItem" << std::endl;
 			}

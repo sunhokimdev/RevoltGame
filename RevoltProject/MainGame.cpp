@@ -41,8 +41,8 @@ void MainGame::Setup()
 	// Camera 클래스 매니저로 등록
 	//======================================
 	
-	m_pGrid = new Grid;
-	m_pGrid->Setup();
+	//m_pGrid = new Grid;
+	//m_pGrid->Setup();
 
 	g_SceneManager->AddScene("Lobby", new LobbyScene);
 	g_SceneManager->AddScene("Race", new RacingScene);
@@ -77,7 +77,7 @@ void MainGame::Render()
 	SAFE_RENDER(g_SceneManager);
 
 
-	m_pGrid->Render();
+	//m_pGrid->Render();
 	g_pItemManager->Render();
 
 	g_pPhysX->Render();

@@ -363,6 +363,7 @@ void cTrack::CreateTrackPhysX()
 
 		actorDesc.globalPose.t = NxVec3(0, 0, 0);
 		actorDesc.userData = (userData);
+		actorDesc.name = "map";
 
 		physx->m_pActor = MgrPhysXScene->createActor(actorDesc);
 

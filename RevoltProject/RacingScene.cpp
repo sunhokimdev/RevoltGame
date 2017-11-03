@@ -117,6 +117,7 @@ void RacingScene::UpdateCamera()
 #define CAM_Z (*camPos).z
 #define CAM_POS (*camPos)
 
+	
 	//자동차 포지션
 
 	NxVec3 pos = vecCars[0]->GetNxVehicle()->getGlobalPose().t;
@@ -149,29 +150,47 @@ void RacingScene::UpdateCamera()
 	D3DXVECTOR3 carDir = { 1,0,0 };
 	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
 
-	D3DXVECTOR3 carPos = { pos.x,pos.y,pos.z };
+	D3DXVECTOR3 carPos = { pos.x,pos.y + 0.5f ,pos.z };
 
+	*camLookTarget = carPos;//D3DXVECTOR3(pos.x, pos.y + 2.f, pos.z);
+
+	D3DXVECTOR3 camDir = (*camLookTarget) - CAM_POS;
+	D3DXVec3Normalize(&camDir,&camDir);
+
+	//레이초기화
+	NxRay RayCam;
+	RayCam.orig = NxVec3(carPos);
+	RayCam.dir = NxVec3(-carDir);
+	
+	NxRaycastHit RayCamHit;
+	g_pPhysXScene->raycastClosestShape(RayCam, NxShapesType::NX_ALL_SHAPES, RayCamHit);
+
+	
 	float x = carPos.x - (carDir.x * distToCar);
 	float y = carPos.y - (carDir.y * distToCar) + Height;
 	float z = carPos.z - (carDir.z * distToCar);
+
+	if (RayCamHit.distance < distToCar)
+	{
+		if (RayCamHit.shape->getActor().getName() == "map")
+		{
+			x = RayCamHit.worldImpact.x;
+			y = carPos.y + Height;//RayCamHit.worldImpact.y;
+			z = RayCamHit.worldImpact.z;
+		}
+	}
+
+	// 카메라 목적지
 	D3DXVECTOR3 vDest = { x,y,z };
 
-	D3DXVECTOR3 moveDir;
-	moveDir = vDest - CAM_POS;
-	D3DXVec3Normalize(&moveDir, &moveDir);
+	//D3DXVECTOR3 moveDir;
+	//moveDir = vDest - CAM_POS;
+	//D3DXVec3Normalize(&moveDir, &moveDir);
 
-	D3DXVECTOR3 distToDest = vDest - CAM_POS;
+	//D3DXVECTOR3 distToDest = vDest - CAM_POS;
 
-	D3DXVec3Lerp(camPos, camPos, &vDest, 0.1f);
-
-	//D3DXVECTOR3 vTemp = { ,Height,CAM_Z};
-	//D3DXVec3TransformCoord(camPos, &vTemp, &matR);
-
-	//CAM_X = camQuater.x;
-	//CAM_Y = camQuater.y;
-	//CAM_Z = camQuater.z;
-
-	*camLookTarget = D3DXVECTOR3(pos.x, pos.y + 2, pos.z);
+	// 카메라 무빙
+	D3DXVec3Lerp(camPos, camPos, &vDest, 0.2f);
 
 	g_pCamManager->SetCamPos(camPos);
 	g_pCamManager->SetLookAt(camLookTarget);
