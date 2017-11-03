@@ -193,13 +193,34 @@ void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float bre
 
 	m_wheelAngle = 0;
 	m_moterPower = 0;
-
+	m_eHoldItem = ITEM_NONE;
+	m_nItemCount = 0;
 	m_isAI = isAI;
 
 	m_vecAI.clear();
 	if (isAI)
 	{
 		m_vecAI.push_back(new cAI);
+	}
+}
+void cCar::CreateItem()
+{
+	if (!m_eHoldItem)
+	{
+		while (1)
+		{
+			m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
+			if (m_eHoldItem) break;
+		}
+
+		if (m_eHoldItem == ITEM_FIREWORK_3 || m_eHoldItem == ITEM_WBOMB)
+		{
+			m_nItemCount = 3;
+		}
+		else
+		{
+			m_nItemCount = 1;
+		}
 	}
 }
 void cCar::CreatePhsyX(stCARSPEC carspec)
@@ -229,8 +250,27 @@ void cCar::Update()
 	if (m_isAI) CtrlAI();
 	else CtrlPlayer();
 
+	// PickUp 충돌
+	if (GetPhysXData()->m_pUserData->IsPickUp == NX_TRUE)
+	{
+		if (m_eHoldItem == ITEM_NONE)
+		{
+			CreateItem();
+			std::cout << m_eHoldItem << " - " << m_nItemCount << std::endl;
+			//GetPhysXData()->m_pUserData->IsPickUp == NX_FALSE;
+		}
+	}
+	// 과거 위치값
+	for (int i = 3; i >= 0; i--)
+	{
+		m_szPrevPos[i] = m_szPrevPos[i + 1];
+	}
+	m_szPrevPos[0] = m_position;
+
+
 	TrackCheck();
-	
+
+
 }
 
 void cCar::LastUpdate()
@@ -339,7 +379,20 @@ void cCar::CtrlPlayer()
 			if (wheel->getRpm() < m_maxRpm)	wheel->tick(false, targetPower, m_breakPower, 1.f / 60.f);
 			else wheel->tick(false, 0, m_breakPower, 1.f / 60.f);
 		}
-
+		if (g_pKeyManager->isOnceKeyDown(VK_CONTROL))
+		{
+			if (m_eHoldItem != ITEM_NONE)
+			{
+				g_pItemManager->FireItem(m_eHoldItem);
+				m_nItemCount--;
+				if (m_nItemCount == 0)
+				{
+					m_eHoldItem = ITEM_NONE;
+					GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
+				}
+				std::cout << "FIRE!" << std::endl;
+			}
+		}
 	}
 }
 

@@ -8,7 +8,9 @@ public:
 	~cPickUp();
 
 	int m_nLightIndex;
+	bool m_isExist;
 
 	void Update();
+	void Render();
 };
 

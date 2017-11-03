@@ -38,6 +38,7 @@ void ItemManager::Init()
 	{
 		cWbomb* pItem = new cWbomb;
 		pItem->Setup();
+		pItem->SetItemTag(ITEM_WBOMB);
 		m_vecItem.push_back(pItem);
 	}
 
@@ -93,5 +94,9 @@ void ItemManager::InitCollisionGroup()
 
 	MgrPhysXScene->setGroupCollisionFlag(1, 2, false);
 	MgrPhysXScene->setGroupCollisionFlag(2, 2, false);
+}
+
+void ItemManager::FireItem(eITEM_LIST tag)
+{
 }
 

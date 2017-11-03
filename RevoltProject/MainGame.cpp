@@ -41,8 +41,8 @@ void MainGame::Setup()
 	// Camera 클래스 매니저로 등록
 	//======================================
 	
-	m_pGrid = new Grid;
-	m_pGrid->Setup();
+	//m_pGrid = new Grid;
+	//m_pGrid->Setup();
 
 	g_SceneManager->AddScene("Lobby", new LobbyScene);
 	g_SceneManager->AddScene("Race", new RacingScene);
@@ -50,6 +50,7 @@ void MainGame::Setup()
 	g_SceneManager->ChangeScene("Race");
 
 	g_pItemManager->Init();
+	g_pTimeManager->Setup();
 
 	SetAddSound();
 
@@ -64,6 +65,7 @@ void MainGame::Update()
 	SAFE_UPDATE(g_pCamManager);
 	SAFE_UPDATE(g_SceneManager);
 	SAFE_UPDATE(g_pItemManager);
+	SAFE_UPDATE(g_pTimeManager);
 }
 
 void MainGame::Render()
@@ -75,10 +77,13 @@ void MainGame::Render()
 	SAFE_RENDER(g_SceneManager);
 
 
-	m_pGrid->Render();
+	//m_pGrid->Render();
 	g_pItemManager->Render();
 
 	g_pPhysX->Render();
+
+	// 타임 매니저 랜더 해야함
+
 	g_pD3DDevice->EndScene();
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 

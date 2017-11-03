@@ -28,6 +28,9 @@ class cCar : public Object
 	float m_maxWheelAngle;	//바퀴가 꺽이는 최대값. 
 	float m_wheelAcc;		//꺽이는 속도	(비율에 더해지는 값)
 
+	float m_fCurrentSpeed;
+	D3DXVECTOR3 m_szPrevPos[5];
+
 	//AI
 	std::vector<cAI*> m_vecAI;
 	bool m_isAI = false;
@@ -40,9 +43,12 @@ class cCar : public Object
 	
 	SYNTHESIZE(float, m_isTimeCount, IsTimeCount);
 
-	//
-	enum ItemTag {a,b,c,d};
-	ItemTag m_IitemTag;
+	//Item 관련
+	SYNTHESIZE(eITEM_LIST, m_eHoldItem, HoldItem);
+	SYNTHESIZE(int, m_nItemCount, ItemCount);
+	
+	int countCheckTrack;
+
 
 public:
 	cCar();
@@ -54,6 +60,7 @@ public:
 	void LoadCar(std::string carName);
 	void SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc , bool isAI = false);
 	
+	void CreateItem();
 
 	void CreatePhsyX(stCARSPEC carspec);
 	void LoadMesh(std::string carName);

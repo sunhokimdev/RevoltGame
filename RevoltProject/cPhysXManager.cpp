@@ -59,7 +59,7 @@ BOOL cPhysXManager::InitNxPhysX()
 		material.setToDefault();
 		material.restitution = 0.3;
 		material.staticFriction = 0.5f;
-		material.dynamicFriction = 0.2f;
+		material.dynamicFriction = 0.3f;
 		m_pNxScene->createMaterial(material);
 
 	}
@@ -103,11 +103,6 @@ BOOL cPhysXManager::InitNxPhysX()
 		material.dynamicFriction = 8.f;
 		m_pNxScene->createMaterial(material);
 	}
-
-
-
-
-
 
 	return S_OK;
 }
@@ -230,6 +225,27 @@ NxBoxShapeDesc cPhysXManager::CreateBoxShape(int materialIndex, NxVec3 boxSize)
 	return boxDesc;
 }
 
+NxVec3 cPhysXManager::D3DVecToNxVec(D3DXVECTOR3 & d3d)
+{
+	NxVec3 vec;
+	vec.x = d3d.x;
+	vec.y = d3d.y;
+	vec.z = d3d.z;
+	return vec;
+}
+void cPhysXManager::D3DMatToNxMat(NxF32 * nx, D3DMATRIX & dx)
+{
+	nx[0] = dx._11;
+	nx[1] = dx._12;
+	nx[2] = dx._13;
+	nx[3] = dx._21;
+	nx[4] = dx._22;
+	nx[5] = dx._23;
+	nx[6] = dx._31;
+	nx[7] = dx._32;
+	nx[8] = dx._33;
+}
+
 void cPhysXManager::Update()
 {
 
@@ -269,6 +285,172 @@ void cPhysXManager::RaycastAllShapes(D3DXVECTOR3 start, D3DXVECTOR3 dir)
 
 }
 
+NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * mat, NxVec3 sizeValue, eMaterialTag materialTag, USERDATA * pUserData, bool IsTrigger, bool isStatic, bool isGravaty)
+{
+	sizeValue *= 0.5f;
+
+	bool isKinematic = false;
+	// Our trigger is a cube
+
+	NxShapeDesc* shapeDesc = NULL;
+
+	NxActorDesc ActorDesc;
+	ActorDesc.setToDefault();
+
+	switch (type)
+	{
+	case NX_SHAPE_PLANE: {
+		break;
+	}
+	case NX_SHAPE_SPHERE: {
+		NxSphereShapeDesc desc; desc.setToDefault();
+
+		desc.setToDefault();
+		desc.radius = sizeValue.x;
+		shapeDesc = &desc;
+
+		if (isKinematic)
+		{
+			NxSphereShapeDesc dummyShape;
+			dummyShape.setToDefault();
+			dummyShape.radius = sizeValue.x;
+			ActorDesc.shapes.pushBack(&dummyShape);
+		}
+		break;
+	}
+	case NX_SHAPE_BOX: {
+		NxBoxShapeDesc desc;
+		desc.setToDefault();
+		desc.dimensions.set(sizeValue);
+		shapeDesc = &desc;
+
+		if (isKinematic)
+		{
+			NxBoxShapeDesc dummyShape;
+			dummyShape.setToDefault();
+			dummyShape.dimensions.set(sizeValue);
+			ActorDesc.shapes.pushBack(&dummyShape);
+		}
+		break;
+	}
+	case NX_SHAPE_CAPSULE: {
+		NxCapsuleShapeDesc desc; desc.setToDefault();
+		desc.radius = sizeValue.x;
+		desc.height = sizeValue.y;
+		shapeDesc = &desc;
+
+		if (isKinematic)
+		{
+			NxCapsuleShapeDesc dummyShape;
+			dummyShape.setToDefault();
+			desc.radius = sizeValue.x;
+			desc.height = sizeValue.y;
+			ActorDesc.shapes.pushBack(&dummyShape);
+		}
+		break;
+	}
+	case NX_SHAPE_WHEEL: {
+		NxWheelShapeDesc desc; desc.setToDefault();
+		desc.setToDefault();
+		desc.radius = sizeValue.y;
+		desc.skinWidth = sizeValue.x;
+		shapeDesc = &desc;
+
+		if (isKinematic)
+		{
+			NxWheelShapeDesc dummyShape;
+			dummyShape.setToDefault();
+			dummyShape.radius = sizeValue.y;
+			dummyShape.skinWidth = sizeValue.x;
+			ActorDesc.shapes.pushBack(&dummyShape);
+		}
+		break;
+	}
+	case NX_SHAPE_CONVEX: {
+		break;
+	}
+	case NX_SHAPE_MESH: {
+		break;
+	}
+	case NX_SHAPE_HEIGHTFIELD: {
+		break;
+	}
+	case NX_SHAPE_RAW_MESH: {
+		break;
+	}
+	case NX_SHAPE_COMPOUND: {
+		break;
+	}
+	case NX_SHAPE_COUNT: {
+		break;
+	}
+	case NX_SHAPE_FORCE_DWORD: {
+		break;
+	}
+	default:break;
+	}
+
+	if (shapeDesc == NULL) return NULL;
+
+	shapeDesc->materialIndex = (int)materialTag;
+
+	NxBodyDesc triggerBody;
+	triggerBody.setToDefault();
+
+	if (!isGravaty) triggerBody.flags |= NX_BF_DISABLE_GRAVITY;
+
+	if (isKinematic&& IsTrigger)
+	{
+		shapeDesc->shapeFlags |= NX_TRIGGER_ENABLE;
+		triggerBody.flags |= NX_BF_KINEMATIC;
+
+		ActorDesc.body = &triggerBody;
+		//	ActorDesc.body = NULL;
+	}
+	if (isKinematic && !IsTrigger)
+	{
+		triggerBody.flags |= NX_BF_KINEMATIC;
+
+		ActorDesc.body = &triggerBody;
+	}
+	if (!isKinematic&& IsTrigger)
+	{
+		shapeDesc->shapeFlags |= NX_TRIGGER_ENABLE;
+
+		//	ActorDesc.body = NULL;
+	}
+	if (!isKinematic && !IsTrigger)
+	{
+		ActorDesc.body = &triggerBody;
+	}
+
+	if (isStatic) ActorDesc.body = NULL;
+
+	ActorDesc.density = 10.f;
+	ActorDesc.shapes.pushBack(shapeDesc);
+	ActorDesc.globalPose.t = position;
+
+	if (mat == NULL)
+	{
+		NxF32 mat_[9] = { 1,0,0,0,1,0,0,0,1 };
+		mat = mat_;
+	}
+
+	ActorDesc.globalPose.M.setColumnMajor(mat);
+
+	if (pUserData != NULL) ActorDesc.userData = (pUserData);
+
+	NxActor* actor = m_pNxScene->createActor(ActorDesc);
+	if (actor == NULL)
+	{
+		std::cout << "NULL";
+	}
+	return actor;
+
+	//TEST
+
+}
+
 bool RaycastCallBack::onHit(const NxRaycastHit & hit)
 {
 	NxActor& actor = hit.shape->getActor();
@@ -277,7 +459,7 @@ bool RaycastCallBack::onHit(const NxRaycastHit & hit)
 		USERDATA* userData = (USERDATA*)actor.userData;
 		userData->RaycastAllShape = NX_TRUE;
 		userData->RayHitPos = hit.worldImpact;
-		
+
 		MgrPhysXData->RaycastAllShapeHitCount++;
 	}
 	return true;
@@ -337,6 +519,15 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 		if (pUserData0->CheckBoxID == pUserData1->CheckBoxID)
 		{
 			pUserData1->CheckBoxID += 1;
+		}
+		if (pUserData0->USER_TAG == E_PHYSX_TAG_PICKUP)
+		{
+			if (pUserData1->IsPickUp == NX_FALSE)
+			{
+				pUserData0->IsPickUp = NX_TRUE;
+				pUserData1->IsPickUp = NX_TRUE;
+				std::cout << "GetItem" << std::endl;
+			}
 		}
 	}
 	else if (status & NX_TRIGGER_ON_STAY)
@@ -442,10 +633,9 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 		vehicleDesc.carWheels.pushBack(&wheelDesc[i]);
 	}
 
-	if (carspec.vecWheelPos.size() == 4)
+	if (carspec.vecWheelPos.size() == 4) 
 	{
 #define WHEELPOS carspec.vecWheelPos
-
 		wheelDesc[0].position.set(WHEELPOS[0].x, WHEELPOS[0].y, WHEELPOS[0].z);
 		wheelDesc[1].position.set(WHEELPOS[1].x, WHEELPOS[1].y, WHEELPOS[1].z);
 		wheelDesc[2].position.set(WHEELPOS[2].x, WHEELPOS[2].y, WHEELPOS[2].z);
@@ -458,8 +648,6 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 		wheelDesc[2].position.set(-0.45, 0.2f, -0.29);
 		wheelDesc[3].position.set(-0.45, 0.2f, 0.29);
 	}
-
-
 	NxU32 flags = NX_WF_BUILD_LOWER_HALF;
 	wheelDesc[0].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;
 	wheelDesc[1].wheelFlags |= (frontWheelDrive ? NX_WF_ACCELERATED : 0) | NX_WF_STEERABLE_INPUT | flags;

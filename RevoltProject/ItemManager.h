@@ -20,7 +20,14 @@ struct ST_USERDATA
 	int events;
 };
 
-enum ITEM_LIST{ WBOMEB=3001, FIREWORK, GRAVITY, ITEMLAST};
+enum eITEM_LIST{ 
+	ITEM_NONE, 
+	ITEM_WBOMB,
+	ITEM_FIREWORK_1,
+	ITEM_FIREWORK_3,
+	ITEM_GRAVITY,
+	ITEM_LAST
+};
 
 //===================================================================
 // - written by 김선호
@@ -32,7 +39,7 @@ class ItemManager
 {
 private:
 	std::vector<cItem*> m_vecItem;				// 아이템들을 관리하는 클래스
-	std::map<ITEM_LIST, std::vector<cItem*>>	m_mapItem;
+	std::map<eITEM_LIST, std::vector<cItem*>>	m_mapItem;
 	int m_max;
 	int m_index;
 
@@ -50,5 +57,6 @@ public:
 
 	void SetActorGroup(NxActor* actor, NxCollisionGroup group);
 	void InitCollisionGroup();
+	void FireItem(eITEM_LIST tag);
 };
 
