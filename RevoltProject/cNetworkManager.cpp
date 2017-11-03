@@ -33,7 +33,10 @@ void cNetworkManager::Start()
 	servAdr.sin_port = htons(9190);
 
 	if (connect(m_hSock, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
+	{
 		ErrorHandling("connect() error");
+		MessageBoxA(g_hWnd, "asd", "asd", MB_OK);
+	}
 
 	return;
 }
