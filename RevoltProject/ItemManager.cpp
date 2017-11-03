@@ -105,11 +105,11 @@ void ItemManager::InitCollisionGroup()
 	MgrPhysXScene->setGroupCollisionFlag(2, 2, false);
 }
 
-//void ItemManager::FireItem(eITEM_LIST tag)
-//{
-////	m_vecItem[m_index]->Create();
-////	m_index++;
-////
-////	if (m_index == m_max) m_index = 0;
-//}
+void ItemManager::FireItem(eITEM_LIST tag)
+{
+//	m_vecItem[m_index]->Create();
+//	m_index++;
+//
+//	if (m_index == m_max) m_index = 0;
+}
 

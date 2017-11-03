@@ -10,7 +10,8 @@ cCar::cCar()
 {
 	countTrack = -1;
 	countTrack = -1;
-	m_isTimeCount = 0.f;
+	m_rapTimeCount = 0.f;
+	m_totlaTimeCount = 0.f;
 }
 
 cCar::~cCar()
@@ -388,10 +389,10 @@ void cCar::CtrlPlayer()
 		//아이템사용
 		if (g_pKeyManager->isOnceKeyDown(VK_CONTROL))
 		{
-			//if (m_eHoldItem != ITEM_NONE)
+			if (m_eHoldItem != ITEM_NONE)
 			{
 				//아이템 사용 함수 호츨
-				//g_pItemManager->FireItem(m_eHoldItem);
+				g_pItemManager->FireItem(m_eHoldItem);
 				m_nItemCount--;
 				if (m_nItemCount == 0)
 				{
@@ -429,7 +430,7 @@ void cCar::TrackCheck()
 		if (m_trackOn)
 		{
 			countTrack++;
-			m_isTimeCount = 0.f;
+			m_rapTimeCount = 0.f;
 		}
 		m_trackOn = false;
 	}
@@ -439,7 +440,9 @@ void cCar::TrackCheck()
 	if (countTrack > -1 && countTrack < 3)
 	{
 		//시간을 더해 나간다.
-		m_isTimeCount += 0;
+		m_rapTimeCount += 0;
+		m_totlaTimeCount += 0;
+
 	}
 }
 

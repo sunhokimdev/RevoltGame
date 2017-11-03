@@ -41,7 +41,8 @@ class cCar : public Object
 	SYNTHESIZE(int, countChectBox, CountCheckBox);
 	SYNTHESIZE(int, countTrack,CountTrackRun);
 	
-	SYNTHESIZE(float, m_isTimeCount, IsTimeCount);
+	SYNTHESIZE(float, m_rapTimeCount, RapTimeCount);
+	SYNTHESIZE(float, m_totlaTimeCount, TotlaTimeCount);
 
 	//Item ฐüทร
 	SYNTHESIZE(eITEM_LIST, m_eHoldItem, HoldItem);
