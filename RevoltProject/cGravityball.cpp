@@ -2,11 +2,11 @@
 #include "cGravityball.h"
 #include "cImpact.h"
 #include "GravityBallImpact.h"
-//#include "cPlasmaImpact.h"
+#include "cPlasmaImpact.h"
 
 cGravityball::cGravityball()
 	: m_impactIndex(0)
-//	, m_pPlasma(NULL)
+	, m_pPlasma(NULL)
 	, m_isSleep(false)
 {
 }
@@ -17,7 +17,7 @@ cGravityball::~cGravityball()
 	for each(auto a in m_vecImpact)
 		SAFE_DELETE(a);
 
-//	SAFE_DELETE(m_pPlasma);
+	SAFE_DELETE(m_pPlasma);
 }
 
 void cGravityball::Setup()
@@ -34,8 +34,8 @@ void cGravityball::Setup()
 		m_vecImpact[i]->SetDelta(20);
 	}
 
-//	m_pPlasma = new cPlasmaImpact;
-//	m_pPlasma->Setup();
+	m_pPlasma = new cPlasmaImpact;
+	m_pPlasma->Setup();
 
 	m_pUser->USER_TAG = E_PHYSX_TAG_GRIVATEBALL;
 }
@@ -55,9 +55,9 @@ void cGravityball::Update()
 
 		{
 			NxVec3 v = m_pPhysX->pPhysX->m_pActor->getGlobalPose().t;
-//			m_pPlasma->UpdateSetPosition(D3DXVECTOR3(v.x, v.y, v.z));
+			m_pPlasma->UpdateSetPosition(D3DXVECTOR3(v.x, v.y, v.z));
 		}
-//		m_pPlasma->Update();
+		m_pPlasma->Update();
 	}
 
 	if (m_fTime % UPDATETIME == 0)
@@ -79,7 +79,7 @@ void cGravityball::Render()
 			m_vecImpact[i]->Render();
 		}
 
-//		m_pPlasma->Render();
+		m_pPlasma->Render();
 	}
 
 	cItem::Render();
