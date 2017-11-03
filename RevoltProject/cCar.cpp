@@ -429,6 +429,7 @@ void cCar::CtrlPlayer()
 		//RePosition
 		if (g_pKeyManager->isOnceKeyDown(KEY_REPOSITION))
 		{
+			CarRunStop();
 			if (countTrack == -1)
 			{
 				GetPhysXData()->SetPosition(D3DXVECTOR3(0,0,0));
