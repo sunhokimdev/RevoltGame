@@ -5,6 +5,7 @@
 class UIObject;
 class UITextImageView;
 class UIImageView;
+class cCar;
 
 //===================================================================
 // - written by �輱ȣ
@@ -53,6 +54,8 @@ private:
 
 	UIImageView* pIV_arrowDir;
 
+	cCar* m_pCar;
+
 public:
 	InGameUI();
 	virtual ~InGameUI();
@@ -86,6 +89,8 @@ public:
 	SYNTHESIZE(int, m_SecTenth, SecTenth);
 	SYNTHESIZE(int, m_MinOneth, MinOneth);
 	SYNTHESIZE(int, m_MinTenth, MinTenth);
+
+	void LinkCarPt(cCar* car) { m_pCar = car; }
 
 };
 
