@@ -100,9 +100,6 @@ void UIImageView::Update()
 	}
 	else if (m_isSpeed)
 	{
-		if (g_pKeyManager->isStayKeyDown(VK_UP) || g_pKeyManager->isStayKeyDown(VK_DOWN))
-		{
-			m_alphaValue = sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]);
 			for (int i = 0; i < sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]); i++)
 			{
 				m_speedAlpha[i] = m_speedAlpha[i] + (m_alphaValue * 2);
@@ -114,9 +111,7 @@ void UIImageView::Update()
 					m_speedAlpha[i] = 250;
 				}
 			}
-		}
-		else
-		{
+
 			for (int i = (sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0])) - 1; i >= 0; i--)
 			{
 				
@@ -130,7 +125,7 @@ void UIImageView::Update()
 				}
 				
 			}
-		}
+		
 	
 	}
 
@@ -338,6 +333,19 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 		SetRect(&rc, 0, 0, m_stSize.nWitdh, m_stSize.nHeight);
 		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
 	}
+	else if (m_isArrowDir)
+	{
+		RECT rc;
+
+		D3DXMATRIXA16 matWorld, matR;
+		D3DXMatrixIdentity(&matWorld);
+
+		//D3DXMatrixRotationZ(&matR, )
+
+		//pSprite->SetTransform(&matWorld);
+
+	}
+
 	pSprite->End();
 
 	UIObject::Render(pSprite);
