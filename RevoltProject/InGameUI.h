@@ -43,6 +43,8 @@ private:
 	UITextImageView* m_pMinOneth;	  
 	UITextImageView* m_pMinTenth;	  
 
+	UIImageView* pIV_arrowDir;
+
 public:
 	InGameUI();
 	virtual ~InGameUI();
@@ -53,6 +55,6 @@ public:
 	UIObject* GetUIObject() { return m_pRootUI; }
 	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
 	void UpdateTimeLab();									// UpdateTimer
-
+	void UpdateArrowDir();					// 화살표 방향
 };
 

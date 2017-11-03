@@ -85,7 +85,6 @@ void RacingScene::Update()
 	}
 
 	UpdateCamera();
-	m_pInGameUI->UpdateTimeLab();
 	m_pInGameUI->Update();
 	LastUpdate();
 }
