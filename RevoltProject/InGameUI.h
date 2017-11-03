@@ -16,30 +16,38 @@ class InGameUI : public iLobby
 {
 private:
 	UIImageView*	m_pItemImage;
-
 	LOBBY*			m_pLobby;
-
-	float m_ElapseTime;						// Elase(x.xxx.xx0)
-	int m_DotTenth;							//		 x.xxx.x0x
-	int m_DotMilth;							//		 x.xxx.0xx
-											
-	int m_SecOneth;							//  		 0.xxx
-	int m_SecTenth;							//  		0x.xxx
-	int	m_MinOneth;							//  	  0.xx.xxx
-	int	m_MinTenth;							//  	 0x.xx.xxx
-						
-	int m_SecColon;
-	int m_MinColon;
-
 	int m_select;
+
+	//Lab
+	int m_Lab;
+
+	//Colon	
+	int m_SecColon;							// SecColon		xx:xx
+	int m_MinColon;							// MinColon	 xx:xx:xx
+
+	int m_LabSecColon;							// SecColon		xx:xx
+	int m_LabMinColon;							// MinColon	 xx:xx:xx
+
+
+	/*          Timer UiTextImageView          */
+
+	//Lab
+	UITextImageView* m_pLab;
+
+	UITextImageView* m_pLabElapseTime;
+	UITextImageView* m_pLabDotTenth;
+	UITextImageView* m_pLabDotMilth;
+	UITextImageView* m_pLabSecOneth;
+	UITextImageView* m_pLabSecTenth;
+	UITextImageView* m_pLabMinOneth;
+	UITextImageView* m_pLabMinTenth;
 
 	UITextImageView* m_pElapseTime;   
 	UITextImageView* m_pDotTenth;	  
 	UITextImageView* m_pDotMilth;	  
-
 	UITextImageView* m_pSecOneth;	  
 	UITextImageView* m_pSecTenth;	  
-
 	UITextImageView* m_pMinOneth;	  
 	UITextImageView* m_pMinTenth;	  
 
@@ -54,7 +62,30 @@ public:
 	virtual void Render(LPD3DXSPRITE pSprite);
 	UIObject* GetUIObject() { return m_pRootUI; }
 	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
-	void UpdateTimeLab();									// UpdateTimer
-	void UpdateArrowDir();					// 화살표 방향
+
+
+	void UpdateRaceTime();									// UpdateTimer
+	void UpdateArrowDir();									// 화살표 방향
+	void UpdateLapTime();										// void Update
+	SYNTHESIZE(int, m_LabCnt, LabCnt);							// Lab Count
+
+																//Lab
+	SYNTHESIZE(float, m_LabElapseTime, LabElapseTime);
+	SYNTHESIZE(int, m_LabDotTenth, LabDotTenth);
+	SYNTHESIZE(int, m_LabDotMilth, LabDotMilth);
+	SYNTHESIZE(int, m_LabSecOneth, LabSecOneth);
+	SYNTHESIZE(int, m_LabSecTenth, LabSecTenth);
+	SYNTHESIZE(int, m_LabMinOneth, LabMinOneth);
+	SYNTHESIZE(int, m_LabMinTenth, LabMinTenth);
+
+	//Race
+	SYNTHESIZE(float, m_ElapseTime, ElapseTime);
+	SYNTHESIZE(int, m_DotTenth, DotTenth);
+	SYNTHESIZE(int, m_DotMilth, DotMilth);
+	SYNTHESIZE(int, m_SecOneth, SecOneth);
+	SYNTHESIZE(int, m_SecTenth, SecTenth);
+	SYNTHESIZE(int, m_MinOneth, MinOneth);
+	SYNTHESIZE(int, m_MinTenth, MinTenth);
+
 };
 
