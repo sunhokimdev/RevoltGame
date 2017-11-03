@@ -9,8 +9,11 @@ class cWaterBombImpact;
 class cWbomb : public cItem
 {
 private:
+	USERDATA* m_pUser;
 	ST_PHYSX* m_pPhysX;
 	cWaterBombImpact* m_pImapt;
+	bool m_isSleep;
+	bool m_isInit;
 public:
 	cWbomb();
 	virtual ~cWbomb();

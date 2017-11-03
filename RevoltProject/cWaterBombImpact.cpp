@@ -5,7 +5,10 @@
 cWaterBombImpact::cWaterBombImpact()
 	: m_fTime(0)
 	, m_index(0)
+	, m_currentX(0)
+	, m_currentY(0)
 {
+	cImpact::cImpact();
 }
 
 
@@ -22,13 +25,7 @@ void cWaterBombImpact::Setup()
 
 	D3DXIMAGE_INFO stImageInfo;
 
-	m_pTexture = g_pTextureManager->GetTexture("Objects/wbomb/waterimpact.png", &stImageInfo);
-
-	//m_MaxFrameX = MaxFrameX;
-	//m_MaxFrameY = MaxFrameY;
-
-	//stImageInfo.Width = stImageInfo.Width / MaxFrameX;
-	//stImageInfo.Height = stImageInfo.Height / MaxFrameY;
+	m_pTexture = g_pTextureManager->GetTexture("Objects/wbomb/bombsprite.png", &stImageInfo);
 
 	m_stSize.nWitdh = stImageInfo.Width;
 	m_stSize.nHeight = stImageInfo.Height;
@@ -43,7 +40,14 @@ void cWaterBombImpact::Update()
 		m_fTime++;
 		if (m_fTime % UPDATE_TIME == 0)
 		{
+			m_currentX++;
 			m_index++;
+		}
+
+		if (m_currentX > 8)
+		{
+			m_currentX = 0;
+			m_currentY++;
 		}
 	}
 
@@ -51,6 +55,9 @@ void cWaterBombImpact::Update()
 	{
 		m_isUse = false;
 		m_fTime = 0;
+		m_index = 0;
+		m_currentX = 0;
+		m_currentY = 0;
 	}
 }
 
@@ -62,8 +69,8 @@ void cWaterBombImpact::Render()
 	D3DXMATRIXA16 matR;
 	D3DXMATRIXA16 matT;
 
-	D3DXMatrixTranslation(&matT, m_itemPos.x, m_itemPos.y + 2.0f, m_itemPos.z);
-	D3DXMatrixScaling(&matS, 0.1f, 0.1f, 0.1f);
+	D3DXMatrixTranslation(&matT, m_itemPos.x, m_itemPos.y + 3.0f, m_itemPos.z);
+	D3DXMatrixScaling(&matS, 0.05f, 0.05f, 0.05f);
 	D3DXMatrixIdentity(&matWorld);
 	D3DXMatrixRotationZ(&matR, D3DX_PI);
 
@@ -75,9 +82,9 @@ void cWaterBombImpact::Render()
 	m_pSprite->SetTransform(&matWorld);
 
 	RECT rc;
-	SetRect(&rc, m_index * 16, 0, (m_index +1) * 16, 32);
+	SetRect(&rc, m_currentX * 100, m_currentY * 100, (m_currentX +1) * 100, (m_currentY+1)*100);
 
-	m_pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(255, 255, 255, 255));
+	m_pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(50,0,0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(255, 255, 255, 255));
 	m_pSprite->End();
 
 	cImpact::Render();

@@ -4,6 +4,7 @@
 cItem::cItem()
 	: m_fTime(0.0f)
 	, m_id(0)
+	, m_isUse(false)
 {
 }
 
@@ -18,9 +19,10 @@ void cItem::Setup()
 
 void cItem::Update()
 {
-	Object::Update();
+	if(m_isUse)
+		m_fTime++;
 
-	m_fTime++;
+	Object::Update();
 }
 
 void cItem::Render()
