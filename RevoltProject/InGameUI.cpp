@@ -8,6 +8,21 @@
 
 InGameUI::InGameUI()
 	: m_pLobby(NULL)
+	, m_WorldDotOneth(0)
+	, m_LastDotOneTh(48)
+	, m_LastDotTenth(48)
+	, m_LastDotMilth(48)
+	, m_LastSecOneth(48)
+	, m_LastSecTenth(48)
+	, m_LastMinOneth(48)
+	, m_LastMinTenth(48)
+	, m_BestDotOneTh(48)
+	, m_BestDotTenth(48)
+	, m_BestDotMilth(48)
+	, m_BestSecOneth(48)
+	, m_BestSecTenth(48)
+	, m_BestMinOneth(48)
+	, m_BestMinTenth(48)
 	, m_ElapseTime(0.0f)
 	, m_DotTenth(48)
 	, m_DotMilth(48)
@@ -23,7 +38,7 @@ InGameUI::InGameUI()
 	, m_LabMinOneth(47)
 	, m_LabMinTenth(48)
 	, m_select(99)
-	, m_LabCnt(-1)
+	, m_LabCnt(0)
 {
 }
 
@@ -47,6 +62,7 @@ void InGameUI::Setup()
 	pImageView1->SetPosition(30, 20);
 	pImageView1->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
+	// Last Lab Timer
 	UITextImageView* pLastLabFont = new UITextImageView;
 	pLastLabFont->SetTexture("Maps/Front/Image/font2.png");
 	pLastLabFont->SetText("Last Lap");
@@ -55,6 +71,46 @@ void InGameUI::Setup()
 	pLastLabFont->SetPosition(900, 20);
 	pLastLabFont->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
+	m_pLastDotOneTh = new UITextImageView;
+	m_pLastDotOneTh->SetTexture("Maps/Front/Image/font2.png");
+	m_pLastDotOneTh->SetPosition(55, 20);
+
+	m_pLastDotTenth = new UITextImageView;
+	m_pLastDotTenth->SetTexture("Maps/Front/Image/font2.png");
+	m_pLastDotTenth->SetPosition(-10, 0);
+
+	m_pLastDotMilth = new UITextImageView;
+	m_pLastDotMilth->SetTexture("Maps/Front/Image/font2.png");
+	m_pLastDotMilth->SetPosition(-10, 0);
+
+	UITextImageView* pLastSecColon = new UITextImageView;
+	pLastSecColon->SetTexture("Maps/Front/Image/font2.png");
+	pLastSecColon->SetPosition(-10, 0);
+	pLastSecColon->SetText(":");
+
+	m_pLastSecOneth = new UITextImageView;
+	m_pLastSecOneth->SetTexture("Maps/Front/Image/font2.png");
+	m_pLastSecOneth->SetPosition(-10, 0);
+
+	m_pLastSecTenth = new UITextImageView;
+	m_pLastSecTenth->SetTexture("Maps/Front/Image/font2.png");
+	m_pLastSecTenth->SetPosition(-10, 0);
+
+	UITextImageView* pLastMinColon = new UITextImageView;
+	pLastMinColon->SetTexture("Maps/Front/Image/font2.png");
+	pLastMinColon->SetPosition(-10, 0);
+	pLastMinColon->SetText(":");
+
+	m_pLastMinOneth = new UITextImageView;
+	m_pLastMinOneth->SetTexture("Maps/Front/Image/font2.png");
+	m_pLastMinOneth->SetPosition(-10, 0);
+
+	m_pLastMinTenth = new UITextImageView;
+	m_pLastMinTenth->SetTexture("Maps/Front/Image/font2.png");
+	m_pLastMinTenth->SetPosition(-10, 0);
+	// << :
+
+	// Best Lab Timer
 	UITextImageView* pBestLabFont = new UITextImageView;
 	pBestLabFont->SetTexture("Maps/Front/Image/font2.png");
 	pBestLabFont->SetText("Best Lab");
@@ -62,6 +118,45 @@ void InGameUI::Setup()
 	pBestLabFont->SetYSize(1.0f);
 	pBestLabFont->SetPosition(0, 50);
 	pBestLabFont->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+
+	m_pBestDotOneTh = new UITextImageView;
+	m_pBestDotOneTh->SetTexture("Maps/Front/Image/font2.png");
+	m_pBestDotOneTh->SetPosition(55, 20);
+
+	m_pBestDotTenth = new UITextImageView;
+	m_pBestDotTenth->SetTexture("Maps/Front/Image/font2.png");
+	m_pBestDotTenth->SetPosition(-10, 0);
+
+	m_pBestDotMilth = new UITextImageView;
+	m_pBestDotMilth->SetTexture("Maps/Front/Image/font2.png");
+	m_pBestDotMilth->SetPosition(-10, 0);
+
+	UITextImageView* pBestSecColon = new UITextImageView;
+	pBestSecColon->SetTexture("Maps/Front/Image/font2.png");
+	pBestSecColon->SetPosition(-10, 0);
+	pBestSecColon->SetText(":");
+
+	m_pBestSecOneth = new UITextImageView;
+	m_pBestSecOneth->SetTexture("Maps/Front/Image/font2.png");
+	m_pBestSecOneth->SetPosition(-10, 0);
+
+	m_pBestSecTenth = new UITextImageView;
+	m_pBestSecTenth->SetTexture("Maps/Front/Image/font2.png");
+	m_pBestSecTenth->SetPosition(-10, 0);
+
+	UITextImageView* pBestMinColon = new UITextImageView;
+	pBestMinColon->SetTexture("Maps/Front/Image/font2.png");
+	pBestMinColon->SetPosition(-10, 0);
+	pBestMinColon->SetText(":");
+
+	m_pBestMinOneth = new UITextImageView;
+	m_pBestMinOneth->SetTexture("Maps/Front/Image/font2.png");
+	m_pBestMinOneth->SetPosition(-10, 0);
+
+	m_pBestMinTenth = new UITextImageView;
+	m_pBestMinTenth->SetTexture("Maps/Front/Image/font2.png");
+	m_pBestMinTenth->SetPosition(-10, 0);
+	// << :
 
 	// Lab Timer
 	UITextImageView* pLabFont = new UITextImageView;
@@ -110,9 +205,6 @@ void InGameUI::Setup()
 	m_pLabMinTenth->SetTexture("Maps/Front/Image/font2.png");
 	m_pLabMinTenth->SetPosition(-10, 0);
 	// << :
-
-	// << :
-
 
 	// Race Timer
 	UITextImageView* pRaceFont = new UITextImageView;
@@ -244,6 +336,9 @@ void InGameUI::Setup()
 	pSpeed_mph->SetPosition(170, 8);
 	pSpeed_mph->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
+	/*          Set Child          */
+
+	// Basic
 	m_pRootUI->AddChild(pImageView1);
 	m_pRootUI->AddChild(pLastLabFont);
 	m_pRootUI->AddChild(pImageView7);
@@ -263,6 +358,28 @@ void InGameUI::Setup()
 	pSpeedFrame->AddChild(pSpeed_mph);
 	pSpeed->AddChild(pSpeed2);
 
+
+	// Last Font
+	pLastLabFont->AddChild(m_pLastDotOneTh);
+	m_pLastDotOneTh->AddChild(m_pLastDotTenth);
+	m_pLastDotTenth->AddChild(m_pLastDotMilth);
+	m_pLastDotMilth->AddChild(pLastSecColon);
+	pLastSecColon->AddChild(m_pLastSecOneth);
+	m_pLastSecOneth->AddChild(m_pLastSecTenth);
+	m_pLastSecTenth->AddChild(pLastMinColon);
+	pLastMinColon->AddChild(m_pLastMinOneth);
+	m_pLastMinOneth->AddChild(m_pLastMinTenth);
+
+	// Best Font
+	pBestLabFont->AddChild(m_pBestDotOneTh);
+	m_pBestDotOneTh->AddChild(m_pBestDotTenth);
+	m_pBestDotTenth->AddChild(m_pBestDotMilth);
+	m_pBestDotMilth->AddChild(pBestSecColon);
+	pBestSecColon->AddChild(m_pBestSecOneth);
+	m_pBestSecOneth->AddChild(m_pBestSecTenth);
+	m_pBestSecTenth->AddChild(pBestMinColon);
+	pBestMinColon->AddChild(m_pBestMinOneth);
+	m_pBestMinOneth->AddChild(m_pBestMinTenth);
 
 	// LabFont
 	pLabFont->AddChild(m_pLabElapseTime);
@@ -290,9 +407,21 @@ void InGameUI::Setup()
 
 void InGameUI::Update()
 {
-	UpdateRaceTime();
-	UpdateLapTime();
 	UpdateSpeed();
+
+	if (g_pKeyManager->isOnceKeyDown('Z'))
+	{
+		UpdateLastTime();
+	}
+	if (g_pKeyManager->isOnceKeyDown('X'))
+	{
+		if (m_LabCnt == 0) m_LabCnt = 1;
+		else m_LabCnt = 0;
+	}
+
+
+	UpdateRaceTime();
+	UpdateLabTime();
 
 	iLobby::Update();
 
@@ -327,6 +456,61 @@ void InGameUI::UpdateSpeed()
 	pSpeed2->SetText(strOne);
 	pSpeedometerImage->SetRpmGauge(m_pCar->GetNxVehicle()->getWheel(1)->getRpm());
 }
+void InGameUI::CompareBestTime()
+{
+}
+
+void InGameUI::UpdateLastTime()
+{
+	// Add String For UITextImage Text
+	std::string LastDotOneth;								//		 x.xx0
+	std::string LastDotTenth;								//		 x.x0x
+	std::string LastDotMilth;								//		 x.0xx
+
+	std::string LastSecOneth;								//		 0.xxx
+	std::string LastSecTenth;								//		0x.xxx
+
+	std::string LastMinOneth;								//	  0.xx.xxx
+	std::string LastMinTenth;								//	 0x.xx.xxx
+
+	if (m_LabCnt != 0)
+	{
+		m_LastDotOneTh = m_WorldDotOneth;
+		m_LastDotTenth = m_LabDotTenth;
+		m_LastDotMilth = m_LabDotMilth;
+		m_LastSecOneth = m_LabSecOneth;
+		m_LastSecTenth = m_LabSecTenth;
+		m_LastMinOneth = m_LabMinOneth;
+		m_LastMinTenth = m_LabMinTenth;
+
+		LastDotOneth = m_LastDotOneTh;
+		LastDotTenth = m_LastDotTenth;
+		LastDotMilth = m_LastDotMilth;
+		LastSecOneth = m_LastSecOneth;
+		LastSecTenth = m_LastSecTenth;
+		LastMinOneth = m_LastMinOneth;
+		LastMinTenth = m_LastMinTenth;
+	}
+	else
+	{
+		LastDotOneth = FONT2_NUM0;
+		LastDotTenth = FONT2_NUM0;
+		LastDotMilth = FONT2_NUM0;
+		LastSecOneth = FONT2_NUM0;
+		LastSecTenth = FONT2_NUM0;
+		LastMinOneth = FONT2_NUM0;
+		LastMinTenth = FONT2_NUM0;
+	}
+
+
+	m_pLastDotOneTh->SetText(LastDotOneth);
+	m_pLastDotTenth->SetText(LastDotTenth);
+	m_pLastDotMilth->SetText(LastDotMilth);
+	m_pLastSecOneth->SetText(LastSecOneth);
+	m_pLastSecTenth->SetText(LastSecTenth);
+	m_pLastMinOneth->SetText(LastMinOneth);
+	m_pLastMinTenth->SetText(LastMinTenth);
+}
 
 void InGameUI::UpdateRaceTime()
 {
@@ -341,7 +525,7 @@ void InGameUI::UpdateRaceTime()
 	std::string MinOneth;								//	  0.xx.xxx
 	std::string MinTenth;								//	 0x.xx.xxx
 
-	
+
 	m_ElapseTime += g_pTimeManager->GetElapsedTime();	// Uptate ElapsedTime
 
 	if (m_ElapseTime > TIMEMAX)							// After 60 Second
@@ -366,14 +550,14 @@ void InGameUI::UpdateRaceTime()
 
 																//		EX : m_ElapseTime = 9.876
 	float CalcDP = (m_ElapseTime - (int)m_ElapseTime) * 10.0f;	//		CalcDP = (9.876 - 9) * 10 = 8.76
-	DotMilth = (int)(CalcDP) + FONT2_NUM0;						//		x.?xx = x.8xx
+	DotMilth = (int)(CalcDP)+FONT2_NUM0;						//		x.?xx = x.8xx
 	CalcDP -= (int)CalcDP;										//		CalcDP = 8.76 - 8 = 0.76
 	CalcDP *= 10.0f;											//		CalcDP = 0.76 * 10 = 7.6
 	DotTenth = (int)CalcDP + FONT2_NUM0;						//		x.8?x = x.87x
 	CalcDP -= (int)CalcDP;										//		CalcDP = 7.6 - 7 = 0.6
 	CalcDP *= 10.0f;											//		CalcDP = 0.6 * 10 = 6
 	ElapseTime = (int)CalcDP + FONT2_NUM0;						//		x.87? = x.876
-																//		Therefore Calculation Decimal Point = 0.876
+	m_WorldDotOneth = (int)CalcDP + FONT2_NUM0;;								//		Therefore Calculation Decimal Point = 0.876
 
 	/*          Add String          */
 	SecOneth = m_SecOneth;
@@ -392,11 +576,9 @@ void InGameUI::UpdateRaceTime()
 	m_pSecTenth->SetText(SecTenth);
 	m_pMinOneth->SetText(MinOneth);
 	m_pMinTenth->SetText(MinTenth);
-
-
 }
 
-void InGameUI::UpdateLapTime()
+void InGameUI::UpdateLabTime()
 {
 	// Add String For UITextImage Text
 	std::string LabElapseTime;										// Elase(x.xx0)
@@ -409,13 +591,16 @@ void InGameUI::UpdateLapTime()
 	std::string LabMinOneth;										//	  0.xx.xxx
 	std::string LabMinTenth;										//	 0x.xx.xxx
 
-	if (m_LabCnt == -1) m_LabElapseTime = 0;
-	else if (m_LabCnt == 0) m_LabElapseTime += g_pTimeManager->GetElapsedTime();			// Uptate ElapsedTime
+	//if (m_LabCnt == -1)	m_LabElapseTime = 0;
+	//else if (m_LabCnt == 0)	m_LabElapseTime += g_pTimeManager->GetElapsedTime();			// Uptate ElapsedTime
+	m_LabElapseTime += g_pTimeManager->GetElapsedTime();
 
 	if (g_pKeyManager->isOnceKeyDown('B'))
 	{
-		if (m_LabCnt == -1) m_LabCnt += 1;
-		else m_LabCnt -= 1;
+		//if (m_LabCnt == -1) m_LabCnt += 1;
+		//else m_LabCnt -= 1;
+
+		m_LabElapseTime = 0;
 	}
 
 	if (m_LabElapseTime > TIMEMAX)									// After 60 Second
@@ -440,16 +625,19 @@ void InGameUI::UpdateLapTime()
 
 																		//		EX : m_ElapseTime = 9.876
 	float CalcDP = (m_LabElapseTime - (int)m_LabElapseTime) * 10.0f;	//		CalcDP = (9.876 - 9) * 10 = 8.76
-	LabDotMilth = (int)(CalcDP)+FONT2_NUM0;								//		x.?xx = x.8xx
+	m_LabDotTenth = (int)(CalcDP)+FONT2_NUM0;								//		x.?xx = x.8xx
 	CalcDP -= (int)CalcDP;												//		CalcDP = 8.76 - 8 = 0.76
 	CalcDP *= 10.0f;													//		CalcDP = 0.76 * 10 = 7.6
-	LabDotTenth = (int)CalcDP + FONT2_NUM0;								//		x.8?x = x.87x
+	m_LabDotMilth = (int)CalcDP + FONT2_NUM0;								//		x.8?x = x.87x
 	CalcDP -= (int)CalcDP;												//		CalcDP = 7.6 - 7 = 0.6
 	CalcDP *= 10.0f;													//		CalcDP = 0.6 * 10 = 6
 	LabElapseTime = (int)CalcDP + FONT2_NUM0;							//		x.87? = x.876
 																		//		Therefore Calculation Decimal Point = 0.876
 
 	/*          Add String          */
+	LabDotTenth = m_LabDotTenth;
+	LabDotMilth = m_LabDotMilth;
+
 	LabSecOneth = m_LabSecOneth;
 	LabSecTenth = m_LabSecTenth;
 
