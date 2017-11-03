@@ -4,13 +4,19 @@
 #include "cLight.h"
 #include "cCar.h"
 #include "InGameUI.h"
+#include "UITextImageView.h"
 
-RacingScene::RacingScene() {}
+RacingScene::RacingScene()
+	: m_select(99)
+{}
 
 RacingScene::~RacingScene() {}
 
 void RacingScene::Setup()
 {
+
+	UITextImageView::m_Select = &m_select;
+
 	D3DXCreateSprite(g_pD3DDevice, &m_Sprite);
 	g_pCamManager->SetLookAt(&D3DXVECTOR3(0, 0, 0));
  
@@ -87,6 +93,7 @@ void RacingScene::Update()
 
 	UpdateCamera();
 	m_pInGameUI->Update();
+
 	LastUpdate();
 }
 
@@ -102,6 +109,7 @@ void RacingScene::Render()
 	{
 		p->Render();
 	}
+
 	//D3DXMATRIXA16 matWorld;
 	//
 	//D3DXMatrixIdentity(&matWorld);

@@ -17,7 +17,7 @@ void cViewCarLob::Setup()
 {
 	iLobby::Setup();
 
-	UIImageView* pImageView1 = new UIImageView;
+	UIImageView* pImageView1 = new UIImageView;	
 	pImageView1->SetPosition(80, 50);
 	pImageView1->SetXSize(4.0f);
 	pImageView1->SetYSize(4.0f);

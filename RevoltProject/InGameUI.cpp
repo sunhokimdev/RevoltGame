@@ -146,6 +146,7 @@ void InGameUI::Setup()
 	pITV_Rank2->SetTexture("Maps/Front/Image/font2.png");
 	pITV_Rank2->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
+
 	m_pItemImage = new UIImageView;
 	m_pItemImage->SetXSize(1.2f);
 	m_pItemImage->SetYSize(1.2f);
@@ -185,6 +186,7 @@ void InGameUI::Setup()
 	pImageView2->AddChild(pImageView4);
 	pImageView2->AddChild(pImageView5);
 	pImageView6->AddChild(m_pItemImage);
+
 	pImageView7->AddChild(pIV_arrowDir);
 	pImageView7->AddChild(pITV_Rank);
 	pImageView7->AddChild(pITV_Rank2);
@@ -201,6 +203,7 @@ void InGameUI::Setup()
 	m_pSecTenth->AddChild(pMinColon);
 	pMinColon->AddChild(m_pMinOneth);
 	m_pMinOneth->AddChild(m_pMinTenth);
+
 }
 
 void InGameUI::Update()
@@ -214,6 +217,8 @@ void InGameUI::Update()
 void InGameUI::Render(LPD3DXSPRITE pSprite)
 {
 	iLobby::Render(pSprite);
+
+
 }
 
 void InGameUI::UpdateTimeLab()

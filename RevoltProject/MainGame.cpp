@@ -50,6 +50,7 @@ void MainGame::Setup()
 
 	g_SceneManager->ChangeScene("Race");
 
+
 	g_pItemManager->Init();
 	g_pTimeManager->Setup();
 

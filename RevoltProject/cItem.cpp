@@ -15,6 +15,7 @@ cItem::~cItem()
 {
 	SAFE_DELETE(m_pUser);
 	SAFE_DELETE(m_pPhysX);
+
 }
 
 void cItem::Setup()
