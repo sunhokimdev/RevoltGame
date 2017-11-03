@@ -2,6 +2,7 @@
 #include "InGameUI.h"
 #include "UITextImageView.h"
 #include "UIImageView.h"
+#include "cCar.h"
 
 #define TIMEMAX 60
 

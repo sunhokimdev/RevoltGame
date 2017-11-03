@@ -67,7 +67,7 @@ void RacingScene::Setup()
 		//	vecCars.push_back(pCar);
 	}
 
-
+	m_pInGameUI->LinkCarPt(vecCars[0]);
 
 }
 
@@ -83,7 +83,7 @@ void RacingScene::Update()
 {
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
-	SAFE_UPDATE(g_pTimeManager);
+	//SAFE_UPDATE(g_pTimeManager); << 메인에서 돌아가고있음
 
 	for (int i = 0; i < vecCars.size(); i++)
 	{
@@ -92,7 +92,11 @@ void RacingScene::Update()
 	}
 
 	UpdateCamera();
-	m_pInGameUI->Update();
+	if (m_pInGameUI)
+	{
+		m_pInGameUI->Update();
+	}
+	
 
 	LastUpdate();
 }
