@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "cGravityball.h"
 #include "cImpact.h"
+#include "GravityBallImpact.h"
 
 cGravityball::cGravityball()
 	: m_impactIndex(0)
@@ -20,29 +21,49 @@ void cGravityball::Setup()
 
 	for (int i = 0;i < m_vecImpact.size();i++)
 	{
-		m_vecImpact[i] = new cImpact;
+		m_vecImpact[i] = new GravityBallImpact;
+		m_vecImpact[i]->SetIsUse(true);
 		m_vecImpact[i]->Setup();
+		m_vecImpact[i]->SetAlpha(255);
+		m_vecImpact[i]->SetDelta(20);
 	}
+
+	m_pUser->USER_TAG = E_PHYSX_TAG_GRIVATEBALL;
 }
 
 void cGravityball::Update()
 {
-	for (int i = 0;i < m_vecImpact.size();++i)
+	if (m_isUse)
 	{
-		m_vecImpact[i]->Update();
+		m_vecImpact[m_impactIndex]->SetPosition(
+			D3DXVECTOR3(m_pPhysX->pPhysX->m_pActor->getGlobalPose().t.x,
+				m_pPhysX->pPhysX->m_pActor->getGlobalPose().t.y,
+				m_pPhysX->pPhysX->m_pActor->getGlobalPose().t.z));
+
+		m_impactIndex++;
+
+		for (int i = 0; i < m_impactIndex; ++i)
+		{
+			m_vecImpact[i]->Update();
+		}
+
+		if (m_vecImpact.size() == m_impactIndex)
+			m_impactIndex = 0;
+
+		MoveActorOnPath();
 	}
 
-	for (int i = 0;i < m_vecPhysX.size();++i)
-	{
-		MoveActorOnPath(m_vecPhysX[i]->pTrigger->m_pActor, i);
-	}
+	cItem::Update();
 }
 
 void cGravityball::Render()
 {
-	for (int i = 0;i < m_vecImpact.size();++i)
+	if (m_isUse)
 	{
-		m_vecImpact[i]->Render();
+		for (int i = 0;i < m_impactIndex;++i)
+		{
+			m_vecImpact[i]->Render();
+		}
 	}
 
 	cItem::Render();
@@ -50,32 +71,36 @@ void cGravityball::Render()
 
 void cGravityball::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {
-	ST_PHYSX* pPhysX = new ST_PHYSX;
-
-	USERDATA* user1 = new USERDATA;
-	user1->USER_TAG = E_PHYSX_TAG_GRIVATEBALL;
-
-	pPhysX->pos = NxVec3(5, 0, 3);
-
-	pPhysX->pPhysX = new cPhysX;
-	pPhysX->pTrigger = new cPhysX;
+	m_pPhysX->pos.x = pos.x + angle.x;
+	m_pPhysX->pos.y = pos.y + 1;
+	m_pPhysX->pos.z = pos.z + angle.z;
 	
-	pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, user1);
-	pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, pPhysX->pos, NULL, NxVec3(3.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, user1, true);
-	pPhysX->pPhysX->m_pActor->addForce(NxVec3(30000, 0, 0));
+	NxVec3 force;
 
-	this->SetPhysXData(pPhysX->pPhysX);
+	force.x = angle.x * 30000;
+	force.y = 0;
+	force.z = angle.z * 30000;
 
-	SetActorGroup(pPhysX->pPhysX->m_pActor, 2);
+	if (m_isInit)
+	{
+		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
+		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(3.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser, true);
+		SetActorGroup(m_pPhysX->pPhysX->m_pActor, 2);
+		this->SetPhysXData(m_pPhysX->pPhysX);
+		m_isInit = false;
+	}
 
-	m_vecPhysX.push_back(pPhysX);
+	else
+		m_pPhysX->pPhysX->m_pActor->setGlobalPosition(m_pPhysX->pos);
+
+	m_pPhysX->pPhysX->m_pActor->addForce(force);
 }
 
-void cGravityball::MoveActorOnPath(NxActor * actor, int index)
+void cGravityball::MoveActorOnPath()
 {
-	m_vecPhysX[index]->pPhysX->m_pActor->getGlobalPose().t;
+	m_pPhysX->pPhysX->m_pActor->getGlobalPose().t;
 
-	actor->setGlobalPosition(m_vecPhysX[index]->pPhysX->m_pActor->getGlobalPose().t);
+	m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pPhysX->m_pActor->getGlobalPose().t);
 
 	for (int i = 0;i < m_vecImpact.size();++i)
 	{
@@ -86,9 +111,9 @@ void cGravityball::MoveActorOnPath(NxActor * actor, int index)
 			m_vecImpact[m_impactIndex]->SetDelta(20);
 
 			D3DXVECTOR3 vec;
-			vec.x = m_vecPhysX[index]->pPhysX->m_pActor->getGlobalPose().t.x;
-			vec.y = m_vecPhysX[index]->pPhysX->m_pActor->getGlobalPose().t.y;
-			vec.z = m_vecPhysX[index]->pPhysX->m_pActor->getGlobalPose().t.z;
+			vec.x = m_pPhysX->pPhysX->m_pActor->getGlobalPose().t.x;
+			vec.y = m_pPhysX->pPhysX->m_pActor->getGlobalPose().t.y;
+			vec.z = m_pPhysX->pPhysX->m_pActor->getGlobalPose().t.z;
 			m_vecImpact[m_impactIndex]->SetPosition(vec);
 			m_impactIndex++;
 

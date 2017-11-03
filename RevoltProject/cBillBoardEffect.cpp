@@ -120,44 +120,6 @@ void cBillBoardEffect::BillboardRender(LPD3DXSPRITE Sprite,
 	Sprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), 0xFFFFFFFF);
 	Sprite->End();
 }
-//
-//void Effect::BillboardFrameRender(LPD3DXSPRITE Sprite,
-//	float posX, float posY, float posZ,
-//	float sizeX, float sizeY, float sizeZ)
-//{
-//	if (Sprite == NULL) return;
-//
-//	D3DXMATRIXA16 matWorld;
-//	D3DXMATRIXA16 matView;
-//	D3DXMATRIXA16 matS;
-//	D3DXMATRIXA16 matR;
-//	D3DXMATRIXA16 matT;
-//
-//	if (m_effectType == WATER)	D3DXMatrixTranslation(&matT, posX, posY + 5, posZ);
-//	else D3DXMatrixTranslation(&matT, posX, posY, posZ);
-//
-//	D3DXMatrixScaling(&matS, sizeX, sizeY, sizeZ);
-//	D3DXMatrixRotationZ(&matR, D3DX_PI);
-//	D3DXMatrixIdentity(&matWorld);
-//
-//	matWorld = matS * matR * matT;
-//
-//	g_pD3DDevice->GetTransform(D3DTS_VIEW, &matView);
-//	Sprite->SetWorldViewLH(NULL, &matView);
-//
-//	Sprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE | D3DXSPRITE_BILLBOARD);
-//	
-//	Sprite->SetTransform(&matWorld);
-//
-//	RECT rc;
-//	SetRect(&rc
-//		, m_stSize.nWitdh * m_CurrentFrameX
-//		, m_stSize.nHeight * m_CurrentFrameY
-//		, m_stSize.nWitdh * m_CurrentFrameX + 32
-//		, m_stSize.nWitdh * m_CurrentFrameY + 32);
-//	Sprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), 0xFFFFFFFF);
-//	Sprite->End();
-//}
 
 void cBillBoardEffect::Destroy()
 {
