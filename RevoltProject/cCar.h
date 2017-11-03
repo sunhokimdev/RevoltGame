@@ -2,6 +2,7 @@
 #include "Object.h"
 
 class cAI;
+class TriggerCallback;
 
 struct stCARSPEC
 {
@@ -32,13 +33,16 @@ class cCar : public Object
 	bool m_isAI = false;
 
 	//track ฐüทร
-	SYNTHESIZE(int, totalCountCheckBox, TotalChexkBox);
-	int countChectBox;
-	int countTrack;
+	bool m_trackOn = true;
+	SYNTHESIZE(int, totalCheckBoxNum, TotalCheckBoxNum);
+	SYNTHESIZE(int, countChectBox, CountCheckBox);
+	SYNTHESIZE(int, countTrack,CountTrackRun);
+	
+	SYNTHESIZE(float, m_isTimeCount, IsTimeCount);
 
+	//
 	enum ItemTag {a,b,c,d};
 	ItemTag m_IitemTag;
-	int countCheckTrack;
 
 public:
 	cCar();
@@ -64,4 +68,7 @@ public:
 	void CtrlAI();
 
 	void GetRpm();
+	void TrackCheck();
+	void RunStop();
+//	void RunStart();
 };

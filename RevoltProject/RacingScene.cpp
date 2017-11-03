@@ -41,20 +41,21 @@ void RacingScene::Setup()
 	{
 		cCar* pCar = new cCar;
 		pCar->LoadCar("tc1");
-		//pCar->LoadMesh("tc3");
-		//pCar->CreatePhsyX();
-		//pCar->SetCarValue(2000, 7000, 0.1, 0, NxPi / 8, NxPi * 0.05f);
+		pCar->SetTotalCheckBoxNum(m_pTrack->GetTrackCheckBoxSize());
 		vecCars.push_back(pCar);
 	}
 	{
-		cCar* pCar = new cCar;
-		pCar->LoadMesh("tc2");
-		pCar->CreatePhsyX(stCARSPEC());
-		pCar->SetCarValue(1000, 5000, 0.1, 0, NxPi / 8, NxPi * 0.05f);
-
-		pCar->GetPhysXData()->SetPosition(NxVec3(0, 0, 3));
-		vecCars.push_back(pCar);
+		//	cCar* pCar = new cCar;
+		//	pCar->LoadMesh("tc2");
+		//	pCar->CreatePhsyX(stCARSPEC());
+		//	pCar->SetCarValue(1000, 5000, 0.1, 0, NxPi / 8, NxPi * 0.05f);
+		//
+		//	pCar->GetPhysXData()->SetPosition(NxVec3(0, 0, 3));
+		//	vecCars.push_back(pCar);
 	}
+
+
+
 }
 
 void RacingScene::Destroy()
@@ -71,10 +72,8 @@ void RacingScene::Update()
 
 	for (int i = 0; i < vecCars.size(); i++)
 	{
-		if (i == 0)	//Player
-		{
-			vecCars[i]->Update();
-		}
+		 if(IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
+		 else vecCars[i]->RunStop();
 	}
 
 	UpdateCamera();
@@ -171,4 +170,9 @@ void RacingScene::UpdateCamera()
 
 	g_pCamManager->SetCamPos(camPos);
 	g_pCamManager->SetLookAt(camLookTarget);
+}
+
+bool RacingScene::IsCarRunTrue(cCar* pCar)
+{
+	return m_trackEndCount > pCar->GetCountTrackRun();
 }

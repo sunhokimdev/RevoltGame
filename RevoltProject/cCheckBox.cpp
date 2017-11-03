@@ -10,3 +10,8 @@ cCheckBox::cCheckBox()
 cCheckBox::~cCheckBox()
 {
 }
+
+void cCheckBox::Update()
+{
+//	GetPhysXData();
+}

@@ -2,11 +2,15 @@
 #include "cCar.h"
 #include "cWheel.h"
 #include "cAI.h"
+#include "cPhysXManager.h"
+
 #include <fstream>
 
 cCar::cCar()
 {
-
+	countTrack = -1;
+	countTrack = -1;
+	m_isTimeCount = 0.f;
 }
 
 cCar::~cCar()
@@ -31,7 +35,7 @@ void cCar::LoadCar(std::string carName)
 
 			LOAD >> szTemp;
 
-			
+
 			if (strcmp(szTemp, " ") == 0 || strcmp(szTemp, "\n") == 0)
 			{
 				continue;
@@ -78,7 +82,7 @@ void cCar::LoadCar(std::string carName)
 					else if (strcmp(szTemp, "WheelAngle") == 0)
 					{
 						LOAD >> szTemp;
-						wheelAngle = atof(szTemp);
+						wheelAngle = NxPi*atof(szTemp);
 					}
 					else if (strcmp(szTemp, "WheelAcc") == 0)
 					{
@@ -105,7 +109,7 @@ void cCar::LoadCar(std::string carName)
 						NxBoxShapeDesc boxDesc;
 						while (1)
 						{
-							
+
 							LOAD >> szTemp;
 
 							if (strcmp(szTemp, "Dimensions") == 0)
@@ -210,10 +214,11 @@ void cCar::CreatePhsyX(stCARSPEC carspec)
 
 		SetPhysXData(physX);
 		physX->SetPosition(NxVec3(0, 0, 0));
+
+
 	}
 
 }
-
 void cCar::LoadMesh(std::string carName)
 {
 	GetMeshData()->LoadCarMesh("Cars/" + carName, carName + ".obj");
@@ -221,14 +226,11 @@ void cCar::LoadMesh(std::string carName)
 
 void cCar::Update()
 {
-	if (m_isAI)
-	{
-		CtrlAI();
-	}
-	else
-	{
-		CtrlPlayer();
-	}
+	if (m_isAI) CtrlAI();
+	else CtrlPlayer();
+
+	TrackCheck();
+	
 }
 
 void cCar::LastUpdate()
@@ -265,7 +267,6 @@ void cCar::Render()
 
 void cCar::Destory()
 {
-
 	Object::Destroy();
 }
 
@@ -297,7 +298,7 @@ void cCar::CtrlPlayer()
 		{
 			m_moterPower = 0.f;
 			targetPower = m_moterPower * m_maxMoterPower;
-			m_breakPower = m_maxMoterPower;
+			m_breakPower = m_maxMoterPower*0.5f;
 		}
 
 		float targetAngle = m_wheelAngle * m_maxWheelAngle;
@@ -346,11 +347,46 @@ void cCar::CtrlAI()
 {
 	for each (cAI* pAI in m_vecAI)
 	{
-		pAI->Update();
+		if (m_carNxVehicle) pAI->Update();
 	}
 }
 
 void cCar::GetRpm()
 {
 	float rpm;
+}
+
+void cCar::TrackCheck()
+{
+	//체크박스 및 트랙 카운터
+	if (GetPhysXData()->m_pUserData->CheckBoxID == 0)
+	{
+		m_trackOn = true;
+	}
+	if (GetPhysXData()->m_pUserData->CheckBoxID == 1)
+	{
+		if (m_trackOn)
+		{
+			countTrack++;
+			m_isTimeCount = 0.f;
+		}
+		m_trackOn = false;
+	}
+	if (countChectBox == GetTotalCheckBoxNum()) GetPhysXData()->m_pUserData->CheckBoxID = 0;
+	countChectBox = GetPhysXData()->m_pUserData->CheckBoxID;
+
+	if (countTrack > -1 && countTrack < 3)
+	{
+		//시간을 더해 나간다.
+		m_isTimeCount += 0;
+	}
+}
+
+void cCar::RunStop()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		NxWheel* wheel = m_carNxVehicle->getWheel(i);
+		if (wheel->getRpm() < m_maxRpm)	wheel->tick(false, 0, m_maxMoterPower, 1.f / 60.f);
+	}
 }

@@ -5,7 +5,7 @@ MaxRPM 2000.f
 MoterPower 7000.ff
 MoterAcc 0.1f
 BreakPower 0.f
-WheelAngle 0.39269f
+WheelAngle 0.125f
 WheelAcc 0.15707f
 #
 MODEL

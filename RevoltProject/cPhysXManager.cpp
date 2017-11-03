@@ -50,7 +50,7 @@ BOOL cPhysXManager::InitNxPhysX()
 
 	m_physXUserData = NULL;
 	PHYSXDATA*  newPhysXUserData = new PHYSXDATA;
-	newPhysXUserData->Init();
+	newPhysXUserData->Reset();
 	SetPhysXData(newPhysXUserData);
 
 	E_PHYSX_MATERIAL_NONE; {/*default*/}
@@ -247,6 +247,7 @@ void cPhysXManager::RaycastClosestShape(D3DXVECTOR3 start, D3DXVECTOR3 dir)
 
 	if (raycastHit.shape)
 	{
+
 		USERDATA* userData = (USERDATA*)raycastHit.shape->getActor().userData;
 		if (!userData) return;
 		userData->RaycastClosestShape = NX_TRUE;
@@ -276,6 +277,7 @@ bool RaycastCallBack::onHit(const NxRaycastHit & hit)
 		USERDATA* userData = (USERDATA*)actor.userData;
 		userData->RaycastAllShape = NX_TRUE;
 		userData->RayHitPos = hit.worldImpact;
+		
 		MgrPhysXData->RaycastAllShapeHitCount++;
 	}
 	return true;
@@ -285,7 +287,6 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 {
 	USERDATA* pUserData0 = (USERDATA*)pair.actors[0]->userData;
 	USERDATA* pUserData1 = (USERDATA*)pair.actors[1]->userData;
-
 	if (pUserData0 == NULL || pUserData1 == NULL) return;
 
 	switch (_event)
@@ -320,12 +321,8 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 
 void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, NxTriggerFlag status)
 {
-	USERDATA* pUserData0 = NULL;
-	USERDATA* pUserData1 = NULL;
-
-	pUserData0 = (USERDATA*)triggerShape.getActor().userData;
-	pUserData1 = (USERDATA*)otherShape.getActor().userData;
-
+	USERDATA* pUserData0 = (USERDATA*)triggerShape.getActor().userData;;
+	USERDATA* pUserData1 = (USERDATA*)otherShape.getActor().userData;;
 	if (pUserData0 == NULL || pUserData1 == NULL) return;
 
 	if (status & NX_TRIGGER_ON_ENTER)
@@ -333,10 +330,13 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 		pUserData0->TriggerPairFlag = NX_TRIGGER_ON_ENTER;
 		pUserData1->TriggerPairFlag = NX_TRIGGER_ON_ENTER;
 
+		pUserData0->TargetPointValue.push_back(pUserData1->UserPointValue);
+		pUserData1->TargetPointValue.push_back(pUserData0->UserPointValue);
 
-		if (pUserData0->USER_TAG == 0)
+
+		if (pUserData0->CheckBoxID == pUserData1->CheckBoxID)
 		{
-			pUserData1->IsPickUp = NX_TRUE;
+			pUserData1->CheckBoxID += 1;
 		}
 	}
 	else if (status & NX_TRIGGER_ON_STAY)
@@ -366,7 +366,26 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			pUserData0->TriggerPairFlag = 0;
 			pUserData1->TriggerPairFlag = 0;
 		}
+
+
+		for (int i = 0; i < pUserData0->TargetPointValue.size(); i++)
+		{
+			if (pUserData0->TargetPointValue[i] == pUserData1->UserPointValue)
+			{
+				pUserData0->TargetPointValue.erase(pUserData0->TargetPointValue.begin() + i);
+				i--;
+			}
+		}
+		for (int i = 0; i < pUserData1->TargetPointValue.size(); i++)
+		{
+			if (pUserData1->TargetPointValue[i] == pUserData0->UserPointValue)
+			{
+				pUserData1->TargetPointValue.erase(pUserData1->TargetPointValue.begin() + i);
+				i--;
+			}
+		}
 	}
+
 }
 
 NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERDATA* pUserData, bool frontWheelDrive, bool backWheelDrive)
@@ -418,7 +437,7 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 
 		//¹ÙÄûÀÇ ¸¶Âû·Â
 		wheelDesc[i].frictionToFront = 3.f;
-		wheelDesc[i].frictionToSide = 0.7f;
+		wheelDesc[i].frictionToSide = 1.f;
 
 		vehicleDesc.carWheels.pushBack(&wheelDesc[i]);
 	}

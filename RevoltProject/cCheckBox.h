@@ -6,5 +6,7 @@ class cCheckBox :
 public:
 	cCheckBox();
 	~cCheckBox();
+
+	void Update();
 };
 

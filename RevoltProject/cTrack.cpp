@@ -260,6 +260,7 @@ void cTrack::LoadTrack(std::string FileName)
 							if (pActor)
 							{
 								physx->m_pActor = pActor;
+								physx->m_pUserData = pUserData;
 								Obj->SetPhysXData(physx);
 							}
 
@@ -286,10 +287,11 @@ void cTrack::LoadTrack(std::string FileName)
 							if (pActor)
 							{
 								physx->m_pActor = pActor;
+								physx->m_pUserData = pUserData;
 								Obj->SetPhysXData(physx);
 							}
 							std::string id = Obj->GetObjName();
-							m_mapCheckkBox[id] = Obj;
+							m_mapCheckBox[id] = Obj;
 						}
 						else
 						{
@@ -318,6 +320,7 @@ void cTrack::LoadTrack(std::string FileName)
 				} // << : while Object
 			}
 		} // << : while 파일
+		Load.close();
 	}
 	else //파일 열기 실패
 	{
@@ -325,21 +328,15 @@ void cTrack::LoadTrack(std::string FileName)
 		MessageBoxA(g_hWnd, pritfOut.c_str(), "오류", MB_OK);
 	}
 
-	Load.close();
-
-
-
-	//	NxActorDesc aDesc;
-	//	NxPlaneShapeDesc sDesc;
-	//
-	//	aDesc.setToDefault();
-	//	sDesc.setToDefault();
-	//
-	//	aDesc.shapes.pushBack(&sDesc);
-	//	aDesc.globalPose.t = NxVec3(0, 0, 0);
-	//
-	//	MgrPhysXScene->createActor(aDesc);
-
+	int i = 0;
+	for (std::map<std::string, Object*>::iterator it = m_mapCheckBox.begin(); it != m_mapCheckBox.end(); it++)
+	{
+		it->second->GetPhysXData()->m_pUserData->CheckBoxID = i++;
+	}
+	//for each(Object* pCheck in m_mapCheckBox)
+//{
+//
+//}
 }
 
 void cTrack::CreateTrackPhysX()
