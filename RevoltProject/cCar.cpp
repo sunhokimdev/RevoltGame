@@ -12,6 +12,8 @@ cCar::cCar()
 	countTrack = -1;
 	m_rapTimeCount = 0.f;
 	m_totlaTimeCount = 0.f;
+
+//	isUpsideDown = false;
 }
 
 cCar::~cCar()
@@ -261,8 +263,8 @@ void cCar::Update()
 			//GetPhysXData()->m_pUserData->IsPickUp == NX_FALSE;
 		}
 	}
-	
-	
+
+
 	// 과거 위치값
 	for (int i = 3; i >= 0; i--)
 	{
@@ -273,6 +275,7 @@ void cCar::Update()
 
 	TrackCheck();
 
+	CarUpsideDown();
 
 }
 
@@ -452,5 +455,29 @@ void cCar::RunStop()
 	{
 		NxWheel* wheel = m_carNxVehicle->getWheel(i);
 		if (wheel->getRpm() < m_maxRpm)	wheel->tick(false, 0, m_maxMoterPower, 1.f / 60.f);
+	}
+}
+
+void cCar::CarUpsideDown()
+{
+	NxQuat v = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
+	NxVec3 carUp = v.transform(NxVec3(0, 1, 0), NxVec3(0, 0, 0));
+	if (carUp.y < 0.f)
+	{
+		if (g_pKeyManager->isOnceKeyDown('Q'))
+		{
+			GetPhysXData()->m_pActor->putToSleep();
+			GetPhysXData()->m_pActor->wakeUp();	//현제 운동상태 초기화
+
+			GetPhysXData()->m_pActor->addTorque(NxVec3(0, 0, 0));
+		}
+	}
+
+	if (g_pKeyManager->isOnceKeyDown('Q'))
+	{
+		GetPhysXData()->m_pActor->putToSleep();
+		GetPhysXData()->m_pActor->wakeUp();	//현제 운동상태 초기화
+
+		GetPhysXData()->m_pActor->addTorque(NxVec3(0, 10000, 0));
 	}
 }
