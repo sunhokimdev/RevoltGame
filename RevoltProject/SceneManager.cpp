@@ -84,6 +84,7 @@ HRESULT SceneManager::ChangeScene(std::string sceneName)
 	return E_FAIL;
 }
 
+
 HRESULT SceneManager::ChangeScene(std::string sceneName, std::string loadingSceneName)
 {
 	////바꾸려 하는 씬이 있는지 찾는다.
@@ -116,3 +117,4 @@ HRESULT SceneManager::ChangeScene(std::string sceneName, std::string loadingScen
 
 	return E_FAIL;
 }
+

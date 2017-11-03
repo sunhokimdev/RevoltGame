@@ -27,6 +27,7 @@ void MainGame::Setup()
 	//PhysX 초가화
 	g_pPhysX->InitNxPhysX();
 
+	
 	g_pCamManager->Setup(NULL);
 	//======================================
 	// - written by 김선호

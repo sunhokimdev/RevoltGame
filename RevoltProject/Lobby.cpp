@@ -10,7 +10,7 @@
 #include "MtlTex.h"
 #include "Camera.h"
 #include "SelectMap.h"
-#include "InGameUI.h"
+//#include "InGameUI.h"
 
 /*      */
 #include "Map.h"
@@ -52,7 +52,7 @@ Lobby::~Lobby()
 	SAFE_RELEASE(m_pSprite);
 	SAFE_RELEASE(m_pObjMesh);
 	SAFE_DELETE(m_pSelectMap);
-	SAFE_DELETE(m_pInGameUI);
+	//SAFE_DELETE(m_pInGameUI);
 	SAFE_DELETE(m_multiLobby);
 	SAFE_DELETE(m_pCreateProfileLobby);
 	SAFE_DELETE(m_pSelectCarLobbby);
@@ -83,8 +83,8 @@ void Lobby::Setup()
 	m_pSelectMap = new SelectMap;
 	m_pSelectMap->Setup();
 
-	m_pInGameUI = new InGameUI;
-	m_pInGameUI->Setup();
+	//m_pInGameUI = new InGameUI;
+	//m_pInGameUI->Setup();
 
 	m_multiLobby = new cNetworkLobby;
 	m_multiLobby->Setup();
@@ -116,8 +116,8 @@ void Lobby::Update()
 		m_pSelectMap->SetMapType(&m_stateMapType, m_leftAndrightSelect);
 	}
 
-	if (m_stateLobby == MARKET_MAP)
-		m_pInGameUI->UpdateTimeLab();
+	//if (m_stateLobby == MARKET_MAP)
+	//	m_pInGameUI->UpdateTimeLab();
 
 
 	TimeUpdate();   // 시간 갱신 메서드
@@ -786,15 +786,15 @@ void Lobby::SetUpUI()
 	m_mapLobby[IN_GAME_MAP]->m_prevLob = SELECT_MAP_LOBBY;
 	m_mapLobby[IN_GAME_MAP]->m_pObject = NULL;
 
-	m_mapLobby[MARKET_MAP] = new ST_Object;
-	m_mapLobby[MARKET_MAP]->m_target = D3DXVECTOR3(0, 10, -15);
-	m_mapLobby[MARKET_MAP]->m_camLookAt = D3DXVECTOR3(0, 0, 0);
-	m_mapLobby[MARKET_MAP]->m_prevLob = SELECT_MAP_LOBBY;
-	m_mapLobby[MARKET_MAP]->m_pObject = m_pInGameUI->GetUIRoot();
-
-	m_mapLobby[GARDEN_MAP] = new ST_Object;
-	m_mapLobby[GARDEN_MAP]->m_target = D3DXVECTOR3(0, 60, -15);
-	m_mapLobby[GARDEN_MAP]->m_camLookAt = D3DXVECTOR3(0, -5, 0);
-	m_mapLobby[GARDEN_MAP]->m_prevLob = SELECT_MAP_LOBBY;
-	m_mapLobby[GARDEN_MAP]->m_pObject = m_pInGameUI->GetUIRoot();
+	//m_mapLobby[MARKET_MAP] = new ST_Object;
+	//m_mapLobby[MARKET_MAP]->m_target = D3DXVECTOR3(0, 10, -15);
+	//m_mapLobby[MARKET_MAP]->m_camLookAt = D3DXVECTOR3(0, 0, 0);
+	//m_mapLobby[MARKET_MAP]->m_prevLob = SELECT_MAP_LOBBY;
+	//m_mapLobby[MARKET_MAP]->m_pObject = m_pInGameUI->GetUIRoot();
+	
+	//m_mapLobby[GARDEN_MAP] = new ST_Object;
+	//m_mapLobby[GARDEN_MAP]->m_target = D3DXVECTOR3(0, 60, -15);
+	//m_mapLobby[GARDEN_MAP]->m_camLookAt = D3DXVECTOR3(0, -5, 0);
+	//m_mapLobby[GARDEN_MAP]->m_prevLob = SELECT_MAP_LOBBY;
+	//m_mapLobby[GARDEN_MAP]->m_pObject = m_pInGameUI->GetUIRoot();
 }

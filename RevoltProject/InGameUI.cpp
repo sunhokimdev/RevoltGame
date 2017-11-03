@@ -12,8 +12,9 @@ InGameUI::InGameUI()
 	, m_DotMilth(48)
 	, m_SecOneth(48)
 	, m_SecTenth(48)
-	, m_MinOneth(48)
+	, m_MinOneth(47)
 	, m_MinTenth(48)
+	, m_select(99)
 {
 }
 
@@ -26,6 +27,7 @@ InGameUI::~InGameUI()
 void InGameUI::Setup()
 {
 	m_pRootUI = new UIObject;
+	UITextImageView::m_Select = &m_select;
 
 	UITextImageView* pImageView1 = new UITextImageView;
 	pImageView1->SetTexture("Maps/Front/Image/font2.png");
@@ -94,6 +96,7 @@ void InGameUI::Setup()
 	m_pMinOneth->SetTexture("Maps/Front/Image/font2.png");
 	m_pMinOneth->SetPosition(-10, 0);
 
+
 	m_pMinTenth = new UITextImageView;
 	m_pMinTenth->SetTexture("Maps/Front/Image/font2.png");
 	m_pMinTenth->SetPosition(-10, 0);
@@ -115,17 +118,33 @@ void InGameUI::Setup()
 
 	UIImageView* pImageView7 = new UIImageView;
 	pImageView7->SetIsBoard(true);
-	pImageView7->SetXSize(12.0f);
+	pImageView7->SetXSize(15.0f);
 	pImageView7->SetYSize(2.5f);
 	pImageView7->SetPosition(20, 600);
 	pImageView7->SetTexture("Maps/Front/Image/ring.png");
 
-	UIImageView* pImageView8 = new UIImageView;
-	pImageView8->SetIsBoard(true);
-	pImageView8->SetXSize(12.0f);
-	pImageView8->SetYSize(2.5f);
-	pImageView8->SetPosition(20, 600);
-	pImageView8->SetTexture("Maps/Front/Image/ring.png");
+	// 방향 화살표
+	pIV_arrowDir = new UIImageView;
+	pIV_arrowDir->SetXSize(1.2f);
+	pIV_arrowDir->SetYSize(1.2f);
+	pIV_arrowDir->SetPosition(125, -80);
+	pIV_arrowDir->SetTexture("Maps/Front/Image/arrowDirection.png");
+
+	// 등수
+	UITextImageView* pITV_Rank = new UITextImageView;
+	pITV_Rank->SetXSize(4.0f);
+	pITV_Rank->SetYSize(4.0f);
+	pITV_Rank->SetPosition(20, -70);
+	pITV_Rank->SetText("8");
+	pITV_Rank->SetTexture("Maps/Front/Image/font2.png");
+
+	UITextImageView* pITV_Rank2 = new UITextImageView;
+	pITV_Rank2->SetXSize(1.2f);
+	pITV_Rank2->SetYSize(1.2f);
+	pITV_Rank2->SetPosition(55, -65);
+	pITV_Rank2->SetText("th");
+	pITV_Rank2->SetTexture("Maps/Front/Image/font2.png");
+	pITV_Rank2->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
 	m_pItemImage = new UIImageView;
 	m_pItemImage->SetXSize(1.2f);
@@ -133,7 +152,6 @@ void InGameUI::Setup()
 	m_pItemImage->SetPosition(22, 22);
 	m_pItemImage->SetIsItem(true);
 	m_pItemImage->SetTexture("Maps/Front/Image/itemlist.png");
-
 
 	// 속도계 추가
 	UIImageView* pSpeedFrame = new UIImageView;
@@ -167,6 +185,9 @@ void InGameUI::Setup()
 	pImageView2->AddChild(pImageView4);
 	pImageView2->AddChild(pImageView5);
 	pImageView6->AddChild(m_pItemImage);
+	pImageView7->AddChild(pIV_arrowDir);
+	pImageView7->AddChild(pITV_Rank);
+	pImageView7->AddChild(pITV_Rank2);
 
 	pSpeedFrame->AddChild(pSpeedometerImage);
 	pSpeedFrame->AddChild(pSpeed_mph);
@@ -185,6 +206,9 @@ void InGameUI::Setup()
 void InGameUI::Update()
 {
 	iLobby::Update();
+	
+	UpdateTimeLab();
+	//UpdateArrowDir();
 }
 
 void InGameUI::Render(LPD3DXSPRITE pSprite)
@@ -209,13 +233,17 @@ void InGameUI::UpdateTimeLab()
 
 	if (m_ElapseTime > TIMEMAX)							// After 60 Second
 	{
-		m_ElapseTime -= TIMEMAX;						// ElapsedTime = 0
+		m_ElapseTime = 0;								// ElapsedTime = 0
 		m_MinOneth += 1;								// Add 1 Minute
 	}
 	if (m_MinOneth > FONT2_NUM9)						// After 10 Minute
 	{
 		m_MinOneth = FONT2_NUM0;						// MinuteOneth = 0; 
 		m_MinTenth += 1;								// Add MinuteTenth ( 09:59 -> 10:00 )
+	}
+	if (m_MinTenth > FONT2_NUM9)
+	{
+		m_MinTenth = FONT2_NUM0;
 	}
 	m_SecTenth = (m_ElapseTime / 10) + FONT2_NUM0;		// Ex : m_ElapseTime = 59
 	m_SecOneth = ((int)m_ElapseTime % 10) + FONT2_NUM0; //      m_ElapseTime / 10 = 5;	
@@ -250,4 +278,11 @@ void InGameUI::UpdateTimeLab()
 	m_pSecTenth->SetText(SecTenth);
 	m_pMinOneth->SetText(MinOneth);
 	m_pMinTenth->SetText(MinTenth);
+
+
+}
+
+void InGameUI::UpdateArrowDir()
+{
+
 }

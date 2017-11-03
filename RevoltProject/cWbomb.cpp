@@ -82,6 +82,7 @@ void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	m_pPhysX->pos.y = pos.y + 1;
 	m_pPhysX->pos.z = pos.z;
 
+
 	NxVec3 force;
 
 	force.x = angle.x * 10000;

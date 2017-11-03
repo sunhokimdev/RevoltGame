@@ -1,0 +1,9 @@
+diff a/RevoltProject/Lobby.h b/RevoltProject/Lobby.h	(rejected hunks)
+@@ -3,7 +3,6 @@
+ class UIObject;		// UI������Ʈ�� ����ϱ� ���� ���漱�� Ŭ����
+ class MtlTex;		// ������ ����ϱ� ���� ���漱�� Ŭ����
+ class Camera;		// ī�޶� Ŭ������ ����ϱ� ���� ���漱�� Ŭ����
+-class Thing;		// ������Ʈ Ŭ����
+ 
+ //===================================================================
+ // - ## 10.15.17 ##

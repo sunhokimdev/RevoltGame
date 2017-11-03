@@ -5,12 +5,14 @@ class cTrack;
 class cLight;
 class cCar;
 class cBillBoardEffect;
+class InGameUI;
 
 class RacingScene : public GameNode
 {
 private:
 	int playerIndex = 0;
 
+	InGameUI* m_pInGameUI;
 	cTrack* m_pTrack;
 	std::vector<cCar*> vecCars;
 

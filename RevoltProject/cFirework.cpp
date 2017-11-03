@@ -13,14 +13,20 @@ cFirework::~cFirework()
 
 void cFirework::Setup()
 {
+	cItem::Setup();
 }
 
 void cFirework::Update()
 {
+	cItem::Update();
 }
 
 void cFirework::Render()
 {
+	cItem::Render();
+
+	for (int i = 0; i < m_vecPhysX.size(); ++i)
+		m_vecPhysX[i]->pMesh->Render();
 }
 
 void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)

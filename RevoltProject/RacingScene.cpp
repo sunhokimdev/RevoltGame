@@ -3,6 +3,7 @@
 #include "cTrack.h"
 #include "cLight.h"
 #include "cCar.h"
+#include "InGameUI.h"
 
 RacingScene::RacingScene() {}
 
@@ -10,7 +11,13 @@ RacingScene::~RacingScene() {}
 
 void RacingScene::Setup()
 {
+	D3DXCreateSprite(g_pD3DDevice, &m_Sprite);
 	g_pCamManager->SetLookAt(&D3DXVECTOR3(0, 0, 0));
+ 
+	m_pInGameUI = new InGameUI;
+	m_pInGameUI->Setup();
+	
+
 	m_pTrack = new cTrack;
 	if (m_pTrack)
 	{
@@ -63,16 +70,14 @@ void RacingScene::Destroy()
 	SAFE_DESTROY(m_pTrack);
 	SAFE_DELETE(m_pTrack);
 	SAFE_DELETE(m_pLightSun);
+	SAFE_DELETE(m_pInGameUI);
 }
 
 void RacingScene::Update()
 {
 	GameNode::Update();
-	
-	if (m_pTrack)
-	{
-		m_pTrack->Update();
-	}
+	SAFE_UPDATE(m_pTrack);
+	SAFE_UPDATE(g_pTimeManager);
 
 	for (int i = 0; i < vecCars.size(); i++)
 	{
@@ -81,6 +86,7 @@ void RacingScene::Update()
 	}
 
 	UpdateCamera();
+	m_pInGameUI->Update();
 	LastUpdate();
 }
 
@@ -96,6 +102,12 @@ void RacingScene::Render()
 	{
 		p->Render();
 	}
+	//D3DXMATRIXA16 matWorld;
+	//
+	//D3DXMatrixIdentity(&matWorld);
+	//
+	//g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+	m_pInGameUI->Render(m_Sprite);
 }
 
 void RacingScene::LastUpdate()
