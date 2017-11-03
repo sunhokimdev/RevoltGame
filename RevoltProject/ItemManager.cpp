@@ -98,5 +98,9 @@ void ItemManager::InitCollisionGroup()
 
 void ItemManager::FireItem(eITEM_LIST tag)
 {
+//	m_vecItem[m_index]->Create();
+//	m_index++;
+//
+//	if (m_index == m_max) m_index = 0;
 }
 
