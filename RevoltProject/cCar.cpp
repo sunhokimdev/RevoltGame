@@ -429,9 +429,10 @@ void cCar::CtrlPlayer()
 		//RePosition
 		if (g_pKeyManager->isOnceKeyDown(KEY_REPOSITION))
 		{
+			CarRunStop();
 			if (countTrack == -1)
 			{
-				GetPhysXData()->SetPosition(D3DXVECTOR3(0, 0, 0));
+				GetPhysXData()->SetPosition(D3DXVECTOR3(0,1,0));
 			}
 			else
 			{
@@ -448,7 +449,9 @@ void cCar::CtrlPlayer()
 					{
 						if ((countCheckBox - 1) == count)
 						{
-							GetPhysXData()->SetPosition(iterBegin->second->GetPosition());
+							D3DXVECTOR3 pos = iterBegin->second->GetPosition();
+							pos.y = 1;
+							GetPhysXData()->SetPosition(pos);
 							break;
 						}
 						count++;
@@ -460,6 +463,7 @@ void cCar::CtrlPlayer()
 					iterEnd--;
 
 					D3DXVECTOR3 pos = iterEnd->second->GetPosition();
+					pos.y = 1;
 					GetPhysXData()->SetPosition(pos);
 				}
 			}

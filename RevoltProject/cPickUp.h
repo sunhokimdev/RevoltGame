@@ -9,6 +9,8 @@ public:
 
 	int m_nLightIndex;
 	bool m_isExist;
+	float m_fRespawnTime;
+	bool m_isTimerRoll;
 
 	void Update();
 	void Render();
