@@ -7,7 +7,6 @@ cWbomb::cWbomb()
 	: m_pPhysX(NULL)
 	, m_pImapt(NULL)
 	, m_isSleep(false)
-	, m_isInit(true)
 {
 }
 
@@ -31,7 +30,6 @@ void cWbomb::Setup()
 	m_pImapt = new cWaterBombImpact;
 	m_pImapt->Setup();
 
-	m_pUser = new USERDATA;
 	m_pUser->USER_TAG = E_PHYSX_TAG_WHATEBOMB;
 }
 
