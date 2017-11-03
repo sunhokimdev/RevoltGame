@@ -26,7 +26,7 @@ UIImageView::UIImageView()
 	, m_itemPrevID(8)
 	, m_alpha(0)
 	, m_updateTIme(500)
-	, m_alphaValue(sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]))
+	, m_alphaValue(0)
 
 {
 	for (int i = 0; i < sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]); i++)
@@ -100,38 +100,7 @@ void UIImageView::Update()
 	}
 	else if (m_isSpeed)
 	{
-		if (g_pKeyManager->isStayKeyDown(VK_UP) || g_pKeyManager->isStayKeyDown(VK_DOWN))
-		{
-			m_alphaValue = sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]);
-			for (int i = 0; i < sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]); i++)
-			{
-				m_speedAlpha[i] = m_speedAlpha[i] + (m_alphaValue * 2);
-				m_alphaValue--;
-				if (m_alphaValue < 1)
-					m_alphaValue = sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]);
-				if (m_speedAlpha[i] >= 250)
-				{
-					m_speedAlpha[i] = 250;
-				}
-			}
-		}
-		else
-		{
-			for (int i = (sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0])) - 1; i >= 0; i--)
-			{
-				
-				m_speedAlpha[i] = m_speedAlpha[i] - (m_alphaValue * 2); // °¨¼Ò
-				m_alphaValue--;
-				if (m_alphaValue < 1)
-					m_alphaValue = sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]);
-				if (m_speedAlpha[i] <= 0)
-				{
-					m_speedAlpha[i] = 0;
-				}
-				
-			}
-		}
-	
+		
 	}
 
 
@@ -338,6 +307,19 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 		SetRect(&rc, 0, 0, m_stSize.nWitdh, m_stSize.nHeight);
 		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
 	}
+	else if (m_isArrowDir)
+	{
+		RECT rc;
+
+		D3DXMATRIXA16 matWorld, matR;
+		D3DXMatrixIdentity(&matWorld);
+
+		//D3DXMatrixRotationZ(&matR, )
+
+		//pSprite->SetTransform(&matWorld);
+
+	}
+
 	pSprite->End();
 
 	UIObject::Render(pSprite);
