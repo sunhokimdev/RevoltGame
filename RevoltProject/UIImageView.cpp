@@ -26,7 +26,7 @@ UIImageView::UIImageView()
 	, m_itemPrevID(8)
 	, m_alpha(0)
 	, m_updateTIme(500)
-	, m_alphaValue(sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]))
+	, m_alphaValue(0)
 
 {
 	for (int i = 0; i < sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]); i++)
@@ -100,33 +100,7 @@ void UIImageView::Update()
 	}
 	else if (m_isSpeed)
 	{
-			for (int i = 0; i < sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]); i++)
-			{
-				m_speedAlpha[i] = m_speedAlpha[i] + (m_alphaValue * 2);
-				m_alphaValue--;
-				if (m_alphaValue < 1)
-					m_alphaValue = sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]);
-				if (m_speedAlpha[i] >= 250)
-				{
-					m_speedAlpha[i] = 250;
-				}
-			}
-
-			for (int i = (sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0])) - 1; i >= 0; i--)
-			{
-				
-				m_speedAlpha[i] = m_speedAlpha[i] - (m_alphaValue * 2); // °¨¼Ò
-				m_alphaValue--;
-				if (m_alphaValue < 1)
-					m_alphaValue = sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]);
-				if (m_speedAlpha[i] <= 0)
-				{
-					m_speedAlpha[i] = 0;
-				}
-				
-			}
 		
-	
 	}
 
 

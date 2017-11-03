@@ -52,6 +52,9 @@ private:
 	UITextImageView* m_pMinOneth;	  
 	UITextImageView* m_pMinTenth;	  
 
+	UITextImageView* pSpeed;
+	UITextImageView* pSpeed2;
+	UIImageView* pSpeedometerImage;
 	UIImageView* pIV_arrowDir;
 
 	cCar* m_pCar;
@@ -66,7 +69,7 @@ public:
 	UIObject* GetUIObject() { return m_pRootUI; }
 	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
 
-
+	void UpdateSpeed();
 	void UpdateRaceTime();									// UpdateTimer
 	void UpdateArrowDir();									// 화살표 방향
 	void UpdateLapTime();										// void Update

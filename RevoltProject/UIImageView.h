@@ -33,7 +33,9 @@ public:
 	virtual void Update();
 	virtual void Render(LPD3DXSPRITE pSprite) override;
 
-	
+	void SetRpmGauge(int rpm) { m_alphaValue = rpm; }
+
+
 	SYNTHESIZE(bool, m_isMove, IsMove);
 	SYNTHESIZE(bool, m_isBoard, IsBoard);		
 	SYNTHESIZE(bool, m_isNoise, IsNoise);
