@@ -14,7 +14,7 @@ cCar::cCar()
 	m_rapTimeCount = 0.f;
 	m_totlaTimeCount = 0.f;
 
-	isUpsideDown = false;
+	isFliping = false;
 }
 
 cCar::~cCar()
@@ -294,7 +294,7 @@ void cCar::Update()
 
 	TrackCheck();
 
-	CarUpsideDown();
+	CarFlip();
 
 
 }
@@ -333,7 +333,7 @@ void cCar::Render()
 
 void cCar::Destory()
 {
-Object::Destroy();
+	Object::Destroy();
 }
 
 void cCar::CtrlPlayer()
@@ -431,7 +431,7 @@ void cCar::CtrlPlayer()
 		{
 			if (countTrack == -1)
 			{
-				GetPhysXData()->SetPosition(D3DXVECTOR3(0,0,0));
+				GetPhysXData()->SetPosition(D3DXVECTOR3(0, 0, 0));
 			}
 			else
 			{
@@ -464,6 +464,18 @@ void cCar::CtrlPlayer()
 				}
 			}
 		}
+
+		//Fliping
+		NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
+		NxVec3 carUp = quat.transform(NxVec3(0, 1, 0), NxVec3(0, 0, 0));
+		//if (carUp.y < 0.f)
+		//{
+			if (g_pKeyManager->isOnceKeyDown(KEY_CAR_FLIP) && isFliping == false)
+			{
+				isFliping = true;
+				CarRunStop();
+			}
+		//}
 	}
 }
 
@@ -516,34 +528,24 @@ void cCar::RunEnd()
 	}
 }
 
-void cCar::CarUpsideDown()
+void cCar::CarFlip()
 {
-	NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
-	NxVec3 carUp = quat.transform(NxVec3(0, 1, 0), NxVec3(0, 0, 0));
-	if (carUp.y < 0.f)
-	{
-		if (g_pKeyManager->isOnceKeyDown(KEY_CAR_FLIP) && isUpsideDown == false)
-		{
-			isUpsideDown = true;
-			GetPhysXData()->m_pActor->putToSleep();
-		}
-	}
+	return;	//오류 있어서 리턴!
 
-	if (g_pKeyManager->isOnceKeyDown(KEY_CAR_FLIP) && isUpsideDown == false)
+	if (isFliping)
 	{
-		isUpsideDown = true;
-		GetPhysXData()->m_pActor->putToSleep();
-	}
-	if (isUpsideDown)
-	{
+		CarRunStop();
+
+//		NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
+
 		NxQuat quat_up;
 		NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
+		NxVec3 carUp = quat.transform(NxVec3(0, 1, 0), NxVec3(0, 0, 0));
 		NxVec3 carFront = quat.transform(NxVec3(1, 0, 0), NxVec3(0, 0, 0));
-		quat.setx(0);// fromAngleAxis(0, carFront);
+		NxVec3 worldFront(1, 0, 0);
 
-		std::cout << carFront.x << "\t";
-		std::cout << carFront.y << "\t";
-		std::cout << carFront.z << std::endl;
+		carUp.dot(carFront);
+		quat.fromAngleAxisFast(NxPi,NxVec3(0, 1, 0));
 
 		NxActor* p = GetPhysXData()->m_pActor;
 		p->setGlobalOrientationQuat(quat);
@@ -552,10 +554,9 @@ void cCar::CarUpsideDown()
 		NxVec3 pos = p->getGlobalPose().t;
 
 
-		if (carUp.y > 0.9f)
+		if (carUp.y > 0.99f)
 		{
-			isUpsideDown = false;
-			GetPhysXData()->m_pActor->wakeUp();
+			isFliping = false;
 		}
 	}
 }

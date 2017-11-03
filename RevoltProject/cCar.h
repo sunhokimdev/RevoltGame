@@ -33,7 +33,7 @@ class cCar : public Object
 	D3DXVECTOR3 m_szPrevPos[5];
 
 	//자동차 뒤집힘?
-	bool isUpsideDown;
+	bool isFliping;
 
 	//AI
 	std::vector<cAI*> m_vecAI;
@@ -83,10 +83,9 @@ public:
 	void GetRpm();
 	void TrackCheck();
 	void RunEnd();
-	void CarUpsideDown();
+	void CarFlip();
 	void CarRunStop();
 	void LinkTrackPt(cTrack* track) { m_pTrack = track; }
-
 //	void RunStart();
 
 };
