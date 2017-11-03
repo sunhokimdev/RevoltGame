@@ -32,7 +32,7 @@ class cCar : public Object
 	D3DXVECTOR3 m_szPrevPos[5];
 
 	//자동차 뒤집힘?
-//	bool isUpsideDown;
+	bool isUpsideDown;
 
 	//AI
 	std::vector<cAI*> m_vecAI;
@@ -41,7 +41,7 @@ class cCar : public Object
 	//track 관련
 	bool m_trackOn = true;
 	SYNTHESIZE(int, totalCheckBoxNum, TotalCheckBoxNum);
-	SYNTHESIZE(int, countChectBox, CountCheckBox);
+	SYNTHESIZE(int, countCheckBox, CountCheckBox);
 	SYNTHESIZE(int, countTrack,CountTrackRun);
 	
 	SYNTHESIZE(float, m_rapTimeCount, RapTimeCount);
@@ -80,8 +80,9 @@ public:
 
 	void GetRpm();
 	void TrackCheck();
-	void RunStop();
+	void RunEnd();
 	void CarUpsideDown();
-
+	void CarRunStop();
 //	void RunStart();
+
 };

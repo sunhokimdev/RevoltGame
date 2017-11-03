@@ -13,7 +13,7 @@ cCar::cCar()
 	m_rapTimeCount = 0.f;
 	m_totlaTimeCount = 0.f;
 
-	//	isUpsideDown = false;
+	isUpsideDown = false;
 }
 
 cCar::~cCar()
@@ -303,6 +303,7 @@ void cCar::Update()
 
 	CarUpsideDown();
 
+
 }
 
 void cCar::LastUpdate()
@@ -463,19 +464,18 @@ void cCar::TrackCheck()
 		}
 		m_trackOn = false;
 	}
-	if (countChectBox == GetTotalCheckBoxNum()) GetPhysXData()->m_pUserData->CheckBoxID = 0;
-	countChectBox = GetPhysXData()->m_pUserData->CheckBoxID;
+	if (countCheckBox == GetTotalCheckBoxNum()) GetPhysXData()->m_pUserData->CheckBoxID = 0;
+	countCheckBox = GetPhysXData()->m_pUserData->CheckBoxID;
 
 	if (countTrack > -1 && countTrack < 3)
 	{
 		//시간을 더해 나간다.
 		m_rapTimeCount += 0;
 		m_totlaTimeCount += 0;
-
 	}
 }
 
-void cCar::RunStop()
+void cCar::RunEnd()
 {
 	for (int i = 0; i < 4; i++)
 	{
@@ -486,24 +486,56 @@ void cCar::RunStop()
 
 void cCar::CarUpsideDown()
 {
-	NxQuat v = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
-	NxVec3 carUp = v.transform(NxVec3(0, 1, 0), NxVec3(0, 0, 0));
+	NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
+	NxVec3 carUp = quat.transform(NxVec3(0, 1, 0), NxVec3(0, 0, 0));
 	if (carUp.y < 0.f)
 	{
-		if (g_pKeyManager->isOnceKeyDown('Q'))
+		if (g_pKeyManager->isOnceKeyDown('Q') && isUpsideDown == false)
 		{
+			isUpsideDown = true;
 			GetPhysXData()->m_pActor->putToSleep();
-			GetPhysXData()->m_pActor->wakeUp();	//현제 운동상태 초기화
-
-			GetPhysXData()->m_pActor->addTorque(NxVec3(0, 0, 0));
 		}
 	}
 
-	if (g_pKeyManager->isOnceKeyDown('Q'))
+	if (g_pKeyManager->isOnceKeyDown('Q') && isUpsideDown == false)
+	{
+		isUpsideDown = true;
+		GetPhysXData()->m_pActor->putToSleep();
+	}
+	if (isUpsideDown)
+	{
+		NxQuat quat_up;
+		NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
+		NxVec3 carFront = quat.transform(NxVec3(1, 0, 0), NxVec3(0, 0, 0));
+		quat.setx(0);// fromAngleAxis(0, carFront);
+
+		std::cout << carFront.x << "\t";
+		std::cout << carFront.y << "\t";
+		std::cout << carFront.z << std::endl;
+
+		NxActor* p = GetPhysXData()->m_pActor;
+		p->setGlobalOrientationQuat(quat);
+
+
+		NxVec3 pos = p->getGlobalPose().t;
+
+
+		if (carUp.y > 0.9f)
+		{
+			isUpsideDown = false;
+			GetPhysXData()->m_pActor->wakeUp();
+		}
+	}
+}
+
+void cCar::CarRunStop()
+{
+	if (GetPhysXData())
 	{
 		GetPhysXData()->m_pActor->putToSleep();
-		GetPhysXData()->m_pActor->wakeUp();	//현제 운동상태 초기화
-
-		GetPhysXData()->m_pActor->addTorque(NxVec3(0, 10000, 0));
+		for (int i = 0; i < 4; i++)
+		{
+			m_carNxVehicle->getWheel(i)->getWheelShape()->getActor().putToSleep();
+		}
 	}
 }

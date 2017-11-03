@@ -195,11 +195,14 @@ void RacingScene::UpdateCamera()
 
 	if (RayCamHit.distance < distToCar)
 	{
-		if (RayCamHit.shape->getActor().getName() == "map")
+		if (RayCamHit.shape)
 		{
-			x = RayCamHit.worldImpact.x;
-			y = carPos.y + Height;//RayCamHit.worldImpact.y;
-			z = RayCamHit.worldImpact.z;
+			if (RayCamHit.shape->getActor().getName() == "map")
+			{
+				x = RayCamHit.worldImpact.x;
+				y = carPos.y + Height;//RayCamHit.worldImpact.y;
+				z = RayCamHit.worldImpact.z;
+			}
 		}
 	}
 
