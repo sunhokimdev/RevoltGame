@@ -68,6 +68,7 @@ void RacingScene::Setup()
 	}
 
 	m_pInGameUI->LinkCarPt(vecCars[0]);
+	vecCars[0]->LinkTrackPt(m_pTrack);
 
 }
 
@@ -88,7 +89,7 @@ void RacingScene::Update()
 	for (int i = 0; i < vecCars.size(); i++)
 	{
 		 if(IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
-		 else vecCars[i]->RunStop();
+		 else vecCars[i]->RunEnd();
 	}
 
 	UpdateCamera();
