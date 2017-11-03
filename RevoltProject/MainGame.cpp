@@ -27,6 +27,7 @@ void MainGame::Setup()
 	//PhysX 초가화
 	g_pPhysX->InitNxPhysX();
 
+	
 	g_pCamManager->Setup(NULL);
 	//======================================
 	// - written by 김선호
@@ -46,7 +47,6 @@ void MainGame::Setup()
 
 	g_SceneManager->AddScene("Lobby", new LobbyScene);
 	g_SceneManager->AddScene("Race", new RacingScene);
-
 
 
 	g_SceneManager->ChangeScene("Race");

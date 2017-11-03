@@ -31,6 +31,8 @@ private:
 	int m_SecColon;
 	int m_MinColon;
 
+	int m_select;
+
 	UITextImageView* m_pElapseTime;   
 	UITextImageView* m_pDotTenth;	  
 	UITextImageView* m_pDotMilth;	  

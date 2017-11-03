@@ -38,6 +38,7 @@ public:
 	//·Îµù¾À Ãß°¡
 	GameNode* AddLoadingScene(std::string loadingSceneName, GameNode* scene);
 
+
 	//¾À ±³Ã¼ ÇÔ¼ö
 	HRESULT ChangeScene(std::string sceneName);
 	HRESULT ChangeScene(std::string sceneName, std::string loadingSceneName);

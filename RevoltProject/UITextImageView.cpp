@@ -278,7 +278,7 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 
 		if(*m_Select == m_index)
 			pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(255, 255, 0, 255));
-		else
+		else if (*m_Select != m_index)
 			pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
 	}
 

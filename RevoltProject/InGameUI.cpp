@@ -12,8 +12,9 @@ InGameUI::InGameUI()
 	, m_DotMilth(48)
 	, m_SecOneth(48)
 	, m_SecTenth(48)
-	, m_MinOneth(48)
+	, m_MinOneth(47)
 	, m_MinTenth(48)
+	, m_select(99)
 {
 }
 
@@ -26,6 +27,7 @@ InGameUI::~InGameUI()
 void InGameUI::Setup()
 {
 	m_pRootUI = new UIObject;
+	UITextImageView::m_Select = &m_select;
 
 	UITextImageView* pImageView1 = new UITextImageView;
 	pImageView1->SetTexture("Maps/Front/Image/font2.png");
@@ -93,6 +95,7 @@ void InGameUI::Setup()
 	m_pMinOneth = new UITextImageView;
 	m_pMinOneth->SetTexture("Maps/Front/Image/font2.png");
 	m_pMinOneth->SetPosition(-10, 0);
+
 
 	m_pMinTenth = new UITextImageView;
 	m_pMinTenth->SetTexture("Maps/Front/Image/font2.png");
@@ -184,6 +187,7 @@ void InGameUI::Setup()
 
 void InGameUI::Update()
 {
+	//UpdateTimeLab();
 	iLobby::Update();
 }
 
@@ -209,13 +213,17 @@ void InGameUI::UpdateTimeLab()
 
 	if (m_ElapseTime > TIMEMAX)							// After 60 Second
 	{
-		m_ElapseTime -= TIMEMAX;						// ElapsedTime = 0
+		m_ElapseTime = 0;								// ElapsedTime = 0
 		m_MinOneth += 1;								// Add 1 Minute
 	}
 	if (m_MinOneth > FONT2_NUM9)						// After 10 Minute
 	{
 		m_MinOneth = FONT2_NUM0;						// MinuteOneth = 0; 
 		m_MinTenth += 1;								// Add MinuteTenth ( 09:59 -> 10:00 )
+	}
+	if (m_MinTenth > FONT2_NUM9)
+	{
+		m_MinTenth = FONT2_NUM0;
 	}
 	m_SecTenth = (m_ElapseTime / 10) + FONT2_NUM0;		// Ex : m_ElapseTime = 59
 	m_SecOneth = ((int)m_ElapseTime % 10) + FONT2_NUM0; //      m_ElapseTime / 10 = 5;	
@@ -250,4 +258,6 @@ void InGameUI::UpdateTimeLab()
 	m_pSecTenth->SetText(SecTenth);
 	m_pMinOneth->SetText(MinOneth);
 	m_pMinTenth->SetText(MinTenth);
+
+
 }

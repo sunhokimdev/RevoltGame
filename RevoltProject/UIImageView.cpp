@@ -77,10 +77,11 @@ void UIImageView::Update()
 		}
 		else
 		{
+			srand(time(NULL));
 			if (m_itemID > MAX_ID)
-				m_itemID = 0;
+				m_itemID = rand() % 12;
 			if (m_itemPrevID > MAX_ID)
-				m_itemPrevID = 0;
+				m_itemPrevID = rand() % 12;
 
 			if (m_fTime % m_updateTIme != 0)
 			{
