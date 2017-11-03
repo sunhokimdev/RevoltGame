@@ -1,11 +1,17 @@
 #pragma once
 
+#define WATERIMPACT 200
+
 #include "cItem.h"
+
+class cWaterBombImpact;
 
 class cWbomb : public cItem
 {
 private:
-	std::vector<ST_PHYSX*>	m_vecPhysX;		// 아이템 물리엔진 벡터
+	ST_PHYSX* m_pPhysX;
+	cWaterBombImpact* m_pImapt;
+	bool m_isSleep;
 public:
 	cWbomb();
 	virtual ~cWbomb();
@@ -13,6 +19,6 @@ public:
 	virtual void Setup();
 	virtual void Update();
 	virtual void Render();
-	virtual void Create();
+	virtual void Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos);
 };
 

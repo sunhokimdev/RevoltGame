@@ -24,6 +24,7 @@
 #include "cSelectCarLob.h"
 #include "cCreateProfile.h"
 #include "cViewCarLob.h"
+#include "cImpact.h"
 
 /*   멀티 플레이어 작업   */
 #include "cNetworkLobby.h"
@@ -77,7 +78,6 @@ void Lobby::Setup()
 	Thing::g_LobbyState = &m_stateLobby;
 	CarBox::g_select = &m_leftAndrightSelect;
 	Map::g_LobbyState = &m_stateLobby;
-
 	iLobby::m_gLobbyState = &m_stateLobby;
 
 	m_pSelectMap = new SelectMap;
@@ -192,7 +192,7 @@ void Lobby::KeyUpdate()
 
 			if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
 				m_leftAndrightSelect = 0;
-		
+
 			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
 		}
 		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
@@ -201,17 +201,13 @@ void Lobby::KeyUpdate()
 			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
 		}
 
-		else if (m_stateLobby == SELECT_MAP_LOBBY)
-		{
-			m_leftAndrightSelect--;
+		if (m_stateLobby == SELECT_MAP_LOBBY)
+			m_leftAndrightSelect++;
 
 			m_pSelectMap->GetmagImage()->SetIsMove(true);
 
-			if (m_leftAndrightSelect < 0)
-				m_leftAndrightSelect = m_mapLobby[m_stateLobby]->m_selectCnt - 1;
-
-			g_pSoundManager->Play("boxslide.wav", 1.0f);
-		}
+		if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
+			m_leftAndrightSelect = 0;
 	}
 
 	if (g_pKeyManager->isOnceKeyDown(VK_LEFT))

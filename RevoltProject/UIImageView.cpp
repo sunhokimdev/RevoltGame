@@ -27,6 +27,7 @@ UIImageView::UIImageView()
 	, m_alpha(0)
 	, m_updateTIme(500)
 	, m_alphaValue(sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]))
+
 {
 	for (int i = 0; i < sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]); i++)
 	{
@@ -131,6 +132,7 @@ void UIImageView::Update()
 		}
 	
 	}
+
 
 	UIObject::Update();
 }

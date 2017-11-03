@@ -6,7 +6,7 @@
 SelectMap::SelectMap()
 	: m_selectMapType(0)
 	, m_isUnLocked(true)
-	, m_isOpenHood(false)
+	, m_isOpenGarden(false)
 	, m_isOpenShip(false)
 	, m_isOpenMuse(false)
 	, m_isLockedRender(false)
@@ -107,7 +107,7 @@ void SelectMap::SetMapType(MAP_TYPE* mapType, int SelectNum)
 	if (SelectNum == 0) *mapType = SUPERMARKET;
 	else if (SelectNum == 1)
 	{
-		if (m_isUnLocked)	*mapType = NHOOD;
+		if (m_isUnLocked)	*mapType = GARDEN;
 		else *mapType = NONE;
 
 	}
@@ -141,7 +141,7 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 
 	*/
 	// Stage Name Color
-	if (m_isOpenHood) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
+	if (m_isOpenGarden) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
 	else if (m_isOpenShip) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
 	else if (m_isOpenMuse) m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
 	else m_mapName->SetColor(D3DCOLOR_ARGB(150, 0, 0, 0));
@@ -169,9 +169,9 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 
 	else if (SelectNum == 1)
 	{
-		m_mapImage->SetTexture("Maps/Front/Image/nhood.bmp");
+		m_mapImage->SetTexture("Maps/Front/Image/garden.bmp");
 
-		if (m_isOpenHood)
+		if (m_isOpenGarden)
 		{
 			m_LockedRing->SetTexture("");
 			m_LockedTextImage->SetText("");
@@ -185,11 +185,11 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 		}
 
 		m_mapName->SetTexture("Maps/Front/Image/font2.png");
-		m_mapName->SetText("Toys in the Hood 1");
+		m_mapName->SetText("Botanical Garden");
 		m_mapName->SetPosition(60, 50);
 
 		m_mapLength->SetTexture("Maps/Front/Image/font2.png");
-		m_mapLength->SetText("747 meters");
+		m_mapLength->SetText("323 meters");
 		m_mapLength->SetPosition(260, 80);
 
 		m_mapDifficulty->SetTexture("Maps/Front/Image/font2.png");

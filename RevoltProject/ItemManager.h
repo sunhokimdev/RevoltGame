@@ -39,7 +39,7 @@ class ItemManager
 {
 private:
 	std::vector<cItem*> m_vecItem;				// 아이템들을 관리하는 클래스
-	std::map<eITEM_LIST, std::vector<cItem*>>	m_mapItem;
+//	std::map<eITEM_LIST, std::vector<cItem*>>	m_mapItem;
 	int m_max;
 	int m_index;
 
@@ -55,8 +55,9 @@ public:
 	void Update();
 	void Render();
 
+	void SetFire(D3DXVECTOR3 angle, D3DXVECTOR3 pos);
 	void SetActorGroup(NxActor* actor, NxCollisionGroup group);
 	void InitCollisionGroup();
-	void FireItem(eITEM_LIST tag);
+//	void FireItem(eITEM_LIST tag);
 };
 

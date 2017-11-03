@@ -23,7 +23,7 @@ void cFirework::Render()
 {
 }
 
-void cFirework::Create()
+void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {
 	ST_PHYSX* pPhysX = new ST_PHYSX;
 

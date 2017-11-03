@@ -4,7 +4,7 @@
 class cTrack;
 class cLight;
 class cCar;
-
+class cBillBoardEffect;
 
 class RacingScene : public GameNode
 {
@@ -23,6 +23,13 @@ private:
 
 	//TrackEndCount µ¹¾Æ¾ß µÇ´Â ¹ÙÆ¢ ¼ö
 	const int m_trackEndCount = 3;
+
+	//ºôº¸µå??ÀÌÆåÆ®??
+	LPD3DXSPRITE m_Sprite;
+	cBillBoardEffect*		 m_pBillBoardEffect;
+
+	bool m_isDrift;
+
 public:
 
 	RacingScene();

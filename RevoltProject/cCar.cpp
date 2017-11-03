@@ -260,6 +260,8 @@ void cCar::Update()
 			//GetPhysXData()->m_pUserData->IsPickUp == NX_FALSE;
 		}
 	}
+	
+	
 	// 과거 위치값
 	for (int i = 3; i >= 0; i--)
 	{
@@ -317,6 +319,7 @@ void cCar::CtrlPlayer()
 		NxVec3 pos = m_carNxVehicle->getGlobalPose().t;
 		m_carNxVehicle->getActor()->addForce(NxVec3(0, -0.001, 0));
 
+		//엑셀
 		float targetPower = 0.f;
 		bool power = false;
 		m_breakPower = 0.f;
@@ -341,6 +344,7 @@ void cCar::CtrlPlayer()
 			m_breakPower = m_maxMoterPower*0.5f;
 		}
 
+		//핸들
 		float targetAngle = m_wheelAngle * m_maxWheelAngle;
 		bool handle = false;
 		if (g_pKeyManager->isStayKeyDown(VK_LEFT))
@@ -366,6 +370,7 @@ void cCar::CtrlPlayer()
 			targetAngle = m_wheelAngle * m_maxWheelAngle;
 		}
 
+		//이동
 		for (int i = 0; i < 4; i++)
 		{
 			NxWheel* wheel = m_carNxVehicle->getWheel(i);
@@ -379,11 +384,14 @@ void cCar::CtrlPlayer()
 			if (wheel->getRpm() < m_maxRpm)	wheel->tick(false, targetPower, m_breakPower, 1.f / 60.f);
 			else wheel->tick(false, 0, m_breakPower, 1.f / 60.f);
 		}
+
+		//아이템사용
 		if (g_pKeyManager->isOnceKeyDown(VK_CONTROL))
 		{
-			if (m_eHoldItem != ITEM_NONE)
+			//if (m_eHoldItem != ITEM_NONE)
 			{
-				g_pItemManager->FireItem(m_eHoldItem);
+				//아이템 사용 함수 호츨
+				//g_pItemManager->FireItem(m_eHoldItem);
 				m_nItemCount--;
 				if (m_nItemCount == 0)
 				{
