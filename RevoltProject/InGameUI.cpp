@@ -168,10 +168,34 @@ void InGameUI::Setup()
 
 	UIImageView* pImageView7 = new UIImageView;
 	pImageView7->SetIsBoard(true);
-	pImageView7->SetXSize(12.0f);
+	pImageView7->SetXSize(15.0f);
 	pImageView7->SetYSize(2.5f);
 	pImageView7->SetPosition(20, 600);
 	pImageView7->SetTexture("Maps/Front/Image/ring.png");
+
+
+	// 방향 화살표
+	pIV_arrowDir = new UIImageView;
+	pIV_arrowDir->SetXSize(1.2f);
+	pIV_arrowDir->SetYSize(1.2f);
+	pIV_arrowDir->SetPosition(125, -80);
+	pIV_arrowDir->SetTexture("Maps/Front/Image/arrowDirection.png");
+
+	// 등수
+	UITextImageView* pITV_Rank = new UITextImageView;
+	pITV_Rank->SetXSize(4.0f);
+	pITV_Rank->SetYSize(4.0f);
+	pITV_Rank->SetPosition(20, -70);
+	pITV_Rank->SetText("8");
+	pITV_Rank->SetTexture("Maps/Front/Image/font2.png");
+
+	UITextImageView* pITV_Rank2 = new UITextImageView;
+	pITV_Rank2->SetXSize(1.2f);
+	pITV_Rank2->SetYSize(1.2f);
+	pITV_Rank2->SetPosition(55, -65);
+	pITV_Rank2->SetText("th");
+	pITV_Rank2->SetTexture("Maps/Front/Image/font2.png");
+	pITV_Rank2->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
 	m_pItemImage = new UIImageView;
 	m_pItemImage->SetXSize(1.2f);
@@ -179,7 +203,6 @@ void InGameUI::Setup()
 	m_pItemImage->SetPosition(22, 22);
 	m_pItemImage->SetIsItem(true);
 	m_pItemImage->SetTexture("Maps/Front/Image/itemlist.png");
-
 
 	// 속도계 추가
 	UIImageView* pSpeedFrame = new UIImageView;
@@ -213,6 +236,9 @@ void InGameUI::Setup()
 	pLastLabFont->AddChild(pLabFont);
 	pLastLabFont->AddChild(pRaceFont);
 	pImageView6->AddChild(m_pItemImage);
+	pImageView7->AddChild(pIV_arrowDir);
+	pImageView7->AddChild(pITV_Rank);
+	pImageView7->AddChild(pITV_Rank2);
 
 	pSpeedFrame->AddChild(pSpeedometerImage);
 	pSpeedFrame->AddChild(pSpeed_mph);
@@ -244,9 +270,14 @@ void InGameUI::Setup()
 
 void InGameUI::Update()
 {
+
 	UpdateRaceTime();
 	UpdateLapTime();
+
 	iLobby::Update();
+	
+
+	//UpdateArrowDir();
 }
 
 void InGameUI::Render(LPD3DXSPRITE pSprite)
@@ -340,7 +371,7 @@ void InGameUI::UpdateLapTime()
 
 	if (g_pKeyManager->isOnceKeyDown('B'))
 	{
-		if(m_LabCnt == -1) m_LabCnt += 1;
+		if (m_LabCnt == -1) m_LabCnt += 1;
 		else m_LabCnt -= 1;
 	}
 
@@ -392,4 +423,8 @@ void InGameUI::UpdateLapTime()
 	m_pLabSecTenth->SetText(LabSecTenth);
 	m_pLabMinOneth->SetText(LabMinOneth);
 	m_pLabMinTenth->SetText(LabMinTenth);
+}
+void InGameUI::UpdateArrowDir()
+{
+
 }

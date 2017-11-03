@@ -51,6 +51,8 @@ private:
 	UITextImageView* m_pMinOneth;	  
 	UITextImageView* m_pMinTenth;	  
 
+	UIImageView* pIV_arrowDir;
+
 public:
 	InGameUI();
 	virtual ~InGameUI();
@@ -62,11 +64,12 @@ public:
 	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
 
 
-	void UpdateRaceTime();										// UpdateTimeLab
+	void UpdateRaceTime();									// UpdateTimer
+	void UpdateArrowDir();									// 화살표 방향
 	void UpdateLapTime();										// void Update
 	SYNTHESIZE(int, m_LabCnt, LabCnt);							// Lab Count
 
-	//Lab
+																//Lab
 	SYNTHESIZE(float, m_LabElapseTime, LabElapseTime);
 	SYNTHESIZE(int, m_LabDotTenth, LabDotTenth);
 	SYNTHESIZE(int, m_LabDotMilth, LabDotMilth);
@@ -82,8 +85,7 @@ public:
 	SYNTHESIZE(int, m_SecOneth, SecOneth);
 	SYNTHESIZE(int, m_SecTenth, SecTenth);
 	SYNTHESIZE(int, m_MinOneth, MinOneth);
-	SYNTHESIZE(int, m_MinTenth, MinTenth );
+	SYNTHESIZE(int, m_MinTenth, MinTenth);
 
-	
 };
 
