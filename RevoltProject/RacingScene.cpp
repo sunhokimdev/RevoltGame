@@ -68,6 +68,7 @@ void RacingScene::Setup()
 	}
 
 	m_pInGameUI->LinkCarPt(vecCars[0]);
+	vecCars[0]->LinkTrackPt(m_pTrack);
 
 }
 

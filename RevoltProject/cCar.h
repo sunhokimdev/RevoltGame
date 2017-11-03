@@ -3,6 +3,7 @@
 
 class cAI;
 class TriggerCallback;
+class cTrack;
 
 struct stCARSPEC
 {
@@ -53,6 +54,7 @@ class cCar : public Object
 	
 	int countCheckTrack;
 
+	cTrack* m_pTrack;
 
 public:
 	cCar();
@@ -82,6 +84,8 @@ public:
 	void TrackCheck();
 	void RunStop();
 	void CarUpsideDown();
+
+	void LinkTrackPt(cTrack* track) { m_pTrack = track; }
 
 //	void RunStart();
 };

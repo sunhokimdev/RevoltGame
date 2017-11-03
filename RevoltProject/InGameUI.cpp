@@ -207,6 +207,7 @@ void InGameUI::Setup()
 	m_pItemImage->SetTexture("Maps/Front/Image/itemlist.png");
 
 	// 속도계 추가
+
 	UIImageView* pSpeedFrame = new UIImageView;
 	pSpeedFrame->SetIsSpeedFrame(true);
 	pSpeedFrame->SetXSize(1.2f);
