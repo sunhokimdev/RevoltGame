@@ -4,18 +4,23 @@
 #include "cLight.h"
 #include "cCar.h"
 #include "InGameUI.h"
+#include "UITextImageView.h"
 
-RacingScene::RacingScene() {}
+RacingScene::RacingScene()
+	: m_select(99)
+{}
 
 RacingScene::~RacingScene() {}
 
 void RacingScene::Setup()
 {
-	//D3DXCreateSprite(g_pD3DDevice, &m_Sprite);
+	UITextImageView::m_Select = &m_select;
+
+	D3DXCreateSprite(g_pD3DDevice, &m_Sprite);
 	g_pCamManager->SetLookAt(&D3DXVECTOR3(0, 0, 0));
  
-	//m_pInGameUI = new InGameUI;
-	//m_pInGameUI->Setup();
+	m_pInGameUI = new InGameUI;
+	m_pInGameUI->Setup();
 	
 
 	m_pTrack = new cTrack;
@@ -68,7 +73,7 @@ void RacingScene::Destroy()
 	SAFE_DESTROY(m_pTrack);
 	SAFE_DELETE(m_pTrack);
 	SAFE_DELETE(m_pLightSun);
-	//SAFE_DELETE(m_pInGameUI);
+	SAFE_DELETE(m_pInGameUI);
 }
 
 void RacingScene::Update()
@@ -85,7 +90,8 @@ void RacingScene::Update()
 	}
 
 	UpdateCamera();
-	//m_pInGameUI->UpdateTimeLab();
+	m_pInGameUI->Update();
+	m_pInGameUI->UpdateTimeLab();
 	LastUpdate();
 }
 
@@ -101,7 +107,7 @@ void RacingScene::Render()
 	{
 		p->Render();
 	}
-	//m_pInGameUI->Render(m_Sprite);
+	m_pInGameUI->Render(m_Sprite);
 }
 
 void RacingScene::LastUpdate()

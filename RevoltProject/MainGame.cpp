@@ -67,6 +67,7 @@ void MainGame::Update()
 	SAFE_UPDATE(g_pCamManager);
 	SAFE_UPDATE(g_SceneManager);
 	SAFE_UPDATE(g_pItemManager);
+	SAFE_UPDATE(g_pTimeManager);
 }
 
 void MainGame::Render()

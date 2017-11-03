@@ -120,12 +120,12 @@ void InGameUI::Setup()
 	pImageView7->SetPosition(20, 600);
 	pImageView7->SetTexture("Maps/Front/Image/ring.png");
 
-	UIImageView* pImageView8 = new UIImageView;
-	pImageView8->SetIsBoard(true);
-	pImageView8->SetXSize(12.0f);
-	pImageView8->SetYSize(2.5f);
-	pImageView8->SetPosition(20, 600);
-	pImageView8->SetTexture("Maps/Front/Image/ring.png");
+	// 방향 화살표 이미지
+	UIImageView* pIV_arrowDirection = new UIImageView;
+	pIV_arrowDirection->SetXSize(1.2f);
+	pIV_arrowDirection->SetYSize(1.2f);
+	pIV_arrowDirection->SetPosition(120, -80);
+	pIV_arrowDirection->SetTexture("Maps/Front/Image/arrowDirection.png");
 
 	m_pItemImage = new UIImageView;
 	m_pItemImage->SetXSize(1.2f);
@@ -167,6 +167,7 @@ void InGameUI::Setup()
 	pImageView2->AddChild(pImageView4);
 	pImageView2->AddChild(pImageView5);
 	pImageView6->AddChild(m_pItemImage);
+	pImageView7->AddChild(pIV_arrowDirection);
 
 	pSpeedFrame->AddChild(pSpeedometerImage);
 	pSpeedFrame->AddChild(pSpeed_mph);
@@ -180,6 +181,7 @@ void InGameUI::Setup()
 	m_pSecTenth->AddChild(pMinColon);
 	pMinColon->AddChild(m_pMinOneth);
 	m_pMinOneth->AddChild(m_pMinTenth);
+
 }
 
 void InGameUI::Update()
@@ -190,6 +192,8 @@ void InGameUI::Update()
 void InGameUI::Render(LPD3DXSPRITE pSprite)
 {
 	iLobby::Render(pSprite);
+
+
 }
 
 void InGameUI::UpdateTimeLab()

@@ -25,6 +25,7 @@ UITextImageView::UITextImageView()
 	, m_cursorTime(0.0f)
 	, m_isCursorRender(false)
 	, m_isRealTime(false)
+	, m_index(0)
 {
 }
 
@@ -276,10 +277,12 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 
 		tMat._41 = tMat._41 + m_textPos.x * tMat._11;
 
-		if(*m_Select == m_index)
+
+		if (*m_Select == m_index)
 			pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(255, 255, 0, 255));
 		else
 			pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
+		
 	}
 
 	if (m_isChatingText && m_isCursorRender)

@@ -16,7 +16,8 @@ private:
 	cLight* m_pLightSun;
 	std::vector<cCar*> vecCars;
 	int m_nLightIDCount;
-
+	
+	int m_select;
 	//
 	D3DXVECTOR3* camPos = new D3DXVECTOR3(0, 10, 0);
 	D3DXVECTOR3* camLookTarget = new D3DXVECTOR3(0, 0, 0);
