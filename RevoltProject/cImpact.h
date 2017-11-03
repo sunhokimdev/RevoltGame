@@ -10,7 +10,9 @@ public:
 	virtual void Setup();
 	virtual void Update();
 	virtual void Render();
-	virtual void SetPosition(D3DXVECTOR3 pos) { m_itemPos = pos; };
+	void SetPosition(D3DXVECTOR3 pos) { 
+		m_itemPos = pos;
+	};
 	DWORD FtoDw(float f)
 	{
 		return *((DWORD*)&f);

@@ -2,15 +2,22 @@
 #include "cGravityball.h"
 #include "cImpact.h"
 #include "GravityBallImpact.h"
+#include "cPlasmaImpact.h"
 
 cGravityball::cGravityball()
 	: m_impactIndex(0)
+	, m_pPlasma(NULL)
+	, m_isSleep(false)
 {
 }
 
 
 cGravityball::~cGravityball()
 {
+	for each(auto a in m_vecImpact)
+		SAFE_DELETE(a);
+
+	SAFE_DELETE(m_pPlasma);
 }
 
 void cGravityball::Setup()
@@ -22,48 +29,57 @@ void cGravityball::Setup()
 	for (int i = 0;i < m_vecImpact.size();i++)
 	{
 		m_vecImpact[i] = new GravityBallImpact;
-		m_vecImpact[i]->SetIsUse(true);
 		m_vecImpact[i]->Setup();
 		m_vecImpact[i]->SetAlpha(255);
 		m_vecImpact[i]->SetDelta(20);
 	}
+
+	m_pPlasma = new cPlasmaImpact;
+	m_pPlasma->Setup();
 
 	m_pUser->USER_TAG = E_PHYSX_TAG_GRIVATEBALL;
 }
 
 void cGravityball::Update()
 {
+	cItem::Update();
+
 	if (m_isUse)
 	{
-		m_vecImpact[m_impactIndex]->SetPosition(
-			D3DXVECTOR3(m_pPhysX->pPhysX->m_pActor->getGlobalPose().t.x,
-				m_pPhysX->pPhysX->m_pActor->getGlobalPose().t.y,
-				m_pPhysX->pPhysX->m_pActor->getGlobalPose().t.z));
+		MoveActorOnPath();
 
-		m_impactIndex++;
-
-		for (int i = 0; i < m_impactIndex; ++i)
+		for (int i = 0; i < m_vecImpact.size(); ++i)
 		{
 			m_vecImpact[i]->Update();
 		}
 
-		if (m_vecImpact.size() == m_impactIndex)
-			m_impactIndex = 0;
-
-		MoveActorOnPath();
+		{
+			NxVec3 v = m_pPhysX->pPhysX->m_pActor->getGlobalPose().t;
+			m_pPlasma->UpdateSetPosition(D3DXVECTOR3(v.x, v.y, v.z));
+		}
+		m_pPlasma->Update();
 	}
 
-	cItem::Update();
+	if (m_fTime % UPDATETIME == 0)
+	{
+		m_fTime = 0;
+		m_isUse = false;
+		m_pPhysX->pPhysX->m_pActor->putToSleep();
+		m_pPhysX->pPhysX->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
+		m_isSleep = true;
+	}
 }
 
 void cGravityball::Render()
 {
 	if (m_isUse)
 	{
-		for (int i = 0;i < m_impactIndex;++i)
+		for (int i = 0;i < m_vecImpact.size();++i)
 		{
 			m_vecImpact[i]->Render();
 		}
+
+		m_pPlasma->Render();
 	}
 
 	cItem::Render();
@@ -91,15 +107,21 @@ void cGravityball::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	}
 
 	else
+	{
+		if (m_isSleep)
+		{
+			m_pPhysX->pPhysX->m_pActor->wakeUp();
+			m_pPhysX->pPhysX->m_pActor->clearActorFlag(NX_AF_DISABLE_COLLISION);
+		}
+		
 		m_pPhysX->pPhysX->m_pActor->setGlobalPosition(m_pPhysX->pos);
+	}
 
 	m_pPhysX->pPhysX->m_pActor->addForce(force);
 }
 
 void cGravityball::MoveActorOnPath()
 {
-	m_pPhysX->pPhysX->m_pActor->getGlobalPose().t;
-
 	m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pPhysX->m_pActor->getGlobalPose().t);
 
 	for (int i = 0;i < m_vecImpact.size();++i)
@@ -114,10 +136,11 @@ void cGravityball::MoveActorOnPath()
 			vec.x = m_pPhysX->pPhysX->m_pActor->getGlobalPose().t.x;
 			vec.y = m_pPhysX->pPhysX->m_pActor->getGlobalPose().t.y;
 			vec.z = m_pPhysX->pPhysX->m_pActor->getGlobalPose().t.z;
+
 			m_vecImpact[m_impactIndex]->SetPosition(vec);
 			m_impactIndex++;
 
-			if (m_impactIndex == 100)
+			if (m_impactIndex == m_vecImpact.size())
 				m_impactIndex = 0;
 			break;
 		}

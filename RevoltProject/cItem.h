@@ -6,7 +6,7 @@ class cItem : public Object
 {
 protected:
 	int m_id;				// 아이템 아이디
-	float m_fTime;			// 아이템 시간
+	int m_fTime;			// 아이템 시간
 	USERDATA*	m_pUser;	// 유저 데이터
 	ST_PHYSX*	m_pPhysX;	// 물리엔진 적용
 public:

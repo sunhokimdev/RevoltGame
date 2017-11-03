@@ -15,13 +15,13 @@ void GravityBallImpact::Setup()
 {
 	cImpact::Setup();
 
-	m_vecParticleVertex.resize(50);
+	m_vecParticleVertex.resize(100);
 	for (int i = 0; i < m_vecParticleVertex.size(); ++i)
 	{
 		float fRadius = rand() % 100 / 10.0f;
 
 		// >>
-		fRadius = 0.3f;
+		fRadius = 0.7f;
 		// <<
 
 		m_vecParticleVertex[i].p = D3DXVECTOR3(0, 0, fRadius);
@@ -43,7 +43,7 @@ void GravityBallImpact::Setup()
 			&m_vecParticleVertex[i].p,
 			&matWorld);
 
-		m_vecParticleVertex[i].c = D3DCOLOR_ARGB(255, 180, 70, 20); // : 밑에 렌더값시의 값을 고려해서 설정할것
+		m_vecParticleVertex[i].c = D3DCOLOR_ARGB(255, 67, 116, 217); // : 밑에 렌더값시의 값을 고려해서 설정할것
 																	//m_vecParticle[i]->m_pVertex = &m_vecParticleVertex[i];
 	}
 
@@ -79,7 +79,7 @@ void GravityBallImpact::Update()
 		{
 			if (i % 2)
 				continue;
-			m_vecParticleVertex[i].c = D3DCOLOR_ARGB(255, 180, 70, 20); /// : 알파값만 변경
+			m_vecParticleVertex[i].c = D3DCOLOR_ARGB(255, 67, 116, 217); /// : 알파값만 변경
 		}
 	}
 
@@ -103,6 +103,7 @@ void GravityBallImpact::Render()
 		m_matWorld._41 = m_itemPos.x;
 		m_matWorld._42 = m_itemPos.y;
 		m_matWorld._43 = m_itemPos.z;
+
 		g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
 		g_pD3DDevice->SetFVF(ST_PC_VERTEX::FVF);
 		g_pD3DDevice->SetTexture(0, g_pTextureManager->GetTexture("Objects/gravityball/Envstill.bmp"));

@@ -177,6 +177,7 @@
     <ClInclude Include="cPhysX.h" />
     <ClInclude Include="cPhysXManager.h" />
     <ClInclude Include="cPickUp.h" />
+    <ClInclude Include="cPlasmaImpact.h" />
     <ClInclude Include="cSelectCarLob.h" />
     <ClInclude Include="cStringUtil.h" />
     <ClInclude Include="cStuff.h" />
@@ -285,6 +286,7 @@
     <ClCompile Include="cPhysX.cpp" />
     <ClCompile Include="cPhysXManager.cpp" />
     <ClCompile Include="cPickUp.cpp" />
+    <ClCompile Include="cPlasmaImpact.cpp" />
     <ClCompile Include="cSelectCarLob.cpp" />
     <ClCompile Include="cStringUtil.cpp" />
     <ClCompile Include="cStuff.cpp" />

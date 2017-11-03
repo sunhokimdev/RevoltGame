@@ -346,13 +346,10 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 		// 2°¡ Áß·ÂÀÚÅº
 		if (pUserData0->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
-			//triggerShape.getActor().addForce(NxVec3(0, 300000, 0));
-			//triggerShape.getActor().addTorque(NxVec3(1.5f, 0, 0));
+
 		}
 		else if (pUserData1->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
-			//otherShape.getActor().addForce(NxVec3(0, 300000, 0));
-			//otherShape.getActor().addLocalTorque(NxVec3(1.5f, 0, 0));
 		}
 
 		else
@@ -360,6 +357,9 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			pUserData0->TriggerPairFlag = 0;
 			pUserData1->TriggerPairFlag = 0;
 		}
+
+		pUserData0->TriggerPairFlag = NX_TRIGGER_ON_LEAVE;
+		pUserData1->TriggerPairFlag = NX_TRIGGER_ON_LEAVE;
 	}
 }
 

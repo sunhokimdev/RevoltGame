@@ -438,6 +438,9 @@
     <ClInclude Include="cFirework.h">
       <Filter>Item\Firework</Filter>
     </ClInclude>
+    <ClInclude Include="cPlasmaImpact.h">
+      <Filter>Item\GravityBall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -700,6 +703,9 @@
     </ClCompile>
     <ClCompile Include="cFirework.cpp">
       <Filter>Item\Firework</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlasmaImpact.cpp">
+      <Filter>Item\GravityBall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
