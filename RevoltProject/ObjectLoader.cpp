@@ -538,7 +538,7 @@ void ObjectLoader::LoadMtlLib(std::map<std::string, MtlTex*>* mtlTex,
 		int lineCol = 0;
 		char szTemp[1024];
 		fgets(szTemp, 1024, fp);
-		std::cout << szTemp[0] << std::endl;
+		//std::cout << szTemp[0] << std::endl;
 
 		while (true)
 		{

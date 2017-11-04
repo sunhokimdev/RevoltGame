@@ -49,6 +49,7 @@ void cCar::LoadCar(std::string carName)
 				LOAD >> szTemp;
 
 				LoadMesh(szTemp);
+				LoadWheel(szTemp);
 			}
 			else if (strcmp(szTemp, "SPECIFICATION") == 0)
 			{
@@ -238,6 +239,30 @@ void cCar::LoadMesh(std::string carName)
 	GetMeshData()->LoadCarMesh("Cars/" + carName, carName + ".obj");
 }
 
+void cCar::LoadWheel(std::string carName)
+{
+	if (vecWheels.empty())
+	{
+		vecWheels.push_back(new cMesh);
+		vecWheels.push_back(new cMesh);
+		vecWheels.push_back(new cMesh);
+		vecWheels.push_back(new cMesh);
+	}
+	else
+	{
+		for each(cMesh* p in vecWheels)
+		{
+			p->Destory();
+		}
+		vecWheels.clear();
+	}
+
+	vecWheels[0]->LoadMesh("Cars/" + carName, carName + "fl.obj");
+	vecWheels[1]->LoadMesh("Cars/" + carName, carName + "fr.obj");
+	vecWheels[2]->LoadMesh("Cars/" + carName, carName + "bl.obj");
+	vecWheels[3]->LoadMesh("Cars/" + carName, carName + "br.obj");
+}
+
 void cCar::Update()
 {
 	if (m_isAI) CtrlAI();
@@ -279,19 +304,6 @@ void cCar::Update()
 
 	m_fCurrentSpeed = (Dist * 0.25f) * 200.f;
 
-	//if (g_pKeyManager->isOnceKeyDown(VK_TAB))
-	//{
-	//	std::cout << m_szPrevPos[0].x << " " << m_szPrevPos[0].y << " " << m_szPrevPos[0].z << std::endl;
-	//	std::cout << m_szPrevPos[1].x << " " << m_szPrevPos[1].y << " " << m_szPrevPos[1].z << std::endl;
-	//	std::cout << m_szPrevPos[2].x << " " << m_szPrevPos[2].y << " " << m_szPrevPos[2].z << std::endl;
-	//	std::cout << m_szPrevPos[3].x << " " << m_szPrevPos[3].y << " " << m_szPrevPos[3].z << std::endl;
-	//	std::cout << m_szPrevPos[4].x << " " << m_szPrevPos[4].y << " " << m_szPrevPos[4].z << std::endl;
-	//	std::cout << m_fCurrentSpeed << std::endl;
-	//}
-
-	// : <<
-
-
 	TrackCheck();
 
 	CarFlip();
@@ -316,17 +328,61 @@ void cCar::LastUpdate()
 
 		cTransform::SetQuaternion(NxMat);
 		cTransform::SetPosition(dPos + cTransform::GetUpVec() * 0.2f);
+
+
+
 	}
 }
 
 void cCar::Render()
 {
 	Object::Render();
+
+	//바퀴 동기화
+	for (int i = 0; i < vecWheels.size(); i++)
+	{
+		D3DXMATRIXA16 matW, matR, matT;
+		D3DXMatrixIdentity(&matW);
+		D3DXMatrixIdentity(&matR);
+		D3DXMatrixIdentity(&matT);
+
+		NxWheel* pWheel = m_carNxVehicle->getWheel(i);
+		NxVec3 NxWheelPos = pWheel->getWheelPos();// +pWheel->getWheelShape()->getActor().getGlobalPosition();
+
+		if (NxWheelPos.z < 0) NxWheelPos.z += 0.1f;
+		else NxWheelPos.z -= 0.1f;
+		NxWheelPos.y -= 0.2;
+
+		D3DXMatrixTranslation(&matT, NxWheelPos.x, NxWheelPos.y, NxWheelPos.z);
+
+		//NxF32 mat9[9] = { 1,0,0,0,1,0,0,0,1 };
+		//NxMat33 NxWheelMat = pWheel->getWheelShape()->getActor().getGlobalOrientation();
+		//NxWheelMat.getColumnMajor(mat9);
+		//
+		//matR._11 = mat9[0];
+		//matR._12 = mat9[1];
+		//matR._13 = mat9[2];
+		//matR._21 = mat9[3];
+		//matR._22 = mat9[4];
+		//matR._23 = mat9[5];
+		//matR._31 = mat9[6];
+		//matR._32 = mat9[7];
+		//matR._33 = mat9[8];
+
+		if(i<2)	D3DXMatrixRotationY(&matR, -(D3DX_PI*0.5 + (m_wheelAngle * m_maxWheelAngle)));
+		else D3DXMatrixRotationY(&matR, -D3DX_PI*0.5);
+		matW = matR * matT;
+
+		MgrD3DDevice->SetTransform(D3DTS_WORLD, &(matW * cTransform::GetMatrix(false,true,true)));
+		vecWheels[i]->Render();
+	}
+
+
 	if (m_isAI)
 	{
 		for each (cAI* pAI in m_vecAI)
 		{
-			pAI->Update();
+			pAI->Render();
 		}
 	}
 }
@@ -432,7 +488,7 @@ void cCar::CtrlPlayer()
 			CarRunStop();
 			if (countTrack == -1)
 			{
-				GetPhysXData()->SetPosition(D3DXVECTOR3(0,1,0));
+				GetPhysXData()->SetPosition(D3DXVECTOR3(0, 1, 0));
 			}
 			else
 			{
@@ -472,14 +528,14 @@ void cCar::CtrlPlayer()
 		//Fliping
 		NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
 		NxVec3 carUp = quat.transform(NxVec3(0, 1, 0), NxVec3(0, 0, 0));
-		//if (carUp.y < 0.f)
-		//{
+		if (carUp.y < 0.0f)
+		{
 			if (g_pKeyManager->isOnceKeyDown(KEY_CAR_FLIP) && isFliping == false)
 			{
 				isFliping = true;
 				CarRunStop();
 			}
-		//}
+		}
 	}
 }
 
@@ -534,34 +590,32 @@ void cCar::RunEnd()
 
 void cCar::CarFlip()
 {
-	return;	//오류 있어서 리턴!
-
 	if (isFliping)
 	{
 		CarRunStop();
 
-//		NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
-
-		NxQuat quat_up;
-		NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
-		NxVec3 carUp = quat.transform(NxVec3(0, 1, 0), NxVec3(0, 0, 0));
+		NxQuat quat = m_carNxVehicle->getActor()->getGlobalOrientationQuat();
 		NxVec3 carFront = quat.transform(NxVec3(1, 0, 0), NxVec3(0, 0, 0));
-		NxVec3 worldFront(1, 0, 0);
+		NxF32 angle = carFront.dot(NxVec3(1, 0, 0));
+		angle = acosf(angle);
 
-		carUp.dot(carFront);
-		quat.fromAngleAxisFast(NxPi,NxVec3(0, 1, 0));
+		NxVec3 arrow = carFront.cross(NxVec3(1, 0, 0));
+		if (arrow.y > 0)
+		{
+			angle *= -1;
+		}
 
-		NxActor* p = GetPhysXData()->m_pActor;
+		NxQuat quat_;
+		quat.zero();
+		quat.fromAngleAxisFast(angle, NxVec3(0, 1, 0));
+
+		NxActor* p = m_carNxVehicle->getActor();
 		p->setGlobalOrientationQuat(quat);
 
+		NxVec3 carPos = p->getGlobalPose().t;
+		p->getGlobalPose().t.add(carPos, NxVec3(0, 3, 0));
 
-		NxVec3 pos = p->getGlobalPose().t;
-
-
-		if (carUp.y > 0.99f)
-		{
-			isFliping = false;
-		}
+		isFliping = false;
 	}
 }
 

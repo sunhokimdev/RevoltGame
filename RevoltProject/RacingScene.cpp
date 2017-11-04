@@ -187,6 +187,7 @@ void RacingScene::UpdateCamera()
 	RayCam.dir = NxVec3(-carDir);
 	
 	NxRaycastHit RayCamHit;
+	RayCamHit.shape = NULL;
 	g_pPhysXScene->raycastClosestShape(RayCam, NxShapesType::NX_ALL_SHAPES, RayCamHit);
 
 	

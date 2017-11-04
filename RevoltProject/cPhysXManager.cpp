@@ -612,7 +612,7 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 	vehicleDesc.motorForce = 3500.f;//monsterTruck?180.f:
 	vehicleDesc.maxVelocity = 30.f;//(monsterTruck)?20.f:
 
-	vehicleDesc.centerOfMass.set(0.f, 0.1f, 0.f);
+	vehicleDesc.centerOfMass.set(0.f, 0.19f, 0.f);
 
 	NxWheelDesc wheelDesc[4];
 	for (NxU32 i = 0; i < 4; i++)

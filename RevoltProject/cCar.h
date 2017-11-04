@@ -16,7 +16,7 @@ class cCar : public Object
 	//자동차 능력치 관련
 	NxVehicle* m_carNxVehicle;
 
-	std::vector<Object*> vecWheels;
+	std::vector<cMesh*> vecWheels;
 
 	float m_moterPower;		// 현재 모터 파워 0~1 비율값
 	float m_maxMoterPower;	// 최대 파워값
@@ -70,6 +70,7 @@ public:
 
 	void CreatePhsyX(stCARSPEC carspec);
 	void LoadMesh(std::string carName);
+	void LoadWheel(std::string carName);
 
 	void Update();
 	void LastUpdate();
