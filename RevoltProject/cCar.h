@@ -32,6 +32,8 @@ class cCar : public Object
 	SYNTHESIZE(float, m_fCurrentSpeed, CurrentSpeed);
 	D3DXVECTOR3 m_szPrevPos[5];
 
+	SYNTHESIZE(D3DXMATRIX, m_matCarRotation, CarRotMatrix); // 자동차 전용 정확한 회전 매트릭스
+
 	//자동차 뒤집힘?
 	bool isFliping;
 

@@ -3,6 +3,7 @@
 class cItem;
 class cContactUser;
 class cImpact;
+class cCar;
 
 #define g_pItemManager ItemManager::GetInstance()
 
@@ -23,8 +24,7 @@ struct ST_USERDATA
 enum eITEM_LIST{ 
 	ITEM_NONE, 
 	ITEM_WBOMB,
-	ITEM_FIREWORK_1,
-	ITEM_FIREWORK_3,
+	ITEM_FIREWORK,
 	ITEM_GRAVITY,
 	ITEM_LAST
 };
@@ -58,6 +58,6 @@ public:
 	void SetFire(D3DXVECTOR3 angle, D3DXVECTOR3 pos);
 	void SetActorGroup(NxActor* actor, NxCollisionGroup group);
 	void InitCollisionGroup();
-	void FireItem(eITEM_LIST tag);
+	void FireItem(eITEM_LIST tag/*아이템종류*/,cCar* car/*자동차 포인터*/);
 };
 

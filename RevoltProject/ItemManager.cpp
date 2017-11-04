@@ -5,6 +5,7 @@
 #include "cImpact.h"
 #include "cGravityball.h"
 #include "cWbomb.h"
+#include "cCar.h"
 
 ItemManager::ItemManager()
 	: box1(NULL)
@@ -105,11 +106,36 @@ void ItemManager::InitCollisionGroup()
 	MgrPhysXScene->setGroupCollisionFlag(2, 2, false);
 }
 
-void ItemManager::FireItem(eITEM_LIST tag)
+void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인터*/)
 {
-//	m_vecItem[m_index]->Create();
-//	m_index++;
-//
-//	if (m_index == m_max) m_index = 0;
-}
+	D3DXVECTOR3 carPos = car->GetPosition(); // 자동차 위치
+	D3DXMATRIXA16 matR;
+	D3DXMatrixIdentity(&matR);
+	matR = car->GetCarRotMatrix();
+	D3DXVECTOR3 carDir = { 1,0,0 }; // 자동차 정면 방향벡터
+	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
 
+	switch (tag)
+	{
+		case ITEM_WBOMB:
+		{
+
+		}
+		break;
+		case ITEM_FIREWORK:
+		{
+
+		}
+		break;
+		case ITEM_GRAVITY:
+		{
+
+		}
+		break;
+		default: break;
+	}
+	//	m_vecItem[m_index]->Create();
+	//	m_index++;
+	//
+	//	if (m_index == m_max) m_index = 0;
+}
