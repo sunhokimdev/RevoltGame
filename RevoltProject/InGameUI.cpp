@@ -9,34 +9,34 @@
 InGameUI::InGameUI()
 	: m_pLobby(NULL)
 	, m_WorldDotOneth(0)
-	, m_LastDotOneTh(48)
-	, m_LastDotTenth(48)
-	, m_LastDotMilth(48)
-	, m_LastSecOneth(48)
-	, m_LastSecTenth(48)
-	, m_LastMinOneth(48)
-	, m_LastMinTenth(48)
-	, m_BestDotOneTh(48)
-	, m_BestDotTenth(48)
-	, m_BestDotMilth(48)
-	, m_BestSecOneth(48)
-	, m_BestSecTenth(48)
-	, m_BestMinOneth(48)
-	, m_BestMinTenth(48)
+	, m_LastDotOneTh(FONT2_NUM0)
+	, m_LastDotTenth(FONT2_NUM0)
+	, m_LastDotMilth(FONT2_NUM0)
+	, m_LastSecOneth(FONT2_NUM0)
+	, m_LastSecTenth(FONT2_NUM0)
+	, m_LastMinOneth(FONT2_NUM0)
+	, m_LastMinTenth(FONT2_NUM0)
+	, m_BestDotOneTh(FONT2_NUM0)
+	, m_BestDotTenth(FONT2_NUM0)
+	, m_BestDotMilth(FONT2_NUM0)
+	, m_BestSecOneth(FONT2_NUM0)
+	, m_BestSecTenth(FONT2_NUM0)
+	, m_BestMinOneth(FONT2_NUM5)
+	, m_BestMinTenth(FONT2_NUM0)
 	, m_ElapseTime(0.0f)
-	, m_DotTenth(48)
-	, m_DotMilth(48)
-	, m_SecOneth(48)
-	, m_SecTenth(48)
-	, m_MinOneth(47)
-	, m_MinTenth(48)
+	, m_DotTenth(FONT2_NUM0)
+	, m_DotMilth(FONT2_NUM0)
+	, m_SecOneth(FONT2_NUM0)
+	, m_SecTenth(FONT2_NUM0)
+	, m_MinOneth(FONT2_START)
+	, m_MinTenth(FONT2_NUM0)
 	, m_LabElapseTime(0.0f)
-	, m_LabDotTenth(48)
-	, m_LabDotMilth(48)
-	, m_LabSecOneth(48)
-	, m_LabSecTenth(48)
-	, m_LabMinOneth(47)
-	, m_LabMinTenth(48)
+	, m_LabDotTenth(FONT2_NUM0)
+	, m_LabDotMilth(FONT2_NUM0)
+	, m_LabSecOneth(FONT2_NUM0)
+	, m_LabSecTenth(FONT2_NUM0)
+	, m_LabMinOneth(FONT2_START)
+	, m_LabMinTenth(FONT2_NUM0)
 	, m_select(99)
 	, m_LabCnt(0)
 {
@@ -418,6 +418,13 @@ void InGameUI::Update()
 		if (m_LabCnt == 0) m_LabCnt = 1;
 		else m_LabCnt = 0;
 	}
+	if (g_pKeyManager->isOnceKeyDown('B'))
+	{
+		//if (m_LabCnt == -1) m_LabCnt += 1;
+		//else m_LabCnt -= 1;
+		CompareBestTime();
+		m_LabElapseTime = 0;
+	}
 
 
 	UpdateRaceTime();
@@ -458,6 +465,56 @@ void InGameUI::UpdateSpeed()
 }
 void InGameUI::CompareBestTime()
 {
+	std::string BestDotOneth;
+	std::string BestDotTenth;
+	std::string BestDotMilth;
+	std::string BestSecOneth;
+	std::string BestSecTenth;
+	std::string BestMinOneth;
+	std::string BestMinTenth;
+
+	int CurrentDotOneTh = m_LabElapseTime;
+	int CurrentDotTenth = m_LabDotTenth;
+	int CurrentDotMilth = m_LabDotMilth;
+	int CurrentSecOneth = m_LabSecOneth;
+	int CurrentSecTenth = m_LabSecTenth;
+	int CurrentMinOneth = m_LabMinOneth;
+	int CurrentMinTenth = m_LabMinTenth;
+
+	if (m_LabCnt > 0)
+	{
+		if (CurrentMinTenth > m_BestMinTenth) return;
+		if (CurrentMinOneth > m_BestMinOneth) return;
+		if (CurrentSecTenth > m_BestSecTenth) return;
+		if (CurrentSecOneth > m_BestSecOneth) return;
+		if (CurrentDotMilth > m_BestDotMilth) return;
+		if (CurrentDotTenth > m_BestDotTenth) return;
+		if (CurrentDotOneTh > m_BestDotOneTh) return;
+
+		m_BestDotOneTh = CurrentDotOneTh;
+		m_BestDotTenth = CurrentDotTenth;
+		m_BestDotMilth = CurrentDotMilth;
+		m_BestSecOneth = CurrentSecOneth;
+		m_BestSecTenth = CurrentSecTenth;
+		m_BestMinOneth = CurrentMinOneth;
+		m_BestMinTenth = CurrentMinTenth;
+	}
+
+	BestDotOneth = m_BestDotOneTh;
+	BestDotTenth = m_BestDotTenth;
+	BestDotMilth = m_BestDotMilth;
+	BestSecOneth = m_BestSecOneth;
+	BestSecTenth = m_BestSecTenth;
+	BestMinOneth = m_BestMinOneth;
+	BestMinTenth = m_BestMinTenth;
+
+	m_pBestDotOneTh->SetText(BestDotOneth);
+	m_pBestDotTenth->SetText(BestDotTenth);
+	m_pBestDotMilth->SetText(BestDotMilth);
+	m_pBestSecOneth->SetText(BestSecOneth);
+	m_pBestSecTenth->SetText(BestSecTenth);
+	m_pBestMinOneth->SetText(BestMinOneth);
+	m_pBestMinTenth->SetText(BestMinTenth);
 }
 
 void InGameUI::UpdateLastTime()
@@ -595,13 +652,13 @@ void InGameUI::UpdateLabTime()
 	//else if (m_LabCnt == 0)	m_LabElapseTime += g_pTimeManager->GetElapsedTime();			// Uptate ElapsedTime
 	m_LabElapseTime += g_pTimeManager->GetElapsedTime();
 
-	if (g_pKeyManager->isOnceKeyDown('B'))
-	{
-		//if (m_LabCnt == -1) m_LabCnt += 1;
-		//else m_LabCnt -= 1;
-
-		m_LabElapseTime = 0;
-	}
+	//if (g_pKeyManager->isOnceKeyDown('B'))
+	//{
+	//	//if (m_LabCnt == -1) m_LabCnt += 1;
+	//	//else m_LabCnt -= 1;
+	//
+	//	m_LabElapseTime = 0;
+	//}
 
 	if (m_LabElapseTime > TIMEMAX)									// After 60 Second
 	{
