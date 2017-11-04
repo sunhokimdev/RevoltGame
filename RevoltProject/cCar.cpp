@@ -13,7 +13,7 @@ cCar::cCar()
 	countTrack = -1;
 	m_rapTimeCount = 0.f;
 	m_totlaTimeCount = 0.f;
-
+	m_bastRapTimeCount = -1.0f;
 	isFliping = false;
 }
 
@@ -310,7 +310,7 @@ void cCar::Update()
 
 	//스피드 계산
 	// : >>
-	
+
 
 
 	float Dist = 0;
@@ -396,11 +396,11 @@ void cCar::Render()
 		//matR._32 = mat9[7];
 		//matR._33 = mat9[8];
 
-		if(i<2)	D3DXMatrixRotationY(&matR, -(D3DX_PI*0.5 + (m_wheelAngle * m_maxWheelAngle)));
+		if (i < 2)	D3DXMatrixRotationY(&matR, -(D3DX_PI*0.5 + (m_wheelAngle * m_maxWheelAngle)));
 		else D3DXMatrixRotationY(&matR, -D3DX_PI*0.5);
 		matW = matR * matT;
 
-		MgrD3DDevice->SetTransform(D3DTS_WORLD, &(matW * cTransform::GetMatrix(false,true,true)));
+		MgrD3DDevice->SetTransform(D3DTS_WORLD, &(matW * cTransform::GetMatrix(false, true, true)));
 		vecWheels[i]->Render();
 	}
 
@@ -498,7 +498,7 @@ void cCar::CtrlPlayer()
 			if (m_eHoldItem != ITEM_NONE)
 			{
 				//아이템 사용 함수 호츨
-				g_pItemManager->FireItem(m_eHoldItem,this);
+				g_pItemManager->FireItem(m_eHoldItem, this);
 				m_nItemCount--;
 				if (m_nItemCount == 0)
 				{
@@ -582,27 +582,32 @@ void cCar::GetRpm()
 void cCar::TrackCheck()
 {
 	//체크박스 및 트랙 카운터
-	if (GetPhysXData()->m_pUserData->CheckBoxID == 0)
+	if (GetPhysXData()->m_pUserData->NextCheckBoxID == 0)
 	{
 		m_trackOn = true;
 	}
-	if (GetPhysXData()->m_pUserData->CheckBoxID == 1)
+	if (GetPhysXData()->m_pUserData->NextCheckBoxID == 1)
 	{
 		if (m_trackOn)
 		{
+			if ((m_bastRapTimeCount > m_rapTimeCount || m_bastRapTimeCount < 0.0f) && countTrack >= 0)
+			{
+				m_bastRapTimeCount = m_rapTimeCount;
+			}
+			if (countTrack >= 0) std::cout << "Track::" << countTrack << "\t rapTime::" << m_rapTimeCount << "\t bastRapTime::" << m_bastRapTimeCount << std::endl;
 			countTrack++;
 			m_rapTimeCount = 0.f;
 		}
 		m_trackOn = false;
 	}
-	if (countCheckBox == GetTotalCheckBoxNum()) GetPhysXData()->m_pUserData->CheckBoxID = 0;
-	countCheckBox = GetPhysXData()->m_pUserData->CheckBoxID;
+	if (countCheckBox == GetTotalCheckBoxNum()) GetPhysXData()->m_pUserData->NextCheckBoxID = 0;
+	countCheckBox = GetPhysXData()->m_pUserData->NextCheckBoxID;
 
 	if (countTrack > -1 && countTrack < 3)
 	{
 		//시간을 더해 나간다.
-		m_rapTimeCount += 0;
-		m_totlaTimeCount += 0;
+		m_rapTimeCount += g_pTimeManager->GetElapsedTime();
+		m_totlaTimeCount += g_pTimeManager->GetElapsedTime();
 	}
 }
 

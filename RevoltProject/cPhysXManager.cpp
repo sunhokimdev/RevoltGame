@@ -516,9 +516,9 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 		pUserData1->TargetPointValue.push_back(pUserData0->UserPointValue);
 
 
-		if (pUserData0->CheckBoxID == pUserData1->CheckBoxID)
+		if (pUserData0->NextCheckBoxID == pUserData1->NextCheckBoxID)
 		{
-			pUserData1->CheckBoxID += 1;
+			pUserData1->NextCheckBoxID += 1;
 		}
 		if (pUserData0->USER_TAG == E_PHYSX_TAG_PICKUP)
 		{

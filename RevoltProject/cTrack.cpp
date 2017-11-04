@@ -331,7 +331,7 @@ void cTrack::LoadTrack(std::string FileName)
 	int i = 0;
 	for (std::map<std::string, Object*>::iterator it = m_mapCheckBox.begin(); it != m_mapCheckBox.end(); it++)
 	{
-		it->second->GetPhysXData()->m_pUserData->CheckBoxID = i++;
+		it->second->GetPhysXData()->m_pUserData->NextCheckBoxID = i++;
 	}
 	//for each(Object* pCheck in m_mapCheckBox)
 //{

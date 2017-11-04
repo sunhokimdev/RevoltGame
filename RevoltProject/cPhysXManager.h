@@ -74,7 +74,7 @@ struct USERDATA
 
 
 	NX_BOOL IsPickUp;
-	NxU32 CheckBoxID;
+	NxU32 NextCheckBoxID;
 
 
 	NxU32 ContactPairFlag;
@@ -102,7 +102,7 @@ struct USERDATA
 		RaycastClosestShape = NX_FALSE;
 		RaycastAllShape = NX_FALSE;
 		RayHitPos = NxVec3(0, 0, 0);
-		CheckBoxID = 0;
+		NextCheckBoxID = 0;
 		IsPickUp = NX_FALSE;
 	}
 	void Reset()

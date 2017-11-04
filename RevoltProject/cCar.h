@@ -48,6 +48,7 @@ class cCar : public Object
 	SYNTHESIZE(int, countTrack,CountTrackRun);
 	
 	SYNTHESIZE(float, m_rapTimeCount, RapTimeCount);
+	SYNTHESIZE(float, m_bastRapTimeCount, BastRapTimeCount);
 	SYNTHESIZE(float, m_totlaTimeCount, TotlaTimeCount);
 
 	//Item ฐüทร
