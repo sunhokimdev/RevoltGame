@@ -141,40 +141,22 @@ void RacingScene::UpdateCamera()
 #define CAM_Z (*camPos).z
 #define CAM_POS (*camPos)
 
-	
-	//자동차 포지션
-
-	NxVec3 pos = vecCars[0]->GetNxVehicle()->getGlobalPose().t;
-
 	//회전 매트릭스 받아옴
-	NxF32 mat[9];
-
-	vecCars[0]->GetNxVehicle()->getGlobalPose().M.getColumnMajor(mat);
-	D3DXMATRIXA16 matR;
-	D3DXMatrixIdentity(&matR);
-	matR._11 = mat[0];
-	matR._12 = mat[1];
-	matR._13 = mat[2];
-	matR._21 = mat[3];
-	matR._22 = mat[4];
-	matR._23 = mat[5];
-	matR._31 = mat[6];
-	matR._32 = mat[7];
-	matR._33 = mat[8];
+	D3DXMATRIXA16 matR = vecCars[0]->GetCarRotMatrix();
+	
+	//matR = vecCars[0]->GetMatrix(false, true, false); //이걸 사용하면 약간 부정확함
 
 	float distToCar = 5; //차와의 거리
 	float Height = 2; //카메라 높이
 
-	float CamSpdOut = 0.1;
-	float CamSpdIn = 0.05;
-	float FollowRange = 1;
-	float FixRange = 0.5;
-	float MaxRange = 2;
-
 	D3DXVECTOR3 carDir = { 1,0,0 };
 	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
 
-	D3DXVECTOR3 carPos = { pos.x,pos.y + 0.5f ,pos.z };
+	//자동차 포지션
+	D3DXVECTOR3 carPos = { 
+		vecCars[0]->GetPosition().x,
+		vecCars[0]->GetPosition().y + 0.5f ,
+		vecCars[0]->GetPosition().z };
 
 	*camLookTarget = carPos;//D3DXVECTOR3(pos.x, pos.y + 2.f, pos.z);
 

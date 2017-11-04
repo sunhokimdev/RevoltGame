@@ -612,18 +612,20 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 	vehicleDesc.motorForce = 3500.f;//monsterTruck?180.f:
 	vehicleDesc.maxVelocity = 30.f;//(monsterTruck)?20.f:
 
-	vehicleDesc.centerOfMass.set(0.f, 0.19f, 0.f);
+	vehicleDesc.centerOfMass.set(0.f, 0.108f, 0.f);
 
 	NxWheelDesc wheelDesc[4];
 	for (NxU32 i = 0; i < 4; i++)
 	{
+		
 		wheelDesc[i].wheelApproximation = 10;
 		wheelDesc[i].wheelRadius = 0.1f;
 		wheelDesc[i].wheelWidth = 0.01f;
-		wheelDesc[i].wheelSuspension = 0.00f;
-		wheelDesc[i].springRestitution = 7000;
-		wheelDesc[i].springDamping = 800;
-		wheelDesc[i].springBias = 0.2f;
+		wheelDesc[i].wheelSuspension = 0.05f;
+		wheelDesc[i].springRestitution = 500;
+		wheelDesc[i].springDamping = 500;
+		wheelDesc[i].springBias = 0.05f;
+		
 		wheelDesc[i].maxBrakeForce = 1.f;
 		wheelDesc[i].wheelFlags |= NX_WF_USE_WHEELSHAPE;
 

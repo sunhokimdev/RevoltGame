@@ -265,6 +265,33 @@ void cCar::LoadWheel(std::string carName)
 
 void cCar::Update()
 {
+	//자동차 정보 업데이트
+	//=================================================
+	//자동차 위치 갱신
+	m_position = {
+		GetNxVehicle()->getGlobalPose().t.x,
+		GetNxVehicle()->getGlobalPose().t.y,
+		GetNxVehicle()->getGlobalPose().t.z };
+
+
+	//자동차전용 회전 매트릭스
+	//회전 매트릭스 받아옴
+	NxF32 mat[9];
+	GetNxVehicle()->getGlobalPose().M.getColumnMajor(mat);
+	D3DXMatrixIdentity(&m_matCarRotation);
+	m_matCarRotation._11 = mat[0];
+	m_matCarRotation._12 = mat[1];
+	m_matCarRotation._13 = mat[2];
+	m_matCarRotation._21 = mat[3];
+	m_matCarRotation._22 = mat[4];
+	m_matCarRotation._23 = mat[5];
+	m_matCarRotation._31 = mat[6];
+	m_matCarRotation._32 = mat[7];
+	m_matCarRotation._33 = mat[8];
+
+	//=================================================
+
+
 	if (m_isAI) CtrlAI();
 	else CtrlPlayer();
 
@@ -283,6 +310,9 @@ void cCar::Update()
 
 	//스피드 계산
 	// : >>
+	
+
+
 	float Dist = 0;
 
 	// 과거 위치값
@@ -296,10 +326,7 @@ void cCar::Update()
 
 		m_szPrevPos[i + 1] = m_szPrevPos[i];
 	}
-	m_position = {
-		GetNxVehicle()->getGlobalPose().t.x,
-		GetNxVehicle()->getGlobalPose().t.y,
-		GetNxVehicle()->getGlobalPose().t.z };
+
 	m_szPrevPos[0] = m_position;
 
 	m_fCurrentSpeed = (Dist * 0.25f) * 200.f;
@@ -471,7 +498,7 @@ void cCar::CtrlPlayer()
 			if (m_eHoldItem != ITEM_NONE)
 			{
 				//아이템 사용 함수 호츨
-				g_pItemManager->FireItem(m_eHoldItem);
+				g_pItemManager->FireItem(m_eHoldItem,this);
 				m_nItemCount--;
 				if (m_nItemCount == 0)
 				{

@@ -129,6 +129,7 @@ public:
 	NxF32* DxMatToNxF32(D3DXMATRIX dxMat);
 	D3DXVECTOR3 NxVec3ToDxVec3(NxVec3 nxVec3);
 	D3DXMATRIX NxF32ToDxMat(NxF32* nxF32);
+	
 
 	void SetNxVec3(NxVec3 NxPos);
 	void SetNxF32(NxF32* mtl);
