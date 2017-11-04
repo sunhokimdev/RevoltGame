@@ -5,6 +5,7 @@
 class UIObject;
 class UITextImageView;
 class UIImageView;
+class cCar;
 
 //===================================================================
 // - written by �輱ȣ
@@ -65,7 +66,12 @@ private:
 	UITextImageView* m_pMinOneth;	  
 	UITextImageView* m_pMinTenth;	  
 
+	UITextImageView* pSpeed;
+	UITextImageView* pSpeed2;
+	UIImageView* pSpeedometerImage;
 	UIImageView* pIV_arrowDir;
+
+	cCar* m_pCar;
 
 public:
 	InGameUI();
@@ -78,6 +84,7 @@ public:
 	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
 	
 
+	void UpdateSpeed();
 	void CompareBestTime();
 	void UpdateLastTime();
 	void UpdateRaceTime();									// UpdateRaceTimer
@@ -127,6 +134,8 @@ public:
 	SYNTHESIZE(int, m_SecTenth, SecTenth);
 	SYNTHESIZE(int, m_MinOneth, MinOneth);
 	SYNTHESIZE(int, m_MinTenth, MinTenth);
+
+	void LinkCarPt(cCar* car) { m_pCar = car; }
 
 };
 

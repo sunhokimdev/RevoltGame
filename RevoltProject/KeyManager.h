@@ -4,6 +4,14 @@
 
 #define KEYMAX 256
 
+#define KEY_MOVE_LEFT	VK_LEFT
+#define KEY_MOVE_RIGHT	VK_RIGHT
+#define KEY_ACCELERATOR VK_UP
+#define KEY_REVERSE		VK_DOWN
+#define KEY_FIRE_ITEM	VK_CONTROL
+#define KEY_REPOSITION	'R'
+#define KEY_CAR_FLIP	'F'
+
 class KeyManager
 {
 private:

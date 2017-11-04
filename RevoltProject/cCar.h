@@ -3,6 +3,7 @@
 
 class cAI;
 class TriggerCallback;
+class cTrack;
 
 struct stCARSPEC
 {
@@ -28,8 +29,11 @@ class cCar : public Object
 	float m_maxWheelAngle;	//바퀴가 꺽이는 최대값. 
 	float m_wheelAcc;		//꺽이는 속도	(비율에 더해지는 값)
 
-	float m_fCurrentSpeed;
+	SYNTHESIZE(float, m_fCurrentSpeed, CurrentSpeed);
 	D3DXVECTOR3 m_szPrevPos[5];
+
+	//자동차 뒤집힘?
+	bool isFliping;
 
 	//AI
 	std::vector<cAI*> m_vecAI;
@@ -38,7 +42,7 @@ class cCar : public Object
 	//track 관련
 	bool m_trackOn = true;
 	SYNTHESIZE(int, totalCheckBoxNum, TotalCheckBoxNum);
-	SYNTHESIZE(int, countChectBox, CountCheckBox);
+	SYNTHESIZE(int, countCheckBox, CountCheckBox);
 	SYNTHESIZE(int, countTrack,CountTrackRun);
 	
 	SYNTHESIZE(float, m_rapTimeCount, RapTimeCount);
@@ -50,6 +54,7 @@ class cCar : public Object
 	
 	int countCheckTrack;
 
+	cTrack* m_pTrack;
 
 public:
 	cCar();
@@ -77,6 +82,10 @@ public:
 
 	void GetRpm();
 	void TrackCheck();
-	void RunStop();
+	void RunEnd();
+	void CarFlip();
+	void CarRunStop();
+	void LinkTrackPt(cTrack* track) { m_pTrack = track; }
 //	void RunStart();
+
 };

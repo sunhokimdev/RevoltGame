@@ -2,6 +2,7 @@
 #include "InGameUI.h"
 #include "UITextImageView.h"
 #include "UIImageView.h"
+#include "cCar.h"
 
 #define TIMEMAX 60
 
@@ -45,6 +46,7 @@ InGameUI::~InGameUI()
 {
 	SAFE_DELETE(m_pRootUI);
 	SAFE_DELETE(m_pItemImage);
+	//SAFE_DELETE(m_pCar);
 }
 
 void InGameUI::Setup()
@@ -89,7 +91,7 @@ void InGameUI::Setup()
 	m_pLastSecOneth = new UITextImageView;
 	m_pLastSecOneth->SetTexture("Maps/Front/Image/font2.png");
 	m_pLastSecOneth->SetPosition(-10, 0);
-	   
+
 	m_pLastSecTenth = new UITextImageView;
 	m_pLastSecTenth->SetTexture("Maps/Front/Image/font2.png");
 	m_pLastSecTenth->SetPosition(-10, 0);
@@ -271,7 +273,7 @@ void InGameUI::Setup()
 	pIV_arrowDir->SetXSize(1.2f);
 	pIV_arrowDir->SetYSize(1.2f);
 	pIV_arrowDir->SetPosition(125, -80);
-	pIV_arrowDir->SetTexture("Maps/Front/Image/arrowDirection.png");
+	pIV_arrowDir->SetTexture("UIImage/arrowDirection.png");
 
 	// 등수
 	UITextImageView* pITV_Rank = new UITextImageView;
@@ -289,7 +291,6 @@ void InGameUI::Setup()
 	pITV_Rank2->SetTexture("Maps/Front/Image/font2.png");
 	pITV_Rank2->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
-
 	m_pItemImage = new UIImageView;
 	m_pItemImage->SetXSize(1.2f);
 	m_pItemImage->SetYSize(1.2f);
@@ -298,30 +299,45 @@ void InGameUI::Setup()
 	m_pItemImage->SetTexture("Maps/Front/Image/itemlist.png");
 
 	// 속도계 추가
+
 	UIImageView* pSpeedFrame = new UIImageView;
 	pSpeedFrame->SetIsSpeedFrame(true);
 	pSpeedFrame->SetXSize(1.2f);
 	pSpeedFrame->SetYSize(1.2f);
 	pSpeedFrame->SetPosition(750, 650);
-	pSpeedFrame->SetTexture("Maps/Front/Image/speedFrame.png");
+	pSpeedFrame->SetTexture("UIImage/speedFrame.png");
 
-	UIImageView* pSpeedometerImage = new UIImageView;
+	pSpeedometerImage = new UIImageView;
 	pSpeedometerImage->SetIsSpeed(true);
 	pSpeedometerImage->SetXSize(1.2f);
 	pSpeedometerImage->SetYSize(1.2f);
 	pSpeedometerImage->SetPosition(0, 0);
-	pSpeedometerImage->SetTexture("Maps/Front/Image/speed.png");
+	pSpeedometerImage->SetTexture("UIImage/speed.png");
+
+	pSpeed = new UITextImageView;			// 10의 자리
+	pSpeed->SetTexture("Maps/Front/Image/font2.png");
+	pSpeed->SetText("");
+	pSpeed->SetXSize(1.2f);
+	pSpeed->SetYSize(1.2f);
+	pSpeed->SetPosition(140, 8);
+
+	pSpeed2 = new UITextImageView;			// 1의 자리
+	pSpeed2->SetTexture("Maps/Front/Image/font2.png");
+	pSpeed2->SetText("0");
+	pSpeed2->SetXSize(1.2f);
+	pSpeed2->SetYSize(1.2f);
+	pSpeed2->SetPosition(10, 0);
 
 	UITextImageView* pSpeed_mph = new UITextImageView;
 	pSpeed_mph->SetTexture("Maps/Front/Image/font2.png");
 	pSpeed_mph->SetText("mph");
-	pSpeed_mph->SetXSize(1.0f);
-	pSpeed_mph->SetYSize(1.0f);
+	pSpeed_mph->SetXSize(1.2f);
+	pSpeed_mph->SetYSize(1.2f);
 	pSpeed_mph->SetPosition(170, 8);
 	pSpeed_mph->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
 	/*          Set Child          */
-	
+
 	// Basic
 	m_pRootUI->AddChild(pImageView1);
 	m_pRootUI->AddChild(pLastLabFont);
@@ -338,7 +354,10 @@ void InGameUI::Setup()
 	pImageView7->AddChild(pITV_Rank2);
 
 	pSpeedFrame->AddChild(pSpeedometerImage);
+	pSpeedFrame->AddChild(pSpeed);
 	pSpeedFrame->AddChild(pSpeed_mph);
+	pSpeed->AddChild(pSpeed2);
+
 
 	// Last Font
 	pLastLabFont->AddChild(m_pLastDotOneTh);
@@ -388,6 +407,8 @@ void InGameUI::Setup()
 
 void InGameUI::Update()
 {
+	UpdateSpeed();
+
 	if (g_pKeyManager->isOnceKeyDown('Z'))
 	{
 		UpdateLastTime();
@@ -410,7 +431,6 @@ void InGameUI::Update()
 	UpdateLabTime();
 
 	iLobby::Update();
-	
 
 	//UpdateArrowDir();
 }
@@ -422,6 +442,27 @@ void InGameUI::Render(LPD3DXSPRITE pSprite)
 
 }
 
+void InGameUI::UpdateSpeed()
+{
+	int fTemp;
+	fTemp = m_pCar->GetCurrentSpeed();
+	int nTen;
+	int nOne;
+
+	nTen = (int)fTemp / 10 + FONT2_NUM0;
+	nOne = (int)(fTemp % 10) + FONT2_NUM0;
+
+	std::string strTen;
+	std::string strOne;
+
+	strTen = nTen;
+	strOne = nOne;
+
+
+	pSpeed->SetText(strTen);
+	pSpeed2->SetText(strOne);
+	pSpeedometerImage->SetRpmGauge(m_pCar->GetNxVehicle()->getWheel(1)->getRpm());
+}
 void InGameUI::CompareBestTime()
 {
 	std::string BestDotOneth;
@@ -517,7 +558,7 @@ void InGameUI::UpdateLastTime()
 		LastMinOneth = FONT2_NUM0;
 		LastMinTenth = FONT2_NUM0;
 	}
-	
+
 
 	m_pLastDotOneTh->SetText(LastDotOneth);
 	m_pLastDotTenth->SetText(LastDotTenth);
@@ -541,7 +582,7 @@ void InGameUI::UpdateRaceTime()
 	std::string MinOneth;								//	  0.xx.xxx
 	std::string MinTenth;								//	 0x.xx.xxx
 
-	
+
 	m_ElapseTime += g_pTimeManager->GetElapsedTime();	// Uptate ElapsedTime
 
 	if (m_ElapseTime > TIMEMAX)							// After 60 Second
@@ -566,7 +607,7 @@ void InGameUI::UpdateRaceTime()
 
 																//		EX : m_ElapseTime = 9.876
 	float CalcDP = (m_ElapseTime - (int)m_ElapseTime) * 10.0f;	//		CalcDP = (9.876 - 9) * 10 = 8.76
-	DotMilth = (int)(CalcDP) + FONT2_NUM0;						//		x.?xx = x.8xx
+	DotMilth = (int)(CalcDP)+FONT2_NUM0;						//		x.?xx = x.8xx
 	CalcDP -= (int)CalcDP;										//		CalcDP = 8.76 - 8 = 0.76
 	CalcDP *= 10.0f;											//		CalcDP = 0.76 * 10 = 7.6
 	DotTenth = (int)CalcDP + FONT2_NUM0;						//		x.8?x = x.87x

@@ -67,7 +67,8 @@ void RacingScene::Setup()
 		//	vecCars.push_back(pCar);
 	}
 
-
+	m_pInGameUI->LinkCarPt(vecCars[0]);
+	vecCars[0]->LinkTrackPt(m_pTrack);
 
 }
 
@@ -83,16 +84,20 @@ void RacingScene::Update()
 {
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
-	SAFE_UPDATE(g_pTimeManager);
+	//SAFE_UPDATE(g_pTimeManager); << 메인에서 돌아가고있음
 
 	for (int i = 0; i < vecCars.size(); i++)
 	{
 		 if(IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
-		 else vecCars[i]->RunStop();
+		 else vecCars[i]->RunEnd();
 	}
 
 	UpdateCamera();
-	m_pInGameUI->Update();
+	if (m_pInGameUI)
+	{
+		m_pInGameUI->Update();
+	}
+	
 
 	LastUpdate();
 }
@@ -191,11 +196,14 @@ void RacingScene::UpdateCamera()
 
 	if (RayCamHit.distance < distToCar)
 	{
-		if (RayCamHit.shape->getActor().getName() == "map")
+		if (RayCamHit.shape)
 		{
-			x = RayCamHit.worldImpact.x;
-			y = carPos.y + Height;//RayCamHit.worldImpact.y;
-			z = RayCamHit.worldImpact.z;
+			if (RayCamHit.shape->getActor().getName() == "map")
+			{
+				x = RayCamHit.worldImpact.x;
+				y = carPos.y + Height;//RayCamHit.worldImpact.y;
+				z = RayCamHit.worldImpact.z;
+			}
 		}
 	}
 
