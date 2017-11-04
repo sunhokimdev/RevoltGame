@@ -54,7 +54,7 @@ void RacingScene::Setup()
 	{
 		cCar* pCar = new cCar;
 		pCar->LoadCar("tc1");
-		pCar->SetTotalCheckBoxNum(m_pTrack->GetTrackCheckBoxSize());
+	//	pCar->SetTotalCheckBoxNum(m_pTrack->GetTrackCheckBoxSize());
 		vecCars.push_back(pCar);
 	}
 	{
@@ -68,8 +68,10 @@ void RacingScene::Setup()
 	}
 
 	m_pInGameUI->LinkCarPt(vecCars[0]);
-	vecCars[0]->LinkTrackPt(m_pTrack);
-
+	for (int i = 0; i < vecCars.size(); i++)
+	{
+		vecCars[i]->LinkTrackPt(m_pTrack);
+	}
 }
 
 void RacingScene::Destroy()
@@ -208,5 +210,5 @@ void RacingScene::UpdateCamera()
 
 bool RacingScene::IsCarRunTrue(cCar* pCar)
 {
-	return m_trackEndCount > pCar->GetCountTrackRun();
+	return m_trackEndCount > pCar->GetCountRapNum();
 }

@@ -5,12 +5,14 @@
 #include "cPhysXManager.h"
 #include "cTrack.h"
 
+#include "cCheckBox.h"
+
 #include <fstream>
 
 cCar::cCar()
 {
-	countTrack = -1;
-	countTrack = -1;
+	m_countRapNum = -1;
+	m_currCheckBoxID = -1;
 	m_rapTimeCount = 0.f;
 	m_totlaTimeCount = 0.f;
 	m_bastRapTimeCount = -1.0f;
@@ -230,6 +232,8 @@ void cCar::CreatePhsyX(stCARSPEC carspec)
 		physX->m_pActor = m_carNxVehicle->getActor();
 		physX->m_pUserData = (USERDATA*)m_carNxVehicle->getActor()->userData;
 
+		physX->m_pUserData->CheckBoxID = -1;
+
 		SetPhysXData(physX);
 		physX->SetPosition(NxVec3(0, 0, 0));
 	}
@@ -342,8 +346,7 @@ void cCar::LastUpdate()
 {
 	if (GetPhysXData())
 	{
-		//물리데이터와 메쉬 데이터동기화
-
+		//물리데이터와 자동차 동기화
 		NxVec3 pos = GetPhysXData()->m_pActor->getGlobalPosition();
 		D3DXVECTOR3 dPos;
 		dPos.x = pos.x;
@@ -355,9 +358,6 @@ void cCar::LastUpdate()
 
 		cTransform::SetQuaternion(NxMat);
 		cTransform::SetPosition(dPos + cTransform::GetUpVec() * 0.2f);
-
-
-
 	}
 }
 
@@ -365,7 +365,7 @@ void cCar::Render()
 {
 	Object::Render();
 
-	//바퀴 동기화
+	//물리데이터와 바퀴 동기화
 	for (int i = 0; i < vecWheels.size(); i++)
 	{
 		D3DXMATRIXA16 matW, matR, matT;
@@ -374,27 +374,13 @@ void cCar::Render()
 		D3DXMatrixIdentity(&matT);
 
 		NxWheel* pWheel = m_carNxVehicle->getWheel(i);
-		NxVec3 NxWheelPos = pWheel->getWheelPos();// +pWheel->getWheelShape()->getActor().getGlobalPosition();
+		NxVec3 NxWheelPos = pWheel->getWheelPos();
 
 		if (NxWheelPos.z < 0) NxWheelPos.z += 0.1f;
 		else NxWheelPos.z -= 0.1f;
 		NxWheelPos.y -= 0.2;
 
 		D3DXMatrixTranslation(&matT, NxWheelPos.x, NxWheelPos.y, NxWheelPos.z);
-
-		//NxF32 mat9[9] = { 1,0,0,0,1,0,0,0,1 };
-		//NxMat33 NxWheelMat = pWheel->getWheelShape()->getActor().getGlobalOrientation();
-		//NxWheelMat.getColumnMajor(mat9);
-		//
-		//matR._11 = mat9[0];
-		//matR._12 = mat9[1];
-		//matR._13 = mat9[2];
-		//matR._21 = mat9[3];
-		//matR._22 = mat9[4];
-		//matR._23 = mat9[5];
-		//matR._31 = mat9[6];
-		//matR._32 = mat9[7];
-		//matR._33 = mat9[8];
 
 		if (i < 2)	D3DXMatrixRotationY(&matR, -(D3DX_PI*0.5 + (m_wheelAngle * m_maxWheelAngle)));
 		else D3DXMatrixRotationY(&matR, -D3DX_PI*0.5);
@@ -513,42 +499,17 @@ void cCar::CtrlPlayer()
 		if (g_pKeyManager->isOnceKeyDown(KEY_REPOSITION))
 		{
 			CarRunStop();
-			if (countTrack == -1)
+			if (m_countRapNum == -1)
 			{
 				GetPhysXData()->SetPosition(D3DXVECTOR3(0, 1, 0));
 			}
 			else
 			{
-				if (countCheckBox != 0)
-				{
-					int count = 0;
-					MAP_STR_OBJ_iter iterBegin;
-					MAP_STR_OBJ_iter iterEnd;
-					//std::map<std::string, Object*>::iterator 
-					//std::map<std::string, Object*>::iterator iterEnd;
-					iterBegin = m_pTrack->GetCheckBoxsPt()->begin();
-					iterEnd = m_pTrack->GetCheckBoxsPt()->end();
-					for (; iterBegin != iterEnd; iterBegin++)
-					{
-						if ((countCheckBox - 1) == count)
-						{
-							D3DXVECTOR3 pos = iterBegin->second->GetPosition();
-							pos.y = 1;
-							GetPhysXData()->SetPosition(pos);
-							break;
-						}
-						count++;
-					}
-				}
-				else // 마지막 체크박스
-				{
-					MAP_STR_OBJ_iter iterEnd = m_pTrack->GetCheckBoxsPt()->end();
-					iterEnd--;
-
-					D3DXVECTOR3 pos = iterEnd->second->GetPosition();
-					pos.y = 1;
-					GetPhysXData()->SetPosition(pos);
-				}
+				std::vector<Object*>* chexkBox = m_pTrack->GetCheckBoxsPt();
+				D3DXVECTOR3 pos(0, 0, 0);
+				pos = (*chexkBox)[m_currCheckBoxID]->GetPosition();
+				pos.y = 1;
+				GetPhysXData()->SetPosition(pos);
 			}
 		}
 
@@ -574,38 +535,63 @@ void cCar::CtrlAI()
 	}
 }
 
-void cCar::GetRpm()
-{
-	float rpm;
-}
+//void cCar::GetRpm()
+//{
+//	float rpm;
+//}
 
 void cCar::TrackCheck()
 {
 	//체크박스 및 트랙 카운터
-	if (GetPhysXData()->m_pUserData->NextCheckBoxID == 0)
+	int checkId = GetPhysXData()->m_pUserData->CheckBoxID;
+	//시작 체크
+	if (m_currCheckBoxID == -1)
 	{
-		m_trackOn = true;
-	}
-	if (GetPhysXData()->m_pUserData->NextCheckBoxID == 1)
-	{
-		if (m_trackOn)
+		if (checkId == (*m_pTrack->GetCheckBoxsPt())[0]->GetPhysXData()->m_pUserData->CheckBoxID)
 		{
-			if ((m_bastRapTimeCount > m_rapTimeCount || m_bastRapTimeCount < 0.0f) && countTrack >= 0)
-			{
-				m_bastRapTimeCount = m_rapTimeCount;
-			}
-			if (countTrack >= 0) std::cout << "Track::" << countTrack << "\t rapTime::" << m_rapTimeCount << "\t bastRapTime::" << m_bastRapTimeCount << std::endl;
-			countTrack++;
+			std::cout << "START" << std::endl;
+			m_nextCheckBoxID = 1;
+			m_currCheckBoxID = 0;	//체크 시작
+			m_countRapNum = 0;
 			m_rapTimeCount = 0.f;
 		}
-		m_trackOn = false;
+		return;
 	}
-	if (countCheckBox == GetTotalCheckBoxNum()) GetPhysXData()->m_pUserData->NextCheckBoxID = 0;
-	countCheckBox = GetPhysXData()->m_pUserData->NextCheckBoxID;
 
-	if (countTrack > -1 && countTrack < 3)
+	cCheckBox* pCheckBox = (cCheckBox*)(*m_pTrack->GetCheckBoxsPt())[m_nextCheckBoxID];
+	int checkNextId = pCheckBox->GetPhysXData()->m_pUserData->CheckBoxID;
+
+	//충돌한 정보와 다음 체크박스 정보가 일치하는 지 확인
+	if (checkId == checkNextId)
 	{
-		//시간을 더해 나간다.
+
+		cCheckBox* pCheckBox = (cCheckBox*)(*m_pTrack->GetCheckBoxsPt())[m_nextCheckBoxID];
+		m_currCheckBoxID = m_nextCheckBoxID;
+		m_nextCheckBoxID = pCheckBox->GetNextCheckBox()->GetPhysXData()->m_pUserData->CheckBoxID;
+
+		if (m_currCheckBoxID == 0)
+		{
+			m_countRapNum++;
+			if (m_bastRapTimeCount > m_rapTimeCount || m_bastRapTimeCount < 0.0f)
+			{
+				m_bastRapTimeCount = m_rapTimeCount;
+
+			}
+			std::cout << "Rap::" << m_countRapNum
+				<< "\t rapTime::" << m_rapTimeCount
+				<< "\t bastRapTime::" << m_bastRapTimeCount
+				<< std::endl;
+			m_rapTimeCount = 0.f;
+		}
+
+		std::cout << "Track::" << m_countRapNum
+			<< "\t CcheckBox::" << m_currCheckBoxID
+			<< "\t NcheckBox::" << m_nextCheckBoxID
+			<< std::endl;
+	}
+	//시간을 더해 나간다.
+	if (m_countRapNum < 3)
+	{
 		m_rapTimeCount += g_pTimeManager->GetElapsedTime();
 		m_totlaTimeCount += g_pTimeManager->GetElapsedTime();
 	}

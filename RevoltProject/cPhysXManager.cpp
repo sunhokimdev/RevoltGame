@@ -515,11 +515,11 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 		pUserData0->TargetPointValue.push_back(pUserData1->UserPointValue);
 		pUserData1->TargetPointValue.push_back(pUserData0->UserPointValue);
 
-
-		if (pUserData0->NextCheckBoxID == pUserData1->NextCheckBoxID)
+		if (pUserData0->USER_TAG == E_PHYSX_TAG_CHECKBOX)
 		{
-			pUserData1->NextCheckBoxID += 1;
+			pUserData1->CheckBoxID = pUserData0->CheckBoxID;
 		}
+
 		if (pUserData0->USER_TAG == E_PHYSX_TAG_PICKUP)
 		{
 			if (pUserData1->IsPickUp == NX_FALSE
@@ -617,7 +617,7 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 	NxWheelDesc wheelDesc[4];
 	for (NxU32 i = 0; i < 4; i++)
 	{
-		
+
 		wheelDesc[i].wheelApproximation = 10;
 		wheelDesc[i].wheelRadius = 0.1f;
 		wheelDesc[i].wheelWidth = 0.01f;
@@ -625,7 +625,7 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 		wheelDesc[i].springRestitution = 500;
 		wheelDesc[i].springDamping = 500;
 		wheelDesc[i].springBias = 0.05f;
-		
+
 		wheelDesc[i].maxBrakeForce = 1.f;
 		wheelDesc[i].wheelFlags |= NX_WF_USE_WHEELSHAPE;
 
@@ -637,7 +637,7 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 		vehicleDesc.carWheels.pushBack(&wheelDesc[i]);
 	}
 
-	if (carspec.vecWheelPos.size() == 4) 
+	if (carspec.vecWheelPos.size() == 4)
 	{
 #define WHEELPOS carspec.vecWheelPos
 		wheelDesc[0].position.set(WHEELPOS[0].x, WHEELPOS[0].y, WHEELPOS[0].z);
