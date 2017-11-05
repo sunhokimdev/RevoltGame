@@ -9,6 +9,8 @@ struct stRubber
 	D3DXMATRIXA16 matLocal, matR;
 	D3DXVECTOR3 direction;
 	LPD3DXMESH mesh;
+
+	float timer;
 	//D3DMATERIAL9 material;
 	void Setup()
 	{
@@ -74,7 +76,6 @@ struct stRubber
 		mesh->LockIndexBuffer(0, (LPVOID*)&pI);
 		memcpy(pI, &vecIndex[0], vecIndex.size() * sizeof(DWORD));
 		mesh->UnlockIndexBuffer();
-		
 	}
 };
 

@@ -444,6 +444,9 @@
     <ClInclude Include="cSkidMark.h">
       <Filter>NewClass</Filter>
     </ClInclude>
+    <ClInclude Include="cSkyBox.h">
+      <Filter>NewClass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -711,6 +714,9 @@
       <Filter>Item\GravityBall</Filter>
     </ClCompile>
     <ClCompile Include="cSkidMark.cpp">
+      <Filter>NewClass</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkyBox.cpp">
       <Filter>NewClass</Filter>
     </ClCompile>
   </ItemGroup>

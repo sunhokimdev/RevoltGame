@@ -5,9 +5,11 @@
 #include "cCar.h"
 #include "InGameUI.h"
 #include "UITextImageView.h"
+#include "cSkyBox.h"
 
 RacingScene::RacingScene()
 	: m_select(99)
+	, m_pSkyBox(NULL)
 {}
 
 RacingScene::~RacingScene() {}
@@ -72,6 +74,9 @@ void RacingScene::Setup()
 	{
 		vecCars[i]->LinkTrackPt(m_pTrack);
 	}
+
+	m_pSkyBox = new cSkyBox;
+	m_pSkyBox->Setup();
 }
 
 void RacingScene::Destroy()
@@ -80,6 +85,8 @@ void RacingScene::Destroy()
 	SAFE_DELETE(m_pTrack);
 	SAFE_DELETE(m_pLightSun);
 	SAFE_DELETE(m_pInGameUI);
+	SAFE_DESTROY(m_pSkyBox);
+	SAFE_DELETE(m_pSkyBox);
 }
 
 void RacingScene::Update()
@@ -100,13 +107,17 @@ void RacingScene::Update()
 		m_pInGameUI->Update();
 	}
 	
-
 	LastUpdate();
 }
 
 
 void RacingScene::Render()
 {
+	if (m_pSkyBox)
+	{
+		m_pSkyBox->Render(); 
+	}
+
 	if (m_pTrack)
 	{
 		m_pTrack->Render();

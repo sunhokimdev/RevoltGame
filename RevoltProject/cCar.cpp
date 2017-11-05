@@ -343,10 +343,10 @@ void cCar::Update()
 
 	CarFlip();
 
-	//if (m_pSkidMark)
-	//{
-	//	m_pSkidMark->DrawSkidMark();
-	//}
+	if (m_pSkidMark)
+	{
+		m_pSkidMark->Update();
+	}
 
 }
 
