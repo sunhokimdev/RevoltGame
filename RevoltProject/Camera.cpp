@@ -60,6 +60,8 @@ void Camera::Update()
 		D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
 	}
 
+	m_vEye = m_vLookAt = D3DXVECTOR3(0, 5, 0);
+
 	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matR);
 
 

@@ -94,14 +94,11 @@ void RacingScene::Update()
 		 else vecCars[i]->RunEnd();
 	}
 
-	UpdateCamera();
 	if (m_pInGameUI)
 	{
 		m_pInGameUI->Update();
 	}
 	
-
-	LastUpdate();
 }
 
 
@@ -133,11 +130,13 @@ void RacingScene::LastUpdate()
 	{
 		p->LastUpdate();
 	}
+
+	UpdateCamera();
 }
 
 void RacingScene::UpdateCamera()
 {
-
+//	return;
 #define CAM_X (*camPos).x
 #define CAM_Y (*camPos).y
 #define CAM_Z (*camPos).z

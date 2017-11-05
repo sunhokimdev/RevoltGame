@@ -21,7 +21,7 @@ void TimeManager::Setup()
 void TimeManager::Update()
 {
 	DWORD dwCurrentTime = GetTickCount();
-	m_fElapsedTime = (dwCurrentTime - m_dwLastUpdateTIme) / 1000.0f;
+	m_fElapsedTime = (dwCurrentTime - m_dwLastUpdateTIme) * 0.001f;/// 1000.0f;
 	m_dwLastUpdateTIme = dwCurrentTime;
 	m_fWorldTime += m_fElapsedTime;
 }

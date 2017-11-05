@@ -30,6 +30,7 @@ public:
 
 	void Setup();
 	void Update();
+	void LastUpdate();
 	void Render();
 	void Destroy();
 
