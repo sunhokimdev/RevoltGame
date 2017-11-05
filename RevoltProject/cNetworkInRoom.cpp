@@ -5,7 +5,8 @@
 #include "UITextView.h"
 
 cNetworkInRoom::cNetworkInRoom()
-	:m_index(0)
+	: m_index(0)
+	, m_sizeY(20)
 {
 }
 
@@ -107,11 +108,26 @@ void cNetworkInRoom::Setup()
 	pImageView6->AddChild(m_pMapName);
 	pImageView7->AddChild(m_pChating);
 
-	m_index++;
+	for (int i = 0; i < 1000; i++)
+	{
+		UITextImageView *pText = new UITextImageView;
+		pText->SetTexture("Maps/Front/Image/font2.png");
+		m_vecText.push_back(pText);
+
+		pImageView5->AddChild(m_vecText[i]);
+	}
 }
 
 void cNetworkInRoom::Update()
 {
+	if (g_pNetworkManager->RecvMsg())
+	{
+		m_vecText[m_index]->SetPosition(30, 20 * (m_index + 1));
+		m_vecText[m_index]->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+		m_vecText[m_index]->SetText(g_pNetworkManager->GetMsg());
+		m_index++;
+	}
+
 	iLobby::Update();
 }
 
@@ -131,7 +147,14 @@ void cNetworkInRoom::SetMap(std::string mapName)
 
 std::string cNetworkInRoom::GetMsg()
 {
-	return m_pChating->GetChatName();
+	std::string str = std::string("[") + m_userName + std::string("] : ") + m_pChating->GetChatName();
+
+	m_vecText[m_index]->SetPosition(30, 20 * (m_index + 1));
+	m_vecText[m_index]->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+	m_vecText[m_index]->SetText(str);
+	m_index++;
+
+	return str;
 }
 
 void cNetworkInRoom::SetResetCharText()
@@ -141,16 +164,10 @@ void cNetworkInRoom::SetResetCharText()
 
 void cNetworkInRoom::SetText(std::string str)
 {
-	UITextImageView *pText = new UITextImageView;
-	pText->SetTexture("Maps/Front/Image/font2.png");
-	pText->SetPosition(30, 20 * (m_index+1));
-	pText->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+	std::string str2 = std::string("[") + m_userName + std::string("] : ") + m_pChating->GetChatName();
 	
-	str = std::string("[") + m_userName + std::string("] : ") + str;
-	
-	pText->SetText(str);
-
-	m_vecText.push_back(pText);
-	pImageView5->AddChild(m_vecText[m_index]);
+	m_vecText[m_index]->SetPosition(30, 20 * (m_index + 1));
+	m_vecText[m_index]->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+	m_vecText[m_index]->SetText(str2);
 	m_index++;
 }

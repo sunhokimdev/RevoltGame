@@ -133,6 +133,10 @@ void UITextImageView::KeyEvent()
 		m_chatText += 'z';
 	else if (g_pKeyManager->isOnceKeyDown(' '))
 		m_chatText += ' ';
+	else if (g_pKeyManager->isOnceKeyDown('?'))
+		m_chatText += '?';
+	else if (g_pKeyManager->isOnceKeyDown('!'))
+		m_chatText += '!';
 	else if (g_pKeyManager->isOnceKeyDown(VK_BACK))
 	{
 		if (m_chatText.size() != 0)

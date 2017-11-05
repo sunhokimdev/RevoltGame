@@ -23,19 +23,17 @@ void cNetworkManager::Start()
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		ErrorHandling("WSAStartup() error");
 
-	std::cin >> name;
-
 	m_hSock = socket(PF_INET, SOCK_STREAM, 0);
 
 	memset(&servAdr, 0, sizeof(servAdr));
 	servAdr.sin_family = AF_INET;
-	servAdr.sin_addr.s_addr = inet_addr("172.30.1.3");
-	servAdr.sin_port = htons(9190);
+	servAdr.sin_addr.s_addr = inet_addr("192.168.0.3");
+	servAdr.sin_port = htons(8080);
 
 	if (connect(m_hSock, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
 	{
 		ErrorHandling("connect() error");
-		MessageBoxA(g_hWnd, "asd", "asd", MB_OK);
+		MessageBoxA(g_hWnd, "소켓통신에러", "소켓통신에러", MB_OK);
 	}
 
 	return;
