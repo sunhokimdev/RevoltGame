@@ -4,12 +4,13 @@
 #include "cAI.h"
 #include "cPhysXManager.h"
 #include "cTrack.h"
-
+#include "cSkidMark.h"
 #include "cCheckBox.h"
 
 #include <fstream>
 
 cCar::cCar()
+	:m_pSkidMark(NULL)
 {
 	m_countRapNum = -1;
 	m_currCheckBoxID = -1;
@@ -187,6 +188,9 @@ void cCar::LoadCar(std::string carName)
 			}
 		} // << while
 	}
+
+	m_pSkidMark = new cSkidMark;
+	m_pSkidMark->LinkCar(this);
 }
 
 void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc, bool isAI)
@@ -339,6 +343,10 @@ void cCar::Update()
 
 	CarFlip();
 
+	//if (m_pSkidMark)
+	//{
+	//	m_pSkidMark->DrawSkidMark();
+	//}
 
 }
 
@@ -398,10 +406,17 @@ void cCar::Render()
 			pAI->Render();
 		}
 	}
+
+	if (m_pSkidMark)
+	{
+		m_pSkidMark->Render();
+	}
 }
 
 void cCar::Destory()
 {
+	if (m_pSkidMark) m_pSkidMark->Destory();
+	SAFE_DELETE(m_pSkidMark);
 	Object::Destroy();
 }
 
@@ -524,6 +539,17 @@ void cCar::CtrlPlayer()
 				CarRunStop();
 			}
 		}
+
+		//SkidTest
+		if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
+		{
+			m_pSkidMark->DrawSkidMark();
+		}
+		if (g_pKeyManager->isStayKeyDown(VK_SPACE))
+		{
+			m_pSkidMark->Destory();
+		}
+
 	}
 }
 

@@ -4,6 +4,7 @@
 class cAI;
 class TriggerCallback;
 class cTrack;
+class cSkidMark;
 
 struct stCARSPEC
 {
@@ -57,7 +58,7 @@ class cCar : public Object
 	SYNTHESIZE(eITEM_LIST, m_eHoldItem, HoldItem);
 	SYNTHESIZE(int, m_nItemCount, ItemCount);
 	
-
+	cSkidMark* m_pSkidMark;
 
 public:
 	cCar();

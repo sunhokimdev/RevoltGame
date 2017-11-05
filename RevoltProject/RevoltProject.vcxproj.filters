@@ -441,6 +441,9 @@
     <ClInclude Include="cPlasmaImpact.h">
       <Filter>Item\GravityBall</Filter>
     </ClInclude>
+    <ClInclude Include="cSkidMark.h">
+      <Filter>NewClass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -706,6 +709,9 @@
     </ClCompile>
     <ClCompile Include="cPlasmaImpact.cpp">
       <Filter>Item\GravityBall</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkidMark.cpp">
+      <Filter>NewClass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
