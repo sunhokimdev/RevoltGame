@@ -15,7 +15,10 @@ private:
 
 	InGameUI* m_pInGameUI;
 	cTrack* m_pTrack;
+
 	std::vector<cCar*> vecCars;
+	
+
 
 	cLight* m_pLightSun;
 	int m_nLightIDCount;
@@ -50,5 +53,10 @@ public:
 
 	//자동차가 계속 달려야하는지를 체크
 	bool IsCarRunTrue(cCar* pCar);
+
+
+//	void CreateCar(int carId) {}
+	void CreateCar(int playerID, std::string carName);
+	void LinkUI(int playerID);
 };
 

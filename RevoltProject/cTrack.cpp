@@ -21,6 +21,14 @@ cTrack::cTrack()
 	//
 	//	g_pCamManager->SetCamPos(camPos);
 	//	g_pCamManager->SetLookAt(camLookTarget);
+
+
+	vecStartPos.push_back(D3DXVECTOR3(-1, 0, 1));
+	vecStartPos.push_back(D3DXVECTOR3(-2, 0, -1));
+	vecStartPos.push_back(D3DXVECTOR3(-3, 0, 1));
+	vecStartPos.push_back(D3DXVECTOR3(-4, 0, -1));
+	vecStartPos.push_back(D3DXVECTOR3(-5, 0, 1));
+	vecStartPos.push_back(D3DXVECTOR3(-6, 0, -1));
 }
 
 
@@ -361,20 +369,39 @@ void cTrack::CreateTrackPhysX()
 		NxActorDesc actorDesc;	actorDesc.setToDefault();
 		NxBodyDesc  bodyDesc;	bodyDesc.setToDefault();
 
+
 		//bodyDesc.flags |= NX_BF_KINEMATIC;
 
 		NxTriangleMeshShapeDesc shapeDesc = MgrPhysX->CreateTringleMesh(GetMeshData()->m_pMesh);
 		shapeDesc.materialIndex = 1; // 재질 : 0 (default)값
 		shapeDesc.localPose.t = NxVec3(0, 0, 0);
-
+		shapeDesc.group = 5;
 		actorDesc.shapes.pushBack(&shapeDesc);
 		//actorDesc.body = &bodyDesc;
 
 		actorDesc.globalPose.t = NxVec3(0, 0, 0);
 		actorDesc.userData = (userData);
 		actorDesc.name = "map";
-
+		
+		actorDesc.group = 5;
+	//	NxCollisionGroup a;
+		
+		MgrPhysXScene->setGroupCollisionFlag(5, 5, true);
+		
 		physx->m_pActor = MgrPhysXScene->createActor(actorDesc);
+
+
+		NxU32 nbShapes = physx->m_pActor->getNbShapes();
+		NxShape** shapes = (NxShape**)physx->m_pActor->getShapes();
+
+		while (nbShapes--)
+		{
+			shapes[nbShapes]->setGroup(5);
+		}
+
+
+
+
 
 		Object::SetPhysXData(physx);
 		//맵의 물리 정보를 주고 받지 않기 때문에  SetActor(NULL) 이다.
