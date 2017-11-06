@@ -23,6 +23,8 @@ private:
 	float m_FPSTimeElapsed;
 	float m_WorldTime;
 
+	bool m_isDisplay;
+
 public:
 	
 	void Setup();

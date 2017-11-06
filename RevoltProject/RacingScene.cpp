@@ -55,7 +55,7 @@ void RacingScene::Setup()
 	/// car 생성
 	{
 		cCar* pCar = new cCar;
-		pCar->LoadCar("tc1");
+		pCar->LoadCar("tc2");
 		vecCars.push_back(pCar);
 	}
 	{
@@ -185,10 +185,20 @@ void RacingScene::UpdateCamera()
 	RayCamHit.shape = NULL;
 	g_pPhysXScene->raycastClosestShape(RayCam, NxShapesType::NX_ALL_SHAPES, RayCamHit);
 
+	//레이초기화
+	NxRay RayCamVertical;
+	RayCamVertical.orig = NxVec3(carPos);
+	RayCamVertical.dir = NxVec3(0,1,0);
+
+	NxRaycastHit RayCamVerticalHit;
+	RayCamVerticalHit.shape = NULL;
+	g_pPhysXScene->raycastClosestShape(RayCamVertical, NxShapesType::NX_ALL_SHAPES, RayCamVerticalHit,0xffffffff,Height);
 	
 	float x = carPos.x - (carDir.x * distToCar);
 	float y = carPos.y - (carDir.y * distToCar) + Height;
 	float z = carPos.z - (carDir.z * distToCar);
+	
+	float fCamHeight = Height;
 
 	if (RayCamHit.distance < distToCar)
 	{
@@ -197,11 +207,19 @@ void RacingScene::UpdateCamera()
 			if (RayCamHit.shape->getActor().getName() == "map")
 			{
 				x = RayCamHit.worldImpact.x;
-				y = carPos.y + Height;//RayCamHit.worldImpact.y;
+				//y = carPos.y + Height;//RayCamHit.worldImpact.y;
+				y = carPos.y + fCamHeight;
 				z = RayCamHit.worldImpact.z;
 			}
 		}
 	}
+
+	if (RayCamVerticalHit.shape != NULL)
+	{
+		fCamHeight = RayCamVerticalHit.distance;
+		y = carPos.y + fCamHeight;
+	}
+	
 
 	// 카메라 목적지
 	D3DXVECTOR3 vDest = { x,y,z };
