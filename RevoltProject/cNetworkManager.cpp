@@ -2,8 +2,6 @@
 #include "cNetworkManager.h"
 #include "MainGame.h"
 
-std::string cNetworkManager::m_msg;
-
 cNetworkManager::cNetworkManager()
 {
 }
@@ -61,7 +59,7 @@ bool cNetworkManager::RecvMsg()
 
 	char nameMsg[NAME_SIZE + BUF_SIZE];
 	int strLen = recv(hSock, nameMsg, NAME_SIZE + BUF_SIZE - 1, 0);
-	
+
 	nameMsg[strLen] = 0;
 
 	m_msg = std::string(nameMsg);
