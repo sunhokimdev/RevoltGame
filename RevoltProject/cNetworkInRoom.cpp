@@ -141,11 +141,6 @@ std::string cNetworkInRoom::GetMsg()
 {
 	std::string str = std::string("[") + m_userName + std::string("] : ") + m_pChating->GetChatName();
 
-	//m_vecText[m_index]->SetPosition(30, 20 * (m_index + 1));
-	//m_vecText[m_index]->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
-	//m_vecText[m_index]->SetText(str);
-	//m_index++;
-
 	return str;
 }
 
@@ -156,8 +151,19 @@ void cNetworkInRoom::SetResetCharText()
 
 void cNetworkInRoom::SetText(std::string str)
 {
-	m_vecText[m_index]->SetPosition(30, 20 * (m_index + 1));
-	m_vecText[m_index]->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
-	m_vecText[m_index]->SetText(str);
-	m_index++;
+	if (str.size() != 1 && str.size() != 2)
+	{
+		m_vecText[m_index]->SetPosition(30, 20 * (m_index + 1));
+		m_vecText[m_index]->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+		if (str[0] == '#')
+		{
+			const char* temp = &str[1];
+			m_vecText[m_index]->SetText(temp);
+		}
+		else
+			m_vecText[m_index]->SetText(str);
+		m_index++;
+
+		printf("%d\n", str.size());
+	}
 }

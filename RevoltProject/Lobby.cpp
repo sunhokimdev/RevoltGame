@@ -118,8 +118,11 @@ void Lobby::Update()
 
 	else if (m_stateLobby == NETWORK_IN_LOBBY)
 	{
-		//if(g_pNetworkManager->RecvMsg())
-		//	m_pInRoom->SetText(g_pNetworkManager->m_msg.c_str());	
+		/*    서버에서 recv가 무한대기에 빠지지 않도록 메시지를 계속해서 보낸다    */
+		g_pNetworkManager->SendMsg("#");
+
+		if(g_pNetworkManager->RecvMsg())
+			m_pInRoom->SetText(g_pNetworkManager->m_msg.c_str());	
 	}
 
 	//if (m_stateLobby == MARKET_MAP)
@@ -292,8 +295,8 @@ void Lobby::KeyUpdate()
 		{
 			g_pNetworkManager->SendMsg(m_pInRoom->GetMsg().c_str());
 			m_pInRoom->SetResetCharText();
-			if (g_pNetworkManager->RecvMsg())
-				m_pInRoom->SetText(g_pNetworkManager->m_msg.c_str());
+			//if (g_pNetworkManager->RecvMsg())
+			//	m_pInRoom->SetText(g_pNetworkManager->m_msg.c_str());
 			return;
 		}
 

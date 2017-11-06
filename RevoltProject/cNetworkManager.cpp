@@ -11,17 +11,15 @@ cNetworkManager::cNetworkManager()
 
 cNetworkManager::~cNetworkManager()
 {
+	Release();
 }
 
 void cNetworkManager::Start()
 {
 	WSADATA wsaData;
 	SOCKADDR_IN servAdr;
-	timeval tv;
 
 	char args[NAME_SIZE];
-
-	HANDLE hSndThread, hRcvThread;
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		ErrorHandling("WSAStartup() error");
@@ -30,13 +28,8 @@ void cNetworkManager::Start()
 
 	memset(&servAdr, 0, sizeof(servAdr));
 	servAdr.sin_family = AF_INET;
-	servAdr.sin_addr.s_addr = inet_addr("192.168.0.3");
+	servAdr.sin_addr.s_addr = inet_addr("127.0.0.1");
 	servAdr.sin_port = htons(8080);
-
-	tv.tv_sec = 30;
-	tv.tv_usec = 0;
-
-	setsockopt(m_hSock, SOL_SOCKET, SO_RCVTIMEO, (char*)&tv, sizeof(timeval));
 
 	if (connect(m_hSock, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
 	{
@@ -55,6 +48,8 @@ void cNetworkManager::Release()
 
 DWORD cNetworkManager::SendMsg(const char* msg)
 {
+	std::string str = msg;
+
 	send(m_hSock, msg, strlen(msg), 0);
 
 	return 0;
@@ -71,10 +66,7 @@ bool cNetworkManager::RecvMsg()
 
 	m_msg = std::string(nameMsg);
 
-	if (m_msg.size() != 0)
-		return true;
-
-	return false;
+	return true;
 }
 
 void cNetworkManager::ErrorHandling(char * msg)
