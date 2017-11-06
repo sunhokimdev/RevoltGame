@@ -160,7 +160,7 @@ void RacingScene::UpdateCamera()
 	//matR = vecCars[0]->GetMatrix(false, true, false); //이걸 사용하면 약간 부정확함
 
 	float distToCar = 5; //차와의 거리
-	float Height = 1; //카메라 높이
+	float Height = 2; //카메라 높이
 
 	D3DXVECTOR3 carDir = { 1,0,0 };
 	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
@@ -183,7 +183,7 @@ void RacingScene::UpdateCamera()
 	
 	NxRaycastHit RayCamHit;
 	RayCamHit.shape = NULL;
-	g_pPhysXScene->raycastClosestShape(RayCam, NxShapesType::NX_ALL_SHAPES, RayCamHit);
+	g_pPhysXScene->raycastClosestShape(RayCam, NxShapesType::NX_ALL_SHAPES, RayCamHit, 0xffffffff,distToCar);
 
 	//레이초기화
 	NxRay RayCamVertical;
@@ -192,7 +192,7 @@ void RacingScene::UpdateCamera()
 
 	NxRaycastHit RayCamVerticalHit;
 	RayCamVerticalHit.shape = NULL;
-	g_pPhysXScene->raycastClosestShape(RayCamVertical, NxShapesType::NX_ALL_SHAPES, RayCamVerticalHit,0xffffffff,Height);
+	g_pPhysXScene->raycastClosestShape(RayCamVertical, NxShapesType::NX_ALL_SHAPES, RayCamVerticalHit, 0xffffffff,Height);
 	
 	float x = carPos.x - (carDir.x * distToCar);
 	float y = carPos.y - (carDir.y * distToCar) + Height;
@@ -200,25 +200,29 @@ void RacingScene::UpdateCamera()
 	
 	float fCamHeight = Height;
 
-	if (RayCamHit.distance < distToCar)
+
+	if (RayCamHit.shape)
 	{
-		if (RayCamHit.shape)
+		if (RayCamHit.shape->getActor().getName() == "map")
 		{
-			if (RayCamHit.shape->getActor().getName() == "map")
-			{
-				x = RayCamHit.worldImpact.x;
-				//y = carPos.y + Height;//RayCamHit.worldImpact.y;
-				y = carPos.y + fCamHeight;
-				z = RayCamHit.worldImpact.z;
-			}
+			x = RayCamHit.worldImpact.x;
+			//y = carPos.y + Height;//RayCamHit.worldImpact.y;
+			y = carPos.y + fCamHeight;
+			z = RayCamHit.worldImpact.z;
 		}
 	}
 
 	if (RayCamVerticalHit.shape != NULL)
 	{
-		fCamHeight = RayCamVerticalHit.distance;
-		y = carPos.y + fCamHeight;
+		if (RayCamVerticalHit.shape->getActor().getName() == "map")
+		{
+			fCamHeight = RayCamVerticalHit.distance;
+			y = carPos.y + fCamHeight;
+		}
 	}
+
+
+
 	
 
 	// 카메라 목적지

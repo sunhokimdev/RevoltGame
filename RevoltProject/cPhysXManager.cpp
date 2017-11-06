@@ -285,6 +285,17 @@ void cPhysXManager::RaycastAllShapes(D3DXVECTOR3 start, D3DXVECTOR3 dir)
 
 }
 
+void cPhysXManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
+{
+	NxU32 nbShapes = actor->getNbShapes();
+	NxShape** shapes = (NxShape**)actor->getShapes();
+
+	while (nbShapes--)
+	{
+		shapes[nbShapes]->setGroup(group);
+	}
+}
+
 NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * mat, NxVec3 sizeValue, eMaterialTag materialTag, USERDATA * pUserData, bool IsTrigger, bool isStatic, bool isGravaty)
 {
 	sizeValue *= 0.5f;

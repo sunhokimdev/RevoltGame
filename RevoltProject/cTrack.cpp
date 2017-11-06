@@ -373,8 +373,26 @@ void cTrack::CreateTrackPhysX()
 		actorDesc.globalPose.t = NxVec3(0, 0, 0);
 		actorDesc.userData = (userData);
 		actorDesc.name = "map";
+		actorDesc.group = E_PHYSX_TAG_TRACK;
 
 		physx->m_pActor = MgrPhysXScene->createActor(actorDesc);
+
+
+		MgrPhysX->SetActorGroup(physx->m_pActor, E_PHYSX_TAG_TRACK);
+		MgrPhysXScene->setGroupCollisionFlag(E_PHYSX_TAG_TRACK, E_PHYSX_TAG_TRACK,false);
+
+		/*void ItemManager::InitCollisionGroup()
+		{*/
+		
+		//SetActorGroup(box1, 1);
+		//SetActorGroup(box2, 1);
+		//SetActorGroup(box3, 1);
+		//SetActorGroup(box4, 1);
+
+		//MgrPhysXScene->setGroupCollisionFlag(1, 2, false);
+		//MgrPhysXScene->setGroupCollisionFlag(2, 2, false);
+		//}
+
 
 		Object::SetPhysXData(physx);
 		//맵의 물리 정보를 주고 받지 않기 때문에  SetActor(NULL) 이다.
