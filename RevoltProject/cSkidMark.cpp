@@ -74,8 +74,8 @@ void cSkidMark::DrawSkidMark()
 
 	rubberL.position = m_pCar->GetPosition() + posWheelL;
 	rubberR.position = m_pCar->GetPosition() + posWheelR;
-	rubberL.position.y += 0.1f;
-	rubberR.position.y += 0.1f;
+	rubberL.position.y += 0.001f;
+	rubberR.position.y += 0.001f;
 		
 	D3DXMATRIXA16 matTL,matTR;
 	D3DXMatrixIdentity(&rubberL.matLocal);
@@ -87,9 +87,10 @@ void cSkidMark::DrawSkidMark()
 	rubberL.matLocal = rubberL.matR * matTL;
 	rubberR.matLocal = rubberR.matR * matTR;
 	
-	D3DXCreateSphere(g_pD3DDevice, 0.05f, 20, 20, &rubberL.mesh, 0);
-	D3DXCreateSphere(g_pD3DDevice, 0.05f, 20, 20, &rubberR.mesh, 0);
-	//D3DXCreateBox(g_pD3DDevice, 0.3f, 0, 0.1f, &rubberL.mesh, 0);
+	//D3DXCreateSphere(g_pD3DDevice, 0.05f, 20, 20, &rubberL.mesh, 0);
+	//D3DXCreateSphere(g_pD3DDevice, 0.05f, 20, 20, &rubberR.mesh, 0);
+	D3DXCreateBox(g_pD3DDevice, 0.05f, 0, 0.1f, &rubberL.mesh, 0);
+	D3DXCreateBox(g_pD3DDevice, 0.05f, 0, 0.1f, &rubberR.mesh, 0);
 
 	rubberL.timer = 0;
 	rubberR.timer = 0;

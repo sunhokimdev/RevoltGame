@@ -83,12 +83,12 @@ public:
 	//ATL 7.0 변환 클래스
 	static std::string ToString(std::wstring text)
 	{
-	//	return ATL::CW2A(text.c_str());
+		return ATL::CW2A(text.c_str());
 	}
 	//ATL 7.0 변환 클래스
 	static std::wstring ToWString(std::string text)
 	{
-	//	return ATL::CA2W(text.c_str());
+		return ATL::CA2W(text.c_str());
 	}
 	//자세한 내용(ATL) : "https://technet.microsoft.com/ko-kr/library/87zae4a3(v=vs.110)"
 

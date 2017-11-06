@@ -11,6 +11,7 @@ public:
 	bool m_isExist;
 	float m_fRespawnTime;
 	bool m_isTimerRoll;
+	float m_fAngle;
 
 	void Update();
 	void Render();

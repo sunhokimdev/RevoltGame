@@ -20,14 +20,16 @@ class cCar : public Object
 	//자동차 능력치 관련
 	NxVehicle* m_carNxVehicle;
 
-	float m_moterPower;		// 현재 모터 파워 0~1 비율값
+	//float m_moterPower;		
+	SYNTHESIZE(float, m_moterPower, MoterPower); // 현재 모터 파워 0~1 비율값
 	float m_maxMoterPower;	// 최대 파워값
 	float m_moterAcc;		// 가속 0~1
 
 	float m_maxRpm;
 	float m_breakPower;		// 손을 때고 있으면 자동으로 걸리게 한다.
 
-	float m_wheelAngle;		//바퀴가 꺽인 정도. (비울) 
+	//float m_wheelAngle;		
+	SYNTHESIZE(float, m_wheelAngle, WheelAngle); //바퀴가 꺾인 정도. (비울) 
 	float m_maxWheelAngle;	//바퀴가 꺽이는 최대값. 
 	float m_wheelAcc;		//꺽이는 속도	(비율에 더해지는 값)
 

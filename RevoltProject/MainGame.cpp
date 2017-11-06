@@ -53,6 +53,8 @@ void MainGame::Setup()
 
 	g_pItemManager->Init();
 	g_pTimeManager->Setup();
+	
+	g_pTextManager->AddFont(L"굴림체", "굴림체_7", 7);
 
 	SetAddSound();
 
@@ -84,11 +86,18 @@ void MainGame::Render()
 
 	// 타임 매니저 랜더 해야함
 
+	std::string FrameRate =		"FrameRate   : " + std::to_string(g_pTimeManager->GetFrameRate());
+	std::string ElapsedTime =	"ElapsedTime : " + std::to_string(g_pTimeManager->GetElapsedTime());
+	std::string WorldTime =		"WorldTime   : " + std::to_string(g_pTimeManager->GetWorldTime());
+	g_pTextManager->WriteText(FrameRate,	"굴림체_7", 1, 0, C_WHITE);
+	g_pTextManager->WriteText(ElapsedTime,	"굴림체_7", 1, 12, C_WHITE);
+	g_pTextManager->WriteText(WorldTime,	"굴림체_7", 1, 24, C_WHITE);
 	g_pD3DDevice->EndScene();
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 
 	//PhysX 시뮬 런
 	MgrPhysXScene->simulate((float)(1.0f/60.f));	//프레임 지정
+	//MgrPhysXScene->simulate(g_pTimeManager->GetElapsedTime());
 	MgrPhysXScene->flushStream();
 	MgrPhysXScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
 }
