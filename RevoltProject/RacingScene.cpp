@@ -55,7 +55,7 @@ void RacingScene::Setup()
 	/// car »ý¼º
 	{
 		cCar* pCar = new cCar;
-		pCar->LoadCar("tc1");
+		pCar->LoadCar("tc2");
 	//	pCar->SetTotalCheckBoxNum(m_pTrack->GetTrackCheckBoxSize());
 		vecCars.push_back(pCar);
 	}
