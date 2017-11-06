@@ -120,14 +120,6 @@ void cNetworkInRoom::Setup()
 
 void cNetworkInRoom::Update()
 {
-	if (g_pNetworkManager->RecvMsg())
-	{
-		m_vecText[m_index]->SetPosition(30, 20 * (m_index + 1));
-		m_vecText[m_index]->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
-		m_vecText[m_index]->SetText(g_pNetworkManager->GetMsg());
-		m_index++;
-	}
-
 	iLobby::Update();
 }
 
@@ -149,10 +141,10 @@ std::string cNetworkInRoom::GetMsg()
 {
 	std::string str = std::string("[") + m_userName + std::string("] : ") + m_pChating->GetChatName();
 
-	m_vecText[m_index]->SetPosition(30, 20 * (m_index + 1));
-	m_vecText[m_index]->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
-	m_vecText[m_index]->SetText(str);
-	m_index++;
+	//m_vecText[m_index]->SetPosition(30, 20 * (m_index + 1));
+	//m_vecText[m_index]->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+	//m_vecText[m_index]->SetText(str);
+	//m_index++;
 
 	return str;
 }
@@ -164,10 +156,8 @@ void cNetworkInRoom::SetResetCharText()
 
 void cNetworkInRoom::SetText(std::string str)
 {
-	std::string str2 = std::string("[") + m_userName + std::string("] : ") + m_pChating->GetChatName();
-	
 	m_vecText[m_index]->SetPosition(30, 20 * (m_index + 1));
 	m_vecText[m_index]->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
-	m_vecText[m_index]->SetText(str2);
+	m_vecText[m_index]->SetText(str);
 	m_index++;
 }

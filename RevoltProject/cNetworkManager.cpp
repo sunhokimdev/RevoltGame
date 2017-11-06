@@ -2,6 +2,8 @@
 #include "cNetworkManager.h"
 #include "MainGame.h"
 
+std::string cNetworkManager::m_msg;
+
 cNetworkManager::cNetworkManager()
 {
 }
@@ -15,6 +17,7 @@ void cNetworkManager::Start()
 {
 	WSADATA wsaData;
 	SOCKADDR_IN servAdr;
+	timeval tv;
 
 	char args[NAME_SIZE];
 
@@ -29,6 +32,11 @@ void cNetworkManager::Start()
 	servAdr.sin_family = AF_INET;
 	servAdr.sin_addr.s_addr = inet_addr("192.168.0.3");
 	servAdr.sin_port = htons(8080);
+
+	tv.tv_sec = 30;
+	tv.tv_usec = 0;
+
+	setsockopt(m_hSock, SOL_SOCKET, SO_RCVTIMEO, (char*)&tv, sizeof(timeval));
 
 	if (connect(m_hSock, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
 	{
@@ -54,8 +62,11 @@ DWORD cNetworkManager::SendMsg(const char* msg)
 
 bool cNetworkManager::RecvMsg()
 {
+	SOCKET hSock = m_hSock;
+
 	char nameMsg[NAME_SIZE + BUF_SIZE];
-	int strLen = recv(m_hSock, nameMsg, NAME_SIZE + BUF_SIZE - 1, 0);
+	int strLen = recv(hSock, nameMsg, NAME_SIZE + BUF_SIZE - 1, 0);
+	
 	nameMsg[strLen] = 0;
 
 	m_msg = std::string(nameMsg);
@@ -70,6 +81,7 @@ void cNetworkManager::ErrorHandling(char * msg)
 {
 	fputs(msg, stderr);
 	fputc('\n', stderr);
+	Release();
 }
 
 void cNetworkManager::SetRoomName(std::string str)

@@ -116,6 +116,12 @@ void Lobby::Update()
 		m_pSelectMap->SetMapType(&m_stateMapType, m_leftAndrightSelect);
 	}
 
+	else if (m_stateLobby == NETWORK_IN_LOBBY)
+	{
+		//if(g_pNetworkManager->RecvMsg())
+		//	m_pInRoom->SetText(g_pNetworkManager->m_msg.c_str());	
+	}
+
 	//if (m_stateLobby == MARKET_MAP)
 	//	m_pInGameUI->UpdateTimeLab();
 
@@ -286,6 +292,8 @@ void Lobby::KeyUpdate()
 		{
 			g_pNetworkManager->SendMsg(m_pInRoom->GetMsg().c_str());
 			m_pInRoom->SetResetCharText();
+			if (g_pNetworkManager->RecvMsg())
+				m_pInRoom->SetText(g_pNetworkManager->m_msg.c_str());
 			return;
 		}
 
