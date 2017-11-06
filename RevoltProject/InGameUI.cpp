@@ -726,6 +726,7 @@ void InGameUI::UpdateArrowDir()
 	D3DXVECTOR3 posCheckbox = checkboxPt->GetPosition();
 	D3DXVECTOR3 tar = posCheckbox;
 	tar.y = 0.0f;
+	//D3DXVec3Lerp(&tar, &tar, &checkboxPt->GetNextCheckBox()->GetPosition(), 0.6f);
 
 	D3DXVECTOR3 pos = D3DXVECTOR3(m_pCar->GetPosition().x, 0.0f, m_pCar->GetPosition().z);	// 자동차 위치
 	D3DXVECTOR3 carDir = D3DXVECTOR3(m_pCar->GetDirection().x, 0.0f, m_pCar->GetDirection().z);	// 차 방향
@@ -748,6 +749,7 @@ void InGameUI::UpdateArrowDir()
 	{
 		angle = -angle;
 	}
-	
+	std::cout << angle << std::endl;
+
 	pIV_arrowDir->SetArrowAngle(-angle);
 }

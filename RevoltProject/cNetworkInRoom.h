@@ -19,6 +19,7 @@ private:
 	std::vector<UITextImageView*>	m_vecText;
 	UIImageView* pImageView5;
 	int m_index;
+	int m_sizeY;
 public:
 	cNetworkInRoom();
 	virtual ~cNetworkInRoom();

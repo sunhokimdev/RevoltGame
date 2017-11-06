@@ -116,9 +116,11 @@ void Lobby::Update()
 		m_pSelectMap->SetMapType(&m_stateMapType, m_leftAndrightSelect);
 	}
 
-	//if (m_stateLobby == MARKET_MAP)
-	//	m_pInGameUI->UpdateTimeLab();
-
+	else if (m_stateLobby == NETWORK_IN_LOBBY)
+	{
+		if(g_pNetworkManager->RecvMsg())
+			m_pInRoom->SetText(g_pNetworkManager->GetMsg().c_str());	
+	}
 
 	TimeUpdate();   // 시간 갱신 메서드
 	KeyUpdate();   // 키 이벤트 갱신 메서드
@@ -286,8 +288,6 @@ void Lobby::KeyUpdate()
 		{
 			g_pNetworkManager->SendMsg(m_pInRoom->GetMsg().c_str());
 			m_pInRoom->SetResetCharText();
-			g_pNetworkManager->RecvMsg();
-			m_pInRoom->SetText(g_pNetworkManager->GetMsg());
 			return;
 		}
 
