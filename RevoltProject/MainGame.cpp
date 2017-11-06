@@ -87,7 +87,6 @@ void MainGame::Update()
 
 void MainGame::Render()
 {
-
 	if (IsUpdate == false) return;
 	IsUpdate = false;
 
