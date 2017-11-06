@@ -68,9 +68,6 @@ void MainGame::Update()
 	//	MgrPhysXScene->checkResults(NX_RIGID_BODY_FINISHED, false);
 	//	MgrPhysXScene->fetchResults(NX_RIGID_BODY_FINISHED, false);
 
-
-
-
 	SAFE_UPDATE(g_SceneManager);
 
 	SAFE_UPDATE(g_pLightManager);
