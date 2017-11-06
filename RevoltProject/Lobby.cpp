@@ -264,6 +264,7 @@ void Lobby::KeyUpdate()
 
 
 			g_SceneManager->ChangeScene("Race");
+			
 			return;
 		}
 		else if (m_stateLobby == SELECT_CAR_LOBBY)

@@ -32,21 +32,21 @@ void ItemManager::Init()
 	box3 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(4, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
 	box4 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(20, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
 
-	for (int i = 0;i < 10;i++)
-	{
-		cWbomb* pItem = new cWbomb;
-		pItem->Setup();
-		pItem->SetItemTag(ITEM_WBOMB);
-		m_vecItem.push_back(pItem);
-	}
-
 	//for (int i = 0;i < 10;i++)
 	//{
-	//	cGravityball* pItem = new cGravityball;
+	//	cWbomb* pItem = new cWbomb;
 	//	pItem->Setup();
-	//	pItem->SetUse(true);
+	//	pItem->SetItemTag(ITEM_WBOMB);
 	//	m_vecItem.push_back(pItem);
 	//}
+
+	for (int i = 0;i < 10;i++)
+	{
+		cGravityball* pItem = new cGravityball;
+		pItem->Setup();
+		pItem->SetUse(true);
+		m_vecItem.push_back(pItem);
+	}
 
 	InitCollisionGroup();
 }
@@ -129,13 +129,14 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 		break;
 		case ITEM_GRAVITY:
 		{
-
+			m_vecItem[m_index]->Create(carDir, carPos);
+			m_vecItem[m_index]->SetUse(true);
 		}
 		break;
 		default: break;
 	}
 	//	m_vecItem[m_index]->Create();
-	//	m_index++;
+		m_index++;
 	//
-	//	if (m_index == m_max) m_index = 0;
+		if (m_index == m_vecItem.size()) m_index = 0;
 }

@@ -189,6 +189,10 @@ void cCar::LoadCar(std::string carName)
 			}
 		} // << while
 	}
+	else
+	{
+		MessageBoxA(g_hWnd, "*.car 파일을 찾을 수 없습니다.", "파일 없음", MB_OK);
+	}
 
 	m_pSkidMark = new cSkidMark;
 	m_pSkidMark->LinkCar(this);
@@ -502,7 +506,8 @@ void cCar::CtrlPlayer()
 			if (m_eHoldItem != ITEM_NONE)
 			{
 				//아이템 사용 함수 호츨
-				g_pItemManager->FireItem(m_eHoldItem, this);
+				//g_pItemManager->FireItem(m_eHoldItem, this);
+				g_pItemManager->FireItem(ITEM_GRAVITY, this);
 				m_nItemCount--;
 				if (m_nItemCount == 0)
 				{

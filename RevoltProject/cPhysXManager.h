@@ -40,6 +40,7 @@ enum ePhysXTag
 	, E_PHYSX_TAG_WHATEBOMB
 	, E_PHYSX_TAG_METALBALL
 	, E_PHYSX_TAG_GRIVATEBALL
+	, E_PHYSX_TAG_TRACK
 	, E_PHYSX_TAG_END
 };
 
@@ -186,6 +187,8 @@ public:
 
 	void RaycastClosestShape(D3DXVECTOR3 start, D3DXVECTOR3 dir);
 	void RaycastAllShapes(D3DXVECTOR3 start, D3DXVECTOR3 dir);
+
+	void SetActorGroup(NxActor * actor, NxCollisionGroup group);
 
 
 	//CreateActor Actor 를 만들어 매니저에 등록후 반환한다.
