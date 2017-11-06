@@ -6,6 +6,7 @@ class cLight;
 class cCar;
 class cBillBoardEffect;
 class InGameUI;
+class cSkyBox;
 
 class RacingScene : public GameNode
 {
@@ -32,6 +33,8 @@ private:
 	cBillBoardEffect*		 m_pBillBoardEffect;
 
 	bool m_isDrift;
+
+	cSkyBox* m_pSkyBox;
 
 public:
 

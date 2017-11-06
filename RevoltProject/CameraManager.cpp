@@ -36,7 +36,7 @@ void CameraManager::Setup(D3DXVECTOR3* pvTarget)
 
 void CameraManager::Update()
 {
-//	Move();
+	//	Move();
 
 	m_fCamTime += 0.0005f;
 
@@ -47,19 +47,17 @@ void CameraManager::Update()
 	matR = matRX * matRY;
 
 	if (m_pvTarget)
-	{   
-	//	float prev = m_vEye.y;
+	{
 		m_vEye = *m_pvTarget;
 		m_vLookAt = m_vNextLootAt;
 
-
-		std::cout <<  m_vEye.y << std::endl;
+	
 		//D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fCamTime);
 		//D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
 	}
 	else m_vEye = D3DXVECTOR3(0, 0, 0);
 
-//	m_vEye = D3DXVECTOR3(-3, 9, 0);
+//	m_vEye = D3DXVECTOR3(0, 9, 0);
 //	m_vLookAt = D3DXVECTOR3(1, -1, 0) + m_vEye;
 
 	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matR);
@@ -126,7 +124,7 @@ void CameraManager::Move()
 	//}
 	float KeyMoveSpd = 0.5f;
 
-	if(g_pKeyManager->isStayKeyDown(VK_LEFT))
+	if (g_pKeyManager->isStayKeyDown(VK_LEFT))
 	{
 		m_vEye.x -= KeyMoveSpd;
 		m_vLookAt.x -= KeyMoveSpd;

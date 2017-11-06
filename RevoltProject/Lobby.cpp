@@ -251,12 +251,12 @@ void Lobby::KeyUpdate()
 	{
 		if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
-			g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
-			g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
+			//유저데이터에 자동차 선택한거 넘겨주고
+			//씬변경
+			g_SceneManager->ChangeScene("Race");
 			return;
 		}
 

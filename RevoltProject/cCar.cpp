@@ -4,12 +4,13 @@
 #include "cAI.h"
 #include "cPhysXManager.h"
 #include "cTrack.h"
-
+#include "cSkidMark.h"
 #include "cCheckBox.h"
 
 #include <fstream>
 
 cCar::cCar()
+	:m_pSkidMark(NULL)
 {
 	m_countRapNum = -1;
 	m_currCheckBoxID = -1;
@@ -188,6 +189,9 @@ void cCar::LoadCar(std::string carName)
 			}
 		} // << while
 	}
+
+	m_pSkidMark = new cSkidMark;
+	m_pSkidMark->LinkCar(this);
 }
 
 void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc, bool isAI)
@@ -270,6 +274,11 @@ void cCar::LoadWheel(std::string carName)
 
 void cCar::Update()
 {
+	NxVec3 pos = m_carNxVehicle->getGlobalPose().t;
+	m_carNxVehicle->getActor()->addForce(NxVec3(0, 0.001, 0));
+
+
+
 	//자동차 정보 업데이트
 	//=================================================
 	//자동차 위치 갱신
@@ -340,6 +349,10 @@ void cCar::Update()
 
 	CarFlip();
 
+	if (m_pSkidMark)
+	{
+		m_pSkidMark->Update();
+	}
 
 }
 
@@ -399,10 +412,17 @@ void cCar::Render()
 			pAI->Render();
 		}
 	}
+
+	if (m_pSkidMark)
+	{
+		m_pSkidMark->Render();
+	}
 }
 
 void cCar::Destory()
 {
+	if (m_pSkidMark) m_pSkidMark->Destory();
+	SAFE_DELETE(m_pSkidMark);
 	Object::Destroy();
 }
 
@@ -410,9 +430,6 @@ void cCar::CtrlPlayer()
 {
 	if (m_carNxVehicle)
 	{
-		NxVec3 pos = m_carNxVehicle->getGlobalPose().t;
-		m_carNxVehicle->getActor()->addForce(NxVec3(0, -0.001, 0));
-
 		//엑셀
 		float targetPower = 0.f;
 		bool power = false;
@@ -525,6 +542,40 @@ void cCar::CtrlPlayer()
 				CarRunStop();
 			}
 		}
+
+		//SkidTest
+
+		//레이초기화
+		NxRay RayCar;
+		RayCar.orig = NxVec3(m_position);
+		RayCar.orig.y += 0.2f;
+		RayCar.dir = NxVec3(0,-1,0);
+
+		NxRaycastHit RayCarHit;
+		RayCarHit.shape = NULL;
+		g_pPhysXScene->raycastClosestShape(RayCar, NxShapesType::NX_ALL_SHAPES, RayCarHit);
+
+		float rpm = GetNxVehicle()->getWheel(0)->getRpm() / m_maxRpm;
+		if (fabsf(rpm) > 0.8f && fabs(m_wheelAngle) > 0.9f)
+		{
+			if (RayCarHit.distance < 0.2f)
+			{
+				m_pSkidMark->DrawSkidMark();
+			}
+		}
+
+		if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
+		{
+			if (RayCarHit.distance < 0.2f)
+			{
+				m_pSkidMark->DrawSkidMark();
+			}
+		}
+		if (g_pKeyManager->isStayKeyDown(VK_SPACE))
+		{
+			m_pSkidMark->Destory();
+		}
+
 	}
 }
 

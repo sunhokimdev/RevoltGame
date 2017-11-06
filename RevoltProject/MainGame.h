@@ -32,7 +32,7 @@ public:
 
 
 	ID3DXMesh* TestMesh;
-
+	bool IsUpdate;
 	
 
 private:
