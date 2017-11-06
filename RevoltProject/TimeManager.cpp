@@ -109,7 +109,12 @@ void TimeManager::Update(float lockFPS/* = 0.0f*/)
 
 void TimeManager::Render()
 {
-
+	std::string FrameRate = "FrameRate   : " + std::to_string(m_FrameRate);
+	std::string ElapsedTime = "ElapsedTime : " + std::to_string(m_TimeElapsed);
+	std::string WorldTime = "WorldTime   : " + std::to_string(m_WorldTime);
+	g_pTextManager->WriteText(FrameRate, "±¼¸²Ã¼_7", 1, 0, C_WHITE);
+	g_pTextManager->WriteText(ElapsedTime, "±¼¸²Ã¼_7", 1, 12, C_WHITE);
+	g_pTextManager->WriteText(WorldTime, "±¼¸²Ã¼_7", 1, 24, C_WHITE);
 }
 
 //float TimeManager::GetLastUpdateTime()

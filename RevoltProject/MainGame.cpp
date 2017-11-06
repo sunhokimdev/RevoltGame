@@ -81,7 +81,6 @@ void MainGame::Update()
 	//	MgrPhysXScene->checkResults(NX_RIGID_BODY_FINISHED, true);
 
 
-
 		//PhysX와 정보 동기화
 	if (g_SceneManager) g_SceneManager->LastUpdate();
 	SAFE_UPDATE(g_pCamManager);
@@ -109,8 +108,10 @@ void MainGame::Render()
 	
 		// 타임 매니저 랜더 해야함
 	
+		g_pTimeManager->Render();
 		g_pD3DDevice->EndScene();
 		g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
+
 }
 
 void MainGame::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
