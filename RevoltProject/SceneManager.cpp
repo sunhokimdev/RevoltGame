@@ -22,6 +22,11 @@ void SceneManager::Update()
 	if (_scCurrent) _scCurrent->Update();
 }
 
+void SceneManager::LastUpdate()
+{
+	if (_scCurrent) _scCurrent->LastUpdate();
+}
+
 void SceneManager::Render()
 {
 	if (_scCurrent) _scCurrent->Render();

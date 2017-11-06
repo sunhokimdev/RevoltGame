@@ -8,6 +8,7 @@ public:
 	virtual void Setup() {}
 	virtual void Destroy() {}
 	virtual void Update() {}
+	virtual void LastUpdate() {}
 	virtual void Render() {}
 };
 

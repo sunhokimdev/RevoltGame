@@ -63,6 +63,9 @@ void cTrack::LoadTrack(std::string FileName)
 {
 	Destroy();// 기존에 가지고 있던 정보 버리기
 
+	std::map<std::string, Object*> mapCheckBox;
+
+
 	std::string fullpath = "Maps/" + FileName + ".scn";
 	std::fstream Load;
 	Load.open(fullpath);
@@ -290,8 +293,7 @@ void cTrack::LoadTrack(std::string FileName)
 								physx->m_pUserData = pUserData;
 								Obj->SetPhysXData(physx);
 							}
-							std::string id = Obj->GetObjName();
-							m_mapCheckBox[id] = Obj;
+							mapCheckBox[Obj->GetObjName()] = Obj;
 						}
 						else
 						{
@@ -328,15 +330,26 @@ void cTrack::LoadTrack(std::string FileName)
 		MessageBoxA(g_hWnd, pritfOut.c_str(), "오류", MB_OK);
 	}
 
-	int i = 0;
-	for (std::map<std::string, Object*>::iterator it = m_mapCheckBox.begin(); it != m_mapCheckBox.end(); it++)
+
+
+	//체크박스 정리 (map->vector)
+	//int id = 0;
+	for (std::map<std::string, Object*>::iterator it = mapCheckBox.begin(); it != mapCheckBox.end(); it++)
 	{
-		it->second->GetPhysXData()->m_pUserData->CheckBoxID = i++;
+		m_vecCheckBox.push_back(it->second);
 	}
-	//for each(Object* pCheck in m_mapCheckBox)
-//{
-//
-//}
+	//Next 값 설정
+	for (int i = 0; i < m_vecCheckBox.size(); i++)
+	{
+		cCheckBox* p = (cCheckBox*)m_vecCheckBox[i];
+
+		p->GetPhysXData()->m_pUserData->CheckBoxID = i;
+
+		if (i + 1 == m_vecCheckBox.size())
+			p->SetNextCheckBox((cCheckBox*)m_vecCheckBox[0]);
+		else
+			p->SetNextCheckBox((cCheckBox*)m_vecCheckBox[i + 1]);
+	}
 }
 
 void cTrack::CreateTrackPhysX()
