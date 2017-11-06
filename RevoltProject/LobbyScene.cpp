@@ -41,6 +41,8 @@ void LobbyScene::Update()
 	if (m_pMap)	m_pMap->Update();
 	if (m_pLobby) m_pLobby->Update();
 
+	m_pLobby->LinkMap(m_pMap);
+
 	//cLight light;
 	//light.SetupPoint(0, C_WHITE, *g_pCamManager->GetCamPos(), 50);
 	//light.Switch(true);

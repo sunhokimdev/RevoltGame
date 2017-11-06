@@ -49,7 +49,15 @@ void TextManager::AddFont(LPCWSTR fontName, std::string key, int fontSize)
 	stFont.fd.PitchAndFamily = FF_DONTCARE;
 	wcscpy_s(stFont.fd.FaceName, fontName); // 글씨체
 
-	D3DXCreateFontIndirect(g_pD3DDevice, &stFont.fd, &stFont.font);
+	HRESULT hr;
+	hr = D3DXCreateFontIndirect(g_pD3DDevice, &stFont.fd, &stFont.font);
+	if (hr != S_OK)
+	{
+		std::string font = cStringUtil::ToString(fontName) + " 폰트가 존재하지 않아 굴림체를 사용합니다.";
+		MessageBoxA(g_hWnd, font.c_str(), "폰트없음", MB_OK);
+		wcscpy_s(stFont.fd.FaceName, L"굴림체"); // 글씨체
+		hr = D3DXCreateFontIndirect(g_pD3DDevice, &stFont.fd, &stFont.font);
+	}
 	m_mapFont[key] = stFont;
 }
 

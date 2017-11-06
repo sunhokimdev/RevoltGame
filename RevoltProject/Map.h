@@ -49,5 +49,7 @@ public:
 
 	void SetupThing();
 	void SetUpCamera(Camera* camera) { m_pCamera = camera; }
+
+	std::vector<std::string> GetMapName() { return m_vecMapName; }
 };
 

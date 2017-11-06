@@ -28,7 +28,6 @@ void MainGame::Setup()
 	g_pPhysX->InitNxPhysX();
 
 
-	g_pCamManager->Setup(NULL);
 	//======================================
 	// - written by 김선호
 	// - MainGame -> 초기화 작업
@@ -47,65 +46,69 @@ void MainGame::Setup()
 
 	g_SceneManager->AddScene("Lobby", new LobbyScene);
 	g_SceneManager->AddScene("Race", new RacingScene);
+	g_SceneManager->ChangeScene("Lobby");
 
-	g_SceneManager->ChangeScene("Race");
-
-
+	g_pCamManager->Setup(NULL);
 	g_pItemManager->Init();
 	g_pTimeManager->Setup();
+	//
+	//	SetAddSound();
+	//	MgrPhysXScene->setUserTriggerReport(new TriggerCallback());
+	IsUpdate = false;
 
-	SetAddSound();
-
-	MgrPhysXScene->setUserTriggerReport(new TriggerCallback());
-
+	g_pTextManager->AddFont(L"굴림체", "굴림체_7", 7);
 }
 
 void MainGame::Update()
 {
+	if (IsUpdate == true) return;
+	IsUpdate = true;
 	SAFE_UPDATE(g_pTimeManager);
 
-
-	//	MgrPhysXScene->checkResults(NX_RIGID_BODY_FINISHED, false);
-	//	MgrPhysXScene->fetchResults(NX_RIGID_BODY_FINISHED, false);
-
-
-
-
 	SAFE_UPDATE(g_SceneManager);
-
 	SAFE_UPDATE(g_pLightManager);
 	SAFE_UPDATE(g_pItemManager);
 
-	MgrPhysXScene->simulate((1.f/60.f));	//프레임 지정
+	//PhysX 시뮬 런
+	//g_pTimeManager->GetElapsedTime());//
+//	MgrPhysXScene->simulate((1.f/60.f));	//프레임 지정
+
+	MgrPhysXScene->simulate((float)(1.f/60.f));	//프레임 지정
 	MgrPhysXScene->flushStream();
 	MgrPhysXScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
+	//	MgrPhysXScene->checkResults(NX_RIGID_BODY_FINISHED, true);
 
+
+		//PhysX와 정보 동기화
 	if (g_SceneManager) g_SceneManager->LastUpdate();
 	SAFE_UPDATE(g_pCamManager);
 }
 
 void MainGame::Render()
 {
-	g_pD3DDevice->Clear(NULL, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(47, 121, 112), 1.0F, 0);
-	g_pD3DDevice->BeginScene();
-	// 그리기 시작
+	if (IsUpdate == false) return;
+	IsUpdate = false;
 
-	SAFE_RENDER(g_SceneManager);
+	SAFE_RENDER(g_pTimeManager);
 
+		g_pD3DDevice->Clear(NULL, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(47, 121, 112), 1.0F, 0);
+		g_pD3DDevice->BeginScene();
+		// 그리기 시작
+	
+		SAFE_RENDER(g_SceneManager);
+	
+	
+		//m_pGrid->Render();
+		g_pItemManager->Render();
 
-	//m_pGrid->Render();
-	g_pItemManager->Render();
+		g_pPhysX->Render();
+	
+		// 타임 매니저 랜더 해야함
+	
+		g_pTimeManager->Render();
 
-	g_pPhysX->Render();
-
-	// 타임 매니저 랜더 해야함
-
-	g_pD3DDevice->EndScene();
-	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
-
-	//PhysX 시뮬 런
-
-
+		g_pD3DDevice->EndScene();
+		g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 
 }
 
@@ -123,5 +126,3 @@ void MainGame::SetAddSound()
 	g_pSoundManager->LoadSound("Sound", "boxslide.wav", false);
 	g_pSoundManager->LoadSound("Sound", "honkgood.wav", false);
 }
-
-

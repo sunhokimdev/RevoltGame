@@ -104,6 +104,9 @@ void Lobby::Setup()
 	m_pInRoom = new cNetworkInRoom;
 	m_pInRoom->Setup();
 
+	m_pfileList = new ProfileList;
+	m_pMap = new Map;
+
 	SetUpUI();
 }
 
@@ -251,15 +254,42 @@ void Lobby::KeyUpdate()
 	{
 		if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_leftAndrightSelect];
-			g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);		// 카메라 변경
-			g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+		
+			m_pSelectMap->SetmapType(m_stateMapType);
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
+			//유저데이터에 자동차 선택한거 넘겨주고
+			//씬변경
+
+
+			g_SceneManager->ChangeScene("Race");
 			return;
 		}
-
+		else if (m_stateLobby == SELECT_CAR_LOBBY)
+		{
+			switch(m_leftAndrightSelect)
+			{
+				case 0:
+					m_pfileList->SetCarName("tc1");
+				break;
+				case 1:
+					m_pfileList->SetCarName("tc2");
+				break;
+				case 2:
+					m_pfileList->SetCarName("tc3");
+				break;
+				case 3:
+					m_pfileList->SetCarName("tc4");
+				break;
+				case 4:
+					m_pfileList->SetCarName("tc5");
+				break;
+				case 5:
+					m_pfileList->SetCarName("tc6");
+				break;
+			}
+		}
 		else if (m_stateLobby == MAIN_LOBBY2)
 		{
 			if (m_select == 2)

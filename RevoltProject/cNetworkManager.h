@@ -28,6 +28,8 @@ public:
 	void SetRoomName(std::string str);
 	void SetName(std::string str);
 
+	SYNTHESIZE(bool, m_isNetwork, IsNetwork);
+
 	std::string GetMsg() { return m_msg; }
 };
 
