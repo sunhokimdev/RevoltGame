@@ -22,8 +22,9 @@ protected:
 	/*	속도계	*/
 	int m_speedAlpha[7];
 	int m_alphaValue;		// 알파값 변경
+	int m_Rpm;
 
-	float m_fArrowDir;
+	float m_fArrowAngle;
 
 	LPDIRECT3DTEXTURE9		m_pTexture;			// 이미지 그리기 작업
 public:
@@ -33,8 +34,8 @@ public:
 	virtual void Update();
 	virtual void Render(LPD3DXSPRITE pSprite) override;
 
-	void SetRpmGauge(int rpm) { m_alphaValue = rpm; }
-
+	void SetRpmGauge(int rpm) { m_Rpm = rpm; }
+	void SetArrowAngle(float angle) { m_fArrowAngle = angle; }
 
 	SYNTHESIZE(bool, m_isMove, IsMove);
 	SYNTHESIZE(bool, m_isBoard, IsBoard);		

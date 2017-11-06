@@ -68,6 +68,7 @@ void RacingScene::Setup()
 	}
 
 	m_pInGameUI->LinkCarPt(vecCars[0]);
+	m_pInGameUI->LinkTrack(m_pTrack);
 	for (int i = 0; i < vecCars.size(); i++)
 	{
 		vecCars[i]->LinkTrackPt(m_pTrack);
@@ -94,14 +95,11 @@ void RacingScene::Update()
 		 else vecCars[i]->RunEnd();
 	}
 
-	UpdateCamera();
 	if (m_pInGameUI)
 	{
 		m_pInGameUI->Update();
 	}
 	
-
-	LastUpdate();
 }
 
 
@@ -133,11 +131,13 @@ void RacingScene::LastUpdate()
 	{
 		p->LastUpdate();
 	}
+
+	UpdateCamera();
 }
 
 void RacingScene::UpdateCamera()
 {
-
+//	return;
 #define CAM_X (*camPos).x
 #define CAM_Y (*camPos).y
 #define CAM_Z (*camPos).z

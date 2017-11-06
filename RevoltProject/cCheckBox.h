@@ -8,6 +8,6 @@ public:
 	cCheckBox();
 	~cCheckBox();
 
-	void Update();
+//	void Update();
 };
 

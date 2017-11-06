@@ -5,7 +5,6 @@
 
 #include "NxCooking.h"
 
-
 cPhysXManager::cPhysXManager()
 {
 }
@@ -52,6 +51,7 @@ BOOL cPhysXManager::InitNxPhysX()
 	PHYSXDATA*  newPhysXUserData = new PHYSXDATA;
 	newPhysXUserData->Reset();
 	SetPhysXData(newPhysXUserData);
+
 
 	E_PHYSX_MATERIAL_NONE; {/*default*/}
 	E_PHYSX_MATERIAL_MAP; {
@@ -620,9 +620,9 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 
 		wheelDesc[i].wheelApproximation = 10;
 		wheelDesc[i].wheelRadius = 0.1f;
-		wheelDesc[i].wheelWidth = 0.01f;
+		wheelDesc[i].wheelWidth = 0.05f;
 		wheelDesc[i].wheelSuspension = 0.05f;
-		wheelDesc[i].springRestitution = 500;
+		wheelDesc[i].springRestitution = 800;
 		wheelDesc[i].springDamping = 500;
 		wheelDesc[i].springBias = 0.05f;
 
@@ -631,8 +631,8 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 
 
 		//¹ÙÄûÀÇ ¸¶Âû·Â
-		wheelDesc[i].frictionToFront = 3.f;
-		wheelDesc[i].frictionToSide = 1.f;
+		wheelDesc[i].frictionToFront = 2.f;
+		wheelDesc[i].frictionToSide = 2.f;
 
 		vehicleDesc.carWheels.pushBack(&wheelDesc[i]);
 	}

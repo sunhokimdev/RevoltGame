@@ -17,6 +17,7 @@ cCar::cCar()
 	m_totlaTimeCount = 0.f;
 	m_bastRapTimeCount = -1.0f;
 	isFliping = false;
+	m_nextCheckBoxID = 0;
 }
 
 cCar::~cCar()
@@ -474,8 +475,8 @@ void cCar::CtrlPlayer()
 				if (value < 0.5) value = 0.5f;
 				wheel->setAngle(targetAngle * value);
 			}
-			if (wheel->getRpm() < m_maxRpm)	wheel->tick(false, targetPower, m_breakPower, 1.f / 60.f);
-			else wheel->tick(false, 0, m_breakPower, 1.f / 60.f);
+			if (wheel->getRpm() < m_maxRpm)	wheel->tick(false, targetPower, m_breakPower, g_pTimeManager->GetElapsedTime());
+			else wheel->tick(false, 0, m_breakPower, g_pTimeManager->GetElapsedTime());
 		}
 
 		//아이템사용

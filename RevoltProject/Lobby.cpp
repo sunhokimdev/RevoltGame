@@ -257,10 +257,6 @@ void Lobby::KeyUpdate()
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
-
-			//유저데이터에 자동차 선택한거 넘겨주고
-			//씬변경
-			//g_SceneManager->ChangeScene("Race");
 			return;
 		}
 
@@ -304,6 +300,7 @@ void Lobby::KeyUpdate()
 			g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			m_time = 0.0f;
 			m_select = 0;
+
 			if(m_stateLobby != VIEW_CAR_LOBBY)
 				m_leftAndrightSelect = 0;
 		}
@@ -394,14 +391,14 @@ void Lobby::SetUpUI()
 	pImageView4->SetXSize(4.0f);
 	pImageView4->SetYSize(4.0f);
 	pImageView4->SetIsBoard(true);
-	pImageView4->SetTexture("Maps/Front/Image/blueRing.png");
+	pImageView4->SetTexture("UIImage/blueRing.png");
 
 	UIImageView* pImageView5 = new UIImageView;
 	pImageView5->SetPosition(120, 20);
 	pImageView5->SetXSize(24.0f);
 	pImageView5->SetYSize(1.2f);
 	pImageView5->SetIsBoard(true);
-	pImageView5->SetTexture("Maps/Front/Image/ring.png");
+	pImageView5->SetTexture("UIImage/ring.png");
 
 	UITextImageView* pImageView6 = new UITextImageView;
 	pImageView6->SetIndex(INT_MAX);
@@ -409,20 +406,20 @@ void Lobby::SetUpUI()
 	pImageView6->SetXSize(1.5f);
 	pImageView6->SetYSize(1.5f);
 	pImageView6->SetText("SELECT PROFILE");
-	pImageView6->SetTexture("Maps/Front/Image/font1.png");
+	pImageView6->SetTexture("UIImage/font1.png");
 
 	UIImageView* pImageView7 = new UIImageView;
 	pImageView7->SetPosition(18, 18);
 	pImageView7->SetXSize(1.2f);
 	pImageView7->SetYSize(1.2f);
-	pImageView7->SetTexture("Maps/Front/Image/blueflag.png");
+	pImageView7->SetTexture("UIImage/blueflag.png");
 
 	UIImageView* pImageView8 = new UIImageView;
 	pImageView8->SetPosition(350, 180);
 	pImageView8->SetXSize(15.0f);
 	pImageView8->SetYSize(1.2f);
 	pImageView8->SetIsBoard(true);
-	pImageView8->SetTexture("Maps/Front/Image/ring.png");
+	pImageView8->SetTexture("UIImage/ring.png");
 
 	UITextImageView* pImageView9 = new UITextImageView;
 	pImageView9->SetPosition(90, 25);
@@ -434,38 +431,38 @@ void Lobby::SetUpUI()
 	pImageView9->SetXSize(1.0f);
 	pImageView9->SetYSize(1.0f);
 	pImageView9->SetColor(D3DCOLOR_ARGB(255, 242, 150, 97));
-	pImageView9->SetTexture("Maps/Front/Image/font2.png");
+	pImageView9->SetTexture("UIImage/font2.png");
 
 	UIImageView* pImageView10 = new UIImageView;
 	pImageView10->SetPosition(220, 22);
 	pImageView10->SetXSize(1.5f);
 	pImageView10->SetYSize(1.5f);
-	pImageView10->SetTexture("Maps/Front/Image/arrowright.png");
+	pImageView10->SetTexture("UIImage/arrowright.png");
 
 	UIImageView* pImageView11 = new UIImageView;
 	pImageView11->SetPosition(30, 22);
 	pImageView11->SetXSize(1.5f);
 	pImageView11->SetYSize(1.5f);
-	pImageView11->SetTexture("Maps/Front/Image/arrowleft.png");
+	pImageView11->SetTexture("UIImage/arrowleft.png");
 
 	UIImageView* pImageView12 = new UIImageView;
 	pImageView12->SetPosition(50, 100);
 	pImageView12->SetIsBoard(true);
 	pImageView12->SetXSize(8.0f);
 	pImageView12->SetYSize(12.0f);
-	pImageView12->SetTexture("Maps/Front/Image/ring.png");
+	pImageView12->SetTexture("UIImage/ring.png");
 
 	UIImageView* pImageView13 = new UIImageView;
 	pImageView13->SetPosition(70, 10);
 	pImageView13->SetXSize(1.5f);
 	pImageView13->SetYSize(1.5f);
-	pImageView13->SetTexture("Maps/Front/Image/arrowup.png");
+	pImageView13->SetTexture("UIImage/arrowup.png");
 
 	UIImageView* pImageView14 = new UIImageView;
 	pImageView14->SetPosition(70, 190);
 	pImageView14->SetXSize(1.5f);
 	pImageView14->SetYSize(1.5f);
-	pImageView14->SetTexture("Maps/Front/Image/arrowdown.png");
+	pImageView14->SetTexture("UIImage/arrowdown.png");
 
 	pImageView4->AddChild(pImageView5);
 	pImageView4->AddChild(pImageView6);
@@ -484,50 +481,50 @@ void Lobby::SetUpUI()
 
 	UIImageView* pImageView100 = new UIImageView;
 	pImageView100->SetPosition(-10, -140);
-	pImageView100->SetTexture("Maps/Front/Image/revoltrogo.png");
+	pImageView100->SetTexture("UIImage/revoltrogo.png");
 
 	UIImageView* pImageView110 = new UIImageView;
 	pImageView110->SetPosition(400, 250);
 	pImageView110->SetIsBoard(true);
 	pImageView110->SetXSize(11.5f);
 	pImageView110->SetYSize(9.5f);
-	pImageView110->SetTexture("Maps/Front/Image/ring.png");
+	pImageView110->SetTexture("UIImage/ring.png");
 
 	UITextImageView* pImageView120 = new UITextImageView;
 	pImageView120->SetIndex(0);
 	pImageView120->SetPosition(50, 25);
 	pImageView120->SetText("Start Game");
-	pImageView120->SetTexture("Maps/Front/Image/font2.png");
+	pImageView120->SetTexture("UIImage/font2.png");
 
 	UITextImageView* pImageView130 = new UITextImageView;
 	pImageView130->SetIndex(1);
 	pImageView130->SetPosition(50, 50);
 	pImageView130->SetText("Best Trial Times");
-	pImageView130->SetTexture("Maps/Front/Image/font2.png");
+	pImageView130->SetTexture("UIImage/font2.png");
 
 	UITextImageView* pImageView140 = new UITextImageView;
 	pImageView140->SetIndex(2);
 	pImageView140->SetPosition(50, 75);
 	pImageView140->SetText("Progress Table");
-	pImageView140->SetTexture("Maps/Front/Image/font2.png");
+	pImageView140->SetTexture("UIImage/font2.png");
 
 	UITextImageView* pImageView150 = new UITextImageView;
 	pImageView150->SetIndex(3);
 	pImageView150->SetPosition(50, 100);
 	pImageView150->SetText("Options");
-	pImageView150->SetTexture("Maps/Front/Image/font2.png");
+	pImageView150->SetTexture("UIImage/font2.png");
 
 	UITextImageView* pImageView160 = new UITextImageView;
 	pImageView160->SetIndex(4);
 	pImageView160->SetPosition(50, 125);
 	pImageView160->SetText("Select Profile");
-	pImageView160->SetTexture("Maps/Front/Image/font2.png");
+	pImageView160->SetTexture("UIImage/font2.png");
 
 	UITextImageView* pImageView170 = new UITextImageView;
 	pImageView170->SetIndex(5);
 	pImageView170->SetPosition(50, 150);
 	pImageView170->SetText("Quit");
-	pImageView170->SetTexture("Maps/Front/Image/font2.png");
+	pImageView170->SetTexture("UIImage/font2.png");
 
 	pImageView110->AddChild(pImageView120);
 	pImageView110->AddChild(pImageView130);
@@ -543,50 +540,50 @@ void Lobby::SetUpUI()
 
 	UIImageView* pImageView18 = new UIImageView;
 	pImageView18->SetPosition(-10, -140);
-	pImageView18->SetTexture("Maps/Front/Image/revoltrogo.png");
+	pImageView18->SetTexture("UIImage/revoltrogo.png");
 
 	UIImageView* pImageView19 = new UIImageView;
 	pImageView19->SetPosition(400, 250);
 	pImageView19->SetIsBoard(true);
 	pImageView19->SetXSize(11.5f);
 	pImageView19->SetYSize(9.5f);
-	pImageView19->SetTexture("Maps/Front/Image/ring.png");
+	pImageView19->SetTexture("UIImage/ring.png");
 
 	UITextImageView* pImageView20 = new UITextImageView;
 	pImageView20->SetIndex(0);
 	pImageView20->SetPosition(50, 25);
 	pImageView20->SetText("Start Race");
-	pImageView20->SetTexture("Maps/Front/Image/font2.png");
+	pImageView20->SetTexture("UIImage/font2.png");
 
 	UITextImageView* pImageView21 = new UITextImageView;
 	pImageView21->SetIndex(1);
 	pImageView21->SetPosition(50, 50);
 	pImageView21->SetText("Championship");
-	pImageView21->SetTexture("Maps/Front/Image/font2.png");
+	pImageView21->SetTexture("UIImage/font2.png");
 
 	UITextImageView* pImageView22 = new UITextImageView;
 	pImageView22->SetIndex(2);
 	pImageView22->SetPosition(50, 75);
 	pImageView22->SetText("Multi-Player");
-	pImageView22->SetTexture("Maps/Front/Image/font2.png");
+	pImageView22->SetTexture("UIImage/font2.png");
 
 	UITextImageView* pImageView23 = new UITextImageView;
 	pImageView23->SetIndex(3);
 	pImageView23->SetPosition(50, 100);
 	pImageView23->SetText("Time Trial");
-	pImageView23->SetTexture("Maps/Front/Image/font2.png");
+	pImageView23->SetTexture("UIImage/font2.png");
 
 	UITextImageView* pImageView24 = new UITextImageView;
 	pImageView24->SetIndex(4);
 	pImageView24->SetPosition(50, 125);
 	pImageView24->SetText("Practice");
-	pImageView24->SetTexture("Maps/Front/Image/font2.png");
+	pImageView24->SetTexture("UIImage/font2.png");
 
 	UITextImageView* pImageView25 = new UITextImageView;
 	pImageView25->SetIndex(5);
 	pImageView25->SetPosition(50, 150);
 	pImageView25->SetText("Stunt Arena");
-	pImageView25->SetTexture("Maps/Front/Image/font2.png");
+	pImageView25->SetTexture("UIImage/font2.png");
 
 	pImageView19->AddChild(pImageView20);
 	pImageView19->AddChild(pImageView21);
@@ -600,38 +597,38 @@ void Lobby::SetUpUI()
 
 	UIImageView* pImageView26 = new UIImageView;
 	pImageView26->SetPosition(-10, -140);
-	pImageView26->SetTexture("Maps/Front/Image/revoltrogo.png");
+	pImageView26->SetTexture("UIImage/revoltrogo.png");
 
 	UIImageView* pImageView27 = new UIImageView;
 	pImageView27->SetPosition(400, 250);
 	pImageView27->SetIsBoard(true);
 	pImageView27->SetXSize(11.5f);
 	pImageView27->SetYSize(9.5f);
-	pImageView27->SetTexture("Maps/Front/Image/ring.png");
+	pImageView27->SetTexture("UIImage/ring.png");
 
 	UITextImageView* pImageView28 = new UITextImageView;
 	pImageView28->SetIndex(0);
 	pImageView28->SetPosition(50, 25);
 	pImageView28->SetText("Simulation");
-	pImageView28->SetTexture("Maps/Front/Image/font2.png");
+	pImageView28->SetTexture("UIImage/font2.png");
 
 	UITextImageView* pImageView29 = new UITextImageView;
 	pImageView29->SetIndex(1);
 	pImageView29->SetPosition(50, 50);
 	pImageView29->SetText("Arcade");
-	pImageView29->SetTexture("Maps/Front/Image/font2.png");
+	pImageView29->SetTexture("UIImage/font2.png");
 
 	UITextImageView* pImageView30 = new UITextImageView;
 	pImageView30->SetIndex(2);
 	pImageView30->SetPosition(50, 75);
 	pImageView30->SetText("Console");
-	pImageView30->SetTexture("Maps/Front/Image/font2.png");
+	pImageView30->SetTexture("UIImage/font2.png");
 
 	UITextImageView* pImageView31 = new UITextImageView;
 	pImageView31->SetIndex(3);
 	pImageView31->SetPosition(50, 100);
 	pImageView31->SetText("Junior RC");
-	pImageView31->SetTexture("Maps/Front/Image/font2.png");
+	pImageView31->SetTexture("UIImage/font2.png");
 
 	pImageView27->AddChild(pImageView28);
 	pImageView27->AddChild(pImageView29);

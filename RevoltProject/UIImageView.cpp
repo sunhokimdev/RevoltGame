@@ -18,6 +18,7 @@ UIImageView::UIImageView()
 	, m_isItem(false)
 	, m_isSpeed(false)
 	, m_isSpeedFrame(false)
+	, m_isArrowDir(false)
 	, LeftNoiseX(LEFT_NOISE_X)
 	, RightNoiseX(RIGHT_NOISE_X)
 	, UpNoiseY(-256.0f)
@@ -27,6 +28,7 @@ UIImageView::UIImageView()
 	, m_alpha(0)
 	, m_updateTIme(500)
 	, m_alphaValue(0)
+	, m_fArrowAngle(0.0f)
 
 {
 	for (int i = 0; i < sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]); i++)
@@ -100,7 +102,17 @@ void UIImageView::Update()
 	}
 	else if (m_isSpeed)
 	{
+		m_Rpm = m_Rpm * 7;
+
+		for (int i = 0; i < sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]); i++)
+		{
+			m_speedAlpha[i] = m_Rpm / ((i * i) + 1) ;
 		
+			if (m_speedAlpha[i] >= 255)
+			{
+				m_speedAlpha[i] = 255;
+			}
+		}
 	}
 
 
@@ -192,7 +204,7 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 		SetRect(&rc, 38, 40, 64, 64);
 		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(220, 255, 255, 255));
 
-	}
+	} // << if(m_isBoard) end
 	else if (m_isNoise && m_isMove)
 	{
 		RECT rc;
@@ -295,6 +307,28 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 		SetRect(&rc, 132, 0, 154, 22);
 		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(m_speedAlpha[6], 255, 255, 255));
 
+	}	// << if (m_isSpeedFrame || m_isSpeed) end
+	else if (m_isArrowDir)
+	{
+		RECT rc;
+		
+		D3DXMATRIXA16 matWorld, matR, matT1, matT2;
+		D3DXMatrixIdentity(&matWorld);
+		D3DXMatrixIdentity(&matR);
+		D3DXMatrixIdentity(&matT1);
+		D3DXMatrixIdentity(&matT2);
+	
+		// 이미지가 제자리에서 회전하기위해 위치 보정(D3DXMatrixTranslation 2번)
+		D3DXMatrixTranslation(&matT1, -m_stSize.nWitdh / 2, -m_stSize.nHeight / 2, 0.0f);
+		D3DXMatrixRotationZ(&matR, m_fArrowAngle);
+		D3DXMatrixTranslation(&matT2, m_stSize.nWitdh / 2, m_stSize.nHeight / 2, 0.0f);
+		
+		matWorld = matWorld * matT1 * matR * matT2 * m_matWorld;
+		
+		pSprite->SetTransform(&matWorld);
+		SetRect(&rc, 0, 0, m_stSize.nWitdh, m_stSize.nHeight);
+		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
+
 	}
 	else if ((!m_isBoard || !m_isNoise) && !m_isMove)
 	{
@@ -306,18 +340,6 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 		pSprite->SetTransform(&tMat);
 		SetRect(&rc, 0, 0, m_stSize.nWitdh, m_stSize.nHeight);
 		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
-	}
-	else if (m_isArrowDir)
-	{
-		RECT rc;
-
-		D3DXMATRIXA16 matWorld, matR;
-		D3DXMatrixIdentity(&matWorld);
-
-		//D3DXMatrixRotationZ(&matR, )
-
-		//pSprite->SetTransform(&matWorld);
-
 	}
 
 	pSprite->End();

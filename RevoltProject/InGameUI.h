@@ -6,6 +6,7 @@ class UIObject;
 class UITextImageView;
 class UIImageView;
 class cCar;
+class cTrack;
 
 //===================================================================
 // - written by 김선호
@@ -66,12 +67,21 @@ private:
 	UITextImageView* m_pMinOneth;	  
 	UITextImageView* m_pMinTenth;	  
 
+	// 속도계
 	UITextImageView* pSpeed;
 	UITextImageView* pSpeed2;
 	UIImageView* pSpeedometerImage;
+
+	// 등수, 방향 화살표
+	UITextImageView* pITV_Rank;
+	UITextImageView* pITV_Rank2;
 	UIImageView* pIV_arrowDir;
 
+	int m_arrowIndex;
+	cTrack* m_pTrack;
+	// 차 정보
 	cCar* m_pCar;
+
 
 public:
 	InGameUI();
@@ -136,6 +146,7 @@ public:
 	SYNTHESIZE(int, m_MinTenth, MinTenth);
 
 	void LinkCarPt(cCar* car) { m_pCar = car; }
+	void LinkTrack(cTrack* track) { m_pTrack = track; }
 
 };
 

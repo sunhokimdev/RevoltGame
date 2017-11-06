@@ -19,7 +19,7 @@ MainGame::MainGame()
 
 MainGame::~MainGame()
 {
-		
+
 }
 
 void MainGame::Setup()
@@ -27,7 +27,7 @@ void MainGame::Setup()
 	//PhysX 초가화
 	g_pPhysX->InitNxPhysX();
 
-	
+
 	g_pCamManager->Setup(NULL);
 	//======================================
 	// - written by 김선호
@@ -41,7 +41,7 @@ void MainGame::Setup()
 	// SceneManager에서 통합 씬처리
 	// Camera 클래스 매니저로 등록
 	//======================================
-	
+
 	//m_pGrid = new Grid;
 	//m_pGrid->Setup();
 
@@ -57,20 +57,36 @@ void MainGame::Setup()
 	SetAddSound();
 
 	MgrPhysXScene->setUserTriggerReport(new TriggerCallback());
+
 }
 
 void MainGame::Update()
 {
-	SAFE_UPDATE(g_pLightManager);
-	SAFE_UPDATE(g_pCamManager);
-	SAFE_UPDATE(g_SceneManager);
-	SAFE_UPDATE(g_pItemManager);
 	SAFE_UPDATE(g_pTimeManager);
+
+
+	//	MgrPhysXScene->checkResults(NX_RIGID_BODY_FINISHED, false);
+	//	MgrPhysXScene->fetchResults(NX_RIGID_BODY_FINISHED, false);
+
+
+
+
+	SAFE_UPDATE(g_SceneManager);
+
+	SAFE_UPDATE(g_pLightManager);
+	SAFE_UPDATE(g_pItemManager);
+
+	MgrPhysXScene->simulate((1.f/60.f));	//프레임 지정
+	MgrPhysXScene->flushStream();
+	MgrPhysXScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
+
+	if (g_SceneManager) g_SceneManager->LastUpdate();
+	SAFE_UPDATE(g_pCamManager);
 }
 
 void MainGame::Render()
 {
-	g_pD3DDevice->Clear(NULL, NULL,	D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,	D3DCOLOR_XRGB(47, 121, 112),1.0F, 0);
+	g_pD3DDevice->Clear(NULL, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(47, 121, 112), 1.0F, 0);
 	g_pD3DDevice->BeginScene();
 	// 그리기 시작
 
@@ -88,20 +104,20 @@ void MainGame::Render()
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 
 	//PhysX 시뮬 런
-	MgrPhysXScene->simulate((float)(1.0f/60.f));	//프레임 지정
-	MgrPhysXScene->flushStream();
-	MgrPhysXScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
+
+
+
 }
 
 void MainGame::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	
+
 }
 
 void MainGame::SetAddSound()
 {
 	g_pSoundManager->LoadSound("Sound", "menuUpDown.wav", false);
-	g_pSoundManager->LoadSound("Sound", "menuNext.wav",false);
+	g_pSoundManager->LoadSound("Sound", "menuNext.wav", false);
 	g_pSoundManager->LoadSound("Sound", "menuPrev.wav", false);
 	g_pSoundManager->LoadSound("Sound", "menuLeftRight.wav", false);
 	g_pSoundManager->LoadSound("Sound", "boxslide.wav", false);

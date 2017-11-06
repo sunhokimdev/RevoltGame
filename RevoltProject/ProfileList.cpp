@@ -29,14 +29,14 @@ UIImageView* ProfileList::GetProfileList()
 	pImageView4->SetXSize(4.0f);
 	pImageView4->SetYSize(4.0f);
 	pImageView4->SetIsBoard(true);
-	pImageView4->SetTexture("Maps/Front/Image/blueRing.png");
+	pImageView4->SetTexture("UIImage/blueRing.png");
 
 	UIImageView* pImageView5 = new UIImageView;
 	pImageView5->SetPosition(120, 20);
 	pImageView5->SetXSize(24.0f);
 	pImageView5->SetYSize(1.2f);
 	pImageView5->SetIsBoard(true);
-	pImageView5->SetTexture("Maps/Front/Image/ring.png");
+	pImageView5->SetTexture("UIImage/ring.png");
 
 	UITextImageView* pImageView6 = new UITextImageView;
 	pImageView6->SetIndex(INT_MAX);
@@ -44,20 +44,20 @@ UIImageView* ProfileList::GetProfileList()
 	pImageView6->SetXSize(1.5f);
 	pImageView6->SetYSize(1.5f);
 	pImageView6->SetText("SELECT PROFILE");
-	pImageView6->SetTexture("Maps/Front/Image/font1.png");
+	pImageView6->SetTexture("UIImage/font1.png");
 
 	UIImageView* pImageView7 = new UIImageView;
 	pImageView7->SetPosition(18, 18);
 	pImageView7->SetXSize(1.2f);
 	pImageView7->SetYSize(1.2f);
-	pImageView7->SetTexture("Maps/Front/Image/blueflag.png");
+	pImageView7->SetTexture("UIImage/blueflag.png");
 
 	UIImageView* pImageView8 = new UIImageView;
 	pImageView8->SetPosition(350, 180);
 	pImageView8->SetXSize(15.0f);
 	pImageView8->SetYSize(1.2f);
 	pImageView8->SetIsBoard(true);
-	pImageView8->SetTexture("Maps/Front/Image/ring.png");
+	pImageView8->SetTexture("UIImage/ring.png");
 
 	UITextImageView* pImageView9 = new UITextImageView;
 	pImageView9->SetPosition(90, 25);
@@ -69,38 +69,38 @@ UIImageView* ProfileList::GetProfileList()
 	pImageView9->SetXSize(1.0f);
 	pImageView9->SetYSize(1.0f);
 	pImageView9->SetColor(D3DCOLOR_ARGB(255, 242, 150, 97));
-	pImageView9->SetTexture("Maps/Front/Image/font2.png");
+	pImageView9->SetTexture("UIImage/font2.png");
 
 	UIImageView* pImageView10 = new UIImageView;
 	pImageView10->SetPosition(220, 22);
 	pImageView10->SetXSize(1.5f);
 	pImageView10->SetYSize(1.5f);
-	pImageView10->SetTexture("Maps/Front/Image/arrowright.png");
+	pImageView10->SetTexture("UIImage/arrowright.png");
 
 	UIImageView* pImageView11 = new UIImageView;
 	pImageView11->SetPosition(30, 22);
 	pImageView11->SetXSize(1.5f);
 	pImageView11->SetYSize(1.5f);
-	pImageView11->SetTexture("Maps/Front/Image/arrowleft.png");
+	pImageView11->SetTexture("UIImage/arrowleft.png");
 
 	UIImageView* pImageView12 = new UIImageView;
 	pImageView12->SetPosition(50, 100);
 	pImageView12->SetIsBoard(true);
 	pImageView12->SetXSize(8.0f);
 	pImageView12->SetYSize(12.0f);
-	pImageView12->SetTexture("Maps/Front/Image/ring.png");
+	pImageView12->SetTexture("UIImage/ring.png");
 
 	UIImageView* pImageView13 = new UIImageView;
 	pImageView13->SetPosition(70, 10);
 	pImageView13->SetXSize(1.5f);
 	pImageView13->SetYSize(1.5f);
-	pImageView13->SetTexture("Maps/Front/Image/arrowup.png");
+	pImageView13->SetTexture("UIImage/arrowup.png");
 
 	UIImageView* pImageView14 = new UIImageView;
 	pImageView14->SetPosition(70, 190);
 	pImageView14->SetXSize(1.5f);
 	pImageView14->SetYSize(1.5f);
-	pImageView14->SetTexture("Maps/Front/Image/arrowdown.png");
+	pImageView14->SetTexture("UIImage/arrowdown.png");
 
 	UITextImageView* pImageViewProfileList = new UITextImageView;
 	pImageViewProfileList->SetPosition(50, 100);
@@ -111,7 +111,7 @@ UIImageView* ProfileList::GetProfileList()
 	pImageViewProfileList->SetXSize(1.0f);
 	pImageViewProfileList->SetYSize(1.0f);
 	pImageViewProfileList->SetColor(D3DCOLOR_ARGB(255, 100, 200, 150));
-	pImageViewProfileList->SetTexture("Maps/Front/Image/font2.png");
+	pImageViewProfileList->SetTexture("UIImage/font2.png");
 
 	pImageView4->AddChild(pImageView5);
 	pImageView4->AddChild(pImageView6);
