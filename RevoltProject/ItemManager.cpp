@@ -32,7 +32,7 @@ void ItemManager::Init()
 	box3 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(4, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
 	box4 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(20, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
 
-	m_vecItem.resize(20);
+	//m_vecItem.resize(20);
 
 	for (int i = 0;i < 10;i++)
 	{
@@ -42,13 +42,13 @@ void ItemManager::Init()
 		m_vecItem.push_back(pItem);
 	}
 
-	for (int i = 0;i < 10;i++)
-	{
-		cItem* pItem = new cGravityball;
-		pItem->Setup();
-		pItem->SetIsUse(false);
-		m_vecItem.push_back(pItem);
-	}
+	//for (int i = 0;i < 10;i++)
+	//{
+	//	cItem* pItem = new cGravityball;
+	//	pItem->Setup();
+	//	pItem->SetIsUse(false);
+	//	m_vecItem.push_back(pItem);
+	//}
 
 	InitCollisionGroup();
 }
@@ -126,8 +126,8 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 		break;
 		case ITEM_GRAVITY:
 		{
-			m_vecItem[m_index + 10]->Create(carDir, carPos);
-			m_vecItem[m_index + 10]->SetIsUse(true);
+			//m_vecItem[m_index + 10]->Create(carDir, carPos);
+			//m_vecItem[m_index + 10]->SetIsUse(true);
 		}
 		break;
 		default: break;
