@@ -32,16 +32,16 @@ void cNetworkInRoom::Setup()
 	m_pMapName->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
 	m_pMapName->SetXSize(1.5f);
 	m_pMapName->SetYSize(1.5f);
-	m_pMapName->SetTexture("Maps/Front/Image/font2.png");
+	m_pMapName->SetTexture("UIImage/font2.png");
 
 	m_pChating = new UITextImageView;
 	m_pChating->SetIsChatingText(true);
-	m_pChating->SetTexture("Maps/Front/Image/font2.png");
+	m_pChating->SetTexture("UIImage/font2.png");
 	m_pChating->SetPosition(30, 20);
 	m_pChating->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
 
 	m_pText = new UITextImageView;
-	m_pText->SetTexture("Maps/Front/Image/font2.png");
+	m_pText->SetTexture("UIImage/font2.png");
 	m_pText->SetPosition(30, 20);
 	m_pText->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
 
@@ -52,23 +52,23 @@ void cNetworkInRoom::Setup()
 	pImageView1->SetXSize(4.0f);
 	pImageView1->SetYSize(4.0f);
 	pImageView1->SetIsBoard(true);
-	pImageView1->SetTexture("Maps/Front/Image/blueRing.png");
+	pImageView1->SetTexture("UIImage/blueRing.png");
 
 	UIImageView* pImageView2 = new UIImageView;
 	pImageView2->SetXSize(1.2f);
 	pImageView2->SetYSize(1.2f);
 	pImageView2->SetPosition(17, 17);
-	pImageView2->SetTexture("Maps/Front/Image/bluemulti.png");
+	pImageView2->SetTexture("UIImage/bluemulti.png");
 
 	UIImageView* pImageView3 = new UIImageView;
 	pImageView3->SetPosition(120, 25);
 	pImageView3->SetIsBoard(true);
 	pImageView3->SetXSize(30.0f);
 	pImageView3->SetYSize(1.0f);
-	pImageView3->SetTexture("Maps/Front/Image/ring.png");
+	pImageView3->SetTexture("UIImage/ring.png");
 
 	UITextImageView* pImageView4 = new UITextImageView;
-	pImageView4->SetTexture("Maps/Front/Image/font1.png");
+	pImageView4->SetTexture("UIImage/font1.png");
 	pImageView4->SetText("MULTIPLAYER ROOM");
 	pImageView4->SetXSize(1.5f);
 	pImageView4->SetYSize(1.5f);
@@ -79,21 +79,21 @@ void cNetworkInRoom::Setup()
 	pImageView5->SetIsBoard(true);
 	pImageView5->SetXSize(30.0f);
 	pImageView5->SetYSize(21.0f);
-	pImageView5->SetTexture("Maps/Front/Image/ring.png");
+	pImageView5->SetTexture("UIImage/ring.png");
 
 	UIImageView* pImageView6 = new UIImageView;
 	pImageView6->SetPosition(520, 0);
 	pImageView6->SetIsBoard(true);
 	pImageView6->SetXSize(11.0f);
 	pImageView6->SetYSize(27.0f);
-	pImageView6->SetTexture("Maps/Front/Image/ring.png");
+	pImageView6->SetTexture("UIImage/ring.png");
 
 	UIImageView* pImageView7 = new UIImageView;
 	pImageView7->SetPosition(70, 540);
 	pImageView7->SetIsBoard(true);
 	pImageView7->SetXSize(30.0f);
 	pImageView7->SetYSize(0.5f);
-	pImageView7->SetTexture("Maps/Front/Image/ring.png");
+	pImageView7->SetTexture("UIImage/ring.png");
 
 	m_pRootUI->AddChild(pImageView1);
 	m_pRootUI->AddChild(pImageView5);
@@ -142,7 +142,7 @@ void cNetworkInRoom::SetResetCharText()
 void cNetworkInRoom::SetText(std::string str)
 {
 	UITextImageView *pText = new UITextImageView;
-	pText->SetTexture("Maps/Front/Image/font2.png");
+	pText->SetTexture("UIImage/font2.png");
 	pText->SetPosition(30, 20 * (m_index+1));
 	pText->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
 	

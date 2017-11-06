@@ -66,11 +66,19 @@ private:
 	UITextImageView* m_pMinOneth;	  
 	UITextImageView* m_pMinTenth;	  
 
+	// 속도계
 	UITextImageView* pSpeed;
 	UITextImageView* pSpeed2;
 	UIImageView* pSpeedometerImage;
+
+	// 등수, 방향 화살표
+	UITextImageView* pITV_Rank;
+	UITextImageView* pITV_Rank2;
 	UIImageView* pIV_arrowDir;
 
+	int arrowIndex;
+
+	// 차 정보
 	cCar* m_pCar;
 
 public:
