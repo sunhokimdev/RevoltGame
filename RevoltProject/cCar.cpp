@@ -17,6 +17,7 @@ cCar::cCar()
 	m_totlaTimeCount = 0.f;
 	m_bastRapTimeCount = -1.0f;
 	isFliping = false;
+	m_nextCheckBoxID = 0;
 }
 
 cCar::~cCar()

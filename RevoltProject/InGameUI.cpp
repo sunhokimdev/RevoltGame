@@ -3,6 +3,9 @@
 #include "UITextImageView.h"
 #include "UIImageView.h"
 #include "cCar.h"
+#include "cTrack.h"
+#include "Object.h"
+#include "cCheckBox.h"
 
 #define TIMEMAX 60
 
@@ -39,7 +42,7 @@ InGameUI::InGameUI()
 	, m_LabMinTenth(FONT2_NUM0)
 	, m_select(99)
 	, m_LabCnt(0)
-	, arrowIndex(0)
+	, m_arrowIndex(0)
 {
 }
 
@@ -718,22 +721,16 @@ void InGameUI::UpdateLabTime()
 }
 void InGameUI::UpdateArrowDir()
 {
-	std::vector<D3DXVECTOR3> tar;		// 화살표 포인트
-	tar.push_back(D3DXVECTOR3(142.0f, 0.0f, -38.0f));
-	tar.push_back(D3DXVECTOR3(180.0f, 0.0f, -65.0f));
-	tar.push_back(D3DXVECTOR3(144.0f, 0.0f, -100.0f));
-	tar.push_back(D3DXVECTOR3(114.0f, 0.0f, -142.0f));
-	tar.push_back(D3DXVECTOR3( 52.0f, 0.0f, -143.0f));
-	tar.push_back(D3DXVECTOR3(-28.0f, 0.0f, -109.0f));
-	tar.push_back(D3DXVECTOR3(-30.0f, 0.0f, -44.0f));
-	tar.push_back(D3DXVECTOR3(-1.0f, 0.0f, -12.0f));
+	int curboxID = m_pCar->GetNextCheckBoxID();
+	cCheckBox* checkboxPt = (cCheckBox*)m_pTrack->GetCheckBoxs()[curboxID];
+	D3DXVECTOR3 posCheckbox = checkboxPt->GetPosition();
+	D3DXVECTOR3 tar = posCheckbox;
+	tar.y = 0.0f;
 
 	D3DXVECTOR3 pos = D3DXVECTOR3(m_pCar->GetPosition().x, 0.0f, m_pCar->GetPosition().z);	// 자동차 위치
 	D3DXVECTOR3 carDir = D3DXVECTOR3(m_pCar->GetDirection().x, 0.0f, m_pCar->GetDirection().z);	// 차 방향
-	D3DXVECTOR3 arrowDir = pos - tar[arrowIndex];				// 화살표 방향
+	D3DXVECTOR3 arrowDir = pos - tar;				// 화살표 방향
 
-	//D3DXVec3Normalize(&pos, &pos);
-	//D3DXVec3Normalize(&tar[arrowIndex], &tar[arrowIndex]);
 	D3DXVec3Normalize(&carDir, &carDir);
 	D3DXVec3Normalize(&arrowDir, &arrowDir);
 
@@ -753,64 +750,4 @@ void InGameUI::UpdateArrowDir()
 	}
 	
 	pIV_arrowDir->SetArrowAngle(-angle);
-
-	switch (arrowIndex)	// 화살표 포인트 지나치면 다음 포인트
-	{
-		case 0:
-		{
-			if (pos.x > tar[0].x) arrowIndex = 1;
-			else if (pos.x < tar[6].x) arrowIndex = 7;
-			pITV_Rank->SetText("8");
-			pITV_Rank2->SetText("th");
-		}break;
-		case 1:
-		{
-			if (pos.z < tar[1].z) arrowIndex = 2;
-			else if(pos.x < tar[0].x) arrowIndex = 0;
-			pITV_Rank->SetText("7");
-			pITV_Rank2->SetText("th");
-		}break;
-		case 2:
-		{
-			if (pos.x < tar[2].x) arrowIndex = 3;
-			else if (pos.z > tar[1].z) arrowIndex = 1;
-			pITV_Rank->SetText("6");
-			pITV_Rank2->SetText("th");
-		}break;
-		case 3:
-		{
-			if (pos.z < tar[3].z) arrowIndex = 4;
-			else if (pos.x > tar[2].x) arrowIndex = 2;
-			pITV_Rank->SetText("5");
-			pITV_Rank2->SetText("th");
-		}break;
-		case 4:
-		{
-			if (pos.x < tar[4].x) arrowIndex = 5;
-			else if (pos.z > tar[3].z) arrowIndex = 3;
-			pITV_Rank->SetText("4");
-			pITV_Rank2->SetText("th");
-		}break;
-		case 5:
-		{
-			if (pos.z > tar[5].z) arrowIndex = 6;
-			else if (pos.x > tar[4].x) arrowIndex = 4;
-			pITV_Rank->SetText("3");
-			pITV_Rank2->SetText("rd");
-		}break;
-		case 6:
-		{
-			if (pos.z > tar[6].z) arrowIndex = 7;
-			else if (pos.z < tar[5].z) arrowIndex = 5;
-			pITV_Rank->SetText("2");
-			pITV_Rank2->SetText("nd");
-		}break;
-		case 7:
-		{
-			if (pos.x > tar[7].x) arrowIndex = 0;
-			else if (pos.z < tar[5].z) arrowIndex = 6;
-			pITV_Rank->SetText("1");
-			pITV_Rank2->SetText("st");
-		}break;
-	}
 }

@@ -65,7 +65,6 @@ void cTrack::LoadTrack(std::string FileName)
 
 	std::map<std::string, Object*> mapCheckBox;
 
-
 	std::string fullpath = "Maps/" + FileName + ".scn";
 	std::fstream Load;
 	Load.open(fullpath);
