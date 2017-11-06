@@ -32,21 +32,23 @@ void ItemManager::Init()
 	box3 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(4, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
 	box4 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(20, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
 
+	m_vecItem.resize(20);
+
 	for (int i = 0;i < 10;i++)
 	{
-		cWbomb* pItem = new cWbomb;
+		cItem* pItem = new cWbomb;
 		pItem->Setup();
 		pItem->SetItemTag(ITEM_WBOMB);
 		m_vecItem.push_back(pItem);
 	}
 
-	//for (int i = 0;i < 10;i++)
-	//{
-	//	cGravityball* pItem = new cGravityball;
-	//	pItem->Setup();
-	//	pItem->SetUse(true);
-	//	m_vecItem.push_back(pItem);
-	//}
+	for (int i = 0;i < 10;i++)
+	{
+		cItem* pItem = new cGravityball;
+		pItem->Setup();
+		pItem->SetIsUse(false);
+		m_vecItem.push_back(pItem);
+	}
 
 	InitCollisionGroup();
 }
@@ -61,9 +63,6 @@ void ItemManager::Update()
 	{
 		m_vecItem[i]->LastUpdate();
 	}
-
-	if(m_index > 10)
-		m_index = 0;
 }
 
 void ItemManager::Render()
@@ -76,12 +75,6 @@ void ItemManager::Render()
 
 void ItemManager::SetFire(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {
-	if (m_index == m_vecItem.size())
-		m_index = 0;
-
-	m_vecItem[m_index]->Create(angle, pos);
-	m_vecItem[m_index]->SetUse(true);
-	m_index++;
 }
 
 void ItemManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
@@ -114,12 +107,16 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 	matR = car->GetCarRotMatrix();
 	D3DXVECTOR3 carDir = { 1,0,0 }; // 자동차 정면 방향벡터
 	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
+	
+	if (m_index == m_vecItem.size())
+		m_index = 0;
 
 	switch (tag)
 	{
 		case ITEM_WBOMB:
 		{
-
+			m_vecItem[m_index]->Create(carDir, carPos);
+			m_vecItem[m_index]->SetIsUse(true);
 		}
 		break;
 		case ITEM_FIREWORK:
@@ -129,13 +126,15 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 		break;
 		case ITEM_GRAVITY:
 		{
-
+			m_vecItem[m_index + 10]->Create(carDir, carPos);
+			m_vecItem[m_index + 10]->SetIsUse(true);
 		}
 		break;
 		default: break;
 	}
-	//	m_vecItem[m_index]->Create();
-	//	m_index++;
-	//
-	//	if (m_index == m_max) m_index = 0;
+
+	m_index++;
+
+	if (m_index == 10)
+		m_index = 0;
 }

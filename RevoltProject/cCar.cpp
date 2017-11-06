@@ -499,10 +499,12 @@ void cCar::CtrlPlayer()
 		//아이템사용
 		if (g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM))
 		{
+			g_pItemManager->FireItem(ITEM_WBOMB, this);
+
 			if (m_eHoldItem != ITEM_NONE)
 			{
 				//아이템 사용 함수 호츨
-				g_pItemManager->FireItem(m_eHoldItem, this);
+				g_pItemManager->FireItem(ITEM_WBOMB, this);
 				m_nItemCount--;
 				if (m_nItemCount == 0)
 				{
