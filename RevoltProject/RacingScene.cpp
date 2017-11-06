@@ -21,10 +21,10 @@ void RacingScene::Setup()
 
 	D3DXCreateSprite(g_pD3DDevice, &m_Sprite);
 	g_pCamManager->SetLookAt(&D3DXVECTOR3(0, 0, 0));
- 
+
 	m_pInGameUI = new InGameUI;
 	m_pInGameUI->Setup();
-	
+
 
 	m_pTrack = new cTrack;
 	if (m_pTrack)
@@ -52,31 +52,12 @@ void RacingScene::Setup()
 	//g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
 	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
 
-	/// car 생성
-	{
-		cCar* pCar = new cCar;
-		pCar->LoadCar("tc2");
-		vecCars.push_back(pCar);
-	}
-	{
-		//	cCar* pCar = new cCar;
-		//	pCar->LoadMesh("tc2");
-		//	pCar->CreatePhsyX(stCARSPEC());
-		//	pCar->SetCarValue(1000, 5000, 0.1, 0, NxPi / 8, NxPi * 0.05f);
-		//
-		//	pCar->GetPhysXData()->SetPosition(NxVec3(0, 0, 3));
-		//	vecCars.push_back(pCar);
-	}
-
-	m_pInGameUI->LinkCarPt(vecCars[0]);
-	m_pInGameUI->LinkTrack(m_pTrack);
-	for (int i = 0; i < vecCars.size(); i++)
-	{
-		vecCars[i]->LinkTrackPt(m_pTrack);
-	}
-
 	m_pSkyBox = new cSkyBox;
 	m_pSkyBox->Setup();
+
+	CreateCar(0, "tc2");
+
+	LinkUI(0);
 }
 
 void RacingScene::Destroy()
@@ -97,15 +78,15 @@ void RacingScene::Update()
 
 	for (int i = 0; i < vecCars.size(); i++)
 	{
-		 if(IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
-		 else vecCars[i]->RunEnd();
+		if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
+		else vecCars[i]->RunEnd();
 	}
 
 	if (m_pInGameUI)
 	{
 		m_pInGameUI->Update();
 	}
-	
+
 }
 
 
@@ -113,7 +94,7 @@ void RacingScene::Render()
 {
 	if (m_pSkyBox)
 	{
-		m_pSkyBox->Render(); 
+		m_pSkyBox->Render();
 	}
 
 	if (m_pTrack)
@@ -148,7 +129,7 @@ void RacingScene::LastUpdate()
 
 void RacingScene::UpdateCamera()
 {
-//	return;
+	//	return;
 #define CAM_X (*camPos).x
 #define CAM_Y (*camPos).y
 #define CAM_Z (*camPos).z
@@ -156,7 +137,7 @@ void RacingScene::UpdateCamera()
 
 	//회전 매트릭스 받아옴
 	D3DXMATRIXA16 matR = vecCars[0]->GetCarRotMatrix();
-	
+
 	//matR = vecCars[0]->GetMatrix(false, true, false); //이걸 사용하면 약간 부정확함
 
 	float distToCar = 5; //차와의 거리
@@ -166,7 +147,7 @@ void RacingScene::UpdateCamera()
 	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
 
 	//자동차 포지션
-	D3DXVECTOR3 carPos = { 
+	D3DXVECTOR3 carPos = {
 		vecCars[0]->GetPosition().x,
 		vecCars[0]->GetPosition().y + 0.5f ,
 		vecCars[0]->GetPosition().z };
@@ -174,13 +155,13 @@ void RacingScene::UpdateCamera()
 	*camLookTarget = carPos;//D3DXVECTOR3(pos.x, pos.y + 2.f, pos.z);
 
 	D3DXVECTOR3 camDir = (*camLookTarget) - CAM_POS;
-	D3DXVec3Normalize(&camDir,&camDir);
+	D3DXVec3Normalize(&camDir, &camDir);
 
 	//레이초기화
 	NxRay RayCam;
 	RayCam.orig = NxVec3(carPos);
 	RayCam.dir = NxVec3(-carDir);
-	
+
 	NxRaycastHit RayCamHit;
 	RayCamHit.shape = NULL;
 	g_pPhysXScene->raycastClosestShape(RayCam, NxShapesType::NX_ALL_SHAPES, RayCamHit, 0xffffffff,distToCar);
@@ -188,16 +169,17 @@ void RacingScene::UpdateCamera()
 	//레이초기화
 	NxRay RayCamVertical;
 	RayCamVertical.orig = NxVec3(carPos);
-	RayCamVertical.dir = NxVec3(0,1,0);
+	RayCamVertical.dir = NxVec3(0, 1, 0);
 
 	NxRaycastHit RayCamVerticalHit;
 	RayCamVerticalHit.shape = NULL;
+
 	g_pPhysXScene->raycastClosestShape(RayCamVertical, NxShapesType::NX_ALL_SHAPES, RayCamVerticalHit, 0xffffffff,Height);
-	
+
 	float x = carPos.x - (carDir.x * distToCar);
 	float y = carPos.y - (carDir.y * distToCar) + Height;
 	float z = carPos.z - (carDir.z * distToCar);
-	
+
 	float fCamHeight = Height;
 
 
@@ -221,10 +203,6 @@ void RacingScene::UpdateCamera()
 		}
 	}
 
-
-
-	
-
 	// 카메라 목적지
 	D3DXVECTOR3 vDest = { x,y,z };
 
@@ -244,4 +222,24 @@ void RacingScene::UpdateCamera()
 bool RacingScene::IsCarRunTrue(cCar* pCar)
 {
 	return m_trackEndCount > pCar->GetCountRapNum();
+}
+
+void RacingScene::CreateCar(int playerID, std::string carName)
+{
+	cCar* pCar = new cCar;
+	pCar->LoadCar(carName);
+	vecCars.push_back(pCar);
+
+	pCar->GetPhysXData()->SetPosition(m_pTrack->GetStartPositions()[playerID]);
+
+}
+
+void RacingScene::LinkUI(int playerID)
+{
+	m_pInGameUI->LinkCarPt(vecCars[playerID]);
+	m_pInGameUI->LinkTrack(m_pTrack);
+	for (int i = 0; i < vecCars.size(); i++)
+	{
+		vecCars[i]->LinkTrackPt(m_pTrack);
+	}
 }
