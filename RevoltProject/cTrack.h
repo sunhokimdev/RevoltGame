@@ -16,7 +16,6 @@ public:
 public:
 	int trackNum = 0;
 	std::string trackName;
-
 	int m_nLightIdx;
 	//인게임 에 들어갈 장애물 등등
 	SYNTHESIZE(std::vector<Object*>, m_vecObject, Object);
@@ -39,11 +38,7 @@ public:
 
 //	int GetTrackCheckBoxSize() { return m_vecCheckBox.size(); }
 
-
-
-	void TEST()
-	{
-		
-	}
+	//스타트지점
+	SYNTHESIZE(std::vector<D3DXVECTOR3>, vecStartPos,StartPositions);
 };
 
