@@ -13,13 +13,13 @@ private:
 	char name[NAME_SIZE];
 	char roomName[NAME_SIZE];
 	int data[BUF_SIZE];
+
+	std::string m_msg;
 public:
 	SINGLETONE(cNetworkManager);
 
 	void Start();
 	void Release();
-
-	static std::string m_msg;
 
 	DWORD SendMsg(const char* msg);
 	bool RecvMsg();

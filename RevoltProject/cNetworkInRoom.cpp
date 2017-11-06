@@ -156,8 +156,11 @@ void cNetworkInRoom::SetResetCharText()
 
 void cNetworkInRoom::SetText(std::string str)
 {
-	m_vecText[m_index]->SetPosition(30, 20 * (m_index + 1));
-	m_vecText[m_index]->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
-	m_vecText[m_index]->SetText(str);
-	m_index++;
+	if (str.size() != 0)
+	{
+		m_vecText[m_index]->SetPosition(30, 20 * (m_index + 1));
+		m_vecText[m_index]->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+		m_vecText[m_index]->SetText(str);
+		m_index++;
+	}
 }
