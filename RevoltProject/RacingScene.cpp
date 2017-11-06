@@ -160,7 +160,7 @@ void RacingScene::UpdateCamera()
 	//matR = vecCars[0]->GetMatrix(false, true, false); //이걸 사용하면 약간 부정확함
 
 	float distToCar = 5; //차와의 거리
-	float Height = 2; //카메라 높이
+	float Height = 1; //카메라 높이
 
 	D3DXVECTOR3 carDir = { 1,0,0 };
 	D3DXVec3TransformNormal(&carDir, &carDir, &matR);

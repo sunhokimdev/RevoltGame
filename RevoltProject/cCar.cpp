@@ -189,6 +189,10 @@ void cCar::LoadCar(std::string carName)
 			}
 		} // << while
 	}
+	else
+	{
+		MessageBoxA(g_hWnd, "*.car 파일을 찾을 수 없습니다.", "파일 없음", MB_OK);
+	}
 
 	m_pSkidMark = new cSkidMark;
 	m_pSkidMark->LinkCar(this);

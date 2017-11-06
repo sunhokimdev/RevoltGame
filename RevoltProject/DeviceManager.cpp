@@ -39,7 +39,7 @@ DeviceManager::DeviceManager()
 		&stD3DPP,
 		&m_pD3DDevice);
 	
-//	m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 }
 
 
