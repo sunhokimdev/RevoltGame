@@ -5,7 +5,8 @@
 cPickUp::cPickUp()
 	:m_isExist(true)
 	,m_isTimerRoll(false)
-	,m_fRespawnTime(0)
+	,m_fRespawnTime(10)
+	,m_fAngle(0)
 {
 }
 
@@ -47,6 +48,14 @@ void cPickUp::Render()
 {
 	if (m_isExist)
 	{
+		m_fAngle += 0.05f;
+		if (m_fAngle > D3DX_PI * 2) m_fAngle -= D3DX_PI*2;
+		
+		D3DXMATRIX mat;
+		D3DXMatrixRotationY(&mat, m_fAngle);
+		
+		cTransform::SetQuaternion(mat);
+		//g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat);
 		Object::Render();
 	}
 }
