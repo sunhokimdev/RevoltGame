@@ -269,6 +269,11 @@ void cCar::LoadWheel(std::string carName)
 
 void cCar::Update()
 {
+	NxVec3 pos = m_carNxVehicle->getGlobalPose().t;
+	m_carNxVehicle->getActor()->addForce(NxVec3(0, 0.001, 0));
+
+
+
 	//자동차 정보 업데이트
 	//=================================================
 	//자동차 위치 갱신
@@ -409,9 +414,6 @@ void cCar::CtrlPlayer()
 {
 	if (m_carNxVehicle)
 	{
-		NxVec3 pos = m_carNxVehicle->getGlobalPose().t;
-		m_carNxVehicle->getActor()->addForce(NxVec3(0, -0.001, 0));
-
 		//엑셀
 		float targetPower = 0.f;
 		bool power = false;
