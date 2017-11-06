@@ -111,7 +111,7 @@ void cNetworkInRoom::Setup()
 	for (int i = 0; i < 1000; i++)
 	{
 		UITextImageView *pText = new UITextImageView;
-		pText->SetTexture("Maps/Front/Image/font2.png");
+		pText->SetTexture("UIImage/font2.png");
 		m_vecText.push_back(pText);
 
 		pImageView5->AddChild(m_vecText[i]);
@@ -151,17 +151,29 @@ void cNetworkInRoom::SetResetCharText()
 
 void cNetworkInRoom::SetText(std::string str)
 {
-	if (str.size() != 1 && str.size() != 2)
+	bool isEqual = false;
+	int sum = 0;
+
+	for (int i = 0; i < str.size() - 1; ++i)
+	{
+		sum += str[i];
+
+		if (sum % 35 != 0)
+		{
+			isEqual = true;
+			break;
+		}
+	}
+
+	if (isEqual)
 	{
 		m_vecText[m_index]->SetPosition(30, 20 * (m_index + 1));
 		m_vecText[m_index]->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
-		if (str[0] == '#')
-		{
-			const char* temp = &str[1];
-			m_vecText[m_index]->SetText(temp);
-		}
-		else
-			m_vecText[m_index]->SetText(str);
+
+		const char* pch = strtok((char*)str.c_str(), "#");
+
+		m_vecText[m_index]->SetText(pch);
+
 		m_index++;
 
 		printf("%d\n", str.size());
