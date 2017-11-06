@@ -33,7 +33,6 @@ public:
 
 	ID3DXMesh* TestMesh;
 	bool IsUpdate;
-	
 
 private:
 	/*   기본 세팅   */

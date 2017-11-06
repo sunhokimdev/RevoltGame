@@ -8,6 +8,7 @@ float g_timeFix;
 TimeManager::TimeManager()
 {
 	g_timeFix = -1.0f;
+	m_isDisplay = true;
 }
 
 TimeManager::~TimeManager()
@@ -105,16 +106,32 @@ void TimeManager::Update(float lockFPS/* = 0.0f*/)
 		m_FPSFrameCount = 0;
 		m_FPSTimeElapsed = 0.0f;
 	}
+
+	if (g_pKeyManager->isOnceKeyDown(KEY_TIME_INFO))
+	{
+		m_isDisplay = !m_isDisplay;
+	}
 }
 
 void TimeManager::Render()
 {
-	std::string FrameRate = "FrameRate   : " + std::to_string(m_FrameRate);
-	std::string ElapsedTime = "ElapsedTime : " + std::to_string(m_TimeElapsed);
-	std::string WorldTime = "WorldTime   : " + std::to_string(m_WorldTime);
-	g_pTextManager->WriteText(FrameRate, "±¼¸²Ã¼_7", 1, 0, C_WHITE);
-	g_pTextManager->WriteText(ElapsedTime, "±¼¸²Ã¼_7", 1, 12, C_WHITE);
-	g_pTextManager->WriteText(WorldTime, "±¼¸²Ã¼_7", 1, 24, C_WHITE);
+	if (m_isDisplay)
+	{
+		std::string fFrameRate = std::to_string(m_FrameRate);
+		std::string fElapsedTime = std::to_string(m_TimeElapsed);
+		std::string fWorldTime = std::to_string(m_WorldTime);
+		fFrameRate = fFrameRate.substr(0, 4);
+		fElapsedTime = fElapsedTime.substr(0, 6);
+		fWorldTime = fWorldTime.substr(0, 4);
+
+		std::string FrameRate = "FrameRate   : " + fFrameRate;
+		std::string ElapsedTime = "ElapsedTime : " + fElapsedTime;
+		std::string WorldTime = "WorldTime   : " + fWorldTime;
+
+		g_pTextManager->WriteText(FrameRate, "±¼¸²Ã¼_7", 1, 0, C_WHITE);
+		g_pTextManager->WriteText(ElapsedTime, "±¼¸²Ã¼_7", 200, 0, C_WHITE);
+		g_pTextManager->WriteText(WorldTime, "±¼¸²Ã¼_7", 400, 0, C_WHITE);
+	}
 }
 
 //float TimeManager::GetLastUpdateTime()

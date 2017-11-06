@@ -55,6 +55,8 @@ void MainGame::Setup()
 	//	SetAddSound();
 	//	MgrPhysXScene->setUserTriggerReport(new TriggerCallback());
 	IsUpdate = false;
+
+	g_pTextManager->AddFont(L"굴림체", "굴림체_7", 7);
 }
 
 void MainGame::Update()
@@ -74,7 +76,7 @@ void MainGame::Update()
 
 
 
-	std::cout << g_pTimeManager->GetElapsedTime() << std::endl;
+	//std::cout << g_pTimeManager->GetElapsedTime() << std::endl;
 	MgrPhysXScene->simulate(g_pTimeManager->GetElapsedTime());	//프레임 지정
 	MgrPhysXScene->flushStream();
 	MgrPhysXScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
@@ -109,6 +111,7 @@ void MainGame::Render()
 		// 타임 매니저 랜더 해야함
 	
 		g_pTimeManager->Render();
+
 		g_pD3DDevice->EndScene();
 		g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 
@@ -128,5 +131,3 @@ void MainGame::SetAddSound()
 	g_pSoundManager->LoadSound("Sound", "boxslide.wav", false);
 	g_pSoundManager->LoadSound("Sound", "honkgood.wav", false);
 }
-
-

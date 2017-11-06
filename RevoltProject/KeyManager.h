@@ -11,6 +11,7 @@
 #define KEY_FIRE_ITEM	VK_CONTROL
 #define KEY_REPOSITION	'R'
 #define KEY_CAR_FLIP	'F'
+#define KEY_TIME_INFO	VK_F1
 
 class KeyManager
 {
@@ -19,6 +20,7 @@ private:
 	std::bitset<KEYMAX> _keyDown;
 	int m_key;
 	SINGLETONE(KeyManager);
+
 public:
 	HRESULT init(void);
 	void release(void);
