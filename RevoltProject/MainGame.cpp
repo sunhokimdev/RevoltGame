@@ -74,10 +74,7 @@ void MainGame::Update()
 	//g_pTimeManager->GetElapsedTime());//
 //	MgrPhysXScene->simulate((1.f/60.f));	//프레임 지정
 
-
-
-	//std::cout << g_pTimeManager->GetElapsedTime() << std::endl;
-	MgrPhysXScene->simulate(g_pTimeManager->GetElapsedTime());	//프레임 지정
+	MgrPhysXScene->simulate((float)(1.f/60.f));	//프레임 지정
 	MgrPhysXScene->flushStream();
 	MgrPhysXScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
 	//	MgrPhysXScene->checkResults(NX_RIGID_BODY_FINISHED, true);
