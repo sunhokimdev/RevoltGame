@@ -262,7 +262,6 @@ void Lobby::KeyUpdate()
 			//유저데이터에 자동차 선택한거 넘겨주고
 			//씬변경
 
-
 			g_SceneManager->ChangeScene("Race");
 			
 			return;
