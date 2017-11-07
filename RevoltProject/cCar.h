@@ -50,7 +50,7 @@ class cCar : public Object
 	cTrack* m_pTrack;
 	SYNTHESIZE(int, m_currCheckBoxID, CurrCheckBoxID);			//최근에 체크된 박스
 	SYNTHESIZE(int, m_nextCheckBoxID, NextCheckBoxID);			//드음에 체크할 박스
-	SYNTHESIZE(int, m_countRapNum, CountRapNum);					//돈 바퀴수
+	SYNTHESIZE(int, m_countRapNum, CountRapNum);				//돈 바퀴수
 
 	SYNTHESIZE(float, m_rapTimeCount, RapTimeCount);			//현제 렙 시간
 	SYNTHESIZE(float, m_bastRapTimeCount, BastRapTimeCount);	//가장 짭은 랩 시간

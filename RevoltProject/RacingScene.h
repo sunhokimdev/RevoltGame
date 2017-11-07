@@ -56,7 +56,7 @@ public:
 
 
 //	void CreateCar(int carId) {}
-	void CreateCar(int playerID, std::string carName);
+	void CreateCar(int playerID, std::string carName, bool isAI);
 	void LinkUI(int playerID);
 };
 

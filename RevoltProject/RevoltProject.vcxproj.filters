@@ -447,6 +447,12 @@
     <ClInclude Include="cSkyBox.h">
       <Filter>Basic</Filter>
     </ClInclude>
+    <ClInclude Include="cDataManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cPlayerData.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -718,6 +724,12 @@
     </ClCompile>
     <ClCompile Include="cSkyBox.cpp">
       <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cDataManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlayerData.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

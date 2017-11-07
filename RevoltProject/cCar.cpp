@@ -614,6 +614,7 @@ void cCar::TrackCheck()
 			m_currCheckBoxID = 0;	//체크 시작
 			m_countRapNum = 0;
 			m_rapTimeCount = 0.f;
+			
 		}
 		return;
 	}

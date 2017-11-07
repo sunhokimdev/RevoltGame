@@ -29,7 +29,7 @@ void RacingScene::Setup()
 	if (m_pTrack)
 	{
 		m_pTrack->Setup();
-		m_pTrack->LoadTrack("Market2");
+		m_pTrack->LoadTrack(g_pDataManager->mapName);
 	}
 	m_nLightIDCount = 0;
 
@@ -54,10 +54,17 @@ void RacingScene::Setup()
 	m_pSkyBox = new cSkyBox;
 	m_pSkyBox->Setup();
 
+	int i = 0;
+	for each(cPlayerData* p in g_pDataManager->vecPlayerData)
+	{
+		if (i == m_pTrack->GetStartPositions().size()) break;
+
+		if (!p->IsAI)	CreateCar(i, p->CAR_NAME, p->IsAI);
+		else			CreateCar(i, "tc1", p->IsAI);
+	}
 
 	m_pInGameUI = new InGameUI;
 
-	CreateCar(0, "tc2");
 	LinkUI(0);
 
 	m_pInGameUI->Setup();
@@ -167,7 +174,7 @@ void RacingScene::UpdateCamera()
 
 	NxRaycastHit RayCamHit;
 	RayCamHit.shape = NULL;
-	g_pPhysXScene->raycastClosestShape(RayCam, NxShapesType::NX_ALL_SHAPES, RayCamHit, 0xffffffff,distToCar);
+	g_pPhysXScene->raycastClosestShape(RayCam, NxShapesType::NX_ALL_SHAPES, RayCamHit, 0xffffffff, distToCar);
 
 	//레이초기화
 	NxRay RayCamVertical;
@@ -177,7 +184,7 @@ void RacingScene::UpdateCamera()
 	NxRaycastHit RayCamVerticalHit;
 	RayCamVerticalHit.shape = NULL;
 
-	g_pPhysXScene->raycastClosestShape(RayCamVertical, NxShapesType::NX_ALL_SHAPES, RayCamVerticalHit, 0xffffffff,Height);
+	g_pPhysXScene->raycastClosestShape(RayCamVertical, NxShapesType::NX_ALL_SHAPES, RayCamVerticalHit, 0xffffffff, Height);
 
 	float x = carPos.x - (carDir.x * distToCar);
 	float y = carPos.y - (carDir.y * distToCar) + Height;
@@ -227,14 +234,14 @@ bool RacingScene::IsCarRunTrue(cCar* pCar)
 	return m_trackEndCount > pCar->GetCountRapNum();
 }
 
-void RacingScene::CreateCar(int playerID, std::string carName)
+void RacingScene::CreateCar(int playerID, std::string carName, bool isAI)
 {
 	cCar* pCar = new cCar;
 	pCar->LoadCar(carName);
+	pCar->m_isAI = isAI;
 	vecCars.push_back(pCar);
 
 	pCar->GetPhysXData()->SetPosition(m_pTrack->GetStartPositions()[playerID]);
-
 }
 
 void RacingScene::LinkUI(int playerID)
