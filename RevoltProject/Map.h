@@ -52,4 +52,3 @@ public:
 
 	std::map<int, cTrack*> GetMapName() { return m_track; }
 };
-
