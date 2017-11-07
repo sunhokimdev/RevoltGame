@@ -33,4 +33,5 @@ void cSkyBox::Render()
 	D3DXMatrixScaling(&matS, 10, 10, 10);
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matS);
 	m_pMeshData->Render();
+
 }

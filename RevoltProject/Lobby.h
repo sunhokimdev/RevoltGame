@@ -6,7 +6,8 @@ class Camera;					// 카메라 클래스를 사용하기 위한 전방선언 클래스
 class Thing;					// 오브젝트 클래스
 class SelectMap;				// SelectMap Class
 
-class ProfileList;	
+class ProfileList;
+class Map;
 
 /*   로비 UI 클래스   */
 class cCreateProfile;			// 유저 파일 만들기 클래스
@@ -84,6 +85,9 @@ protected:
 	bool					 m_isflag;			// 이름 불러오기
 
 	ProfileList*		 	 m_pfileList;		// 프로필 리스트
+	Map*					 m_pMap;
+	std::vector<std::string> m_vecMapName;
+
 
 	//===================================================================
 	// - written by 김선호
@@ -112,5 +116,8 @@ public:
 	void SetUpUI();					// UI 셋업작업
 
 	D3DXVECTOR3 GetTarget() { return m_mapLobby[m_stateLobby]->m_target; }		// 카메라가 보는 방향을 반환해주는 메서드
+
+
+	void LinkMap(Map* map) { m_pMap = map; }
 };
 

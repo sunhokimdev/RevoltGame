@@ -17,6 +17,7 @@
 #include "Thing.h"
 #include "CarBox.h"
 #include "WheelTire.h"
+#include "cTrack.h"
 
 /*   로비 창 구현   */
 #include "ProfileList.h"
@@ -103,6 +104,9 @@ void Lobby::Setup()
 
 	m_pInRoom = new cNetworkInRoom;
 	m_pInRoom->Setup();
+
+	m_pfileList = new ProfileList;
+	m_pMap = new Map;
 
 	SetUpUI();
 }
@@ -251,6 +255,15 @@ void Lobby::KeyUpdate()
 	{
 		if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
+			std::map<int, cTrack*> trackName = m_pMap->GetMapName();
+			int index = m_leftAndrightSelect + 1;
+			if (index > m_mapLobby[m_stateLobby]->m_selectCnt)
+				index = 1;
+			else if (index < 0)
+				index = m_mapLobby[m_stateLobby]->m_selectCnt;
+
+			m_pfileList->SetMapName(trackName[index]->trackName);
+
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
@@ -267,7 +280,30 @@ void Lobby::KeyUpdate()
 			g_SceneManager->ChangeScene("Race");
 			return;
 		}
-
+		else if (m_stateLobby == SELECT_CAR_LOBBY)
+		{
+			switch(m_leftAndrightSelect)
+			{
+				case 0:
+					m_pfileList->SetCarName("tc1");
+				break;
+				case 1:
+					m_pfileList->SetCarName("tc2");
+				break;
+				case 2:
+					m_pfileList->SetCarName("tc3");
+				break;
+				case 3:
+					m_pfileList->SetCarName("tc4");
+				break;
+				case 4:
+					m_pfileList->SetCarName("tc5");
+				break;
+				case 5:
+					m_pfileList->SetCarName("tc6");
+				break;
+			}
+		}
 		else if (m_stateLobby == MAIN_LOBBY2)
 		{
 			if (m_select == 2)

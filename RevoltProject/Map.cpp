@@ -33,16 +33,20 @@ void Map::Setup()
 	m_track[0] = new cTrack;
 	m_track[1] = new cTrack;
 	m_track[2] = new cTrack;
+	m_track[3] = new cTrack;
+	m_track[4] = new cTrack;
 
 	m_track[0]->trackName = "Front";
 	m_track[0]->trackNum = 0;
-	m_track[1] = new cTrack;
-	m_track[2] = new cTrack;
 
 	m_track[1]->trackName = "Market2";
 	m_track[1]->trackNum = 1;
-	m_track[2]->trackName = "Stunts";
+	m_track[2]->trackName = "Garden";
 	m_track[2]->trackNum = 2;
+	m_track[3]->trackName = "Museum";
+	m_track[3]->trackNum = 3;
+	m_track[4]->trackName = "Toytanic";
+	m_track[4]->trackNum = 4;
 }
 
 void Map::Update()
