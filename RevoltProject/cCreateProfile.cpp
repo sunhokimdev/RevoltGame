@@ -51,6 +51,7 @@ void cCreateProfile::Setup()
 	pIV_CP_HeadRing->SetTexture("UIImage/ring.png");
 
 	UITextImageView* pTIV_CP_HeadFont = new UITextImageView;
+	pTIV_CP_HeadFont->SetIndex(INT_MAX);
 	pTIV_CP_HeadFont->SetTexture("UIImage/font1.png");
 	pTIV_CP_HeadFont->SetText("CREATE PROFILE");
 	pTIV_CP_HeadFont->SetXSize(1.5f);

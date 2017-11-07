@@ -732,9 +732,6 @@ void InGameUI::UpdateArrowDir()
 	D3DXVECTOR3 arrowDir = pos - tar;				// 화살표 방향
 	//D3DXVECTOR3 arrowDir = tar - checkboxPt->GetNextCheckBox()->GetPosition();
 
-	std::cout << tar.x << " " << tar.z << std::endl;
-	std::cout << pos.x << " " << pos.z << std::endl;
-
 	D3DXVec3Normalize(&carDir, &carDir);
 	D3DXVec3Normalize(&arrowDir, &arrowDir);
 

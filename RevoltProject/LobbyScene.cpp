@@ -22,9 +22,10 @@ void LobbyScene::Setup()
 	m_pMap = new Map;
 	m_pMap->Setup();
 
+
 	m_pLobby = new Lobby;
 	m_pLobby->Setup();
-
+	m_pLobby->LinkMap(m_pMap);
 	//앰비언트조명
 	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(100, 100, 100));
 
@@ -40,8 +41,6 @@ void LobbyScene::Update()
 {
 	if (m_pMap)	m_pMap->Update();
 	if (m_pLobby) m_pLobby->Update();
-
-	m_pLobby->LinkMap(m_pMap);
 
 	//cLight light;
 	//light.SetupPoint(0, C_WHITE, *g_pCamManager->GetCamPos(), 50);
