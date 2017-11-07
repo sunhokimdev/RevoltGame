@@ -21,10 +21,7 @@ void RacingScene::Setup()
 
 	D3DXCreateSprite(g_pD3DDevice, &m_Sprite);
 	g_pCamManager->SetLookAt(&D3DXVECTOR3(0, 0, 0));
-
-
-
-
+	
 	m_pTrack = new cTrack;
 	if (m_pTrack)
 	{
@@ -64,8 +61,8 @@ void RacingScene::Setup()
 	}
 
 	m_pInGameUI = new InGameUI;
-
-	LinkUI(0);
+	
+	LinkUI(0); // 인게임 UI Setup 전에 위치해야함
 
 	m_pInGameUI->Setup();
 }
@@ -224,7 +221,7 @@ void RacingScene::UpdateCamera()
 
 	// 카메라 무빙
 	D3DXVec3Lerp(camPos, camPos, &vDest, 0.2f);
-
+	//CAM_POS = vDest;
 	g_pCamManager->SetCamPos(camPos);
 	g_pCamManager->SetLookAt(camLookTarget);
 }

@@ -92,6 +92,7 @@ public:
 	void RunEnd();
 	void CarFlip();
 	void CarRunStop();
+	void DrawSkidMark();
 	void LinkTrackPt(cTrack* track) { m_pTrack = track; }
 
 	eITEM_LIST* GetHoldItemPt() { return &m_eHoldItem; }
