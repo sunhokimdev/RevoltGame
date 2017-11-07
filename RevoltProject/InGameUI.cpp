@@ -729,8 +729,7 @@ void InGameUI::UpdateArrowDir()
 
 	D3DXVECTOR3 pos = D3DXVECTOR3(m_pCar->GetPosition().x, 0.0f, m_pCar->GetPosition().z);	// 자동차 위치
 	D3DXVECTOR3 carDir = D3DXVECTOR3(m_pCar->GetDirection().x, 0.0f, m_pCar->GetDirection().z);	// 차 방향
-	D3DXVECTOR3 arrowDir = pos - tar;				// 화살표 방향
-	//D3DXVECTOR3 arrowDir = tar - checkboxPt->GetNextCheckBox()->GetPosition();
+	D3DXVECTOR3 arrowDir = tar - checkboxPt->GetNextCheckBox()->GetPosition();				// 화살표 방향
 
 	D3DXVec3Normalize(&carDir, &carDir);
 	D3DXVec3Normalize(&arrowDir, &arrowDir);
