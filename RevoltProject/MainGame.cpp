@@ -96,9 +96,7 @@ void MainGame::Render()
 		// 그리기 시작
 	
 		SAFE_RENDER(g_SceneManager);
-	
-	
-		//m_pGrid->Render();
+
 		g_pItemManager->Render();
 
 		g_pPhysX->Render();
@@ -109,7 +107,6 @@ void MainGame::Render()
 
 		g_pD3DDevice->EndScene();
 		g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
-
 }
 
 void MainGame::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
