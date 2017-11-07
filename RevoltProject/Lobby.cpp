@@ -256,8 +256,15 @@ void Lobby::KeyUpdate()
 			m_leftAndrightSelect = 0;
 			//유저데이터에 자동차 선택한거 넘겨주고
 			//씬변경
-			g_SceneManager->ChangeScene("Race");
 			
+			cPlayerData* playerData = new cPlayerData;
+			playerData->CAR_NAME = m_pCreateProfileLobby->GetName();
+			playerData->IP = "";
+			playerData->ID = "";
+		//	g_pDataManager->mapName = m_pSelectMap->Getm_mapName();
+			g_pDataManager->vecPlayerData.push_back(playerData);
+
+			g_SceneManager->ChangeScene("Race");
 			return;
 		}
 

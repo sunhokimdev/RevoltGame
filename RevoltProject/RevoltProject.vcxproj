@@ -161,6 +161,7 @@
     <ClInclude Include="cCheckBox.h" />
     <ClInclude Include="cClient.h" />
     <ClInclude Include="cCreateProfile.h" />
+    <ClInclude Include="cDataManager.h" />
     <ClInclude Include="cFirework.h" />
     <ClInclude Include="cFollowPoint.h" />
     <ClInclude Include="cGravityball.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="cPhysXManager.h" />
     <ClInclude Include="cPickUp.h" />
     <ClInclude Include="cPlasmaImpact.h" />
+    <ClInclude Include="cPlayerData.h" />
     <ClInclude Include="cSelectCarLob.h" />
     <ClInclude Include="cSkidMark.h" />
     <ClInclude Include="cSkyBox.h" />
@@ -272,6 +274,7 @@
     <ClCompile Include="cCheckBox.cpp" />
     <ClCompile Include="cClient.cpp" />
     <ClCompile Include="cCreateProfile.cpp" />
+    <ClCompile Include="cDataManager.cpp" />
     <ClCompile Include="cFirework.cpp" />
     <ClCompile Include="cFollowPoint.cpp" />
     <ClCompile Include="cGravityball.cpp" />
@@ -289,6 +292,7 @@
     <ClCompile Include="cPhysXManager.cpp" />
     <ClCompile Include="cPickUp.cpp" />
     <ClCompile Include="cPlasmaImpact.cpp" />
+    <ClCompile Include="cPlayerData.cpp" />
     <ClCompile Include="cSelectCarLob.cpp" />
     <ClCompile Include="cSkidMark.cpp" />
     <ClCompile Include="cSkyBox.cpp" />

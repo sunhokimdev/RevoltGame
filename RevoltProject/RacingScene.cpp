@@ -30,7 +30,7 @@ void RacingScene::Setup()
 	if (m_pTrack)
 	{
 		m_pTrack->Setup();
-		m_pTrack->LoadTrack("Market2");
+		m_pTrack->LoadTrack(g_pDataManager->mapName);
 	}
 	m_nLightIDCount = 0;
 
@@ -231,7 +231,6 @@ void RacingScene::CreateCar(int playerID, std::string carName)
 	vecCars.push_back(pCar);
 
 	pCar->GetPhysXData()->SetPosition(m_pTrack->GetStartPositions()[playerID]);
-
 }
 
 void RacingScene::LinkUI(int playerID)
