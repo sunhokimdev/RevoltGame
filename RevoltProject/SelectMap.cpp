@@ -35,23 +35,23 @@ void SelectMap::Setup()
 	m_mapParent->SetXSize(4.0f);
 	m_mapParent->SetYSize(4.0f);
 	m_mapParent->SetIsBoard(true);
-	m_mapParent->SetTexture("Maps/Front/Image/blueRing.png");
+	m_mapParent->SetTexture("UIImage/blueRing.png");
 
 	UIImageView* pImageView63 = new UIImageView;
 	pImageView63->SetXSize(1.2f);
 	pImageView63->SetYSize(1.2f);
 	pImageView63->SetPosition(17, 17);
-	pImageView63->SetTexture("Maps/Front/Image/blueflag.png");
+	pImageView63->SetTexture("UIImage/blueflag.png");
 
 	UIImageView* pImageView64 = new UIImageView;
 	pImageView64->SetPosition(120, 20);
 	pImageView64->SetIsBoard(true);
 	pImageView64->SetXSize(25.0f);
 	pImageView64->SetYSize(1.0f);
-	pImageView64->SetTexture("Maps/Front/Image/ring.png");
+	pImageView64->SetTexture("UIImage/ring.png");
 
 	UITextImageView* pImageView65 = new UITextImageView;
-	pImageView65->SetTexture("Maps/Front/Image/font1.png");
+	pImageView65->SetTexture("UIImage/font1.png");
 	pImageView65->SetText("SELECT TRACK");
 	pImageView65->SetXSize(1.5f);
 	pImageView65->SetYSize(1.5f);
@@ -62,15 +62,15 @@ void SelectMap::Setup()
 	pImageView66->SetIsBoard(true);
 	pImageView66->SetXSize(25.0f);
 	pImageView66->SetYSize(10.0f);
-	pImageView66->SetTexture("Maps/Front/Image/ring.png");
+	pImageView66->SetTexture("UIImage/ring.png");
 
 	UITextImageView* pImageView67 = new UITextImageView;
-	pImageView67->SetTexture("Maps/Front/Image/font2.png");
+	pImageView67->SetTexture("UIImage/font2.png");
 	pImageView67->SetText("Length");
 	pImageView67->SetPosition(60, 80);
 
 	UITextImageView* pImageView68 = new UITextImageView;
-	pImageView68->SetTexture("Maps/Front/Image/font2.png");
+	pImageView68->SetTexture("UIImage/font2.png");
 	pImageView68->SetText("Difficulty");
 	pImageView68->SetPosition(60, 105);
 
@@ -79,10 +79,10 @@ void SelectMap::Setup()
 	m_LockedRing->SetIsBoard(true);
 	m_LockedRing->SetXSize(2.0f);
 	m_LockedRing->SetYSize(0.5f);
-	m_LockedRing->SetTexture("Maps/Front/Image/ring.png");
+	m_LockedRing->SetTexture("UIImage/ring.png");
 
 	m_LockedTextImage = new UITextImageView;
-	m_LockedTextImage->SetTexture("Maps/Front/Image/font2.png");
+	m_LockedTextImage->SetTexture("UIImage/font2.png");
 	m_LockedTextImage->SetColor(D3DCOLOR_ARGB(255, 255, 0, 0));
 	m_LockedTextImage->SetText("Locked");
 	m_LockedTextImage->SetPosition(15, 20);
@@ -153,16 +153,16 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 		m_LockedTextImage->SetText("");
 		m_isUnLocked = true;
 
-		m_mapName->SetTexture("Maps/Front/Image/font2.png");
+		m_mapName->SetTexture("UIImage/font2.png");
 		m_mapName->SetColor(D3DCOLOR_ARGB(255, 255, 255, 0));
 		m_mapName->SetText("SuperMarket 1");
 		m_mapName->SetPosition(60, 50);
 
-		m_mapLength->SetTexture("Maps/Front/Image/font2.png");
+		m_mapLength->SetTexture("UIImage/font2.png");
 		m_mapLength->SetText("301 meters");
 		m_mapLength->SetPosition(260, 80);
 
-		m_mapDifficulty->SetTexture("Maps/Front/Image/font2.png");
+		m_mapDifficulty->SetTexture("UIImage/font2.png");
 		m_mapDifficulty->SetText("Easy");
 		m_mapDifficulty->SetPosition(260, 105);
 	}
@@ -184,15 +184,15 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 			m_mapName->SetColor(D3DCOLOR_ARGB(150, 0, 0, 0));
 		}
 
-		m_mapName->SetTexture("Maps/Front/Image/font2.png");
+		m_mapName->SetTexture("UIImage/font2.png");
 		m_mapName->SetText("Botanical Garden");
 		m_mapName->SetPosition(60, 50);
 
-		m_mapLength->SetTexture("Maps/Front/Image/font2.png");
+		m_mapLength->SetTexture("UIImage/font2.png");
 		m_mapLength->SetText("323 meters");
 		m_mapLength->SetPosition(260, 80);
 
-		m_mapDifficulty->SetTexture("Maps/Front/Image/font2.png");
+		m_mapDifficulty->SetTexture("UIImage/font2.png");
 		m_mapDifficulty->SetText("Easy");
 		m_mapDifficulty->SetPosition(260, 105);
 	}
@@ -212,15 +212,15 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 			m_isUnLocked = false;
 			m_mapName->SetColor(D3DCOLOR_ARGB(150, 0, 0, 0));
 		}
-		m_mapName->SetTexture("Maps/Front/Image/font2.png");
+		m_mapName->SetTexture("UIImage/font2.png");
 		m_mapName->SetText("Museum 1");
 		m_mapName->SetPosition(60, 50);
 
-		m_mapLength->SetTexture("Maps/Front/Image/font2.png");
+		m_mapLength->SetTexture("UIImage/font2.png");
 		m_mapLength->SetText("600 meters");
 		m_mapLength->SetPosition(260, 80);
 
-		m_mapDifficulty->SetTexture("Maps/Front/Image/font2.png");
+		m_mapDifficulty->SetTexture("UIImage/font2.png");
 		m_mapDifficulty->SetText("Mideum");
 		m_mapDifficulty->SetPosition(260, 105);
 	}
@@ -241,15 +241,15 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 			m_mapName->SetColor(D3DCOLOR_ARGB(150, 0, 0, 0));
 		}
 
-		m_mapName->SetTexture("Maps/Front/Image/font2.png");
+		m_mapName->SetTexture("UIImage/font2.png");
 		m_mapName->SetText("Toytanic 1");
 		m_mapName->SetPosition(60, 50);
 
-		m_mapLength->SetTexture("Maps/Front/Image/font2.png");
+		m_mapLength->SetTexture("UIImage/font2.png");
 		m_mapLength->SetText("742 meters");
 		m_mapLength->SetPosition(260, 80);
 
-		m_mapDifficulty->SetTexture("Maps/Front/Image/font2.png");
+		m_mapDifficulty->SetTexture("UIImage/font2.png");
 		m_mapDifficulty->SetText("Hard");
 		m_mapDifficulty->SetPosition(260, 105);
 
@@ -274,8 +274,8 @@ void SelectMap::MapTypeUpdate(int SelectNum)
 		}
 		else
 		{
-			m_LockedRing->SetTexture("Maps/Front/Image/ring.png");
-			m_LockedTextImage->SetTexture("Maps/Front/Image/font2.png");
+			m_LockedRing->SetTexture("UIImage/ring.png");
+			m_LockedTextImage->SetTexture("UIImage/font2.png");
 			m_LockedTextImage->SetText("Locked");
 		}
 	}

@@ -27,7 +27,7 @@ void cNetworkCreateRoom::Setup()
 
 	m_pRoomName = new UITextImageView;
 	m_pRoomName->SetIsChatingText(true);
-	m_pRoomName->SetTexture("Maps/Front/Image/font2.png");
+	m_pRoomName->SetTexture("UIImage/font2.png");
 	m_pRoomName->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
 	m_pRoomName->SetPosition(40, 20);
 
@@ -36,23 +36,23 @@ void cNetworkCreateRoom::Setup()
 	pImageView0->SetYSize(4.0f);
 	pImageView0->SetPosition(80, 50);
 	pImageView0->SetIsBoard(true);
-	pImageView0->SetTexture("Maps/Front/Image/blueRing.png");
+	pImageView0->SetTexture("UIImage/blueRing.png");
 
 	UIImageView* pImageView1 = new UIImageView;
 	pImageView1->SetXSize(1.2f);
 	pImageView1->SetYSize(1.2f);
 	pImageView1->SetPosition(17, 17);
-	pImageView1->SetTexture("Maps/Front/Image/blueflag.png");
+	pImageView1->SetTexture("UIImage/blueflag.png");
 
 	UIImageView* pImageView2 = new UIImageView;
 	pImageView2->SetPosition(120, 20);
 	pImageView2->SetIsBoard(true);
 	pImageView2->SetXSize(25.0f);
 	pImageView2->SetYSize(1.0f);
-	pImageView2->SetTexture("Maps/Front/Image/ring.png");
+	pImageView2->SetTexture("UIImage/ring.png");
 
 	UITextImageView* pImageView3 = new UITextImageView;
-	pImageView3->SetTexture("Maps/Front/Image/font1.png");
+	pImageView3->SetTexture("UIImage/font1.png");
 	pImageView3->SetText("SELECT TRACK");
 	pImageView3->SetXSize(1.5f);
 	pImageView3->SetYSize(1.5f);
@@ -63,15 +63,15 @@ void cNetworkCreateRoom::Setup()
 	pImageView4->SetIsBoard(true);
 	pImageView4->SetXSize(25.0f);
 	pImageView4->SetYSize(10.0f);
-	pImageView4->SetTexture("Maps/Front/Image/ring.png");
+	pImageView4->SetTexture("UIImage/ring.png");
 
 	UITextImageView* pImageView5 = new UITextImageView;
-	pImageView5->SetTexture("Maps/Front/Image/font2.png");
+	pImageView5->SetTexture("UIImage/font2.png");
 	pImageView5->SetText("Length");
 	pImageView5->SetPosition(60, 80);
 
 	UITextImageView* pImageView6 = new UITextImageView;
-	pImageView6->SetTexture("Maps/Front/Image/font2.png");
+	pImageView6->SetTexture("UIImage/font2.png");
 	pImageView6->SetText("Difficulty");
 	pImageView6->SetPosition(60, 105);
 
@@ -80,7 +80,7 @@ void cNetworkCreateRoom::Setup()
 	pImageView7->SetIsBoard(true);
 	pImageView7->SetXSize(25.0f);
 	pImageView7->SetYSize(0.5f);
-	pImageView7->SetTexture("Maps/Front/Image/ring.png");
+	pImageView7->SetTexture("UIImage/ring.png");
 
 	m_pRootUI->AddChild(pImageView0);
 	pImageView0->AddChild(m_pMapImage);

@@ -4,6 +4,8 @@
 class cAI;
 class TriggerCallback;
 class cTrack;
+class cSkidMark;
+class InGameUI;
 
 struct stCARSPEC
 {
@@ -13,24 +15,30 @@ struct stCARSPEC
 
 class cCar : public Object
 {
+	//바퀴 매쉬용 백터
+	std::vector<cMesh*> vecWheels;
+
 	//자동차 능력치 관련
 	NxVehicle* m_carNxVehicle;
 
-	std::vector<Object*> vecWheels;
-
-	float m_moterPower;		// 현재 모터 파워 0~1 비율값
+	//float m_moterPower;		
+	SYNTHESIZE(float, m_moterPower, MoterPower); // 현재 모터 파워 0~1 비율값
 	float m_maxMoterPower;	// 최대 파워값
 	float m_moterAcc;		// 가속 0~1
 
 	float m_maxRpm;
 	float m_breakPower;		// 손을 때고 있으면 자동으로 걸리게 한다.
 
-	float m_wheelAngle;		//바퀴가 꺽인 정도. (비울) 
+	//float m_wheelAngle;		
+	SYNTHESIZE(float, m_wheelAngle, WheelAngle); //바퀴가 꺾인 정도. (비울) 
 	float m_maxWheelAngle;	//바퀴가 꺽이는 최대값. 
 	float m_wheelAcc;		//꺽이는 속도	(비율에 더해지는 값)
 
+	//속도 계산
 	SYNTHESIZE(float, m_fCurrentSpeed, CurrentSpeed);
-	D3DXVECTOR3 m_szPrevPos[5];
+	D3DXVECTOR3 m_szPrevPos[5];	
+
+	SYNTHESIZE(D3DXMATRIX, m_matCarRotation, CarRotMatrix); // 자동차 전용 정확한 회전 매트릭스
 
 	//자동차 뒤집힘?
 	bool isFliping;
@@ -39,22 +47,24 @@ class cCar : public Object
 	std::vector<cAI*> m_vecAI;
 	bool m_isAI = false;
 
-	//track 관련
-	bool m_trackOn = true;
-	SYNTHESIZE(int, totalCheckBoxNum, TotalCheckBoxNum);
-	SYNTHESIZE(int, countCheckBox, CountCheckBox);
-	SYNTHESIZE(int, countTrack,CountTrackRun);
-	
-	SYNTHESIZE(float, m_rapTimeCount, RapTimeCount);
-	SYNTHESIZE(float, m_totlaTimeCount, TotlaTimeCount);
+	//Track 정보
+	cTrack* m_pTrack;
+	SYNTHESIZE(int, m_currCheckBoxID, CurrCheckBoxID);			//최근에 체크된 박스
+	SYNTHESIZE(int, m_nextCheckBoxID, NextCheckBoxID);			//드음에 체크할 박스
+	SYNTHESIZE(int, m_countRapNum, CountRapNum);					//돈 바퀴수
+
+	SYNTHESIZE(float, m_rapTimeCount, RapTimeCount);			//현제 렙 시간
+	SYNTHESIZE(float, m_bastRapTimeCount, BastRapTimeCount);	//가장 짭은 랩 시간
+	SYNTHESIZE(float, m_totlaTimeCount, TotlaTimeCount);		//총 경과된 랩 시간
 
 	//Item 관련
 	SYNTHESIZE(eITEM_LIST, m_eHoldItem, HoldItem);
 	SYNTHESIZE(int, m_nItemCount, ItemCount);
 	
-	int countCheckTrack;
+	cSkidMark* m_pSkidMark;
 
-	cTrack* m_pTrack;
+	//InGame UI
+	InGameUI* m_pInGameUI;
 
 public:
 	cCar();
@@ -70,6 +80,7 @@ public:
 
 	void CreatePhsyX(stCARSPEC carspec);
 	void LoadMesh(std::string carName);
+	void LoadWheel(std::string carName);
 
 	void Update();
 	void LastUpdate();
@@ -80,12 +91,13 @@ public:
 	void CtrlPlayer();
 	void CtrlAI();
 
-	void GetRpm();
+//	void GetRpm();
 	void TrackCheck();
 	void RunEnd();
 	void CarFlip();
 	void CarRunStop();
 	void LinkTrackPt(cTrack* track) { m_pTrack = track; }
+	void LinkUI(InGameUI* ingameUi) { m_pInGameUI = ingameUi; }
 //	void RunStart();
 
 };

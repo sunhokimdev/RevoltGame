@@ -17,7 +17,6 @@
 // Windows 헤더 파일:
 
 //======================================
-// - ## 10.14.17 ##
 // - written by 이건배
 // - <windows.h>와 PhysX내부의 <nxmath.h> 에서 max 와 min을 중복으로 사용중이기에 오류가 발생을 방지하기 위한 매크로 설정
 //======================================
@@ -41,6 +40,7 @@
 #include <iostream>
 #include <fstream>
 #include <mmsystem.h>
+#include <istream>
 
 /*   STL 헤더파일   */
 #include <vector>
@@ -181,6 +181,7 @@ enum FONTFILE{FONT1=2001, FONT2};
 #include "CameraManager.h"
 #include "LightManager.h"
 #include "ItemManager.h"
+#include "TextManager.h"
 
 //UTIL
 #include "cStringUtil.h"

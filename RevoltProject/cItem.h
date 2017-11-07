@@ -21,7 +21,7 @@ public:
 	virtual void Render();
 	virtual void Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos);
 
-	SYNTHESIZE(bool, m_isUse, Use);		// 사용 가능한 아이템인지 확인
+	SYNTHESIZE(bool, m_isUse, IsUse);		// 사용 가능한 아이템인지 확인
 	SYNTHESIZE(bool, m_isInit, IsInit);	// 초기화 해준 것인지 확인
 	void SetActorGroup(NxActor * actor, NxCollisionGroup group);
 	void SetItemTag(eITEM_LIST tag) { m_eTag = tag; }

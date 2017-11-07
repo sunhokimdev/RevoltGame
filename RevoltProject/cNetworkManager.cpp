@@ -9,6 +9,7 @@ cNetworkManager::cNetworkManager()
 
 cNetworkManager::~cNetworkManager()
 {
+	Release();
 }
 
 void cNetworkManager::Start()
@@ -18,24 +19,20 @@ void cNetworkManager::Start()
 
 	char args[NAME_SIZE];
 
-	HANDLE hSndThread, hRcvThread;
-
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		ErrorHandling("WSAStartup() error");
-
-	std::cin >> name;
 
 	m_hSock = socket(PF_INET, SOCK_STREAM, 0);
 
 	memset(&servAdr, 0, sizeof(servAdr));
 	servAdr.sin_family = AF_INET;
-	servAdr.sin_addr.s_addr = inet_addr("172.30.1.3");
-	servAdr.sin_port = htons(9190);
+	servAdr.sin_addr.s_addr = inet_addr("192.168.0.72");
+	servAdr.sin_port = htons(8080);
 
 	if (connect(m_hSock, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
 	{
 		ErrorHandling("connect() error");
-		MessageBoxA(g_hWnd, "asd", "asd", MB_OK);
+		MessageBoxA(g_hWnd, "소켓통신에러", "소켓통신에러", MB_OK);
 	}
 
 	return;
@@ -49,6 +46,8 @@ void cNetworkManager::Release()
 
 DWORD cNetworkManager::SendMsg(const char* msg)
 {
+	std::string str = msg;
+
 	send(m_hSock, msg, strlen(msg), 0);
 
 	return 0;
@@ -56,22 +55,23 @@ DWORD cNetworkManager::SendMsg(const char* msg)
 
 bool cNetworkManager::RecvMsg()
 {
+	SOCKET hSock = m_hSock;
+
 	char nameMsg[NAME_SIZE + BUF_SIZE];
-	int strLen = recv(m_hSock, nameMsg, NAME_SIZE + BUF_SIZE - 1, 0);
+	int strLen = recv(hSock, nameMsg, NAME_SIZE + BUF_SIZE - 1, 0);
+
 	nameMsg[strLen] = 0;
 
 	m_msg = std::string(nameMsg);
 
-	if (m_msg.size() != 0)
-		return true;
-
-	return false;
+	return true;
 }
 
 void cNetworkManager::ErrorHandling(char * msg)
 {
 	fputs(msg, stderr);
 	fputc('\n', stderr);
+	Release();
 }
 
 void cNetworkManager::SetRoomName(std::string str)

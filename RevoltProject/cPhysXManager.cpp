@@ -5,7 +5,6 @@
 
 #include "NxCooking.h"
 
-
 cPhysXManager::cPhysXManager()
 {
 }
@@ -52,6 +51,7 @@ BOOL cPhysXManager::InitNxPhysX()
 	PHYSXDATA*  newPhysXUserData = new PHYSXDATA;
 	newPhysXUserData->Reset();
 	SetPhysXData(newPhysXUserData);
+
 
 	E_PHYSX_MATERIAL_NONE; {/*default*/}
 	E_PHYSX_MATERIAL_MAP; {
@@ -285,6 +285,17 @@ void cPhysXManager::RaycastAllShapes(D3DXVECTOR3 start, D3DXVECTOR3 dir)
 
 }
 
+void cPhysXManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
+{
+	NxU32 nbShapes = actor->getNbShapes();
+	NxShape** shapes = (NxShape**)actor->getShapes();
+
+	while (nbShapes--)
+	{
+		shapes[nbShapes]->setGroup(group);
+	}
+}
+
 NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * mat, NxVec3 sizeValue, eMaterialTag materialTag, USERDATA * pUserData, bool IsTrigger, bool isStatic, bool isGravaty)
 {
 	sizeValue *= 0.5f;
@@ -515,11 +526,11 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 		pUserData0->TargetPointValue.push_back(pUserData1->UserPointValue);
 		pUserData1->TargetPointValue.push_back(pUserData0->UserPointValue);
 
-
-		if (pUserData0->CheckBoxID == pUserData1->CheckBoxID)
+		if (pUserData0->USER_TAG == E_PHYSX_TAG_CHECKBOX)
 		{
-			pUserData1->CheckBoxID += 1;
+			pUserData1->CheckBoxID = pUserData0->CheckBoxID;
 		}
+
 		if (pUserData0->USER_TAG == E_PHYSX_TAG_PICKUP)
 		{
 			if (pUserData1->IsPickUp == NX_FALSE
@@ -612,30 +623,32 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 	vehicleDesc.motorForce = 3500.f;//monsterTruck?180.f:
 	vehicleDesc.maxVelocity = 30.f;//(monsterTruck)?20.f:
 
-	vehicleDesc.centerOfMass.set(0.f, 0.1f, 0.f);
+	vehicleDesc.centerOfMass.set(0.f, 0.108f, 0.f);
 
 	NxWheelDesc wheelDesc[4];
 	for (NxU32 i = 0; i < 4; i++)
 	{
+
 		wheelDesc[i].wheelApproximation = 10;
 		wheelDesc[i].wheelRadius = 0.1f;
-		wheelDesc[i].wheelWidth = 0.01f;
-		wheelDesc[i].wheelSuspension = 0.00f;
-		wheelDesc[i].springRestitution = 7000;
-		wheelDesc[i].springDamping = 800;
-		wheelDesc[i].springBias = 0.2f;
+		wheelDesc[i].wheelWidth = 0.05f;
+		wheelDesc[i].wheelSuspension = 0.05f;
+		wheelDesc[i].springRestitution = 800;
+		wheelDesc[i].springDamping = 500;
+		wheelDesc[i].springBias = 0.05f;
+
 		wheelDesc[i].maxBrakeForce = 1.f;
 		wheelDesc[i].wheelFlags |= NX_WF_USE_WHEELSHAPE;
 
 
 		//¹ÙÄûÀÇ ¸¶Âû·Â
-		wheelDesc[i].frictionToFront = 3.f;
-		wheelDesc[i].frictionToSide = 1.f;
+		wheelDesc[i].frictionToFront = 2.f;
+		wheelDesc[i].frictionToSide = 2.f;
 
 		vehicleDesc.carWheels.pushBack(&wheelDesc[i]);
 	}
 
-	if (carspec.vecWheelPos.size() == 4) 
+	if (carspec.vecWheelPos.size() == 4)
 	{
 #define WHEELPOS carspec.vecWheelPos
 		wheelDesc[0].position.set(WHEELPOS[0].x, WHEELPOS[0].y, WHEELPOS[0].z);

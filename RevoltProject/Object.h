@@ -41,10 +41,10 @@ enum eOBJECT_ID
 
 class Object : public cTransform
 {
-protected:
-
+public:
 	Object();
 	~Object();
+protected:
 
 	cMesh* m_pMeshData;
 	cPhysX* m_PhysXData;
@@ -54,6 +54,7 @@ protected:
 	SYNTHESIZE(std::string, m_objName, ObjName);
 	SYNTHESIZE(bool, m_isEnable, m_isEnable);
 public:
+
 	cMesh* GetMeshData() { return m_pMeshData; }
 	void SetMeshData(cMesh* pMesh) {
 		if (pMesh)

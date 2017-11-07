@@ -16,7 +16,6 @@ public:
 public:
 	int trackNum = 0;
 	std::string trackName;
-
 	int m_nLightIdx;
 	//인게임 에 들어갈 장애물 등등
 	SYNTHESIZE(std::vector<Object*>, m_vecObject, Object);
@@ -24,8 +23,9 @@ public:
 	//멥에 있는 체크박스
 	//std::map<std::string, Object*>	m_mapCheckBox;
 
-	SYNTHESIZE(MAP_STR_OBJ, m_mapCheckBox, CheckBoxs);
-	MAP_STR_OBJ* GetCheckBoxsPt() { return  &m_mapCheckBox; }
+	SYNTHESIZE(std::vector<Object*>, m_vecCheckBox, CheckBoxs);
+//	SYNTHESIZE(MAP_STR_OBJ, m_mapCheckBox, CheckBoxs);
+	std::vector<Object*>* GetCheckBoxsPt() { return  &m_vecCheckBox; }
 	//NxVehicle* pVeh;
 
 	void Update();
@@ -36,13 +36,9 @@ public:
 	void LoadTrack(std::string FileName);
 	void CreateTrackPhysX();
 
-	int GetTrackCheckBoxSize() { return m_mapCheckBox.size(); }
+//	int GetTrackCheckBoxSize() { return m_vecCheckBox.size(); }
 
-
-
-	void TEST()
-	{
-		
-	}
+	//스타트지점
+	SYNTHESIZE(std::vector<D3DXVECTOR3>, vecStartPos,StartPositions);
 };
 

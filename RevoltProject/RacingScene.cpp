@@ -5,9 +5,11 @@
 #include "cCar.h"
 #include "InGameUI.h"
 #include "UITextImageView.h"
+#include "cSkyBox.h"
 
 RacingScene::RacingScene()
 	: m_select(99)
+	, m_pSkyBox(NULL)
 {}
 
 RacingScene::~RacingScene() {}
@@ -19,10 +21,9 @@ void RacingScene::Setup()
 
 	D3DXCreateSprite(g_pD3DDevice, &m_Sprite);
 	g_pCamManager->SetLookAt(&D3DXVECTOR3(0, 0, 0));
- 
+
 	m_pInGameUI = new InGameUI;
 	m_pInGameUI->Setup();
-	
 
 	m_pTrack = new cTrack;
 	if (m_pTrack)
@@ -50,26 +51,12 @@ void RacingScene::Setup()
 	//g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
 	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
 
-	/// car 생성
-	{
-		cCar* pCar = new cCar;
-		pCar->LoadCar("tc1");
-		pCar->SetTotalCheckBoxNum(m_pTrack->GetTrackCheckBoxSize());
-		vecCars.push_back(pCar);
-	}
-	{
-		//	cCar* pCar = new cCar;
-		//	pCar->LoadMesh("tc2");
-		//	pCar->CreatePhsyX(stCARSPEC());
-		//	pCar->SetCarValue(1000, 5000, 0.1, 0, NxPi / 8, NxPi * 0.05f);
-		//
-		//	pCar->GetPhysXData()->SetPosition(NxVec3(0, 0, 3));
-		//	vecCars.push_back(pCar);
-	}
+	m_pSkyBox = new cSkyBox;
+	m_pSkyBox->Setup();
 
-	m_pInGameUI->LinkCarPt(vecCars[0]);
-	vecCars[0]->LinkTrackPt(m_pTrack);
+	CreateCar(0, "tc2");
 
+	LinkUI(0);
 }
 
 void RacingScene::Destroy()
@@ -78,33 +65,36 @@ void RacingScene::Destroy()
 	SAFE_DELETE(m_pTrack);
 	SAFE_DELETE(m_pLightSun);
 	SAFE_DELETE(m_pInGameUI);
+	SAFE_DESTROY(m_pSkyBox);
+	SAFE_DELETE(m_pSkyBox);
 }
 
 void RacingScene::Update()
 {
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
-	//SAFE_UPDATE(g_pTimeManager); << 메인에서 돌아가고있음
 
 	for (int i = 0; i < vecCars.size(); i++)
 	{
-		 if(IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
-		 else vecCars[i]->RunEnd();
+		if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
+		else vecCars[i]->RunEnd();
 	}
 
-	UpdateCamera();
 	if (m_pInGameUI)
 	{
 		m_pInGameUI->Update();
 	}
-	
 
-	LastUpdate();
 }
 
 
 void RacingScene::Render()
 {
+	if (m_pSkyBox)
+	{
+		m_pSkyBox->Render();
+	}
+
 	if (m_pTrack)
 	{
 		m_pTrack->Render();
@@ -131,79 +121,83 @@ void RacingScene::LastUpdate()
 	{
 		p->LastUpdate();
 	}
+
+	UpdateCamera();
 }
 
 void RacingScene::UpdateCamera()
 {
-
+	//	return;
 #define CAM_X (*camPos).x
 #define CAM_Y (*camPos).y
 #define CAM_Z (*camPos).z
 #define CAM_POS (*camPos)
 
-	
-	//자동차 포지션
-
-	NxVec3 pos = vecCars[0]->GetNxVehicle()->getGlobalPose().t;
-
 	//회전 매트릭스 받아옴
-	NxF32 mat[9];
+	D3DXMATRIXA16 matR = vecCars[0]->GetCarRotMatrix();
 
-	vecCars[0]->GetNxVehicle()->getGlobalPose().M.getColumnMajor(mat);
-	D3DXMATRIXA16 matR;
-	D3DXMatrixIdentity(&matR);
-	matR._11 = mat[0];
-	matR._12 = mat[1];
-	matR._13 = mat[2];
-	matR._21 = mat[3];
-	matR._22 = mat[4];
-	matR._23 = mat[5];
-	matR._31 = mat[6];
-	matR._32 = mat[7];
-	matR._33 = mat[8];
+	//matR = vecCars[0]->GetMatrix(false, true, false); //이걸 사용하면 약간 부정확함
 
 	float distToCar = 5; //차와의 거리
 	float Height = 2; //카메라 높이
 
-	float CamSpdOut = 0.1;
-	float CamSpdIn = 0.05;
-	float FollowRange = 1;
-	float FixRange = 0.5;
-	float MaxRange = 2;
-
 	D3DXVECTOR3 carDir = { 1,0,0 };
 	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
 
-	D3DXVECTOR3 carPos = { pos.x,pos.y + 0.5f ,pos.z };
+	//자동차 포지션
+	D3DXVECTOR3 carPos = {
+		vecCars[0]->GetPosition().x,
+		vecCars[0]->GetPosition().y + 0.5f ,
+		vecCars[0]->GetPosition().z };
 
 	*camLookTarget = carPos;//D3DXVECTOR3(pos.x, pos.y + 2.f, pos.z);
 
 	D3DXVECTOR3 camDir = (*camLookTarget) - CAM_POS;
-	D3DXVec3Normalize(&camDir,&camDir);
+	D3DXVec3Normalize(&camDir, &camDir);
 
 	//레이초기화
 	NxRay RayCam;
 	RayCam.orig = NxVec3(carPos);
 	RayCam.dir = NxVec3(-carDir);
-	
-	NxRaycastHit RayCamHit;
-	g_pPhysXScene->raycastClosestShape(RayCam, NxShapesType::NX_ALL_SHAPES, RayCamHit);
 
-	
+	NxRaycastHit RayCamHit;
+	RayCamHit.shape = NULL;
+	g_pPhysXScene->raycastClosestShape(RayCam, NxShapesType::NX_ALL_SHAPES, RayCamHit, 0xffffffff,distToCar);
+
+	//레이초기화
+	NxRay RayCamVertical;
+	RayCamVertical.orig = NxVec3(carPos);
+	RayCamVertical.dir = NxVec3(0, 1, 0);
+
+	NxRaycastHit RayCamVerticalHit;
+	RayCamVerticalHit.shape = NULL;
+
+	g_pPhysXScene->raycastClosestShape(RayCamVertical, NxShapesType::NX_ALL_SHAPES, RayCamVerticalHit, 0xffffffff,Height);
+
 	float x = carPos.x - (carDir.x * distToCar);
 	float y = carPos.y - (carDir.y * distToCar) + Height;
 	float z = carPos.z - (carDir.z * distToCar);
 
-	if (RayCamHit.distance < distToCar)
+	float fCamHeight = Height;
+
+
+	if (RayCamHit.shape)
 	{
-		if (RayCamHit.shape)
+		if (RayCamHit.shape->getActor().getName() == "map")
 		{
-			if (RayCamHit.shape->getActor().getName() == "map")
-			{
-				x = RayCamHit.worldImpact.x;
-				y = carPos.y + Height;//RayCamHit.worldImpact.y;
-				z = RayCamHit.worldImpact.z;
-			}
+			x = RayCamHit.worldImpact.x;
+			//y = carPos.y + Height;//RayCamHit.worldImpact.y;
+			y = carPos.y + fCamHeight;
+			z = RayCamHit.worldImpact.z;
+		}
+	}
+
+	if (RayCamVerticalHit.shape != NULL)
+	{
+		if (RayCamVerticalHit.shape->getActor().getName() == "map")
+		{
+			fCamHeight = RayCamVerticalHit.distance;
+			y = carPos.y + fCamHeight;
 		}
 	}
 
@@ -225,5 +219,26 @@ void RacingScene::UpdateCamera()
 
 bool RacingScene::IsCarRunTrue(cCar* pCar)
 {
-	return m_trackEndCount > pCar->GetCountTrackRun();
+	return m_trackEndCount > pCar->GetCountRapNum();
+}
+
+void RacingScene::CreateCar(int playerID, std::string carName)
+{
+	cCar* pCar = new cCar;
+	pCar->LoadCar(carName);
+	vecCars.push_back(pCar);
+
+	pCar->GetPhysXData()->SetPosition(m_pTrack->GetStartPositions()[playerID]);
+
+}
+
+void RacingScene::LinkUI(int playerID)
+{
+	m_pInGameUI->LinkCarPt(vecCars[playerID]);
+	vecCars[playerID]->LinkUI(m_pInGameUI);
+	m_pInGameUI->LinkTrack(m_pTrack);
+	for (int i = 0; i < vecCars.size(); i++)
+	{
+		vecCars[i]->LinkTrackPt(m_pTrack);
+	}
 }
