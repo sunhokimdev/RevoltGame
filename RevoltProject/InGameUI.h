@@ -59,13 +59,13 @@ private:
 	UITextImageView* m_pLabMinTenth;
 
 	//Race Time
-	UITextImageView* m_pElapseTime;   
-	UITextImageView* m_pDotTenth;	  
-	UITextImageView* m_pDotMilth;	  
-	UITextImageView* m_pSecOneth;	  
-	UITextImageView* m_pSecTenth;	  
-	UITextImageView* m_pMinOneth;	  
-	UITextImageView* m_pMinTenth;	  
+	UITextImageView* m_pElapseTime;
+	UITextImageView* m_pDotTenth;
+	UITextImageView* m_pDotMilth;
+	UITextImageView* m_pSecOneth;
+	UITextImageView* m_pSecTenth;
+	UITextImageView* m_pMinOneth;
+	UITextImageView* m_pMinTenth;
 
 	// ¼Óµµ°è
 	UITextImageView* pSpeed;
@@ -92,7 +92,7 @@ public:
 	virtual void Render(LPD3DXSPRITE pSprite);
 	UIObject* GetUIObject() { return m_pRootUI; }
 	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
-	
+
 
 	void UpdateSpeed();
 	void CompareBestTime();
@@ -145,7 +145,10 @@ public:
 	SYNTHESIZE(int, m_MinOneth, MinOneth);
 	SYNTHESIZE(int, m_MinTenth, MinTenth);
 
-	void LinkCarPt(cCar* car) { m_pCar = car; }
+	void LinkCarPt(cCar* car)
+	{
+		m_pCar = car;
+	}
 	void LinkTrack(cTrack* track) { m_pTrack = track; }
 
 };

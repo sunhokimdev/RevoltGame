@@ -94,8 +94,8 @@ void ItemManager::InitCollisionGroup()
 	SetActorGroup(box3, 1);
 	SetActorGroup(box4, 1);
 
-	MgrPhysXScene->setGroupCollisionFlag(1, 2, false);
-	MgrPhysXScene->setGroupCollisionFlag(2, 2, false);
+//	MgrPhysXScene->setGroupCollisionFlag(1, 2, false);
+//	MgrPhysXScene->setGroupCollisionFlag(2, 2, false);
 }
 
 void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인터*/)

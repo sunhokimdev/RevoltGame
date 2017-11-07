@@ -10,6 +10,7 @@ public:
 private:
 	LPDIRECT3D9		m_pD3D;
 	LPDIRECT3DDEVICE9	m_pD3DDevice;
+	LPDIRECT3DDEVICE9	m_pD3DDevice2;
 
 public:
 	LPDIRECT3DDEVICE9	GetDevice();

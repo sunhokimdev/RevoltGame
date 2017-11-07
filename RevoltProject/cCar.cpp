@@ -233,6 +233,7 @@ void cCar::CreateItem()
 		m_nItemCount = 1;
 	}
 }
+
 void cCar::CreatePhsyX(stCARSPEC carspec)
 {
 	USERDATA* pUserdata = new USERDATA(E_PHYSX_TAG_CAR);
@@ -249,6 +250,7 @@ void cCar::CreatePhsyX(stCARSPEC carspec)
 		physX->SetPosition(NxVec3(0, 0, 0));
 	}
 }
+
 void cCar::LoadMesh(std::string carName)
 {
 	GetMeshData()->LoadCarMesh("Cars/" + carName, carName + ".obj");
@@ -509,7 +511,7 @@ void cCar::CtrlPlayer()
 			if (m_eHoldItem != ITEM_NONE)
 			{
 				//아이템 사용 함수 호츨
-				
+
 				m_nItemCount--;
 				if (m_nItemCount == 0)
 				{
@@ -557,7 +559,7 @@ void cCar::CtrlPlayer()
 		NxRay RayCar;
 		RayCar.orig = NxVec3(m_position);
 		RayCar.orig.y += 0.2f;
-		RayCar.dir = NxVec3(0,-1,0);
+		RayCar.dir = NxVec3(0, -1, 0);
 
 		NxRaycastHit RayCarHit;
 		RayCarHit.shape = NULL;
@@ -614,7 +616,7 @@ void cCar::TrackCheck()
 			m_currCheckBoxID = 0;	//체크 시작
 			m_countRapNum = 0;
 			m_rapTimeCount = 0.f;
-			
+
 		}
 		return;
 	}

@@ -104,6 +104,16 @@ BOOL cPhysXManager::InitNxPhysX()
 		m_pNxScene->createMaterial(material);
 	}
 
+
+
+	g_pPhysXScene->setUserTriggerReport(new TriggerCallback());
+	g_pPhysXScene->setUserContactReport(new ContactCallBack());
+
+
+	//	
+
+	PhysXReportSeting();
+
 	return S_OK;
 }
 
@@ -130,6 +140,99 @@ void cPhysXManager::Destory()
 void cPhysXManager::Render()
 {
 	if (pDebugRenderer) pDebugRenderer->RenderData(MgrPhysXScene->getDebugRenderable());
+}
+
+void cPhysXManager::PhysXReportSeting()
+{
+	const bool T = true;
+	const bool F = false;
+	//CollisionEnable(충돌,리보트,그룹1,그룹2);
+	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_NONE);
+	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_CHECKBOX);
+	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_CAR);
+	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_PICKUP);
+	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_FIREWORK);
+	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_WHATEBOMB);
+	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_METALBALL);
+	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_TRACK);
+
+	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_CHECKBOX);
+	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_CAR);
+	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_PICKUP);
+	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_FIREWORK);
+	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_WHATEBOMB);
+	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_METALBALL);
+	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_TRACK);
+
+	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_CAR);
+	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_PICKUP);
+	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_FIREWORK);
+	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_WHATEBOMB);
+	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_METALBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_TRACK);
+
+	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_PICKUP);
+	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_FIREWORK);
+	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_WHATEBOMB);
+	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_METALBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_TRACK);
+
+	CollisionEnable(T, T, E_PHYSX_TAG_FIREWORK, E_PHYSX_TAG_FIREWORK);
+	CollisionEnable(T, T, E_PHYSX_TAG_FIREWORK, E_PHYSX_TAG_WHATEBOMB);
+	CollisionEnable(T, T, E_PHYSX_TAG_FIREWORK, E_PHYSX_TAG_METALBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_FIREWORK, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_FIREWORK, E_PHYSX_TAG_TRACK);
+
+	CollisionEnable(T, T, E_PHYSX_TAG_WHATEBOMB, E_PHYSX_TAG_WHATEBOMB);
+	CollisionEnable(T, T, E_PHYSX_TAG_WHATEBOMB, E_PHYSX_TAG_METALBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_WHATEBOMB, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_WHATEBOMB, E_PHYSX_TAG_TRACK);
+
+	CollisionEnable(T, T, E_PHYSX_TAG_METALBALL, E_PHYSX_TAG_METALBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_METALBALL, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_METALBALL, E_PHYSX_TAG_TRACK);
+
+	CollisionEnable(T, T, E_PHYSX_TAG_GRIVATEBALL, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_GRIVATEBALL, E_PHYSX_TAG_TRACK);
+
+	CollisionEnable(F, F, E_PHYSX_TAG_TRACK, E_PHYSX_TAG_TRACK);
+
+	return;	//END
+	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_NONE);
+	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_CHECKBOX);
+	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_CAR);
+	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_PICKUP);
+	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_FIREWORK);
+	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_WHATEBOMB);
+	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_METALBALL);
+	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_TRACK);
+	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_END);
+}
+
+void cPhysXManager::CollisionEnable(bool collied, bool report, NxCollisionGroup group1, NxCollisionGroup group2)
+{
+	g_pPhysXScene->setGroupCollisionFlag(group1, group2, collied);
+	g_pPhysXScene->setActorGroupPairFlags(group1, group2, report);
+	g_pPhysXScene->setDominanceGroupPair
+}
+
+
+void cPhysXManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
+{
+	if (!actor) return;
+	actor->setGroup(group);
+
+	NxU32 nbShapes = actor->getNbShapes();
+	NxShape** shapes = (NxShape**)actor->getShapes();
+	for (int i = 0; i < actor->getNbShapes(); i++)
+	{
+		shapes[i]->setGroup(group);
+	}
 }
 
 NxTriangleMeshShapeDesc cPhysXManager::CreateTringleMesh(ID3DXMesh* pMesh, D3DXMATRIXA16* matS)
@@ -283,17 +386,6 @@ void cPhysXManager::RaycastAllShapes(D3DXVECTOR3 start, D3DXVECTOR3 dir)
 	RaycastCallBack raycastHit;
 	MgrPhysXScene->raycastAllShapes(worldRay, raycastHit, NX_ALL_SHAPES);
 
-}
-
-void cPhysXManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
-{
-	NxU32 nbShapes = actor->getNbShapes();
-	NxShape** shapes = (NxShape**)actor->getShapes();
-
-	while (nbShapes--)
-	{
-		shapes[nbShapes]->setGroup(group);
-	}
 }
 
 NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * mat, NxVec3 sizeValue, eMaterialTag materialTag, USERDATA * pUserData, bool IsTrigger, bool isStatic, bool isGravaty)
@@ -488,14 +580,14 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 	{
 		pUserData0->ContactPairFlag = NX_NOTIFY_ON_START_TOUCH;
 		pUserData1->ContactPairFlag = NX_NOTIFY_ON_START_TOUCH;
-
+		std::cout << "On touch" << std::endl;
 
 	}break;
 	case NX_NOTIFY_ON_TOUCH:
 	{
 		pUserData0->ContactPairFlag = NX_NOTIFY_ON_TOUCH;
 		pUserData1->ContactPairFlag = NX_NOTIFY_ON_TOUCH;
-
+		std::cout << "touch" << std::endl;
 
 	}break;
 	case NX_NOTIFY_ON_END_TOUCH:
@@ -503,7 +595,7 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 		pUserData0->ContactPairFlag = NX_NOTIFY_ON_END_TOUCH;
 		pUserData1->ContactPairFlag = NX_NOTIFY_ON_END_TOUCH;
 
-
+		std::cout << "End touch" << std::endl;
 	}break;
 	default:
 		pUserData0->ContactPairFlag = 0;
@@ -675,6 +767,8 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 
 
 	NxVehicle* vehicle = NxVehicle::createVehicle(MgrPhysXScene, &vehicleDesc);
+	g_pPhysX->SetActorGroup(vehicle->getActor(), E_PHYSX_TAG_CAR);
+
 	NxQuat q;
 	q.fromAngleAxis(0.f, NxVec3(0.0f, 1.0f, 0.0f));
 	vehicle->getActor()->setGlobalOrientationQuat(q);
