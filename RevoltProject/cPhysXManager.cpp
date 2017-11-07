@@ -482,6 +482,7 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 	USERDATA* pUserData1 = (USERDATA*)pair.actors[1]->userData;
 	if (pUserData0 == NULL || pUserData1 == NULL) return;
 
+
 	switch (_event)
 	{
 	case NX_NOTIFY_ON_START_TOUCH:
@@ -489,21 +490,40 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 		pUserData0->ContactPairFlag = NX_NOTIFY_ON_START_TOUCH;
 		pUserData1->ContactPairFlag = NX_NOTIFY_ON_START_TOUCH;
 
-
 	}break;
 	case NX_NOTIFY_ON_TOUCH:
 	{
 		pUserData0->ContactPairFlag = NX_NOTIFY_ON_TOUCH;
 		pUserData1->ContactPairFlag = NX_NOTIFY_ON_TOUCH;
-
-
 	}break;
 	case NX_NOTIFY_ON_END_TOUCH:
 	{
 		pUserData0->ContactPairFlag = NX_NOTIFY_ON_END_TOUCH;
 		pUserData1->ContactPairFlag = NX_NOTIFY_ON_END_TOUCH;
 
+		if (pUserData0->USER_TAG == E_PHYSX_TAG_CAR && pUserData1->USER_TAG == E_PHYSX_TAG_CAR)
+		{
+			if (pUserData0->isMyBomb)
+			{
+				pUserData0->isMyBomb = false;
+				pUserData1->isMyBomb = true;
 
+			//	NxVec3 v = *pUserData0->m_pCarPosion;
+				//*pUserData0->m_pCarPosion = *pUserData1->m_pCarPosion;
+				//*pUserData1->m_pCarPosion = v;
+			}
+			else if (pUserData1->isMyBomb)
+			{
+				pUserData0->isMyBomb = true;
+				pUserData1->isMyBomb = false;
+
+				//NxVec3 v = *pUserData0->m_pCarPosion;
+				//*pUserData0->m_pCarPosion = *pUserData1->m_pCarPosion;
+				//*pUserData1->m_pCarPosion = v;
+			}
+
+			printf("%d %d\n", pUserData0->isMyBomb, pUserData1->isMyBomb);
+		}
 	}break;
 	default:
 		pUserData0->ContactPairFlag = 0;
@@ -558,6 +578,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 		}
 		else if (pUserData1->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
+
 		}
 
 		else

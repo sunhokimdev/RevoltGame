@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "cItem.h"
+#include "cCar.h"
 
 cItem::cItem()
 	: m_fTime(0.0f)
@@ -15,7 +16,6 @@ cItem::~cItem()
 {
 	SAFE_DELETE(m_pUser);
 	SAFE_DELETE(m_pPhysX);
-
 }
 
 void cItem::Setup()

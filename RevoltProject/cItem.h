@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Object.h"
+class cCar;
 
 class cItem : public Object
 {
@@ -23,6 +24,7 @@ public:
 
 	SYNTHESIZE(bool, m_isUse, IsUse);		// 사용 가능한 아이템인지 확인
 	SYNTHESIZE(bool, m_isInit, IsInit);	// 초기화 해준 것인지 확인
+	SYNTHESIZE(cCar*, m_pCar, Car);
 	void SetActorGroup(NxActor * actor, NxCollisionGroup group);
 	void SetItemTag(eITEM_LIST tag) { m_eTag = tag; }
 };

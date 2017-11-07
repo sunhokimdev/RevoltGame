@@ -9,20 +9,21 @@ class cNetworkManager
 {
 private:
 	SOCKET m_hSock;
-
-	char name[NAME_SIZE];
+	std::vector<std::string> m_vecMyIP;
+	
+	char name[NAME_SIZE];		// 자동차 이름
 	char roomName[NAME_SIZE];
 	int data[BUF_SIZE];
 
-	std::string m_msg;
+	std::string m_msg;			// 데이터 이름
 public:
 	SINGLETONE(cNetworkManager);
 
 	void Start();
 	void Release();
 
-	DWORD SendMsg(const char* msg);
-	bool RecvMsg();
+	DWORD SendMsg(const char* msg);		// 데이터 서버에 보내기
+	bool RecvMsg();		// 데이서 서버에 받기
 	void ErrorHandling(char* msg);
 
 	void SetRoomName(std::string str);
@@ -31,5 +32,7 @@ public:
 	SYNTHESIZE(bool, m_isNetwork, IsNetwork);
 
 	std::string GetMsg() { return m_msg; }
+
+	sockaddr_in GetDefaultMyIP();
 };
 

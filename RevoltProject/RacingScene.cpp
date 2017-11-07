@@ -56,6 +56,9 @@ void RacingScene::Setup()
 	m_pSkyBox->Setup();
 
 	CreateCar(0, "tc2");
+	CreateCar(1, "tc1");
+
+	vecCars[1]->m_isAI = true;
 
 	LinkUI(0);
 }

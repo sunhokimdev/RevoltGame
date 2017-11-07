@@ -133,6 +133,12 @@
     <Filter Include="Item\Firework">
       <UniqueIdentifier>{d6c6e627-3050-44ec-98b5-77357c86a474}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Item\Mybomb">
+      <UniqueIdentifier>{ee5de13c-159b-43e6-b616-661d9117b460}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Item\FakeBomb">
+      <UniqueIdentifier>{32805624-04b4-4aed-ae65-7c4fd7634d90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -447,6 +453,18 @@
     <ClInclude Include="cSkyBox.h">
       <Filter>Basic</Filter>
     </ClInclude>
+    <ClInclude Include="cMyBomb.h">
+      <Filter>Item\Mybomb</Filter>
+    </ClInclude>
+    <ClInclude Include="cMybombImapct.h">
+      <Filter>Item\Mybomb</Filter>
+    </ClInclude>
+    <ClInclude Include="cFakeBomb.h">
+      <Filter>Item\FakeBomb</Filter>
+    </ClInclude>
+    <ClInclude Include="cFakeImpact.h">
+      <Filter>Item\FakeBomb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -718,6 +736,18 @@
     </ClCompile>
     <ClCompile Include="cSkyBox.cpp">
       <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="cMyBomb.cpp">
+      <Filter>Item\Mybomb</Filter>
+    </ClCompile>
+    <ClCompile Include="cMybombImapct.cpp">
+      <Filter>Item\Mybomb</Filter>
+    </ClCompile>
+    <ClCompile Include="cFakeBomb.cpp">
+      <Filter>Item\FakeBomb</Filter>
+    </ClCompile>
+    <ClCompile Include="cFakeImpact.cpp">
+      <Filter>Item\FakeBomb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

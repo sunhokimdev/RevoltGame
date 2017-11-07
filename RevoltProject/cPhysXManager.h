@@ -18,6 +18,7 @@
 #include "PhysX/cooking.h"
 
 struct stCARSPEC;
+class cCar;
 
 //#include <NxConvexMeshDesc.h>
 
@@ -38,6 +39,7 @@ enum ePhysXTag
 	, E_PHYSX_TAG_PICKUP		//아이템
 	, E_PHYSX_TAG_FIREWORK
 	, E_PHYSX_TAG_WHATEBOMB
+	, E_PHYSX_TAG_MYBOMB
 	, E_PHYSX_TAG_METALBALL
 	, E_PHYSX_TAG_GRIVATEBALL
 	, E_PHYSX_TAG_TRACK
@@ -72,8 +74,6 @@ struct USERDATA
 	ePhysXTag USER_TAG;
 	NxU32 UserPointValue;
 	std::vector<NxU32> TargetPointValue;
-
-
 	NX_BOOL IsPickUp;
 	NxU32 CheckBoxID;
 
@@ -84,6 +84,11 @@ struct USERDATA
 	NX_BOOL RaycastClosestShape;
 	NX_BOOL RaycastAllShape;
 	NxVec3	RayHitPos;
+
+	/*   김선호 작업   */
+	bool isMyBomb;
+	NxVec3* m_pCarPosion;
+
 	USERDATA(ePhysXTag tag)
 	{
 		Init();
@@ -105,6 +110,9 @@ struct USERDATA
 		RayHitPos = NxVec3(0, 0, 0);
 		CheckBoxID = 0;
 		IsPickUp = NX_FALSE;
+
+		/*   김선호   */
+		isMyBomb = false;
 	}
 	void Reset()
 	{
