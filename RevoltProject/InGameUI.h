@@ -28,6 +28,7 @@ private:
 
 	//Lab
 	UITextImageView* m_pLab;
+	UITextImageView* m_pCurrentLab;
 
 	//Last Time
 	UITextImageView* m_pLastDotOneTh;
@@ -85,10 +86,11 @@ public:
 	
 
 	void UpdateSpeed();
-	void CompareBestTime();
-	void UpdateLastTime();
-	void UpdateRaceTime();									// UpdateRaceTimer
+	void UpdateLabCount();									// UpdateCurrentLab
+	void UpdateLastTime();									// UpdateLastTimer
+	void CompareBestTime();									// UpdateBestTimer(Compare BestLab with CurrentLab)
 	void UpdateLabTime();									// UpdateLabTimer
+	void UpdateRaceTime();									// UpdateRaceTimer
 	void UpdateArrowDir();									// 화살표 방향
 
 
