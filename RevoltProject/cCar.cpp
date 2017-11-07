@@ -19,6 +19,7 @@ cCar::cCar()
 	m_bastRapTimeCount = -1.0f;
 	isFliping = false;
 	m_nextCheckBoxID = 0;
+	m_eHoldItem = ITEM_NONE;
 }
 
 cCar::~cCar()
@@ -225,7 +226,8 @@ void cCar::CreateItem()
 	{
 		while (1)
 		{
-			m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
+			//m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
+			m_eHoldItem = eITEM_LIST::ITEM_WBOMB;
 			if (m_eHoldItem) break;
 		}
 		m_nItemCount = 1;
@@ -503,14 +505,15 @@ void cCar::CtrlPlayer()
 		//아이템사용
 		if (g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM))
 		{
-			g_pItemManager->FireItem(ITEM_WBOMB, this);
-
+			//g_pItemManager->FireItem(ITEM_WBOMB, this);
 			if (m_eHoldItem != ITEM_NONE)
 			{
 				//아이템 사용 함수 호츨
+				
 				m_nItemCount--;
 				if (m_nItemCount == 0)
 				{
+					g_pItemManager->FireItem(m_eHoldItem, this);
 					m_eHoldItem = ITEM_NONE;
 					GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
 				}

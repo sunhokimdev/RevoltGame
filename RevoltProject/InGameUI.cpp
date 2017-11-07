@@ -302,7 +302,7 @@ void InGameUI::Setup()
 	m_pItemImage->SetPosition(22, 22);
 	m_pItemImage->SetIsItem(true);
 	m_pItemImage->SetTexture("UIImage/itemlist.png");
-
+	m_pItemImage->LinkCarPt(m_pCar);
 	// 속도계 추가
 
 	UIImageView* pSpeedFrame = new UIImageView;

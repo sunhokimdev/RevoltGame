@@ -128,6 +128,7 @@ void cTrack::LoadTrack(std::string FileName)
 				Obj->SetTag((eOBJECT_TAG)tag);
 				USERDATA* pUserData = new USERDATA;
 				pUserData->USER_TAG = physxTag;
+				pUserData->IsPickUp = NX_TRUE;
 				cPhysX* physx = new cPhysX;
 				NxShapeType type((NxShapeType)0);
 				NxVec3 position(0, 0, 0);

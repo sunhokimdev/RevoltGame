@@ -93,6 +93,8 @@ public:
 	void CarFlip();
 	void CarRunStop();
 	void LinkTrackPt(cTrack* track) { m_pTrack = track; }
+
+	eITEM_LIST* GetHoldItemPt() { return &m_eHoldItem; }
 //	void RunStart();
 
 };
