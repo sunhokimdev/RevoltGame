@@ -4,7 +4,10 @@ class cAI_CtrlSpeed :
 	public cAI
 {
 private:
-	cPhysX* pCollider;
+//	cPhysX* pCollider;
+
+	NxRaycastHit* rayHit;
+
 	NxVec3 center;
 	
 public:

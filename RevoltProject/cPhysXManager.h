@@ -27,10 +27,14 @@ class cCar;
 #define MgrPhysXSDK		cPhysXManager::GetInstance()->GetPhysXSDK()
 #define MgrPhysXData	cPhysXManager::GetInstance()->GetPhysXData()
 
-#define  g_pPhysX		  MgrPhysX		
-#define  g_pPhysXScene	  MgrPhysXScene	
-#define  g_pPhysXSDK	  MgrPhysXSDK		
-#define  g_pPhysXData	  MgrPhysXData	
+#define  g_pPhysX		MgrPhysX		
+#define  g_pPhysXScene	MgrPhysXScene	
+#define  g_pPhysXSDK	MgrPhysXSDK		
+#define  g_pPhysXData	MgrPhysXData	
+
+
+#define RAYCAST			MgrPhysX->RaycastClosestShape
+
 
 enum ePhysXTag
 {
@@ -44,6 +48,7 @@ enum ePhysXTag
 	, E_PHYSX_TAG_METALBALL
 	, E_PHYSX_TAG_GRIVATEBALL
 	, E_PHYSX_TAG_TRACK
+	, E_PHYSX_TAG_RAYCAST_TO_AI		//레이케스트
 	, E_PHYSX_TAG_END			//전혀 충돌하지 않음
 };
 
@@ -202,6 +207,9 @@ public:
 
 	void RaycastClosestShape(D3DXVECTOR3 start, D3DXVECTOR3 dir);
 	void RaycastAllShapes(D3DXVECTOR3 start, D3DXVECTOR3 dir);
+
+	NxRaycastHit RaycastClosestShape(D3DXVECTOR3 start, D3DXVECTOR3 dir, NxReal maxDist = NX_MAX_F32, NxU32 group = 0xffffffff);
+	NxRaycastHit RaycastClosestShape(NxVec3 start, NxVec3 dir, NxReal maxDist = NX_MAX_F32, NxU32 group = 0xffffffff);
 
 	void PhysXReportSeting();
 	void CollisionEnable(bool collied,bool report, NxCollisionGroup group1, NxCollisionGroup group2);
