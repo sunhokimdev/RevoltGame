@@ -447,6 +447,9 @@ void cCar::CtrlPlayer()
 			if (m_moterPower > 1.f) m_moterPower = 1.f;
 			targetPower = m_moterPower * m_maxMoterPower;
 			power = true;
+
+			if (g_pNetworkManager->GetIsInGameNetwork())
+				g_pNetworkManager->SetUpKey(true);
 		}
 		if (g_pKeyManager->isStayKeyDown(KEY_REVERSE))
 		{
@@ -454,6 +457,9 @@ void cCar::CtrlPlayer()
 			if (m_moterPower < -1.f) m_moterPower = -1.f;
 			targetPower = m_moterPower * m_maxMoterPower;
 			power = true;
+
+			if (g_pNetworkManager->GetIsInGameNetwork())
+				g_pNetworkManager->SetDownKey(true);
 		}
 		if (!power)
 		{
@@ -471,6 +477,9 @@ void cCar::CtrlPlayer()
 			if (m_wheelAngle > 1.f) m_wheelAngle = 1.f;
 			targetAngle = m_wheelAngle * m_maxWheelAngle;
 			handle = true;
+
+			if (g_pNetworkManager->GetIsInGameNetwork())
+				g_pNetworkManager->SetLeftKey(true);
 		}
 		if (g_pKeyManager->isStayKeyDown(KEY_MOVE_RIGHT))
 		{
@@ -478,6 +487,9 @@ void cCar::CtrlPlayer()
 			if (m_wheelAngle < -1.f) m_wheelAngle = -1.f;
 			targetAngle = m_wheelAngle * (m_maxWheelAngle);
 			handle = true;
+
+			if (g_pNetworkManager->GetIsInGameNetwork())
+				g_pNetworkManager->SetRightKey(true);
 		}
 		if (!handle)
 		{
@@ -506,10 +518,9 @@ void cCar::CtrlPlayer()
 		//아이템사용
 		if (g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM))
 		{
-			g_pItemManager->FireItem(ITEM_MYBOMB, this);
-
 			if (m_eHoldItem != ITEM_NONE)
 			{
+				g_pItemManager->FireItem(ITEM_MYBOMB, this);
 				//아이템 사용 함수 호츨
 				m_nItemCount--;
 				if (m_nItemCount == 0)
@@ -518,12 +529,18 @@ void cCar::CtrlPlayer()
 					GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
 				}
 				std::cout << "FIRE!" << std::endl;
+
+				if (g_pNetworkManager->GetIsInGameNetwork())
+					g_pNetworkManager->SetCtrlKey(true);
 			}
 		}
 
 		//RePosition
 		if (g_pKeyManager->isOnceKeyDown(KEY_REPOSITION))
 		{
+			if (g_pNetworkManager->GetIsInGameNetwork())
+				g_pNetworkManager->SetRKey(true);
+
 			CarRunStop();
 			if (m_countRapNum == -1)
 			{
@@ -546,6 +563,9 @@ void cCar::CtrlPlayer()
 		{
 			if (g_pKeyManager->isOnceKeyDown(KEY_CAR_FLIP) && isFliping == false)
 			{
+				if (g_pNetworkManager->GetIsInGameNetwork())
+					g_pNetworkManager->SetFKey(true);
+
 				isFliping = true;
 				CarRunStop();
 			}

@@ -87,6 +87,58 @@ void cNetworkManager::SetName(std::string str)
 		name[i] = str[i];
 }
 
+void cNetworkManager::SetResetKeyEvent()
+{
+	m_keyEvent.ctrl = false;
+	m_keyEvent.down = false;
+	m_keyEvent.f_key = false;
+	m_keyEvent.left = false;
+	m_keyEvent.right = false;
+	m_keyEvent.r_key = false;
+	m_keyEvent.up = false;
+}
+
+std::string cNetworkManager::GetKeYString()
+{
+	std::string str = "";
+
+	if (m_keyEvent.up)
+		str += "1";
+	else
+		str += "0";
+
+	if (m_keyEvent.down)
+		str += "1";
+	else
+		str += "0";
+	if (m_keyEvent.left)
+		str += "1";
+	else
+		str += "0";
+
+	if (m_keyEvent.right)
+		str += "1";
+	else
+		str += "0";
+
+	if (m_keyEvent.ctrl)
+		str += "1";
+	else
+		str += "0";
+
+	if (m_keyEvent.r_key)
+		str += "1";
+	else
+		str += "0";
+
+	if (m_keyEvent.f_key)
+		str += "1";
+	else
+		str += "0";
+
+	return str;
+}
+
 sockaddr_in cNetworkManager::GetDefaultMyIP()
 {
 	char localhostname[1024];

@@ -279,6 +279,7 @@ void Lobby::KeyUpdate()
 
 		else if (m_stateLobby == NETWORK_SELECT_LOBBY)
 		{
+			m_pInRoom->SetUserName(m_multiLobby->GetName());
 			g_pNetworkManager->SetServerIP(m_pSelectServer->GetTextIP());
 			g_pNetworkManager->Start();
 		}
@@ -341,6 +342,19 @@ void Lobby::KeyUpdate()
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
+		}
+		else if (m_stateLobby == NETWORK_IN_LOBBY)
+		{
+			m_time = 0.0f;
+			m_select = 0;
+			m_leftAndrightSelect = 0;
+			//유저데이터에 자동차 선택한거 넘겨주고
+			//씬변경
+
+			g_pNetworkManager->SetIsInGameNetwork(true);
+			g_pNetworkManager->SendMsg("@");
+			g_SceneManager->ChangeScene("Race");
+			return;
 		}
 	}
 

@@ -55,10 +55,14 @@ void RacingScene::Setup()
 	m_pSkyBox = new cSkyBox;
 	m_pSkyBox->Setup();
 
-	CreateCar(0, "tc2");
-	CreateCar(1, "tc1");
+	CreateCar(0, "tc1");
+	CreateCar(1, "tc2");
+	CreateCar(2, "tc3");
+	CreateCar(3, "tc4");
+	CreateCar(4, "tc5");
+	CreateCar(5, "tc6");
 
-	vecCars[1]->m_isAI = true;
+	//vecCars[1]->m_isAI = true;
 
 	LinkUI(0);
 }
@@ -79,10 +83,37 @@ void RacingScene::Update()
 	SAFE_UPDATE(m_pTrack);
 	//SAFE_UPDATE(g_pTimeManager); << 메인에서 돌아가고있음
 
-	for (int i = 0; i < vecCars.size(); i++)
+	if (g_pNetworkManager->GetIsInGameNetwork())
 	{
-		if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
-		else vecCars[i]->RunEnd();
+		std::string str;
+
+		g_pNetworkManager->SetResetKeyEvent();
+
+		if (IsCarRunTrue(vecCars[0])) 
+			vecCars[0]->Update();
+		else
+		{
+			vecCars[0]->RunEnd();
+			return;
+		}
+
+		str = "@" + g_pNetworkManager->GetClientIP() + 
+			"@" + g_pNetworkManager->GetKeYString();
+
+		g_pNetworkManager->SendMsg(str.c_str());
+		g_pNetworkManager->RecvMsg();
+		str = g_pNetworkManager->GetMsg();
+		if(str.size() > 5)
+			printf("%s\n", str.c_str());
+	}
+
+	else
+	{
+		for (int i = 0; i < vecCars.size(); i++)
+		{
+			if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
+			else vecCars[i]->RunEnd();
+		}
 	}
 
 	if (m_pInGameUI)
