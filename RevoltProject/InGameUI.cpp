@@ -51,6 +51,12 @@ InGameUI::~InGameUI()
 {
 	SAFE_DELETE(m_pRootUI);
 	SAFE_DELETE(m_pItemImage);
+	if (m_p321go)
+	{
+		m_p321go->Destroy();
+		delete(m_p321go);
+	}
+		
 	//SAFE_DELETE(m_pCar);
 }
 
@@ -486,6 +492,7 @@ void InGameUI::Update()
 
 	iLobby::Update();
 
+	if (m_p321go) m_p321go->Update();
 	//UpdateArrowDir();
 }
 
@@ -493,7 +500,7 @@ void InGameUI::Render(LPD3DXSPRITE pSprite)
 {
 	iLobby::Render(pSprite);
 
-
+	if (m_p321go) m_p321go->Render();
 }
 
 void InGameUI::SetupTimer()

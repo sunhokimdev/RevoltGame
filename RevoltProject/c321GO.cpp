@@ -163,9 +163,6 @@ void c321GO::Count()
 		Lerp += 0.1;
 	}
 
-
-	
-
 	D3DXMATRIXA16 mat, matR, matRY;
 	D3DXMatrixIdentity(&mat);
 	D3DXMatrixIdentity(&matR);
