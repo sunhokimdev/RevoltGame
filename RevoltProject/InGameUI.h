@@ -7,6 +7,7 @@ class UITextImageView;
 class UIImageView;
 class cCar;
 class cTrack;
+class c321GO;
 
 //===================================================================
 // - written by �輱ȣ
@@ -76,6 +77,9 @@ private:
 	UITextImageView* pITV_Rank;
 	UITextImageView* pITV_Rank2;
 	UIImageView* pIV_arrowDir;
+
+	//321go
+	c321GO* m_p321go;
 
 	int m_arrowIndex;
 	cTrack* m_pTrack;

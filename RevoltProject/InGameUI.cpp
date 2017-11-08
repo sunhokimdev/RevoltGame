@@ -6,6 +6,7 @@
 #include "cTrack.h"
 #include "Object.h"
 #include "cCheckBox.h"
+#include "c321GO.h"
 
 #define TIMEMAX 60
 
@@ -410,6 +411,8 @@ void InGameUI::Setup()
 	pMinColon->AddChild(m_pMinOneth);
 	m_pMinOneth->AddChild(m_pMinTenth);
 
+	m_p321go = new c321GO;
+	m_p321go->Setup();
 }
 
 void InGameUI::Update()
@@ -439,6 +442,11 @@ void InGameUI::Update()
 
 	iLobby::Update();
 
+	if (m_p321go)
+	{
+		m_p321go->Update();
+	}
+
 	//UpdateArrowDir();
 }
 
@@ -446,7 +454,10 @@ void InGameUI::Render(LPD3DXSPRITE pSprite)
 {
 	iLobby::Render(pSprite);
 
-
+	if (m_p321go)
+	{
+		m_p321go->Render();
+	}
 }
 
 void InGameUI::UpdateSpeed()

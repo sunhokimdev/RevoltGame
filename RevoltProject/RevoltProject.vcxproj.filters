@@ -453,6 +453,9 @@
     <ClInclude Include="cPlayerData.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="c321GO.h">
+      <Filter>NewClass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -730,6 +733,9 @@
     </ClCompile>
     <ClCompile Include="cPlayerData.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="c321GO.cpp">
+      <Filter>NewClass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

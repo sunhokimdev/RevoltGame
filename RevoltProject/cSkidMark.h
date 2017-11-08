@@ -85,9 +85,6 @@ class cSkidMark
 
 	cCar* m_pCar;
 
-
-	LPD3DXMESH meshp;
-
 public:
 	cSkidMark();
 	~cSkidMark();

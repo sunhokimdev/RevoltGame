@@ -359,6 +359,7 @@ void cCar::Update()
 
 	if (m_pSkidMark)
 	{
+		DrawSkidMark();
 		m_pSkidMark->Update();
 	}
 
@@ -585,7 +586,6 @@ void cCar::CtrlPlayer()
 		{
 			m_pSkidMark->Destory();
 		}
-
 	}
 }
 
@@ -709,5 +709,40 @@ void cCar::CarRunStop()
 		{
 			m_carNxVehicle->getWheel(i)->getWheelShape()->getActor().putToSleep();
 		}
+	}
+}
+
+void cCar::DrawSkidMark()
+{
+	//레이초기화
+	NxRay RayCar;
+	RayCar.orig = NxVec3(m_position);
+	RayCar.orig.y += 0.2f;
+	RayCar.dir = NxVec3(0, -1, 0);
+
+	NxRaycastHit RayCarHit;
+	RayCarHit.shape = NULL;
+	g_pPhysXScene->raycastClosestShape(RayCar, NxShapesType::NX_ALL_SHAPES, RayCarHit);
+
+	float rpm = GetNxVehicle()->getWheel(0)->getRpm() / m_maxRpm;
+	if (fabsf(rpm) > 0.8f && fabs(m_wheelAngle) > 0.9f)
+	{
+		if (RayCarHit.distance < 0.2f
+			&& RayCarHit.shape->getActor().getName() == "map")
+		{
+			m_pSkidMark->DrawSkidMark();
+		}
+	}
+
+	if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
+	{
+		if (RayCarHit.distance < 0.2f)
+		{
+			m_pSkidMark->DrawSkidMark();
+		}
+	}
+	if (g_pKeyManager->isStayKeyDown(VK_SPACE))
+	{
+		m_pSkidMark->Destory();
 	}
 }
