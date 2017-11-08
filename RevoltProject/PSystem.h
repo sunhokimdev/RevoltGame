@@ -55,6 +55,7 @@ public:
 	bool isEmpty();					// 파티클이 없는 경우 true
 	bool isDead();					// 파티클이 모두 죽은 경우 true ( 파티클이 있지만 죽은상태)
 
+	SYNTHESIZE(bool, m_isUse, IsUse);
 
 	DWORD FtoDw(float f);
 

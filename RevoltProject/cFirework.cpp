@@ -6,6 +6,7 @@
 cFirework::cFirework()
 	: m_pPhysX(NULL)
 	, m_pEffect(NULL)
+	, m_pTail(NULL)
 	, m_isSleep(false)
 {
 }
@@ -32,44 +33,63 @@ void cFirework::Setup()
 
 	m_pEffect = new PFirework(50);
 	m_pEffect->Init(g_pD3DDevice, "Objects/firework/particle_flare.bmp");
-	m_pEffect->SetPosition(&D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
+	m_pTail = new PFirework(5);
+	m_pTail->Init(g_pD3DDevice, "Objects/firework/particle_flare.bmp");
+
 }
 
 void cFirework::Update()
 {
 	cItem::Update();
-	D3DXVECTOR3 fwPos;
+
 	fwPos.x = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().x;
 	fwPos.y = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().y;
 	fwPos.z = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().z;
 	
 	D3DXVECTOR3 tar = D3DXVECTOR3(-10.0f, 0.0f, -10.0f);
 	D3DXVECTOR3 dir = tar - fwPos;
-
+	
 	D3DXVec3Normalize(&dir, &dir);
-
+	
 	NxVec3 force;
+	
+	force.x = dir.x * 1000;
+	force.y = dir.y * 500;
+	force.z = dir.z * 500;
+	
+	m_pPhysX->pPhysX->m_pActor->addForce(force);
+	
+	m_pTail->SetPosition(&fwPos);
+	m_pTail->Update(0.1f);
+	m_pTail->Reset();
+	
 
 	if (m_isUse && m_fTime > FIREWORKEFFECT)
 	{
+		m_pPhysX->pPhysX->m_pActor->putToSleep();
+		m_pPhysX->pPhysX->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
+
+		m_pPhysX->pTrigger->m_pActor->wakeUp();
+		m_pPhysX->pTrigger->m_pActor->clearActorFlag(NX_AF_DISABLE_COLLISION);
+
+		NxVec3 n = m_pPhysX->pPhysX->m_pActor->getGlobalPose().t;
+		m_pEffect->SetPosition(&fwPos);
+		m_pEffect->SetIsUse(true);
+		m_pEffect->Reset();
 		m_isUse = false;
 		m_isSleep = true;
 		m_fTime = 0;
 	}
 
-	force.x = dir.x * 2000;
-	force.y = dir.y * 500;
-	force.z = dir.z * 500;
-
-	m_pPhysX->pPhysX->m_pActor->addForce(force);
-
-	if (!m_pEffect->isDead() && !m_isUse)
+	if (m_pEffect->GetIsUse())
 	{
-		m_pEffect->SetPosition(&fwPos);
-		m_pEffect->Update(1.0f);
+		m_pPhysX->pTrigger->m_pActor->putToSleep();
+		m_pPhysX->pTrigger->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
 	}
-	if(m_pEffect->isDead() && !m_isUse)
-		m_pEffect->Reset();
+
+	if (!m_isUse && m_pEffect->GetIsUse())
+		m_pEffect->Update(0.1f);
 
 	m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pPhysX->m_pActor->getGlobalPose().t);
 }
@@ -79,9 +99,11 @@ void cFirework::Render()
 	cItem::Render();
 
 	if (m_isUse)
+	{
 		m_pPhysX->pMesh->Render();
-
-	if (!m_pEffect->isDead() && !m_isUse)
+		m_pTail->Render();
+	}
+	if (!m_isUse && m_pEffect->GetIsUse())
 	{
 		m_pEffect->Render();
 	}

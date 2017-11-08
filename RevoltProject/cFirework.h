@@ -12,6 +12,9 @@ private:
 	bool m_isSleep;
 
 	PSystem* m_pEffect;
+	PSystem* m_pTail;
+
+	D3DXVECTOR3 fwPos;
 public:
 	cFirework();
 	virtual ~cFirework();

@@ -40,8 +40,8 @@ void ItemManager::Init()
 	//	pItem->SetItemTag(ITEM_WBOMB);
 	//	m_vecItem.push_back(pItem);
 	//}
-	//
-	//
+	
+	
 	//for (int i = 0;i < 10;i++)
 	//{
 	//	cGravityball* pItem = new cGravityball;
