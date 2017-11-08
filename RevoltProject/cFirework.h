@@ -1,7 +1,7 @@
 #pragma once
 #include "cItem.h"
 
-#define FIREWORKEFFECT 150
+#define FIREWORKEFFECT 80
 
 class PSystem;
 

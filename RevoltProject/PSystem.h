@@ -9,7 +9,6 @@ struct ST_Particle
 {
 	D3DXVECTOR3		_position;
 	D3DXCOLOR		_color;
-	//float			_size;
 	static const DWORD FVF;
 };
 

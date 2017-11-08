@@ -6,9 +6,9 @@
 // - 불꽃놀이
 //===================================================================
 
-PFirework::PFirework(int numParticles)
+PFirework::PFirework(int numParticles, float size)
 {
-	_size = 0.9f;
+	_size = size;
 	_vbSize = 2048;
 	_vbOffset = 0;
 	_vbBatchSize = 512;
@@ -40,7 +40,7 @@ void PFirework::ResetParticle(ST_Attribute * attribute)
 								1.0f);
 
 	attribute->_age		 = 0.0f;
-	attribute->_lifeTime = 2.0f;	// 2초 동안의 수명을 가짐
+	attribute->_lifeTime = 3.0f;	// 2초 동안의 수명을 가짐
 }
 
 // 파티클 위치 갱신, 수명초과한 파티클 죽음처리(재활용 위해 죽은 파티클 제거 안함)

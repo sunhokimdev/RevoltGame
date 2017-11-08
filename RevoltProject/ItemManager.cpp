@@ -135,7 +135,7 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 	D3DXMATRIXA16 matR;
 	D3DXMatrixIdentity(&matR);
 	matR = car->GetCarRotMatrix();
-	D3DXVECTOR3 carDir = { 1,0,0 }; // 자동차 정면 방향벡터
+	D3DXVECTOR3 carDir = { 1,1,0 }; // 자동차 정면 방향벡터
 	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
 	
 	if (m_index == m_vecItem.size())

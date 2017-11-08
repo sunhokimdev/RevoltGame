@@ -31,10 +31,10 @@ void cFirework::Setup()
 
 	m_pUser->USER_TAG = ePhysXTag::E_PHYSX_TAG_FIREWORK;
 
-	m_pEffect = new PFirework(50);
+	m_pEffect = new PFirework(100, 3.0f);
 	m_pEffect->Init(g_pD3DDevice, "Objects/firework/particle_flare.bmp");
 
-	m_pTail = new PFirework(5);
+	m_pTail = new PFirework(5, 1.0f);
 	m_pTail->Init(g_pD3DDevice, "Objects/firework/particle_flare.bmp");
 }
 
@@ -42,29 +42,29 @@ void cFirework::Update()
 {
 	cItem::Update();
 
+	fwPos.x = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().x;
+	fwPos.y = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().y;
+	fwPos.z = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().z;
+
 	if (!m_pEffect->GetIsUse())
 	{
-		fwPos.x = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().x;
-		fwPos.y = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().y;
-		fwPos.z = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().z;
-
 		D3DXVECTOR3 tar = D3DXVECTOR3(-10.0f, 0.0f, -10.0f);
 		D3DXVECTOR3 dir = tar - fwPos;
-
+		
 		D3DXVec3Normalize(&dir, &dir);
-
+		
 		NxVec3 force;
-
+		
 		force.x = dir.x * 1000;
 		force.y = dir.y * 500;
 		force.z = dir.z * 500;
-
+		
 		m_pPhysX->pPhysX->m_pActor->addForce(force);
-
-		m_pTail->SetPosition(&fwPos);
-		m_pTail->Update(0.1f);
-		m_pTail->Reset();
 	}
+
+	m_pTail->SetPosition(&fwPos);
+	m_pTail->Update(0.1f);
+	m_pTail->Reset();
 
 	if (m_isUse && m_fTime > FIREWORKEFFECT)
 	{
@@ -90,7 +90,7 @@ void cFirework::Update()
 	}
 
 	if (!m_isUse && m_pEffect->GetIsUse())
-		m_pEffect->Update(0.1f);
+		m_pEffect->Update(0.3f);
 
 	m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pPhysX->m_pActor->getGlobalPose().t);
 }
@@ -120,9 +120,9 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	
 	NxVec3 force;
 
-	force.x = angle.x * 50;
-	force.y = angle.y * 10000;
-	force.z = angle.z * 50;
+	force.x = angle.x * 500;
+	force.y = 3000;
+	force.z = angle.z * 500;
 	
 	if (m_isSleep)
 	{
