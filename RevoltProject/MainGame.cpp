@@ -122,4 +122,5 @@ void MainGame::SetAddSound()
 	g_pSoundManager->LoadSound("Sound", "menuLeftRight.wav", false);
 	g_pSoundManager->LoadSound("Sound", "boxslide.wav", false);
 	g_pSoundManager->LoadSound("Sound", "honkgood.wav", false);
+	g_pSoundManager->LoadSound("Sound", "countdown.wav", false);
 }

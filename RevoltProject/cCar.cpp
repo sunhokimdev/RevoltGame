@@ -301,6 +301,34 @@ void cCar::Update()
 
 	SettingCarPos();
 
+
+	//자동차 정보 업데이트
+	//=================================================
+	//자동차 위치 갱신
+	//m_position = {
+	//	GetNxVehicle()->getGlobalPose().t.x,
+	//	GetNxVehicle()->getGlobalPose().t.y,
+	//	GetNxVehicle()->getGlobalPose().t.z };
+
+
+	//자동차전용 회전 매트릭스
+	//회전 매트릭스 받아옴
+//	NxF32 mat[9];
+//	GetNxVehicle()->getGlobalPose().M.getColumnMajor(mat);
+//	D3DXMatrixIdentity(&m_matCarRotation);
+//	m_matCarRotation._11 = mat[0];
+//	m_matCarRotation._12 = mat[1];
+//	m_matCarRotation._13 = mat[2];
+//	m_matCarRotation._21 = mat[3];
+//	m_matCarRotation._22 = mat[4];
+//	m_matCarRotation._23 = mat[5];
+//	m_matCarRotation._31 = mat[6];
+//	m_matCarRotation._32 = mat[7];
+//	m_matCarRotation._33 = mat[8];
+
+	//=================================================
+
+
 	if (m_isAI) CtrlAI();
 	else CtrlPlayer();
 
@@ -312,6 +340,8 @@ void cCar::Update()
 	//자동차 리포지션
 	if (INPUT_KEY[E_BIT_REPOS]) RePosition();
 
+	float Dist = 0;
+
 	// PickUp 충돌
 	if (INPUT_KEY[E_BIT_FLIP]) CollidePickUp();
 
@@ -320,6 +350,8 @@ void cCar::Update()
 
 	//차 뒤집기
 	if (INPUT_KEY[E_BIT_FLIP]) CarFlip();
+
+	m_szPrevPos[0] = GetPhysXData()->GetPositionToD3DXVec3();
 
 	//스피드 계산
 	SpeedMath();
@@ -411,8 +443,6 @@ void cCar::CtrlPlayer()
 		INPUT_KEY[E_BIT_DOWN] = g_pKeyManager->isStayKeyDown(KEY_REVERSE);
 		INPUT_KEY[E_BIT_LEFT] = g_pKeyManager->isStayKeyDown(KEY_MOVE_LEFT);
 		INPUT_KEY[E_BIT_RIGHT] = g_pKeyManager->isStayKeyDown(KEY_MOVE_RIGHT);
-
-		//아이템사용
 		INPUT_KEY[E_BIT_ITEM] = g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM);
 		INPUT_KEY[E_BIT_REPOS] = g_pKeyManager->isOnceKeyDown(KEY_REPOSITION);
 		INPUT_KEY[E_BIT_FLIP] = g_pKeyManager->isOnceKeyDown(KEY_CAR_FLIP);
@@ -523,7 +553,8 @@ void cCar::DrawSkidMark()
 {
 	//레이초기화
 	NxRay RayCar;
-	RayCar.orig = NxVec3(m_position);
+	//RayCar.orig = NxVec3(m_position);
+	RayCar.orig = GetPhysXData()->GetPositionToNxVec3();
 	RayCar.orig.y += 0.2f;
 	RayCar.dir = NxVec3(0, -1, 0);
 
@@ -541,6 +572,7 @@ void cCar::DrawSkidMark()
 		}
 	}
 
+//	테스트용
 	if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
 	{
 		if (RayCarHit.distance < 0.2f)

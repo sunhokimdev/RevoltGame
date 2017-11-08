@@ -7,6 +7,7 @@
 #include "Object.h"
 #include "cCheckBox.h"
 #include "c321GO.h"
+#include "RacingScene.h"
 
 #define TIMEMAX 60
 
@@ -51,6 +52,12 @@ InGameUI::~InGameUI()
 {
 	SAFE_DELETE(m_pRootUI);
 	SAFE_DELETE(m_pItemImage);
+	if (m_p321go)
+	{
+		m_p321go->Destroy();
+		delete(m_p321go);
+	}
+		
 	//SAFE_DELETE(m_pCar);
 }
 
@@ -486,6 +493,7 @@ void InGameUI::Update()
 
 	iLobby::Update();
 
+	if (m_p321go) m_p321go->Update();
 	//UpdateArrowDir();
 }
 
@@ -493,7 +501,7 @@ void InGameUI::Render(LPD3DXSPRITE pSprite)
 {
 	iLobby::Render(pSprite);
 
-
+	if (m_p321go) m_p321go->Render();
 }
 
 void InGameUI::SetupTimer()
@@ -856,6 +864,7 @@ void InGameUI::SetupTimer()
 	m_pMinOneth->AddChild(m_pMinTenth);
 
 	m_p321go = new c321GO;
+	m_p321go->LinkRacingScene(m_pRacingScene);
 	m_p321go->Setup();
 }
 

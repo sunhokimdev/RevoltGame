@@ -16,6 +16,7 @@ RacingScene::~RacingScene() {}
 
 void RacingScene::Setup()
 {
+	m_eRaceProg = RACE_PROG_GO;
 
 	UITextImageView::m_Select = &m_select;
 
@@ -71,7 +72,9 @@ void RacingScene::Setup()
 	m_pInGameUI = new InGameUI;
 	LinkUI(0); // 인게임 InGameUI::Setup(); 전에 위치해야함, new InGameUI 가 선언되어 있어야 함.
 	m_pInGameUI->Setup();
-
+	
+	//카메라 초기값
+	(*camPos) = { 70,5,0 };
 
 	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 }
@@ -91,10 +94,39 @@ void RacingScene::Update()
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
 
-	for (int i = 0; i < vecCars.size(); i++)
+	switch (m_eRaceProg)
 	{
-		if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
-		else vecCars[i]->RunEnd();
+	case RACE_PROG_READY:
+	{
+
+	}
+	break;
+	case RACE_PROG_SET:
+	{
+		
+	}
+	break;
+	case RACE_PROG_GO:
+	{
+		for (int i = 0; i < vecCars.size(); i++)
+		{
+			if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
+
+			//플레이어가 도착하면 레이스가 끝난다.
+			if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
+		}
+	}
+	break;
+	case RACE_PROG_FINISH:
+	{
+		for (int i = 0; i < vecCars.size(); i++)
+		{
+			vecCars[i]->RunEnd();
+		}
+	}
+	break;
+	default:
+		break;
 	}
 
 	if (m_pInGameUI)
@@ -144,16 +176,16 @@ void RacingScene::LastUpdate()
 
 void RacingScene::UpdateCamera()
 {
-	//	return;
+
 #define CAM_X (*camPos).x
 #define CAM_Y (*camPos).y
 #define CAM_Z (*camPos).z
 #define CAM_POS (*camPos)
 
 	//회전 매트릭스 받아옴
-	D3DXMATRIXA16 matR = vecCars[0]->GetCarRotMatrix();
-
-	//matR = vecCars[0]->GetMatrix(false, true, false); //이걸 사용하면 약간 부정확함
+	//D3DXMATRIXA16 matR = vecCars[0]->GetCarRotMatrix();
+	D3DXMATRIXA16 matR;
+	matR = vecCars[0]->GetMatrix(false, true, false); //이걸 사용하면 약간 부정확함
 
 	float distToCar = 5; //차와의 거리
 	float Height = 1; //카메라 높이
@@ -197,7 +229,6 @@ void RacingScene::UpdateCamera()
 
 	float fCamHeight = Height;
 
-
 	if (RayCamHit.shape)
 	{
 		if (RayCamHit.shape->getActor().getName() == "map")
@@ -228,7 +259,15 @@ void RacingScene::UpdateCamera()
 	//D3DXVECTOR3 distToDest = vDest - CAM_POS;
 
 	// 카메라 무빙
-	D3DXVec3Lerp(camPos, camPos, &vDest, 0.2f);
+	if (m_eRaceProg == RACE_PROG_GO)
+	{
+		D3DXVec3Lerp(camPos, camPos, &vDest, 0.2f);
+	}
+	else
+	{
+		D3DXVec3Lerp(camPos, camPos, &vDest, 0.02f);
+	}
+	
 	//CAM_POS = vDest;
 	g_pCamManager->SetCamPos(camPos);
 	g_pCamManager->SetLookAt(camLookTarget);
@@ -254,6 +293,7 @@ void RacingScene::LinkUI(int playerID)
 	m_pInGameUI->LinkCarPt(vecCars[playerID]);
 	vecCars[playerID]->LinkUI(m_pInGameUI);
 	m_pInGameUI->LinkTrack(m_pTrack);
+	m_pInGameUI->LinkRacingScene(this);
 	for (int i = 0; i < vecCars.size(); i++)
 	{
 		vecCars[i]->LinkTrackPt(m_pTrack);

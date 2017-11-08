@@ -8,6 +8,7 @@ class UIImageView;
 class cCar;
 class cTrack;
 class c321GO;
+class RacingScene;
 
 //===================================================================
 // - written by 김선호
@@ -86,7 +87,7 @@ private:
 	cTrack* m_pTrack;
 	// 차 정보
 	cCar* m_pCar;
-
+	RacingScene* m_pRacingScene;
 
 public:
 	InGameUI();
@@ -158,6 +159,6 @@ public:
 		m_pCar = car;
 	}
 	void LinkTrack(cTrack* track) { m_pTrack = track; }
-
+	void LinkRacingScene(RacingScene* rc) { m_pRacingScene = rc; }
 };
 
