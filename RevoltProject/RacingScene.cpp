@@ -21,7 +21,7 @@ void RacingScene::Setup()
 
 	D3DXCreateSprite(g_pD3DDevice, &m_Sprite);
 	g_pCamManager->SetLookAt(&D3DXVECTOR3(0, 0, 0));
-	
+
 	m_pTrack = new cTrack;
 	if (m_pTrack)
 	{
@@ -85,7 +85,6 @@ void RacingScene::Update()
 {
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
-	//SAFE_UPDATE(g_pTimeManager); << 메인에서 돌아가고있음
 
 	for (int i = 0; i < vecCars.size(); i++)
 	{
@@ -248,6 +247,7 @@ void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carNam
 void RacingScene::LinkUI(int playerID)
 {
 	m_pInGameUI->LinkCarPt(vecCars[playerID]);
+	vecCars[playerID]->LinkUI(m_pInGameUI);
 	m_pInGameUI->LinkTrack(m_pTrack);
 	for (int i = 0; i < vecCars.size(); i++)
 	{

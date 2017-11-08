@@ -267,6 +267,7 @@ void Lobby::KeyUpdate()
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
+
 			//유저데이터에 자동차 선택한거 넘겨주고
 			//씬변경
 

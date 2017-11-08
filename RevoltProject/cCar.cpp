@@ -6,6 +6,7 @@
 #include "cTrack.h"
 #include "cSkidMark.h"
 #include "cCheckBox.h"
+#include "InGameUI.h"
 
 #include <fstream>
 
@@ -197,6 +198,7 @@ void cCar::LoadCar(std::string carName)
 
 	m_pSkidMark = new cSkidMark;
 	m_pSkidMark->LinkCar(this);
+
 }
 
 void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc, bool isAI)
@@ -621,6 +623,7 @@ void cCar::TrackCheck()
 			m_countRapNum = 0;
 			m_rapTimeCount = 0.f;
 
+			m_pInGameUI->SetLabCnt(m_countRapNum);
 		}
 		return;
 	}
@@ -639,6 +642,13 @@ void cCar::TrackCheck()
 		if (m_currCheckBoxID == 0)
 		{
 			m_countRapNum++;
+			m_pInGameUI->SetLabCnt(m_countRapNum);
+			m_pInGameUI->UpdateLastTime();
+			m_pInGameUI->SetLabElapseTime(0);
+			m_pInGameUI->SetLabMinOneth(FONT2_NUM0);
+			m_pInGameUI->SetLabMinTenth(FONT2_NUM0);
+
+
 			if (m_bastRapTimeCount > m_rapTimeCount || m_bastRapTimeCount < 0.0f)
 			{
 				m_bastRapTimeCount = m_rapTimeCount;

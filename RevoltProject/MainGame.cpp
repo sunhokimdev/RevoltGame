@@ -46,10 +46,6 @@ void MainGame::Setup()
 
 	g_SceneManager->AddScene("Lobby", new LobbyScene);
 	g_SceneManager->AddScene("Race", new RacingScene);
-<<<<<<< HEAD
-	//g_SceneManager->ChangeScene("Lobby");
-=======
->>>>>>> f2ced765037997657a62e3cc0905ec968102e83f
 	g_SceneManager->ChangeScene("Race");
 
 	g_pCamManager->Setup(NULL);
