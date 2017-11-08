@@ -125,8 +125,8 @@ void Lobby::Update()
 		/*    서버에서 recv가 무한대기에 빠지지 않도록 메시지를 계속해서 보낸다    */
 		g_pNetworkManager->SendMsg("#");
 
-		if(g_pNetworkManager->RecvMsg())
-			m_pInRoom->SetText(g_pNetworkManager->GetMsg().c_str());	
+		if (g_pNetworkManager->RecvMsg())
+			m_pInRoom->SetText(g_pNetworkManager->GetMsg().c_str());
 	}
 
 	TimeUpdate();   // 시간 갱신 메서드
@@ -213,7 +213,7 @@ void Lobby::KeyUpdate()
 		if (m_stateLobby == SELECT_MAP_LOBBY)
 			m_leftAndrightSelect++;
 
-			m_pSelectMap->GetmagImage()->SetIsMove(true);
+		m_pSelectMap->GetmagImage()->SetIsMove(true);
 
 		if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
 			m_leftAndrightSelect = 0;
@@ -221,7 +221,7 @@ void Lobby::KeyUpdate()
 
 	if (g_pKeyManager->isOnceKeyDown(VK_LEFT))
 	{
-		if (m_stateLobby == START_LOBBY || 
+		if (m_stateLobby == START_LOBBY ||
 			m_stateLobby == SELECT_CAR_LOBBY)
 		{
 			m_leftAndrightSelect--;
@@ -270,32 +270,29 @@ void Lobby::KeyUpdate()
 
 			//유저데이터에 자동차 선택한거 넘겨주고
 			//씬변경
+
+			g_pDataManager->mapName = m_pfileList->GetMapName();
+
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", m_pfileList->GetCarName(), false));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc1", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
+		
 			g_SceneManager->ChangeScene("Race");
-			
 			return;
 		}
 		else if (m_stateLobby == SELECT_CAR_LOBBY)
 		{
-			switch(m_leftAndrightSelect)
+			switch (m_leftAndrightSelect)
 			{
-				case 0:
-					m_pfileList->SetCarName("tc1");
-				break;
-				case 1:
-					m_pfileList->SetCarName("tc2");
-				break;
-				case 2:
-					m_pfileList->SetCarName("tc3");
-				break;
-				case 3:
-					m_pfileList->SetCarName("tc4");
-				break;
-				case 4:
-					m_pfileList->SetCarName("tc5");
-				break;
-				case 5:
-					m_pfileList->SetCarName("tc6");
-				break;
+			case 0:	m_pfileList->SetCarName("tc1"); break;
+			case 1: m_pfileList->SetCarName("tc2"); break;
+			case 2: m_pfileList->SetCarName("tc3"); break;
+			case 3: m_pfileList->SetCarName("tc4"); break;
+			case 4: m_pfileList->SetCarName("tc5"); break;
+			case 5: m_pfileList->SetCarName("tc6"); break;
 			}
 		}
 		else if (m_stateLobby == MAIN_LOBBY2)
@@ -312,7 +309,7 @@ void Lobby::KeyUpdate()
 				m_multiLobby->SetUserName(m_pCreateProfileLobby->GetName());
 				m_multiLobby->SetCarName(m_pSelectCarLobbby->GetCarName());
 				g_pNetworkManager->Start();
-			}		
+			}
 		}
 
 		else if (m_stateLobby == NETWORK_CREATE_LOBBY)
@@ -339,7 +336,7 @@ void Lobby::KeyUpdate()
 			m_time = 0.0f;
 			m_select = 0;
 
-			if(m_stateLobby != VIEW_CAR_LOBBY)
+			if (m_stateLobby != VIEW_CAR_LOBBY)
 				m_leftAndrightSelect = 0;
 		}
 	}
@@ -360,7 +357,7 @@ void Lobby::KeyUpdate()
 			g_pSoundManager->Play("menuPrev.wav", 1.0f);
 		}
 	}
-	
+
 	if (g_pKeyManager->isOnceKeyDown(VK_F5))
 	{
 		if (m_stateLobby == NETWORK_LOBBY)
@@ -408,7 +405,7 @@ void Lobby::SetUpUI()
 	//===================================================================
 
 ///////////////////////////////   구분   /////////////////////////////////////////
-	
+
 	/*   인트로 이미지   */
 	UIImageView* pImageView1 = new UIImageView;
 	pImageView1->SetPosition(0, 0);
@@ -830,7 +827,7 @@ void Lobby::SetUpUI()
 	//m_mapLobby[MARKET_MAP]->m_camLookAt = D3DXVECTOR3(0, 0, 0);
 	//m_mapLobby[MARKET_MAP]->m_prevLob = SELECT_MAP_LOBBY;
 	//m_mapLobby[MARKET_MAP]->m_pObject = m_pInGameUI->GetUIRoot();
-	
+
 	//m_mapLobby[GARDEN_MAP] = new ST_Object;
 	//m_mapLobby[GARDEN_MAP]->m_target = D3DXVECTOR3(0, 60, -15);
 	//m_mapLobby[GARDEN_MAP]->m_camLookAt = D3DXVECTOR3(0, -5, 0);

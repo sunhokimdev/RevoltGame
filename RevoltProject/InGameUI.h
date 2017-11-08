@@ -7,6 +7,7 @@ class UITextImageView;
 class UIImageView;
 class cCar;
 class cTrack;
+class c321GO;
 
 //===================================================================
 // - written by 김선호
@@ -61,13 +62,13 @@ private:
 	UITextImageView* m_pLabMinTenth;
 
 	//Race Time
-	UITextImageView* m_pElapseTime;   
-	UITextImageView* m_pDotTenth;	  
-	UITextImageView* m_pDotMilth;	  
-	UITextImageView* m_pSecOneth;	  
-	UITextImageView* m_pSecTenth;	  
-	UITextImageView* m_pMinOneth;	  
-	UITextImageView* m_pMinTenth;	  
+	UITextImageView* m_pElapseTime;
+	UITextImageView* m_pDotTenth;
+	UITextImageView* m_pDotMilth;
+	UITextImageView* m_pSecOneth;
+	UITextImageView* m_pSecTenth;
+	UITextImageView* m_pMinOneth;
+	UITextImageView* m_pMinTenth;
 
 	// 속도계
 	UITextImageView* pSpeed;
@@ -78,6 +79,9 @@ private:
 	UITextImageView* pITV_Rank;
 	UITextImageView* pITV_Rank2;
 	UIImageView* pIV_arrowDir;
+
+	//321go
+	c321GO* m_p321go;
 
 	int m_arrowIndex;
 	cTrack* m_pTrack;
@@ -149,7 +153,10 @@ public:
 	SYNTHESIZE(int, m_MinOneth, MinOneth);
 	SYNTHESIZE(int, m_MinTenth, MinTenth);
 
-	void LinkCarPt(cCar* car) { m_pCar = car; }
+	void LinkCarPt(cCar* car)
+	{
+		m_pCar = car;
+	}
 	void LinkTrack(cTrack* track) { m_pTrack = track; }
 
 };

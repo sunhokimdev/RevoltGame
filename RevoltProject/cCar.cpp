@@ -20,8 +20,7 @@ cCar::cCar()
 	m_bastRapTimeCount = -1.0f;
 	isFliping = false;
 	m_nextCheckBoxID = 0;
-
-
+	m_eHoldItem = ITEM_NONE;
 }
 
 cCar::~cCar()
@@ -229,12 +228,14 @@ void cCar::CreateItem()
 	{
 		while (1)
 		{
-			m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
+			//m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
+			m_eHoldItem = eITEM_LIST::ITEM_WBOMB;
 			if (m_eHoldItem) break;
 		}
 		m_nItemCount = 1;
 	}
 }
+
 void cCar::CreatePhsyX(stCARSPEC carspec)
 {
 	USERDATA* pUserdata = new USERDATA(E_PHYSX_TAG_CAR);
@@ -249,8 +250,12 @@ void cCar::CreatePhsyX(stCARSPEC carspec)
 
 		SetPhysXData(physX);
 		physX->SetPosition(NxVec3(0, 0, 0));
+		physX->m_pActor->setGroup(3);
+		physX->m_pUserData->isMyBomb = false;
+		physX->m_pUserData->m_pCarPosion = &physX->m_pActor->getGlobalPosition();
 	}
 }
+
 void cCar::LoadMesh(std::string carName)
 {
 	GetMeshData()->LoadCarMesh("Cars/" + carName, carName + ".obj");
@@ -359,6 +364,7 @@ void cCar::Update()
 
 	if (m_pSkidMark)
 	{
+		DrawSkidMark();
 		m_pSkidMark->Update();
 	}
 
@@ -507,14 +513,16 @@ void cCar::CtrlPlayer()
 		//아이템사용
 		if (g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM))
 		{
-			g_pItemManager->FireItem(ITEM_WBOMB, this);
+			g_pItemManager->FireItem(ITEM_MYBOMB, this);
 
 			if (m_eHoldItem != ITEM_NONE)
 			{
 				//아이템 사용 함수 호츨
+
 				m_nItemCount--;
 				if (m_nItemCount == 0)
 				{
+					g_pItemManager->FireItem(m_eHoldItem, this);
 					m_eHoldItem = ITEM_NONE;
 					GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
 				}
@@ -558,7 +566,7 @@ void cCar::CtrlPlayer()
 		NxRay RayCar;
 		RayCar.orig = NxVec3(m_position);
 		RayCar.orig.y += 0.2f;
-		RayCar.dir = NxVec3(0,-1,0);
+		RayCar.dir = NxVec3(0, -1, 0);
 
 		NxRaycastHit RayCarHit;
 		RayCarHit.shape = NULL;
@@ -584,7 +592,6 @@ void cCar::CtrlPlayer()
 		{
 			m_pSkidMark->Destory();
 		}
-
 	}
 }
 
@@ -717,5 +724,40 @@ void cCar::CarRunStop()
 		{
 			m_carNxVehicle->getWheel(i)->getWheelShape()->getActor().putToSleep();
 		}
+	}
+}
+
+void cCar::DrawSkidMark()
+{
+	//레이초기화
+	NxRay RayCar;
+	RayCar.orig = NxVec3(m_position);
+	RayCar.orig.y += 0.2f;
+	RayCar.dir = NxVec3(0, -1, 0);
+
+	NxRaycastHit RayCarHit;
+	RayCarHit.shape = NULL;
+	g_pPhysXScene->raycastClosestShape(RayCar, NxShapesType::NX_ALL_SHAPES, RayCarHit);
+
+	float rpm = GetNxVehicle()->getWheel(0)->getRpm() / m_maxRpm;
+	if (fabsf(rpm) > 0.8f && fabs(m_wheelAngle) > 0.9f)
+	{
+		if (RayCarHit.distance < 0.2f
+			&& RayCarHit.shape->getActor().getName() == "map")
+		{
+			m_pSkidMark->DrawSkidMark();
+		}
+	}
+
+	if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
+	{
+		if (RayCarHit.distance < 0.2f)
+		{
+			m_pSkidMark->DrawSkidMark();
+		}
+	}
+	if (g_pKeyManager->isStayKeyDown(VK_SPACE))
+	{
+		m_pSkidMark->Destory();
 	}
 }

@@ -6,6 +6,7 @@
 #include "cTrack.h"
 #include "Object.h"
 #include "cCheckBox.h"
+#include "c321GO.h"
 
 #define TIMEMAX 60
 
@@ -55,7 +56,7 @@ InGameUI::~InGameUI()
 
 void InGameUI::Setup()
 {
-	//m_pRootUI = new UIObject;
+	m_pRootUI = new UIObject;
 	UITextImageView::m_Select = &m_select;
 
 
@@ -68,9 +69,9 @@ void InGameUI::Setup()
 	pImageView1->SetPosition(30, 20);
 	pImageView1->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
-	//m_pCurrentLab = new UITextImageView;
-	//m_pCurrentLab->SetTexture("UIImage/font2.png");
-	//m_pCurrentLab->SetPosition(0, 20);
+	m_pCurrentLab = new UITextImageView;
+	m_pCurrentLab->SetTexture("UIImage/font2.png");
+	m_pCurrentLab->SetPosition(0, 20);
 
 
 	m_pMaxLab = new UITextImageView;
@@ -78,223 +79,223 @@ void InGameUI::Setup()
 	m_pMaxLab->SetPosition(10, 0);
 	m_pMaxLab->SetText("/3");
 
-	SetupTimer();
+	//SetupTimer();
 
 
 
-	//// Last Lab Timer
-	//UITextImageView* pLastLabFont = new UITextImageView;
-	//pLastLabFont->SetTexture("UIImage/font2.png");
-	//pLastLabFont->SetText("Last Lap");
-	//pLastLabFont->SetXSize(1.0f);
-	//pLastLabFont->SetYSize(1.0f);
-	//pLastLabFont->SetPosition(900, 20);
-	//pLastLabFont->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+	// Last Lab Timer
+	UITextImageView* pLastLabFont = new UITextImageView;
+	pLastLabFont->SetTexture("UIImage/font2.png");
+	pLastLabFont->SetText("Last Lap");
+	pLastLabFont->SetXSize(1.0f);
+	pLastLabFont->SetYSize(1.0f);
+	pLastLabFont->SetPosition(900, 20);
+	pLastLabFont->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
-	//m_pLastDotOneTh = new UITextImageView;
-	//m_pLastDotOneTh->SetTexture("UIImage/font2.png");
-	//m_pLastDotOneTh->SetPosition(60, 20);
-	//m_pLastDotOneTh->SetText("0");
+	m_pLastDotOneTh = new UITextImageView;
+	m_pLastDotOneTh->SetTexture("UIImage/font2.png");
+	m_pLastDotOneTh->SetPosition(60, 20);
+	m_pLastDotOneTh->SetText("0");
 
-	//m_pLastDotTenth = new UITextImageView;
-	//m_pLastDotTenth->SetTexture("UIImage/font2.png");
-	//m_pLastDotTenth->SetPosition(-10, 0);
-	//m_pLastDotTenth->SetText("0");
+	m_pLastDotTenth = new UITextImageView;
+	m_pLastDotTenth->SetTexture("UIImage/font2.png");
+	m_pLastDotTenth->SetPosition(-10, 0);
+	m_pLastDotTenth->SetText("0");
 
-	//m_pLastDotMilth = new UITextImageView;
-	//m_pLastDotMilth->SetTexture("UIImage/font2.png");
-	//m_pLastDotMilth->SetPosition(-10, 0);
-	//m_pLastDotMilth->SetText("0");
+	m_pLastDotMilth = new UITextImageView;
+	m_pLastDotMilth->SetTexture("UIImage/font2.png");
+	m_pLastDotMilth->SetPosition(-10, 0);
+	m_pLastDotMilth->SetText("0");
 
-	//UITextImageView* pLastSecColon = new UITextImageView;
-	//pLastSecColon->SetTexture("UIImage/font2.png");
-	//pLastSecColon->SetPosition(-10, 0);
-	//pLastSecColon->SetText(":");
+	UITextImageView* pLastSecColon = new UITextImageView;
+	pLastSecColon->SetTexture("UIImage/font2.png");
+	pLastSecColon->SetPosition(-10, 0);
+	pLastSecColon->SetText(":");
 
-	//m_pLastSecOneth = new UITextImageView;
-	//m_pLastSecOneth->SetTexture("UIImage/font2.png");
-	//m_pLastSecOneth->SetPosition(-10, 0);
-	//m_pLastSecOneth->SetText("0");
+	m_pLastSecOneth = new UITextImageView;
+	m_pLastSecOneth->SetTexture("UIImage/font2.png");
+	m_pLastSecOneth->SetPosition(-10, 0);
+	m_pLastSecOneth->SetText("0");
 
-	//m_pLastSecTenth = new UITextImageView;
-	//m_pLastSecTenth->SetTexture("UIImage/font2.png");
-	//m_pLastSecTenth->SetPosition(-10, 0);
-	//m_pLastSecTenth->SetText("0");
+	m_pLastSecTenth = new UITextImageView;
+	m_pLastSecTenth->SetTexture("UIImage/font2.png");
+	m_pLastSecTenth->SetPosition(-10, 0);
+	m_pLastSecTenth->SetText("0");
 
-	//UITextImageView* pLastMinColon = new UITextImageView;
-	//pLastMinColon->SetTexture("UIImage/font2.png");
-	//pLastMinColon->SetPosition(-10, 0);
-	//pLastMinColon->SetText(":");
-
-
-	//m_pLastMinOneth = new UITextImageView;
-	//m_pLastMinOneth->SetTexture("UIImage/font2.png");
-	//m_pLastMinOneth->SetPosition(-10, 0);
-	//m_pLastMinOneth->SetText("0");
-
-	//m_pLastMinTenth = new UITextImageView;
-	//m_pLastMinTenth->SetTexture("UIImage/font2.png");
-	//m_pLastMinTenth->SetPosition(-10, 0);
-	//m_pLastMinTenth->SetText("0");
-	//// << :
-
-	//// Best Lab Timer
-	//UITextImageView* pBestLabFont = new UITextImageView;
-	//pBestLabFont->SetTexture("UIImage/font2.png");
-	//pBestLabFont->SetText("Best Lab");
-	//pBestLabFont->SetXSize(1.0f);
-	//pBestLabFont->SetYSize(1.0f);
-	//pBestLabFont->SetPosition(0, 50);
-	//pBestLabFont->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
-
-	//m_pBestDotOneTh = new UITextImageView;
-	//m_pBestDotOneTh->SetTexture("UIImage/font2.png");
-	//m_pBestDotOneTh->SetPosition(60, 20);
-	//m_pBestDotOneTh->SetText("0");
-
-	//m_pBestDotTenth = new UITextImageView;
-	//m_pBestDotTenth->SetTexture("UIImage/font2.png");
-	//m_pBestDotTenth->SetPosition(-10, 0);
-	//m_pBestDotTenth->SetText("0");
-
-	//m_pBestDotMilth = new UITextImageView;
-	//m_pBestDotMilth->SetTexture("UIImage/font2.png");
-	//m_pBestDotMilth->SetPosition(-10, 0);
-	//m_pBestDotMilth->SetText("0");
+	UITextImageView* pLastMinColon = new UITextImageView;
+	pLastMinColon->SetTexture("UIImage/font2.png");
+	pLastMinColon->SetPosition(-10, 0);
+	pLastMinColon->SetText(":");
 
 
-	//UITextImageView* pBestSecColon = new UITextImageView;
-	//pBestSecColon->SetTexture("UIImage/font2.png");
-	//pBestSecColon->SetPosition(-10, 0);
-	//pBestSecColon->SetText(":");
+	m_pLastMinOneth = new UITextImageView;
+	m_pLastMinOneth->SetTexture("UIImage/font2.png");
+	m_pLastMinOneth->SetPosition(-10, 0);
+	m_pLastMinOneth->SetText("0");
 
-	//m_pBestSecOneth = new UITextImageView;
-	//m_pBestSecOneth->SetTexture("UIImage/font2.png");
-	//m_pBestSecOneth->SetPosition(-10, 0);
-	//m_pBestSecOneth->SetText("0");
+	m_pLastMinTenth = new UITextImageView;
+	m_pLastMinTenth->SetTexture("UIImage/font2.png");
+	m_pLastMinTenth->SetPosition(-10, 0);
+	m_pLastMinTenth->SetText("0");
+	// << :
 
-	//m_pBestSecTenth = new UITextImageView;
-	//m_pBestSecTenth->SetTexture("UIImage/font2.png");
-	//m_pBestSecTenth->SetPosition(-10, 0);
-	//m_pBestSecTenth->SetText("0");
+	// Best Lab Timer
+	UITextImageView* pBestLabFont = new UITextImageView;
+	pBestLabFont->SetTexture("UIImage/font2.png");
+	pBestLabFont->SetText("Best Lab");
+	pBestLabFont->SetXSize(1.0f);
+	pBestLabFont->SetYSize(1.0f);
+	pBestLabFont->SetPosition(0, 50);
+	pBestLabFont->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
-	//UITextImageView* pBestMinColon = new UITextImageView;
-	//pBestMinColon->SetTexture("UIImage/font2.png");
-	//pBestMinColon->SetPosition(-10, 0);
-	//pBestMinColon->SetText(":");
+	m_pBestDotOneTh = new UITextImageView;
+	m_pBestDotOneTh->SetTexture("UIImage/font2.png");
+	m_pBestDotOneTh->SetPosition(60, 20);
+	m_pBestDotOneTh->SetText("0");
 
-	//m_pBestMinOneth = new UITextImageView;
-	//m_pBestMinOneth->SetTexture("UIImage/font2.png");
-	//m_pBestMinOneth->SetPosition(-10, 0);
-	//m_pBestMinOneth->SetText("5");
+	m_pBestDotTenth = new UITextImageView;
+	m_pBestDotTenth->SetTexture("UIImage/font2.png");
+	m_pBestDotTenth->SetPosition(-10, 0);
+	m_pBestDotTenth->SetText("0");
 
-	//m_pBestMinTenth = new UITextImageView;
-	//m_pBestMinTenth->SetTexture("UIImage/font2.png");
-	//m_pBestMinTenth->SetPosition(-10, 0);
-	//m_pBestMinTenth->SetText("0");
-	//// << :
+	m_pBestDotMilth = new UITextImageView;
+	m_pBestDotMilth->SetTexture("UIImage/font2.png");
+	m_pBestDotMilth->SetPosition(-10, 0);
+	m_pBestDotMilth->SetText("0");
 
-	//// Lab Timer
-	//UITextImageView* pLabFont = new UITextImageView;
-	//pLabFont->SetTexture("UIImage/font2.png");
-	//pLabFont->SetText("Lab");
-	//pLabFont->SetXSize(1.0f);
-	//pLabFont->SetYSize(1.0f);
-	//pLabFont->SetPosition(39, 100);
-	//pLabFont->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
-	//m_pLabElapseTime = new UITextImageView;
-	//m_pLabElapseTime->SetTexture("UIImage/font2.png");
-	//m_pLabElapseTime->SetPosition(20, 20);
-	//m_pLabElapseTime->SetText("0");
+	UITextImageView* pBestSecColon = new UITextImageView;
+	pBestSecColon->SetTexture("UIImage/font2.png");
+	pBestSecColon->SetPosition(-10, 0);
+	pBestSecColon->SetText(":");
 
-	//m_pLabDotTenth = new UITextImageView;
-	//m_pLabDotTenth->SetTexture("UIImage/font2.png");
-	//m_pLabDotTenth->SetPosition(-10, 0);
-	//m_pLabDotTenth->SetText("0");
+	m_pBestSecOneth = new UITextImageView;
+	m_pBestSecOneth->SetTexture("UIImage/font2.png");
+	m_pBestSecOneth->SetPosition(-10, 0);
+	m_pBestSecOneth->SetText("0");
 
-	//m_pLabDotMilth = new UITextImageView;
-	//m_pLabDotMilth->SetTexture("UIImage/font2.png");
-	//m_pLabDotMilth->SetPosition(-10, 0);
-	//m_pLabDotMilth->SetText("0");
+	m_pBestSecTenth = new UITextImageView;
+	m_pBestSecTenth->SetTexture("UIImage/font2.png");
+	m_pBestSecTenth->SetPosition(-10, 0);
+	m_pBestSecTenth->SetText("0");
 
-	//UITextImageView* pLabSecColon = new UITextImageView;
-	//pLabSecColon->SetTexture("UIImage/font2.png");
-	//pLabSecColon->SetPosition(-10, 0);
-	//pLabSecColon->SetText(":");
+	UITextImageView* pBestMinColon = new UITextImageView;
+	pBestMinColon->SetTexture("UIImage/font2.png");
+	pBestMinColon->SetPosition(-10, 0);
+	pBestMinColon->SetText(":");
 
-	//m_pLabSecOneth = new UITextImageView;
-	//m_pLabSecOneth->SetTexture("UIImage/font2.png");
-	//m_pLabSecOneth->SetPosition(-10, 0);
-	//m_pLabSecOneth->SetText("0");
+	m_pBestMinOneth = new UITextImageView;
+	m_pBestMinOneth->SetTexture("UIImage/font2.png");
+	m_pBestMinOneth->SetPosition(-10, 0);
+	m_pBestMinOneth->SetText("5");
 
-	//m_pLabSecTenth = new UITextImageView;
-	//m_pLabSecTenth->SetTexture("UIImage/font2.png");
-	//m_pLabSecTenth->SetPosition(-10, 0);
-	//m_pLabSecTenth->SetText("0");
+	m_pBestMinTenth = new UITextImageView;
+	m_pBestMinTenth->SetTexture("UIImage/font2.png");
+	m_pBestMinTenth->SetPosition(-10, 0);
+	m_pBestMinTenth->SetText("0");
+	// << :
 
-	//UITextImageView* pLabMinColon = new UITextImageView;
-	//pLabMinColon->SetTexture("UIImage/font2.png");
-	//pLabMinColon->SetPosition(-10, 0);
-	//pLabMinColon->SetText(":");
+	// Lab Timer
+	UITextImageView* pLabFont = new UITextImageView;
+	pLabFont->SetTexture("UIImage/font2.png");
+	pLabFont->SetText("Lab");
+	pLabFont->SetXSize(1.0f);
+	pLabFont->SetYSize(1.0f);
+	pLabFont->SetPosition(39, 100);
+	pLabFont->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
-	//m_pLabMinOneth = new UITextImageView;
-	//m_pLabMinOneth->SetTexture("UIImage/font2.png");
-	//m_pLabMinOneth->SetPosition(-10, 0);
-	//m_pLabMinOneth->SetText("0");
+	m_pLabElapseTime = new UITextImageView;
+	m_pLabElapseTime->SetTexture("UIImage/font2.png");
+	m_pLabElapseTime->SetPosition(20, 20);
+	m_pLabElapseTime->SetText("0");
 
-	//m_pLabMinTenth = new UITextImageView;
-	//m_pLabMinTenth->SetTexture("UIImage/font2.png");
-	//m_pLabMinTenth->SetPosition(-10, 0);
-	//m_pLabMinTenth->SetText("0");
-	//// << :
+	m_pLabDotTenth = new UITextImageView;
+	m_pLabDotTenth->SetTexture("UIImage/font2.png");
+	m_pLabDotTenth->SetPosition(-10, 0);
+	m_pLabDotTenth->SetText("0");
 
-	//// Race Timer
-	//UITextImageView* pRaceFont = new UITextImageView;
-	//pRaceFont->SetTexture("UIImage/font2.png");
-	//pRaceFont->SetText("Race");
-	//pRaceFont->SetXSize(1.0f);
-	//pRaceFont->SetYSize(1.0f);
-	//pRaceFont->SetPosition(32, 150);
-	//pRaceFont->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+	m_pLabDotMilth = new UITextImageView;
+	m_pLabDotMilth->SetTexture("UIImage/font2.png");
+	m_pLabDotMilth->SetPosition(-10, 0);
+	m_pLabDotMilth->SetText("0");
 
-	//m_pElapseTime = new UITextImageView;
-	//m_pElapseTime->SetTexture("UIImage/font2.png");
-	//m_pElapseTime->SetPosition(25, 20);
+	UITextImageView* pLabSecColon = new UITextImageView;
+	pLabSecColon->SetTexture("UIImage/font2.png");
+	pLabSecColon->SetPosition(-10, 0);
+	pLabSecColon->SetText(":");
 
-	//m_pDotTenth = new UITextImageView;
-	//m_pDotTenth->SetTexture("UIImage/font2.png");
-	//m_pDotTenth->SetPosition(-10, 0);
+	m_pLabSecOneth = new UITextImageView;
+	m_pLabSecOneth->SetTexture("UIImage/font2.png");
+	m_pLabSecOneth->SetPosition(-10, 0);
+	m_pLabSecOneth->SetText("0");
 
-	//m_pDotMilth = new UITextImageView;
-	//m_pDotMilth->SetTexture("UIImage/font2.png");
-	//m_pDotMilth->SetPosition(-10, 0);
+	m_pLabSecTenth = new UITextImageView;
+	m_pLabSecTenth->SetTexture("UIImage/font2.png");
+	m_pLabSecTenth->SetPosition(-10, 0);
+	m_pLabSecTenth->SetText("0");
 
-	//UITextImageView* pSecColon = new UITextImageView;
-	//pSecColon->SetTexture("UIImage/font2.png");
-	//pSecColon->SetPosition(-10, 0);
-	//pSecColon->SetText(":");
+	UITextImageView* pLabMinColon = new UITextImageView;
+	pLabMinColon->SetTexture("UIImage/font2.png");
+	pLabMinColon->SetPosition(-10, 0);
+	pLabMinColon->SetText(":");
 
-	//m_pSecOneth = new UITextImageView;
-	//m_pSecOneth->SetTexture("UIImage/font2.png");
-	//m_pSecOneth->SetPosition(-10, 0);
+	m_pLabMinOneth = new UITextImageView;
+	m_pLabMinOneth->SetTexture("UIImage/font2.png");
+	m_pLabMinOneth->SetPosition(-10, 0);
+	m_pLabMinOneth->SetText("0");
 
-	//m_pSecTenth = new UITextImageView;
-	//m_pSecTenth->SetTexture("UIImage/font2.png");
-	//m_pSecTenth->SetPosition(-10, 0);
+	m_pLabMinTenth = new UITextImageView;
+	m_pLabMinTenth->SetTexture("UIImage/font2.png");
+	m_pLabMinTenth->SetPosition(-10, 0);
+	m_pLabMinTenth->SetText("0");
+	// << :
 
-	//UITextImageView* pMinColon = new UITextImageView;
-	//pMinColon->SetTexture("UIImage/font2.png");
-	//pMinColon->SetPosition(-10, 0);
-	//pMinColon->SetText(":");
+	// Race Timer
+	UITextImageView* pRaceFont = new UITextImageView;
+	pRaceFont->SetTexture("UIImage/font2.png");
+	pRaceFont->SetText("Race");
+	pRaceFont->SetXSize(1.0f);
+	pRaceFont->SetYSize(1.0f);
+	pRaceFont->SetPosition(32, 150);
+	pRaceFont->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
-	//m_pMinOneth = new UITextImageView;
-	//m_pMinOneth->SetTexture("UIImage/font2.png");
-	//m_pMinOneth->SetPosition(-10, 0);
+	m_pElapseTime = new UITextImageView;
+	m_pElapseTime->SetTexture("UIImage/font2.png");
+	m_pElapseTime->SetPosition(25, 20);
 
-	//m_pMinTenth = new UITextImageView;
-	//m_pMinTenth->SetTexture("UIImage/font2.png");
-	//m_pMinTenth->SetPosition(-10, 0);
+	m_pDotTenth = new UITextImageView;
+	m_pDotTenth->SetTexture("UIImage/font2.png");
+	m_pDotTenth->SetPosition(-10, 0);
+
+	m_pDotMilth = new UITextImageView;
+	m_pDotMilth->SetTexture("UIImage/font2.png");
+	m_pDotMilth->SetPosition(-10, 0);
+
+	UITextImageView* pSecColon = new UITextImageView;
+	pSecColon->SetTexture("UIImage/font2.png");
+	pSecColon->SetPosition(-10, 0);
+	pSecColon->SetText(":");
+
+	m_pSecOneth = new UITextImageView;
+	m_pSecOneth->SetTexture("UIImage/font2.png");
+	m_pSecOneth->SetPosition(-10, 0);
+
+	m_pSecTenth = new UITextImageView;
+	m_pSecTenth->SetTexture("UIImage/font2.png");
+	m_pSecTenth->SetPosition(-10, 0);
+
+	UITextImageView* pMinColon = new UITextImageView;
+	pMinColon->SetTexture("UIImage/font2.png");
+	pMinColon->SetPosition(-10, 0);
+	pMinColon->SetText(":");
+
+	m_pMinOneth = new UITextImageView;
+	m_pMinOneth->SetTexture("UIImage/font2.png");
+	m_pMinOneth->SetPosition(-10, 0);
+
+	m_pMinTenth = new UITextImageView;
+	m_pMinTenth->SetTexture("UIImage/font2.png");
+	m_pMinTenth->SetPosition(-10, 0);
 	// << :
 
 	UIImageView* pImageView6 = new UIImageView;
@@ -311,7 +312,7 @@ void InGameUI::Setup()
 	pImageView7->SetTexture("UIImage/ring.png");
 
 
-	// 방향 화살표
+	//방향 화살표
 	pIV_arrowDir = new UIImageView;
 	pIV_arrowDir->SetIsArrowDir(true);
 	pIV_arrowDir->SetXSize(1.2f);
@@ -319,7 +320,7 @@ void InGameUI::Setup()
 	pIV_arrowDir->SetPosition(150, 550);
 	pIV_arrowDir->SetTexture("UIImage/arrowDirection.png");
 
-	// 등수
+	//등수
 	pITV_Rank = new UITextImageView;
 	pITV_Rank->SetXSize(3.0f);
 	pITV_Rank->SetYSize(3.0f);
@@ -342,7 +343,7 @@ void InGameUI::Setup()
 	m_pItemImage->SetIsItem(true);
 	m_pItemImage->SetTexture("UIImage/itemlist.png");
 
-	// 속도계 추가
+	//속도계 추가
 
 	UIImageView* pSpeedFrame = new UIImageView;
 	pSpeedFrame->SetIsSpeedFrame(true);
@@ -382,9 +383,9 @@ void InGameUI::Setup()
 
 	/*          Set Child          */
 
-	// Basic
+	//Basic
 	m_pRootUI->AddChild(pImageView1);
-	//m_pRootUI->AddChild(pLastLabFont);
+	m_pRootUI->AddChild(pLastLabFont);
 	m_pRootUI->AddChild(pImageView7);
 	m_pRootUI->AddChild(pSpeedFrame);
 	m_pRootUI->AddChild(pIV_arrowDir);
@@ -392,12 +393,12 @@ void InGameUI::Setup()
 	pImageView1->AddChild(pImageView6);
 	pImageView1->AddChild(m_pCurrentLab);
 	m_pCurrentLab->AddChild(m_pMaxLab);
-	//pLastLabFont->AddChild(pBestLabFont);
-	//pLastLabFont->AddChild(pLabFont);
-	//pLastLabFont->AddChild(pRaceFont);
-	//pImageView6->AddChild(m_pItemImage);
+	pLastLabFont->AddChild(pBestLabFont);
+	pLastLabFont->AddChild(pLabFont);
+	pLastLabFont->AddChild(pRaceFont);
+	pImageView6->AddChild(m_pItemImage);
 
-	//pImageView7->AddChild(pIV_arrowDir);
+	pImageView7->AddChild(pIV_arrowDir);
 	pImageView7->AddChild(pITV_Rank);
 	pImageView7->AddChild(pITV_Rank2);
 
@@ -407,49 +408,49 @@ void InGameUI::Setup()
 	pSpeed->AddChild(pSpeed2);
 
 
-	// Last Font
-	//pLastLabFont->AddChild(m_pLastDotOneTh);
-	//m_pLastDotOneTh->AddChild(m_pLastDotTenth);
-	//m_pLastDotTenth->AddChild(m_pLastDotMilth);
-	//m_pLastDotMilth->AddChild(pLastSecColon);
-	//pLastSecColon->AddChild(m_pLastSecOneth);
-	//m_pLastSecOneth->AddChild(m_pLastSecTenth);
-	//m_pLastSecTenth->AddChild(pLastMinColon);
-	//pLastMinColon->AddChild(m_pLastMinOneth);
-	//m_pLastMinOneth->AddChild(m_pLastMinTenth);
-	//
-	//// Best Font
-	//pBestLabFont->AddChild(m_pBestDotOneTh);
-	//m_pBestDotOneTh->AddChild(m_pBestDotTenth);
-	//m_pBestDotTenth->AddChild(m_pBestDotMilth);
-	//m_pBestDotMilth->AddChild(pBestSecColon);
-	//pBestSecColon->AddChild(m_pBestSecOneth);
-	//m_pBestSecOneth->AddChild(m_pBestSecTenth);
-	//m_pBestSecTenth->AddChild(pBestMinColon);
-	//pBestMinColon->AddChild(m_pBestMinOneth);
-	//m_pBestMinOneth->AddChild(m_pBestMinTenth);
-	//
-	//// LabFont
-	//pLabFont->AddChild(m_pLabElapseTime);
-	//m_pLabElapseTime->AddChild(m_pLabDotTenth);
-	//m_pLabDotTenth->AddChild(m_pLabDotMilth);
-	//m_pLabDotMilth->AddChild(pLabSecColon);
-	//pLabSecColon->AddChild(m_pLabSecOneth);
-	//m_pLabSecOneth->AddChild(m_pLabSecTenth);
-	//m_pLabSecTenth->AddChild(pLabMinColon);
-	//pLabMinColon->AddChild(m_pLabMinOneth);
-	//m_pLabMinOneth->AddChild(m_pLabMinTenth);
-	//
-	//// RaceFont
-	//pRaceFont->AddChild(m_pElapseTime);
-	//m_pElapseTime->AddChild(m_pDotTenth);
-	//m_pDotTenth->AddChild(m_pDotMilth);
-	//m_pDotMilth->AddChild(pSecColon);
-	//pSecColon->AddChild(m_pSecOneth);
-	//m_pSecOneth->AddChild(m_pSecTenth);
-	//m_pSecTenth->AddChild(pMinColon);
-	//pMinColon->AddChild(m_pMinOneth);
-	//m_pMinOneth->AddChild(m_pMinTenth);
+	//Last Font
+	pLastLabFont->AddChild(m_pLastDotOneTh);
+	m_pLastDotOneTh->AddChild(m_pLastDotTenth);
+	m_pLastDotTenth->AddChild(m_pLastDotMilth);
+	m_pLastDotMilth->AddChild(pLastSecColon);
+	pLastSecColon->AddChild(m_pLastSecOneth);
+	m_pLastSecOneth->AddChild(m_pLastSecTenth);
+	m_pLastSecTenth->AddChild(pLastMinColon);
+	pLastMinColon->AddChild(m_pLastMinOneth);
+	m_pLastMinOneth->AddChild(m_pLastMinTenth);
+	
+	// Best Font
+	pBestLabFont->AddChild(m_pBestDotOneTh);
+	m_pBestDotOneTh->AddChild(m_pBestDotTenth);
+	m_pBestDotTenth->AddChild(m_pBestDotMilth);
+	m_pBestDotMilth->AddChild(pBestSecColon);
+	pBestSecColon->AddChild(m_pBestSecOneth);
+	m_pBestSecOneth->AddChild(m_pBestSecTenth);
+	m_pBestSecTenth->AddChild(pBestMinColon);
+	pBestMinColon->AddChild(m_pBestMinOneth);
+	m_pBestMinOneth->AddChild(m_pBestMinTenth);
+	
+	// LabFont
+	pLabFont->AddChild(m_pLabElapseTime);
+	m_pLabElapseTime->AddChild(m_pLabDotTenth);
+	m_pLabDotTenth->AddChild(m_pLabDotMilth);
+	m_pLabDotMilth->AddChild(pLabSecColon);
+	pLabSecColon->AddChild(m_pLabSecOneth);
+	m_pLabSecOneth->AddChild(m_pLabSecTenth);
+	m_pLabSecTenth->AddChild(pLabMinColon);
+	pLabMinColon->AddChild(m_pLabMinOneth);
+	m_pLabMinOneth->AddChild(m_pLabMinTenth);
+	
+	// RaceFont
+	pRaceFont->AddChild(m_pElapseTime);
+	m_pElapseTime->AddChild(m_pDotTenth);
+	m_pDotTenth->AddChild(m_pDotMilth);
+	m_pDotMilth->AddChild(pSecColon);
+	pSecColon->AddChild(m_pSecOneth);
+	m_pSecOneth->AddChild(m_pSecTenth);
+	m_pSecTenth->AddChild(pMinColon);
+	pMinColon->AddChild(m_pMinOneth);
+	m_pMinOneth->AddChild(m_pMinTenth);
 
 }
 
@@ -698,6 +699,92 @@ void InGameUI::SetupTimer()
 	m_pMinTenth = new UITextImageView;
 	m_pMinTenth->SetTexture("UIImage/font2.png");
 	m_pMinTenth->SetPosition(-10, 0);
+	// << :
+
+	UIImageView* pImageView6 = new UIImageView;
+	pImageView6->SetXSize(1.2f);
+	pImageView6->SetYSize(1.2f);
+	pImageView6->SetPosition(-5, 50);
+	pImageView6->SetTexture("UIImage/itemframe.png");
+
+	UIImageView* pImageView7 = new UIImageView;
+	pImageView7->SetIsBoard(true);
+	pImageView7->SetXSize(15.0f);
+	pImageView7->SetYSize(2.5f);
+	pImageView7->SetPosition(20, 600);
+	pImageView7->SetTexture("UIImage/ring.png");
+
+
+	// 방향 화살표
+	pIV_arrowDir = new UIImageView;
+	pIV_arrowDir->SetIsArrowDir(true);
+	pIV_arrowDir->SetXSize(1.2f);
+	pIV_arrowDir->SetYSize(1.2f);
+	pIV_arrowDir->SetPosition(150, 550);
+	pIV_arrowDir->SetTexture("UIImage/arrowDirection.png");
+
+	// 등수
+	pITV_Rank = new UITextImageView;
+	pITV_Rank->SetXSize(3.0f);
+	pITV_Rank->SetYSize(3.0f);
+	pITV_Rank->SetPosition(25, -50);
+	pITV_Rank->SetText("8");
+	pITV_Rank->SetTexture("UIImage/font2.png");
+
+	pITV_Rank2 = new UITextImageView;
+	pITV_Rank2->SetXSize(1.0f);
+	pITV_Rank2->SetYSize(1.0f);
+	pITV_Rank2->SetPosition(55, -45);
+	pITV_Rank2->SetText("th");
+	pITV_Rank2->SetTexture("UIImage/font2.png");
+	pITV_Rank2->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+
+	m_pItemImage = new UIImageView;
+	m_pItemImage->SetXSize(1.2f);
+	m_pItemImage->SetYSize(1.2f);
+	m_pItemImage->SetPosition(22, 22);
+	m_pItemImage->SetIsItem(true);
+	m_pItemImage->SetTexture("UIImage/itemlist.png");
+	m_pItemImage->LinkCarPt(m_pCar);
+	// 속도계 추가
+
+	UIImageView* pSpeedFrame = new UIImageView;
+	pSpeedFrame->SetIsSpeedFrame(true);
+	pSpeedFrame->SetXSize(1.2f);
+	pSpeedFrame->SetYSize(1.2f);
+	pSpeedFrame->SetPosition(750, 650);
+	pSpeedFrame->SetTexture("UIImage/speedFrame.png");
+
+	pSpeedometerImage = new UIImageView;
+	pSpeedometerImage->SetIsSpeed(true);
+	pSpeedometerImage->SetXSize(1.2f);
+	pSpeedometerImage->SetYSize(1.2f);
+	pSpeedometerImage->SetPosition(0, 0);
+	pSpeedometerImage->SetTexture("UIImage/speed.png");
+
+	pSpeed = new UITextImageView;			// 10의 자리
+	pSpeed->SetTexture("UIImage/font2.png");
+	pSpeed->SetText("");
+	pSpeed->SetXSize(1.2f);
+	pSpeed->SetYSize(1.2f);
+	pSpeed->SetPosition(140, 8);
+
+	pSpeed2 = new UITextImageView;			// 1의 자리
+	pSpeed2->SetTexture("UIImage/font2.png");
+	pSpeed2->SetText("0");
+	pSpeed2->SetXSize(1.2f);
+	pSpeed2->SetYSize(1.2f);
+	pSpeed2->SetPosition(10, 0);
+
+	UITextImageView* pSpeed_mph = new UITextImageView;
+	pSpeed_mph->SetTexture("UIImage/font2.png");
+	pSpeed_mph->SetText("mph");
+	pSpeed_mph->SetXSize(1.2f);
+	pSpeed_mph->SetYSize(1.2f);
+	pSpeed_mph->SetPosition(170, 8);
+	pSpeed_mph->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+
+	/*          Set Child          */
 
 	m_pRootUI->AddChild(pLastLabFont);
 
@@ -750,6 +837,9 @@ void InGameUI::SetupTimer()
 	pMinColon->AddChild(m_pMinOneth);
 	m_pMinOneth->AddChild(m_pMinTenth);
 
+
+	m_p321go = new c321GO;
+	m_p321go->Setup();
 }
 
 void InGameUI::UpdateSpeed()
@@ -771,6 +861,7 @@ void InGameUI::UpdateSpeed()
 
 	pSpeed->SetText(strTen);
 	pSpeed2->SetText(strOne);
+
 	pSpeedometerImage->SetRpmGauge(m_pCar->GetNxVehicle()->getWheel(1)->getRpm());
 }
 

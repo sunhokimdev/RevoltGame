@@ -182,6 +182,7 @@ enum FONTFILE{FONT1=2001, FONT2};
 #include "LightManager.h"
 #include "ItemManager.h"
 #include "TextManager.h"
+#include "cDataManager.h"
 
 //UTIL
 #include "cStringUtil.h"

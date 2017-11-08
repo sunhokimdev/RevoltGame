@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "UIImageView.h"
+#include "cCar.h"
 
 #define INCREASE_NOISE_X	20.0f
 #define LEFT_NOISE_X		-500.0f
@@ -81,7 +82,11 @@ void UIImageView::Update()
 		{
 			srand(time(NULL));
 			if (m_itemID > MAX_ID)
+			{
 				m_itemID = rand() % 12;
+				//m_itemID = m_pCar->GetHoldItem();
+			}
+				
 			if (m_itemPrevID > MAX_ID)
 				m_itemPrevID = rand() % 12;
 
