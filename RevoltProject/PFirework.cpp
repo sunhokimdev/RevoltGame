@@ -6,9 +6,8 @@
 // - 불꽃놀이
 //===================================================================
 
-PFirework::PFirework(D3DXVECTOR3 * origin, int numParticles)
+PFirework::PFirework(int numParticles)
 {
-	_origin = *origin;
 	_size = 0.9f;
 	_vbSize = 2048;
 	_vbOffset = 0;
@@ -33,7 +32,7 @@ void PFirework::ResetParticle(ST_Attribute * attribute)
 	// 구체를 만들기 위한 정규화
 	D3DXVec3Normalize(&attribute->_velocity, &attribute->_velocity);
 
-	attribute->_velocity *= 1.0f;
+	attribute->_velocity *= 2.0f;
 
 	attribute->_color = D3DXCOLOR(PSystem::GetRandomFloat(0.0f, 1.0f),
 								PSystem::GetRandomFloat(0.0f, 1.0f), 

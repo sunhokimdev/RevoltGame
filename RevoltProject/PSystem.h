@@ -44,6 +44,8 @@ public:
 	virtual void ResetParticle(ST_Attribute* attribute) = 0;				// 한 파티클 속성 리셋
 	virtual void AddParticle();												// 파티클 추가
 
+	virtual void SetPosition(D3DXVECTOR3* origin) = 0;
+
 	virtual void Update(float timeDelta) = 0;
 
 	virtual void PreRender();						// 렌더링에 앞서 지정해야 할 초기 렌더 상태를 지정
@@ -53,6 +55,7 @@ public:
 	bool isEmpty();					// 파티클이 없는 경우 true
 	bool isDead();					// 파티클이 모두 죽은 경우 true ( 파티클이 있지만 죽은상태)
 
+	SYNTHESIZE(bool, m_isUse, IsUse);
 
 	DWORD FtoDw(float f);
 

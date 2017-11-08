@@ -61,13 +61,13 @@ void InGameUI::Setup()
 
 
 	//Lab
-	UITextImageView* pImageView1 = new UITextImageView;
-	pImageView1->SetTexture("UIImage/font2.png");
-	pImageView1->SetText("Lab");
-	pImageView1->SetXSize(1.0f);
-	pImageView1->SetYSize(1.0f);
-	pImageView1->SetPosition(30, 20);
-	pImageView1->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+	UITextImageView* pLabCntFont = new UITextImageView;
+	pLabCntFont->SetTexture("UIImage/font2.png");
+	pLabCntFont->SetText("Lab");
+	pLabCntFont->SetXSize(1.0f);
+	pLabCntFont->SetYSize(1.0f);
+	pLabCntFont->SetPosition(30, 20);
+	pLabCntFont->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
 	m_pCurrentLab = new UITextImageView;
 	m_pCurrentLab->SetTexture("UIImage/font2.png");
@@ -384,14 +384,14 @@ void InGameUI::Setup()
 	/*          Set Child          */
 
 	//Basic
-	m_pRootUI->AddChild(pImageView1);
+	m_pRootUI->AddChild(pLabCntFont);
 	m_pRootUI->AddChild(pLastLabFont);
 	m_pRootUI->AddChild(pImageView7);
 	m_pRootUI->AddChild(pSpeedFrame);
 	m_pRootUI->AddChild(pIV_arrowDir);
 
-	pImageView1->AddChild(pImageView6);
-	pImageView1->AddChild(m_pCurrentLab);
+	pLabCntFont->AddChild(pImageView6);
+	pLabCntFont->AddChild(m_pCurrentLab);
 	m_pCurrentLab->AddChild(m_pMaxLab);
 	pLastLabFont->AddChild(pBestLabFont);
 	pLastLabFont->AddChild(pLabFont);

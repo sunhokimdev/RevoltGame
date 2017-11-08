@@ -10,6 +10,7 @@
 const DWORD ST_Particle::FVF = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_PSIZE;
 
 PSystem::PSystem()
+	:m_isUse(false)
 {
 	_device = 0;
 	_vb = 0;
