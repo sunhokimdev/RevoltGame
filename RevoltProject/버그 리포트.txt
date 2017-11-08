@@ -1,6 +1,8 @@
+#이미 기록된 버그.
+장에물 등에 올라가 몸체는 장에물에 다아 있으나 바퀴는 공중에 떠 있는경우. 바퀴자국에 공중에도 생김....
+
 
 11/08 합친 뒤 발견 된 버그 
-
 #1
 void cMyBomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {

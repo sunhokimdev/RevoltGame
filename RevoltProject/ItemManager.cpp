@@ -5,6 +5,7 @@
 #include "cImpact.h"
 #include "cGravityball.h"
 #include "cWbomb.h"
+#include "cFirework.h"
 #include "cCar.h"
 #include "cMyBomb.h"
 
@@ -59,6 +60,14 @@ void ItemManager::Init()
 		pItem->Setup();
 		pItem->SetIsUse(false);
 		pItem->SetItemTag(ITEM_MYBOMB);
+		m_vecItem.push_back(pItem);
+	}
+
+	for (int i = 0; i < 10; i++)
+	{
+		cItem* pItem = new cFirework;
+		pItem->Setup();
+		pItem->SetItemTag(ITEM_FIREWORK);
 		m_vecItem.push_back(pItem);
 	}
 
@@ -142,7 +151,8 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 		break;
 		case ITEM_FIREWORK:
 		{
-
+			m_vecItem[m_index]->Create(carDir, carPos);
+			m_vecItem[m_index]->SetIsUse(true);
 		}
 		break;
 		case ITEM_GRAVITY:
