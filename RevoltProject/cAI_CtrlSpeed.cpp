@@ -5,7 +5,10 @@
 
 cAI_CtrlSpeed::cAI_CtrlSpeed()
 {
-	rayHit = NULL;
+	rayHitFront = NULL;
+
+	goFront = true;
+	goback = false;
 }
 
 
@@ -16,16 +19,53 @@ cAI_CtrlSpeed::~cAI_CtrlSpeed()
 
 void cAI_CtrlSpeed::Update()
 {
-	rayHit = &RAYCAST(m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0,0.3,0) , NxVec3(1, 0, 0));
+	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.2, 0);
+	NxVec3 dirFront = m_pAICar->WheelArrow(0, false); dirFront.y = 0;
+	NxVec3 dirBack= m_pAICar->WheelArrow(0, true); dirBack.y = 0;
+	dirFront.normalize();
+	dirBack.normalize();
 
-	if (rayHit->shape)
+	rayHitFront = &RAYCAST(raypos, dirFront, 100);
+	rayHitBack = &RAYCAST(raypos, dirBack, 100);
+
+	if (rayHitFront->shape)
 	{
-		float distance = rayHit->distance;
-		std::cout << distance << std::endl;
-
-		if (distance < 5.f)
-		{
-
-		}
+		frontPointCurr = rayHitFront->distance;
+		frontDelta = frontPointCurr - frontPointPrev;
 	}
+	if (rayHitFront->shape)
+	{
+		backPointCurr = rayHitBack->distance;
+		backDelta = backPointCurr - backPointPrev;
+	}
+
+	if (rayHitBack->distance < AI_distance || AI_distanceMin)
+	{
+		if (backDelta < -AI_value)
+		{
+			goFront = true;
+			goback = false;
+		}
+		std::cout << "Up" << std::endl;
+	}
+	else if (rayHitFront->distance < AI_distance)
+	{
+		if (frontDelta < -AI_value || AI_distanceMin)
+		{
+			goFront = false;
+			goback = true;
+		}
+		std::cout << "Down" << std::endl;
+	}
+
+
+
+
+	
+
+	frontPointPrev = frontPointCurr;
+	backPointPrev = backPointCurr;
+
+	SetBitKey(eBIT_KEY::E_BIT_DOWN, goback);
+	SetBitKey(eBIT_KEY::E_BIT_UP, goFront);
 }

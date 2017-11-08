@@ -71,7 +71,7 @@ void MainGame::Update()
 
 	//PhysX 시뮬 런
 	//g_pTimeManager->GetElapsedTime());//
-//	MgrPhysXScene->simulate((1.f/60.f));	//프레임 지정
+	//	MgrPhysXScene->simulate((1.f/60.f));	//프레임 지정
 
 	MgrPhysXScene->simulate((float)(1.f/60.f));	//프레임 지정
 	MgrPhysXScene->flushStream();
@@ -79,7 +79,7 @@ void MainGame::Update()
 	//	MgrPhysXScene->checkResults(NX_RIGID_BODY_FINISHED, true);
 
 
-		//PhysX와 정보 동기화
+	//PhysX와 정보 동기화
 	if (g_SceneManager) g_SceneManager->LastUpdate();
 	SAFE_UPDATE(g_pCamManager);
 }

@@ -1,8 +1,6 @@
 #pragma once
 #include "cPhysX.h"
-
-//#include "cAI_CtrlHandel.h"
-//#include "cAI_CtrlSpeed.h"
+#include "cPlayerData.h"
 
 class cCar;
 
@@ -27,5 +25,8 @@ public:
 	{
 
 	}
+
+	void SetBitKey(eBIT_KEY keySet, bool onoff);
+	bool GetBytKey(eBIT_KEY keyGet);
 };
 

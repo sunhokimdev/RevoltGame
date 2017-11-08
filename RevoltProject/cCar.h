@@ -13,24 +13,11 @@ struct stCARSPEC
 	std::vector<D3DXVECTOR3> vecWheelPos;
 };
 
-enum eBITE_KEY
-{
-	E_BITE_NONE = -1
-	, E_BITE_LEFT = 0
-	, E_BITE_RIGHT
-	, E_BITE_UP
-	, E_BITE_DOWN
-	, E_BITE_FLIP
-	, E_BITE_REPOS
-	, E_BITE_ITEM
-	, E_BITE_07
-	, E_BITE_08
-};
-
 class cCar : public Object
 {
+public:
 	std::bitset<BITESET_8_SIZE> INPUT_KEY;
-
+private:
 	//바퀴 매쉬용 백터
 	std::vector<cMesh*> vecWheels;
 
@@ -91,7 +78,7 @@ public:
 
 	void LoadCar(std::string carName);
 	void SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc, bool isAI = false);
-
+	void SetAI(bool isAI);
 	void CreateItem();
 
 	void CreatePhsyX(stCARSPEC carspec);
@@ -127,4 +114,8 @@ public:
 	void RePosition();
 	void CarFlip();
 
+
+
+	NxVec3 CarArrow(float radianAngle = 0);
+	NxVec3 WheelArrow(float radianAngle = 0 , bool back = false);
 };

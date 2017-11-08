@@ -60,6 +60,16 @@ void cAI::AddAICtrl(cAI * pAI)
 	chiledAI.push_back(pAI);
 }
 
+void cAI::SetBitKey(eBIT_KEY keySet, bool onoff)
+{
+	m_pAICar->INPUT_KEY[keySet] = onoff;
+}
+
+bool cAI::GetBytKey(eBIT_KEY keyGet)
+{
+	return m_pAICar->INPUT_KEY[keyGet];
+}
+
 void cAI::Update()
 {
 	for each(cAI* p in chiledAI)

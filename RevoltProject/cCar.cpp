@@ -214,14 +214,22 @@ void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float bre
 	m_moterPower = 0;
 	m_eHoldItem = ITEM_NONE;
 	m_nItemCount = 0;
+
+}
+
+void cCar::SetAI(bool isAI)
+{
 	m_isAI = isAI;
 
 	m_vecAI.clear();
 	if (isAI)
 	{
-		m_vecAI.push_back(new cAI);
+		cAI* pAI = new cAI;
+		pAI->SetCar(this);
+		m_vecAI.push_back(pAI);
 	}
 }
+
 void cCar::CreateItem()
 {
 	if (!m_eHoldItem)
@@ -291,7 +299,6 @@ void cCar::Update()
 	m_carNxVehicle->getActor()->addForce(NxVec3(0, 0.001, 0));
 	INPUT_KEY.reset();
 
-
 	SettingCarPos();
 
 	if (m_isAI) CtrlAI();
@@ -303,16 +310,16 @@ void cCar::Update()
 	CarMove();
 
 	//자동차 리포지션
-	if (INPUT_KEY[E_BITE_REPOS]) RePosition();
+	if (INPUT_KEY[E_BIT_REPOS]) RePosition();
 
 	// PickUp 충돌
-	if (INPUT_KEY[E_BITE_FLIP]) CollidePickUp();
+	if (INPUT_KEY[E_BIT_FLIP]) CollidePickUp();
 
 	//아이템 사용
-	if (INPUT_KEY[E_BITE_ITEM]) UsedItem();
+	if (INPUT_KEY[E_BIT_ITEM]) UsedItem();
 
 	//차 뒤집기
-	if (INPUT_KEY[E_BITE_FLIP]) CarFlip();
+	if (INPUT_KEY[E_BIT_FLIP]) CarFlip();
 
 	//스피드 계산
 	SpeedMath();
@@ -400,15 +407,15 @@ void cCar::CtrlPlayer()
 {
 	if (m_carNxVehicle)
 	{
-		INPUT_KEY[E_BITE_UP] = g_pKeyManager->isStayKeyDown(KEY_ACCELERATOR);
-		INPUT_KEY[E_BITE_DOWN] = g_pKeyManager->isStayKeyDown(KEY_REVERSE);
-		INPUT_KEY[E_BITE_LEFT] = g_pKeyManager->isStayKeyDown(KEY_MOVE_LEFT);
-		INPUT_KEY[E_BITE_RIGHT] = g_pKeyManager->isStayKeyDown(KEY_MOVE_RIGHT);
+		INPUT_KEY[E_BIT_UP] = g_pKeyManager->isStayKeyDown(KEY_ACCELERATOR);
+		INPUT_KEY[E_BIT_DOWN] = g_pKeyManager->isStayKeyDown(KEY_REVERSE);
+		INPUT_KEY[E_BIT_LEFT] = g_pKeyManager->isStayKeyDown(KEY_MOVE_LEFT);
+		INPUT_KEY[E_BIT_RIGHT] = g_pKeyManager->isStayKeyDown(KEY_MOVE_RIGHT);
 
 		//아이템사용
-		INPUT_KEY[E_BITE_ITEM] = g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM);
-		INPUT_KEY[E_BITE_REPOS] = g_pKeyManager->isOnceKeyDown(KEY_REPOSITION);
-		INPUT_KEY[E_BITE_FLIP] = g_pKeyManager->isOnceKeyDown(KEY_CAR_FLIP);
+		INPUT_KEY[E_BIT_ITEM] = g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM);
+		INPUT_KEY[E_BIT_REPOS] = g_pKeyManager->isOnceKeyDown(KEY_REPOSITION);
+		INPUT_KEY[E_BIT_FLIP] = g_pKeyManager->isOnceKeyDown(KEY_CAR_FLIP);
 	}
 }
 
@@ -440,7 +447,7 @@ void cCar::TrackCheck()
 			m_countRapNum = 0;
 			m_rapTimeCount = 0.f;
 
-			m_pInGameUI->SetLabCnt(m_countRapNum);
+			if (!m_isAI) m_pInGameUI->SetLabCnt(m_countRapNum);
 		}
 		return;
 	}
@@ -459,11 +466,11 @@ void cCar::TrackCheck()
 		if (m_currCheckBoxID == 0)
 		{
 			m_countRapNum++;
-			m_pInGameUI->SetLabCnt(m_countRapNum);
-			m_pInGameUI->UpdateLastTime();
-			m_pInGameUI->SetLabElapseTime(0);
-			m_pInGameUI->SetLabMinOneth(FONT2_NUM0);
-			m_pInGameUI->SetLabMinTenth(FONT2_NUM0);
+			if (!m_isAI) m_pInGameUI->SetLabCnt(m_countRapNum);
+			if (!m_isAI) m_pInGameUI->UpdateLastTime();
+			if (!m_isAI) m_pInGameUI->SetLabElapseTime(0);
+			if (!m_isAI) m_pInGameUI->SetLabMinOneth(FONT2_NUM0);
+			if (!m_isAI) m_pInGameUI->SetLabMinTenth(FONT2_NUM0);
 
 
 			if (m_bastRapTimeCount > m_rapTimeCount || m_bastRapTimeCount < 0.0f)
@@ -499,7 +506,6 @@ void cCar::RunEnd()
 		if (wheel->getRpm() < m_maxRpm)	wheel->tick(false, 0, m_maxMoterPower, 1.f / 60.f);
 	}
 }
-
 
 void cCar::CarRunStop()
 {
@@ -626,14 +632,14 @@ void cCar::CarMove()
 	float targetPower = 0.f;
 	bool power = false;
 	m_breakPower = 0.f;
-	if (INPUT_KEY[E_BITE_UP])
+	if (INPUT_KEY[E_BIT_UP])
 	{
 		m_moterPower += m_moterAcc;
 		if (m_moterPower > 1.f) m_moterPower = 1.f;
 		targetPower = m_moterPower * m_maxMoterPower;
 		power = true;
 	}
-	if (INPUT_KEY[E_BITE_DOWN])
+	if (INPUT_KEY[E_BIT_DOWN])
 	{
 		m_moterPower -= m_moterAcc;
 		if (m_moterPower < -1.f) m_moterPower = -1.f;
@@ -649,14 +655,14 @@ void cCar::CarMove()
 	//핸들
 	float targetAngle = m_wheelAngle * m_maxWheelAngle;
 	bool handle = false;
-	if (INPUT_KEY[E_BITE_LEFT])
+	if (INPUT_KEY[E_BIT_LEFT])
 	{
 		m_wheelAngle += (m_wheelAcc);
 		if (m_wheelAngle > 1.f) m_wheelAngle = 1.f;
 		targetAngle = m_wheelAngle * m_maxWheelAngle;
 		handle = true;
 	}
-	if (INPUT_KEY[E_BITE_RIGHT])
+	if (INPUT_KEY[E_BIT_RIGHT])
 	{
 		m_wheelAngle -= (m_wheelAcc);
 		if (m_wheelAngle < -1.f) m_wheelAngle = -1.f;
@@ -730,7 +736,7 @@ void cCar::CarFlip()
 {
 	NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
 	NxVec3 carUp = quat.transform(NxVec3(0, 1, 0), NxVec3(0, 0, 0));
-	std::cout << carUp.y << std::endl;
+	//	std::cout << carUp.y << std::endl;
 	if (carUp.y > 0.0f)
 	{
 		return;
@@ -757,4 +763,21 @@ void cCar::CarFlip()
 
 	NxVec3 carPos = p->getGlobalPose().t;
 	p->getGlobalPose().t.add(carPos, NxVec3(0, 3, 0));
+}
+
+NxVec3 cCar::CarArrow(float angle)
+{
+	NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
+	float angle_=0;
+	quat.getAngleAxis(angle_, NxVec3(0, 1, 0));
+	angle = NxMath::degToRad(angle_ + angle);
+	quat.fromAngleAxisFast(angle, NxVec3(0, 1, 0));
+	return quat.transform(NxVec3(1, 0, 0), NxVec3(0, 0, 0));
+}
+
+NxVec3 cCar::WheelArrow(float angle, bool back)
+{
+	NxWheel* wheel = m_carNxVehicle->getWheel(0);
+	NxReal hAngle = (back ? -wheel->getAngle() : wheel->getAngle());
+	return CarArrow(angle + hAngle);
 }
