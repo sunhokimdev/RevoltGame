@@ -1,15 +1,17 @@
 #pragma once
-
 #include "cItem.h"
+
+#define FIREWORKEFFECT 150
+
+class PSystem;
 
 class cFirework : public cItem
 {
 private:
 	ST_PHYSX* m_pPhysX;
-
-	D3DXVECTOR3 m_pos;
 	bool m_isSleep;
 
+	PSystem* m_pEffect;
 public:
 	cFirework();
 	virtual ~cFirework();

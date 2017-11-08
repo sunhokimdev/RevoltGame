@@ -212,6 +212,7 @@
     <ClInclude Include="ObjectLoader.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="ObjectMap.h" />
+    <ClInclude Include="PFirework.h" />
     <ClInclude Include="PhysX\cooking.h" />
     <ClInclude Include="PhysX\NxAllVehicles.h" />
     <ClInclude Include="PhysX\NxLinearInterpolate3Values.h">
@@ -232,6 +233,7 @@
     <ClInclude Include="PhysX\NxWheelDesc.h" />
     <ClInclude Include="PickUpObject.h" />
     <ClInclude Include="ProfileList.h" />
+    <ClInclude Include="PSystem.h" />
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="RacingScene.h" />
     <ClInclude Include="Resource.h" />
@@ -321,12 +323,14 @@
     <ClCompile Include="ObjectLoader.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="ObjectMap.cpp" />
+    <ClCompile Include="PFirework.cpp" />
     <ClCompile Include="PhysX\cooking.cpp" />
     <ClCompile Include="PhysX\NxAllVehicles.cpp" />
     <ClCompile Include="PhysX\NxVehicle.cpp" />
     <ClCompile Include="PhysX\NxWheel.cpp" />
     <ClCompile Include="PickUpObject.cpp" />
     <ClCompile Include="ProfileList.cpp" />
+    <ClCompile Include="PSystem.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="RacingScene.cpp" />
     <ClCompile Include="RevoltProject.cpp" />

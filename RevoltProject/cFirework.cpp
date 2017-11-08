@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "cFirework.h"
 #include "ObjectLoader.h"
+#include "PFirework.h"
 
 cFirework::cFirework()
 	: m_pPhysX(NULL)
+	, m_pEffect(NULL)
 	, m_isSleep(false)
 {
 }
@@ -11,6 +13,7 @@ cFirework::cFirework()
 
 cFirework::~cFirework()
 {
+	SAFE_DELETE(m_pEffect);
 }
 
 void cFirework::Setup()
@@ -26,24 +29,47 @@ void cFirework::Setup()
 	ObjectLoader::LoadMesh(m_pPhysX->pMesh, "Objects/firework", "firework.obj");
 
 	m_pUser->USER_TAG = ePhysXTag::E_PHYSX_TAG_FIREWORK;
+
+	m_pEffect = new PFirework(50);
+	m_pEffect->Init(g_pD3DDevice, "Objects/firework/particle_flare.bmp");
+	m_pEffect->SetPosition(&D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 }
 
 void cFirework::Update()
 {
 	cItem::Update();
-
+	D3DXVECTOR3 fwPos;
+	fwPos.x = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().x;
+	fwPos.y = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().y;
+	fwPos.z = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().z;
+	
 	D3DXVECTOR3 tar = D3DXVECTOR3(-10.0f, 0.0f, -10.0f);
-	D3DXVECTOR3 dir = tar - m_pos;
+	D3DXVECTOR3 dir = tar - fwPos;
 
 	D3DXVec3Normalize(&dir, &dir);
 
 	NxVec3 force;
 
-	force.x = dir.x * 1000;
-	force.y = dir.y * 1000;
-	force.z = dir.z * 1000;
+	if (m_isUse && m_fTime > FIREWORKEFFECT)
+	{
+		m_isUse = false;
+		m_isSleep = true;
+		m_fTime = 0;
+	}
+
+	force.x = dir.x * 2000;
+	force.y = dir.y * 500;
+	force.z = dir.z * 500;
 
 	m_pPhysX->pPhysX->m_pActor->addForce(force);
+
+	if (!m_pEffect->isDead() && !m_isUse)
+	{
+		m_pEffect->SetPosition(&fwPos);
+		m_pEffect->Update(1.0f);
+	}
+	if(m_pEffect->isDead() && !m_isUse)
+		m_pEffect->Reset();
 
 	m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pPhysX->m_pActor->getGlobalPose().t);
 }
@@ -54,22 +80,25 @@ void cFirework::Render()
 
 	if (m_isUse)
 		m_pPhysX->pMesh->Render();
+
+	if (!m_pEffect->isDead() && !m_isUse)
+	{
+		m_pEffect->Render();
+	}
 }
 
 void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {
-	m_pos = pos;
-
 	m_pPhysX->pos.x = pos.x;
 	m_pPhysX->pos.y = pos.y + 1;
 	m_pPhysX->pos.z = pos.z;
-
+	
 	NxVec3 force;
 
-	force.x = angle.x * 10000;
-	force.y = angle.y * 1000;
-	force.z = angle.z * 10000;
-
+	force.x = angle.x * 50;
+	force.y = angle.y * 10000;
+	force.z = angle.z * 50;
+	
 	if (m_isSleep)
 	{
 		m_pPhysX->pPhysX->m_pActor->wakeUp();
@@ -83,8 +112,8 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	// 초기화 부분
 	if (m_isInit)
 	{
-		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_CAPSULE, m_pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
-		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_CAPSULE, m_pPhysX->pos, NULL, NxVec3(1.5f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
+		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_CAPSULE, m_pPhysX->pos, NULL, NxVec3(0.5f, 1.5f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
+		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_CAPSULE, m_pPhysX->pos, NULL, NxVec3(1.0f, 2.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
 
 		m_pPhysX->pTrigger->m_pActor->putToSleep();
 		m_pPhysX->pTrigger->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
@@ -92,10 +121,8 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 		this->SetPhysXData(m_pPhysX->pPhysX);
 		m_isInit = false;
 	}
-
 	else
 		m_pPhysX->pPhysX->m_pActor->setGlobalPosition(m_pPhysX->pos);
 
 	m_pPhysX->pPhysX->m_pActor->addForce(force);
-	m_pPhysX->pPhysX->m_pActor->addTorque(NxVec3(angle.x, angle.y, angle.z));
 }
