@@ -32,8 +32,13 @@ void cFirework::Update()
 {
 	cItem::Update();
 
+	D3DXVECTOR3 fwPos;
+	fwPos.x = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().x;
+	fwPos.y = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().y;
+	fwPos.z = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().z;
+
 	D3DXVECTOR3 tar = D3DXVECTOR3(-10.0f, 0.0f, -10.0f);
-	D3DXVECTOR3 dir = tar - m_pos;
+	D3DXVECTOR3 dir = tar - fwPos;
 
 	D3DXVec3Normalize(&dir, &dir);
 
@@ -97,5 +102,5 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 		m_pPhysX->pPhysX->m_pActor->setGlobalPosition(m_pPhysX->pos);
 
 	m_pPhysX->pPhysX->m_pActor->addForce(force);
-	m_pPhysX->pPhysX->m_pActor->addTorque(NxVec3(angle.x, angle.y, angle.z));
+	//m_pPhysX->pPhysX->m_pActor->addTorque(NxVec3(angle.x, angle.y, angle.z));
 }

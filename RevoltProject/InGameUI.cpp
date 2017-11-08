@@ -73,10 +73,10 @@ void InGameUI::Setup()
 	//m_pCurrentLab->SetPosition(0, 20);
 
 
-	UITextImageView* pMaxLab = new UITextImageView;
-	pMaxLab->SetTexture("UIImage/font2.png");
-	pMaxLab->SetPosition(10, 0);
-	pMaxLab->SetText("/3");
+	m_pMaxLab = new UITextImageView;
+	m_pMaxLab->SetTexture("UIImage/font2.png");
+	m_pMaxLab->SetPosition(10, 0);
+	m_pMaxLab->SetText("/3");
 
 	SetupTimer();
 
@@ -391,7 +391,7 @@ void InGameUI::Setup()
 
 	pImageView1->AddChild(pImageView6);
 	pImageView1->AddChild(m_pCurrentLab);
-	m_pCurrentLab->AddChild(pMaxLab);
+	m_pCurrentLab->AddChild(m_pMaxLab);
 	//pLastLabFont->AddChild(pBestLabFont);
 	//pLastLabFont->AddChild(pLabFont);
 	//pLastLabFont->AddChild(pRaceFont);
@@ -458,41 +458,23 @@ void InGameUI::Update()
 	UpdateSpeed();
 	UpdateLabCount();
 
-
-	if (m_LabCnt != -1)	UpdateLabTime();
-
-	//if (g_pKeyManager->isOnceKeyDown('Z'))
-	//{
-	//	m_LabCnt += 1;
-	//	if (m_LabCnt > 0)
-	//	{
-	//		CompareBestTime();
-	//	}
-	//}
-	//if (m_LabCnt > 0)
-	//{
-	//	if (g_pKeyManager->isOnceKeyDown('X'))
-	//	{
-	//		UpdateLastTime();
-	//		m_LabElapseTime = 0;
-	//		m_LabMinOneth = FONT2_NUM0;
-	//		m_LabMinTenth = FONT2_NUM0;
-	//	}
-	//}
+	if (m_LabCnt > -1 && m_LabCnt < 3)
+	{
+		UpdateLabTime();
+	}
 
 	UpdateArrowDir();
-	UpdateRaceTime();
+
+	if (m_LabCnt < 3)
+		UpdateRaceTime();
 
 	iLobby::Update();
 
-	//UpdateArrowDir();
 }
 
 void InGameUI::Render(LPD3DXSPRITE pSprite)
 {
 	iLobby::Render(pSprite);
-
-
 }
 
 void InGameUI::SetupTimer()
@@ -770,15 +752,6 @@ void InGameUI::SetupTimer()
 
 }
 
-void InGameUI::ControllLab()
-{
-	m_LabCnt += 1;
-	UpdateLastTime();
-	m_LabElapseTime = 0;
-	m_LabMinOneth = FONT2_NUM0;
-	m_LabMinTenth = FONT2_NUM0;
-}
-
 void InGameUI::UpdateSpeed()
 {
 	int fTemp;
@@ -808,8 +781,8 @@ void InGameUI::UpdateLabCount()
 	if (m_LabCnt == 2) m_pCurrentLab->SetText("3");
 	if (m_LabCnt > 2)
 	{
-		m_LabCnt = 2;
-		m_pCurrentLab->SetText("3");
+		m_pCurrentLab->SetText("Finished");
+		m_pMaxLab->SetText("");
 	}
 }
 
@@ -892,105 +865,93 @@ void InGameUI::CompareBestTime()
 
 		int Check = 1;
 	}
-	else if (m_LabCnt >= 2)
+	else if (m_LabCnt > 1)
 	{
-		if (m_BestMinTenth < CurrentMinTenth)
+		if (m_BestMinTenth > CurrentMinTenth)
 		{
-			m_BestDotOneTh = m_BestDotOneTh;
-			m_BestDotTenth = m_BestDotTenth;
-			m_BestDotMilth = m_BestDotMilth;
-			m_BestSecOneth = m_BestSecOneth;
-			m_BestSecTenth = m_BestSecTenth;
-			m_BestMinOneth = m_BestMinOneth;
-			m_BestMinTenth = m_BestMinTenth;
+			m_BestDotOneTh = CurrentDotOneTh;
+			m_BestDotTenth = CurrentDotTenth;
+			m_BestDotMilth = CurrentDotMilth;
+			m_BestSecOneth = CurrentSecOneth;
+			m_BestSecTenth = CurrentSecTenth;
+			m_BestMinOneth = CurrentMinOneth;
+			m_BestMinTenth = CurrentMinTenth;
 
 			int Check = 1;
 		}
-		else
+		else if (m_BestMinTenth == CurrentMinTenth)
 		{
-			if (m_BestMinOneth < CurrentMinOneth)
+			if (m_BestMinOneth > CurrentMinOneth)
 			{
-				m_BestDotOneTh = m_BestDotOneTh;
-				m_BestDotTenth = m_BestDotTenth;
-				m_BestDotMilth = m_BestDotMilth;
-				m_BestSecOneth = m_BestSecOneth;
-				m_BestSecTenth = m_BestSecTenth;
-				m_BestMinOneth = m_BestMinOneth;
-				m_BestMinTenth = m_BestMinTenth;
+				m_BestDotOneTh = CurrentDotOneTh;
+				m_BestDotTenth = CurrentDotTenth;
+				m_BestDotMilth = CurrentDotMilth;
+				m_BestSecOneth = CurrentSecOneth;
+				m_BestSecTenth = CurrentSecTenth;
+				m_BestMinOneth = CurrentMinOneth;
+				m_BestMinTenth = CurrentMinTenth;
 
 				int Check = 1;
 			}
-			else
+			else if (m_BestMinOneth == CurrentMinOneth)
 			{
-				if (m_BestSecTenth < CurrentSecTenth)
+				if (m_BestSecTenth > CurrentSecTenth)
 				{
-					m_BestDotOneTh = m_BestDotOneTh;
-					m_BestDotTenth = m_BestDotTenth;
-					m_BestDotMilth = m_BestDotMilth;
-					m_BestSecOneth = m_BestSecOneth;
-					m_BestSecTenth = m_BestSecTenth;
-					m_BestMinOneth = m_BestMinOneth;
-					m_BestMinTenth = m_BestMinTenth;
+					m_BestDotOneTh = CurrentDotOneTh;
+					m_BestDotTenth = CurrentDotTenth;
+					m_BestDotMilth = CurrentDotMilth;
+					m_BestSecOneth = CurrentSecOneth;
+					m_BestSecTenth = CurrentSecTenth;
+					m_BestMinOneth = CurrentMinOneth;
+					m_BestMinTenth = CurrentMinTenth;
 
 					int Check = 1;
 				}
-				else
+				else if (m_BestSecTenth == CurrentSecTenth)
 				{
-					if (m_BestSecOneth < CurrentSecOneth)
+					if (m_BestSecOneth > CurrentSecOneth)
 					{
-						m_BestDotOneTh = m_BestDotOneTh;
-						m_BestDotTenth = m_BestDotTenth;
-						m_BestDotMilth = m_BestDotMilth;
-						m_BestSecOneth = m_BestSecOneth;
-						m_BestSecTenth = m_BestSecTenth;
-						m_BestMinOneth = m_BestMinOneth;
-						m_BestMinTenth = m_BestMinTenth;
+						m_BestDotOneTh = CurrentDotOneTh;
+						m_BestDotTenth = CurrentDotTenth;
+						m_BestDotMilth = CurrentDotMilth;
+						m_BestSecOneth = CurrentSecOneth;
+						m_BestSecTenth = CurrentSecTenth;
+						m_BestMinOneth = CurrentMinOneth;
+						m_BestMinTenth = CurrentMinTenth;
 
 						int Check = 1;
 					}
-					else
+					else if (m_BestSecOneth == CurrentSecOneth)
 					{
-						if (m_BestDotMilth < CurrentDotMilth)
+						if (m_BestDotMilth > CurrentDotMilth)
 						{
-							m_BestDotOneTh = m_BestDotOneTh;
-							m_BestDotTenth = m_BestDotTenth;
-							m_BestDotMilth = m_BestDotMilth;
-							m_BestSecOneth = m_BestSecOneth;
-							m_BestSecTenth = m_BestSecTenth;
-							m_BestMinOneth = m_BestMinOneth;
-							m_BestMinTenth = m_BestMinTenth;
+							m_BestDotOneTh = CurrentDotOneTh;
+							m_BestDotTenth = CurrentDotTenth;
+							m_BestDotMilth = CurrentDotMilth;
+							m_BestSecOneth = CurrentSecOneth;
+							m_BestSecTenth = CurrentSecTenth;
+							m_BestMinOneth = CurrentMinOneth;
+							m_BestMinTenth = CurrentMinTenth;
 
 							int Check = 1;
 						}
-						else
+						else if (m_BestDotMilth == CurrentDotMilth)
 						{
-							if (m_BestDotTenth < CurrentDotTenth)
+							if (m_BestDotTenth > CurrentDotTenth)
 							{
-								m_BestDotOneTh = m_BestDotOneTh;
-								m_BestDotTenth = m_BestDotTenth;
-								m_BestDotMilth = m_BestDotMilth;
-								m_BestSecOneth = m_BestSecOneth;
-								m_BestSecTenth = m_BestSecTenth;
-								m_BestMinOneth = m_BestMinOneth;
-								m_BestMinTenth = m_BestMinTenth;
+								m_BestDotOneTh = CurrentDotOneTh;
+								m_BestDotTenth = CurrentDotTenth;
+								m_BestDotMilth = CurrentDotMilth;
+								m_BestSecOneth = CurrentSecOneth;
+								m_BestSecTenth = CurrentSecTenth;
+								m_BestMinOneth = CurrentMinOneth;
+								m_BestMinTenth = CurrentMinTenth;
 
 								int Check = 1;
 							}
-							else
+							else if (m_BestDotTenth == CurrentDotTenth)
 							{
-								if (m_BestDotOneTh < CurrentDotOneTh)
-								{
-									m_BestDotOneTh = m_BestDotOneTh;
-									m_BestDotTenth = m_BestDotTenth;
-									m_BestDotMilth = m_BestDotMilth;
-									m_BestSecOneth = m_BestSecOneth;
-									m_BestSecTenth = m_BestSecTenth;
-									m_BestMinOneth = m_BestMinOneth;
-									m_BestMinTenth = m_BestMinTenth;
-
-									int Check = 1;
-								}
-								else
+								if (m_BestDotOneTh > CurrentDotOneTh)
 								{
 									m_BestDotOneTh = CurrentDotOneTh;
 									m_BestDotTenth = CurrentDotTenth;
@@ -999,6 +960,8 @@ void InGameUI::CompareBestTime()
 									m_BestSecTenth = CurrentSecTenth;
 									m_BestMinOneth = CurrentMinOneth;
 									m_BestMinTenth = CurrentMinTenth;
+
+									int Check = 1;
 								}
 							}
 						}
@@ -1006,7 +969,6 @@ void InGameUI::CompareBestTime()
 				}
 			}
 		}
-
 	}
 
 	BestDotOneth = m_BestDotOneTh;

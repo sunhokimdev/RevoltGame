@@ -30,6 +30,7 @@ private:
 	//Lab
 	UITextImageView* m_pLab;
 	UITextImageView* m_pCurrentLab;
+	UITextImageView* m_pMaxLab;
 
 	//Last Time
 	UITextImageView* m_pLastDotOneTh;
@@ -95,7 +96,6 @@ public:
 	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
 	
 	void SetupTimer();
-	void ControllLab();
 
 	void UpdateSpeed();
 	void UpdateLabCount();									// UpdateCurrentLab
