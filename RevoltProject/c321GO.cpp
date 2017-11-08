@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "c321GO.h"
 #include "Object.h"
+#include "RacingScene.h"
 
 c321GO::c321GO()
 {
@@ -92,75 +93,112 @@ void c321GO::Count()
 	{
 		m_fTime += g_pTimeManager->GetElapsedTime();
 
-		if (m_fTime > 3)
+		//if (m_fTime > 3)
+		//{
+		//	m_nCount = 0;
+		//	if (m_fTime > 3.875)
+		//	{
+		//		m_isStart = false;
+		//	}
+		//	else if (m_fTime > 3.125)
+		//	{
+		//		m_fAngle = D3DX_PI;
+		//	}
+		//	else
+		//	{
+		//		m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
+		//	}
+		//}
+		//else if (m_fTime > 2)
+		//{
+		//	m_nCount = 1;
+		//	if (m_fTime > 2.875)
+		//	{
+		//		m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
+		//	}
+		//	else if (m_fTime > 2.125)
+		//	{
+		//		m_fAngle = D3DX_PI;
+		//	}
+		//	else
+		//	{
+		//		m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
+		//	}
+		//}
+		//else if (m_fTime > 1)
+		//{
+		//	m_nCount = 2;
+		//	if (m_fTime > 1.875)
+		//	{
+		//		m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
+		//	}
+		//	else if (m_fTime > 1.125)
+		//	{
+		//		m_fAngle = D3DX_PI;
+		//	}
+		//	else
+		//	{
+		//		m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
+		//	}
+		//}
+		//else if (m_fTime > 0)
+		//{
+		//	m_nCount = 3;
+		//	if (m_fTime > 0.875)
+		//	{
+		//		m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
+		//	}
+		//	else if (m_fTime > 0.125)
+		//	{
+		//		m_fAngle = D3DX_PI;
+		//	}
+		//	else
+		//	{
+		//		//Lerp = m_fTime * 8;
+		//	}
+		//}
+
+		float min = -1;
+
+		if (m_fTime > 0.875)
 		{
-			m_nCount = 0;
-			if (m_fTime > 3.875)
+			if (m_nCount != 0)
+			{
+				m_fAngle = (((m_fTime * 4) + (0.5f * min)) * D3DX_PI);
+			}
+		}
+		else if (m_fTime > 0.125)
+		{
+			m_fAngle = D3DX_PI;
+
+			if (m_nCount % 2 == 0)
+			{
+				min = 1;
+			}
+			else
+			{
+				min = -1;
+			}
+		}
+		else
+		{
+			m_fAngle = (((m_fTime * 4) - (0.5f * min)) * D3DX_PI);
+		}
+
+		if (m_fTime > 1)
+		{
+			if (m_nCount == 0)
 			{
 				m_isStart = false;
-			}
-			else if (m_fTime > 3.125)
-			{
-				m_fAngle = D3DX_PI;
+				m_pRacingScene->SetRaceProg(RACE_PROG_GO);
 			}
 			else
 			{
-				m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
+				m_nCount--;
 			}
+			
+			m_fTime = 0;
 		}
-		else if (m_fTime > 2)
-		{
-			m_nCount = 1;
-			if (m_fTime > 2.875)
-			{
-				m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
-			}
-			else if (m_fTime > 2.125)
-			{
-				m_fAngle = D3DX_PI;
-			}
-			else
-			{
-				m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
-			}
-		}
-		else if (m_fTime > 1)
-		{
-			m_nCount = 2;
-			if (m_fTime > 1.875)
-			{
-				m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
-			}
-			else if (m_fTime > 1.125)
-			{
-				m_fAngle = D3DX_PI;
-			}
-			else
-			{
-				m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
-			}
-		}
-		else if (m_fTime > 0)
-		{
-			m_nCount = 3;
-			if (m_fTime > 0.875)
-			{
-				m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
-			}
-			else if (m_fTime > 0.125)
-			{
-				m_fAngle = D3DX_PI;
-			}
-			else
-			{
-				//Lerp = m_fTime * 8;
-			}
-		}
-	}
-
-	if (g_pKeyManager->isStayKeyDown('Y'))
-	{
-		Lerp += 0.1;
 	}
 
 	D3DXMATRIXA16 mat, matR, matRY;

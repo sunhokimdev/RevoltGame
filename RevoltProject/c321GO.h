@@ -1,6 +1,7 @@
 #pragma once
 
 class Object;
+class RacingScene;
 
 class c321GO
 {
@@ -13,6 +14,8 @@ class c321GO
 	bool m_isStart;
 	D3DXVECTOR3 posStart, posEnd;
 
+	RacingScene* m_pRacingScene;
+
 public:
 	c321GO();
 	~c321GO();
@@ -23,5 +26,7 @@ public:
 	void Destroy();
 	void StartCount();
 	void Count();
+
+	void LinkRacingScene(RacingScene* rc) { m_pRacingScene = rc; }
 };
 

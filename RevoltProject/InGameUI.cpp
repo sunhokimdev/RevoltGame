@@ -7,6 +7,7 @@
 #include "Object.h"
 #include "cCheckBox.h"
 #include "c321GO.h"
+#include "RacingScene.h"
 
 #define TIMEMAX 60
 
@@ -863,6 +864,7 @@ void InGameUI::SetupTimer()
 	m_pMinOneth->AddChild(m_pMinTenth);
 
 	m_p321go = new c321GO;
+	m_p321go->LinkRacingScene(m_pRacingScene);
 	m_p321go->Setup();
 }
 
