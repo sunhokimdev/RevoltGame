@@ -7,8 +7,24 @@ cAI_CtrlSpeed::cAI_CtrlSpeed()
 {
 	rayHitFront = NULL;
 
-	goFront = true;
-	goback = false;
+	aiState = E_SpeedStateFront;
+
+
+	frontDistPrev = 0;
+	frontDistCurr = 0;
+	frontDelta = 0;
+
+	backDistPrev = 0;
+	backDistCurr = 0;
+	backDelta = 0;
+
+
+
+	AI_distanceFront = 5;		//인지범위 
+	AI_distanceBack = 3;		//인지범위 
+	AI_value = 0.2f;		//delta 의 인지범위
+	AI_distanceMin = 2.f;	//무조건 유지하려는 거리
+
 }
 
 
@@ -21,51 +37,50 @@ void cAI_CtrlSpeed::Update()
 {
 	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.2, 0);
 	NxVec3 dirFront = m_pAICar->WheelArrow(0, false); dirFront.y = 0;
-	NxVec3 dirBack= m_pAICar->WheelArrow(0, true); dirBack.y = 0;
+	NxVec3 dirBack = m_pAICar->WheelArrow(0, true); dirBack.y = 0;
 	dirFront.normalize();
 	dirBack.normalize();
 
-	rayHitFront = &RAYCAST(raypos, dirFront, 100);
-	rayHitBack = &RAYCAST(raypos, dirBack, 100);
+	rayHitFront = &RAYCAST(raypos, dirFront, AI_distanceFront);
+	rayHitBack = &RAYCAST(raypos, dirBack, AI_distanceBack);
 
 	if (rayHitFront->shape)
 	{
-		frontPointCurr = rayHitFront->distance;
-		frontDelta = frontPointCurr - frontPointPrev;
+		backDistCurr = rayHitBack->distance;
+		backDelta = backDistCurr - backDistPrev;
 	}
 	if (rayHitFront->shape)
 	{
-		backPointCurr = rayHitBack->distance;
-		backDelta = backPointCurr - backPointPrev;
+		frontDistCurr = rayHitFront->distance;
+		frontDelta = frontDistCurr - frontDistPrev;
 	}
 
-	if (rayHitBack->distance < AI_distance || AI_distanceMin)
+	//
+	aiState = E_SpeedStateFront;
+
+	if ((frontDelta < AI_value) || (frontDistCurr < AI_distanceMin))
 	{
-		if (backDelta < -AI_value)
+		if (frontDistCurr < AI_distanceFront)
 		{
-			goFront = true;
-			goback = false;
+			aiState = E_SpeedStateBack;
 		}
-		std::cout << "Up" << std::endl;
 	}
-	else if (rayHitFront->distance < AI_distance)
+
+	if ((backDelta < AI_value) || (backDistCurr < AI_distanceMin))
 	{
-		if (frontDelta < -AI_value || AI_distanceMin)
+		if (backDistCurr < AI_distanceBack)
 		{
-			goFront = false;
-			goback = true;
+			aiState = E_SpeedStateFront;
 		}
-		std::cout << "Down" << std::endl;
 	}
 
 
+//	std::cout << aiState << std::endl;
 
+	//
+	frontDistPrev = frontDistCurr;
+	backDistPrev = backDistCurr;
 
-	
-
-	frontPointPrev = frontPointCurr;
-	backPointPrev = backPointCurr;
-
-	SetBitKey(eBIT_KEY::E_BIT_DOWN, goback);
-	SetBitKey(eBIT_KEY::E_BIT_UP, goFront);
+	SetBitKey(eBIT_KEY::E_BIT_UP, aiState == E_SpeedStateFront);
+	SetBitKey(eBIT_KEY::E_BIT_DOWN, aiState == E_SpeedStateBack);
 }
