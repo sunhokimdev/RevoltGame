@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="버그 리포트.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -456,6 +457,18 @@
     <ClInclude Include="c321GO.h">
       <Filter>NewClass</Filter>
     </ClInclude>
+    <ClInclude Include="cFakeBomb.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cFakeImpact.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cMybombImapct.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cMyBomb.h">
+      <Filter>Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -736,6 +749,18 @@
     </ClCompile>
     <ClCompile Include="c321GO.cpp">
       <Filter>NewClass</Filter>
+    </ClCompile>
+    <ClCompile Include="cFakeBomb.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cFakeImpact.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cMyBomb.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cMybombImapct.cpp">
+      <Filter>Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

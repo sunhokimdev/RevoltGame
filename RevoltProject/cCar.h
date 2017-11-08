@@ -5,6 +5,7 @@ class cAI;
 class TriggerCallback;
 class cTrack;
 class cSkidMark;
+class InGameUI;
 
 struct stCARSPEC
 {
@@ -62,6 +63,9 @@ class cCar : public Object
 	
 	cSkidMark* m_pSkidMark;
 
+	//InGame UI
+	InGameUI* m_pInGameUI;
+
 public:
 	cCar();
 	~cCar();
@@ -94,8 +98,8 @@ public:
 	void CarRunStop();
 	void DrawSkidMark();
 	void LinkTrackPt(cTrack* track) { m_pTrack = track; }
-
 	eITEM_LIST* GetHoldItemPt() { return &m_eHoldItem; }
+	void LinkUI(InGameUI* ingameUi) { m_pInGameUI = ingameUi; }
 //	void RunStart();
 
 };

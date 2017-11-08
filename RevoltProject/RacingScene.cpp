@@ -21,7 +21,7 @@ void RacingScene::Setup()
 
 	D3DXCreateSprite(g_pD3DDevice, &m_Sprite);
 	g_pCamManager->SetLookAt(&D3DXVECTOR3(0, 0, 0));
-	
+
 	m_pTrack = new cTrack;
 	if (m_pTrack)
 	{
@@ -54,17 +54,21 @@ void RacingScene::Setup()
 	int i = 0;
 	for each(cPlayerData* p in g_pDataManager->vecPlayerData)
 	{
-		if (i == m_pTrack->GetStartPositions().size()) break;
-
-		if (!p->IsAI)	CreateCar(i, p->CAR_NAME, p->IsAI);
-		else			CreateCar(i, "tc1", p->IsAI);
+		if (i + 1 == m_pTrack->GetStartPositions().size()) break;
+		CreateCar(m_pTrack->GetStartPositions()[i], i, p->CAR_NAME, p->IsAI);
+		i++;
+	}
+	if (i == 0)
+	{
+		CreateCar(m_pTrack->GetStartPositions()[i], i,"tc1", false);
 	}
 
 	m_pInGameUI = new InGameUI;
-	
-	LinkUI(0); // 인게임 UI Setup 전에 위치해야함
-
+	LinkUI(0); // 인게임 InGameUI::Setup(); 전에 위치해야함, new InGameUI 가 선언되어 있어야 함.
 	m_pInGameUI->Setup();
+
+
+	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 }
 
 void RacingScene::Destroy()
@@ -81,7 +85,6 @@ void RacingScene::Update()
 {
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
-	//SAFE_UPDATE(g_pTimeManager); << 메인에서 돌아가고있음
 
 	for (int i = 0; i < vecCars.size(); i++)
 	{
@@ -231,7 +234,7 @@ bool RacingScene::IsCarRunTrue(cCar* pCar)
 	return m_trackEndCount > pCar->GetCountRapNum();
 }
 
-void RacingScene::CreateCar(int playerID, std::string carName, bool isAI)
+void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carName, bool isAI)
 {
 	cCar* pCar = new cCar;
 	pCar->LoadCar(carName);
@@ -244,6 +247,7 @@ void RacingScene::CreateCar(int playerID, std::string carName, bool isAI)
 void RacingScene::LinkUI(int playerID)
 {
 	m_pInGameUI->LinkCarPt(vecCars[playerID]);
+	vecCars[playerID]->LinkUI(m_pInGameUI);
 	m_pInGameUI->LinkTrack(m_pTrack);
 	for (int i = 0; i < vecCars.size(); i++)
 	{

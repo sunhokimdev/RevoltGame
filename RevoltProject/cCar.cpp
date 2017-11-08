@@ -6,6 +6,7 @@
 #include "cTrack.h"
 #include "cSkidMark.h"
 #include "cCheckBox.h"
+#include "InGameUI.h"
 
 #include <fstream>
 
@@ -197,6 +198,7 @@ void cCar::LoadCar(std::string carName)
 
 	m_pSkidMark = new cSkidMark;
 	m_pSkidMark->LinkCar(this);
+
 }
 
 void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc, bool isAI)
@@ -233,6 +235,7 @@ void cCar::CreateItem()
 		m_nItemCount = 1;
 	}
 }
+
 void cCar::CreatePhsyX(stCARSPEC carspec)
 {
 	USERDATA* pUserdata = new USERDATA(E_PHYSX_TAG_CAR);
@@ -247,8 +250,12 @@ void cCar::CreatePhsyX(stCARSPEC carspec)
 
 		SetPhysXData(physX);
 		physX->SetPosition(NxVec3(0, 0, 0));
+		physX->m_pActor->setGroup(3);
+		physX->m_pUserData->isMyBomb = false;
+		physX->m_pUserData->m_pCarPosion = &physX->m_pActor->getGlobalPosition();
 	}
 }
+
 void cCar::LoadMesh(std::string carName)
 {
 	GetMeshData()->LoadCarMesh("Cars/" + carName, carName + ".obj");
@@ -506,11 +513,12 @@ void cCar::CtrlPlayer()
 		//아이템사용
 		if (g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM))
 		{
-			//g_pItemManager->FireItem(ITEM_WBOMB, this);
+			g_pItemManager->FireItem(ITEM_MYBOMB, this);
+
 			if (m_eHoldItem != ITEM_NONE)
 			{
 				//아이템 사용 함수 호츨
-				
+
 				m_nItemCount--;
 				if (m_nItemCount == 0)
 				{
@@ -551,6 +559,39 @@ void cCar::CtrlPlayer()
 				CarRunStop();
 			}
 		}
+
+		//SkidTest
+
+		//레이초기화
+		NxRay RayCar;
+		RayCar.orig = NxVec3(m_position);
+		RayCar.orig.y += 0.2f;
+		RayCar.dir = NxVec3(0, -1, 0);
+
+		NxRaycastHit RayCarHit;
+		RayCarHit.shape = NULL;
+		g_pPhysXScene->raycastClosestShape(RayCar, NxShapesType::NX_ALL_SHAPES, RayCarHit);
+
+		float rpm = GetNxVehicle()->getWheel(0)->getRpm() / m_maxRpm;
+		if (fabsf(rpm) > 0.8f && fabs(m_wheelAngle) > 0.9f)
+		{
+			if (RayCarHit.distance < 0.2f)
+			{
+				m_pSkidMark->DrawSkidMark();
+			}
+		}
+
+		if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
+		{
+			if (RayCarHit.distance < 0.2f)
+			{
+				m_pSkidMark->DrawSkidMark();
+			}
+		}
+		if (g_pKeyManager->isStayKeyDown(VK_SPACE))
+		{
+			m_pSkidMark->Destory();
+		}
 	}
 }
 
@@ -581,7 +622,8 @@ void cCar::TrackCheck()
 			m_currCheckBoxID = 0;	//체크 시작
 			m_countRapNum = 0;
 			m_rapTimeCount = 0.f;
-			
+
+			m_pInGameUI->SetLabCnt(m_countRapNum);
 		}
 		return;
 	}
@@ -600,6 +642,13 @@ void cCar::TrackCheck()
 		if (m_currCheckBoxID == 0)
 		{
 			m_countRapNum++;
+			m_pInGameUI->SetLabCnt(m_countRapNum);
+			m_pInGameUI->UpdateLastTime();
+			m_pInGameUI->SetLabElapseTime(0);
+			m_pInGameUI->SetLabMinOneth(FONT2_NUM0);
+			m_pInGameUI->SetLabMinTenth(FONT2_NUM0);
+
+
 			if (m_bastRapTimeCount > m_rapTimeCount || m_bastRapTimeCount < 0.0f)
 			{
 				m_bastRapTimeCount = m_rapTimeCount;

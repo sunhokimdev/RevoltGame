@@ -18,6 +18,7 @@
 #include "PhysX/cooking.h"
 
 struct stCARSPEC;
+class cCar;
 
 //#include <NxConvexMeshDesc.h>
 
@@ -30,6 +31,7 @@ struct stCARSPEC;
 #define  g_pPhysXScene	  MgrPhysXScene	
 #define  g_pPhysXSDK	  MgrPhysXSDK		
 #define  g_pPhysXData	  MgrPhysXData	
+
 enum ePhysXTag
 {
 	E_PHYSX_TAG_NONE = 0		//충돌 이벤트에서 딱히 해줄게 없는 것들...
@@ -38,10 +40,11 @@ enum ePhysXTag
 	, E_PHYSX_TAG_PICKUP		//아이템
 	, E_PHYSX_TAG_FIREWORK
 	, E_PHYSX_TAG_WHATEBOMB
+	, E_PHYSX_TAG_MYBOMB
 	, E_PHYSX_TAG_METALBALL
 	, E_PHYSX_TAG_GRIVATEBALL
 	, E_PHYSX_TAG_TRACK
-	, E_PHYSX_TAG_END
+	, E_PHYSX_TAG_END			//전혀 충돌하지 않음
 };
 
 enum eMaterialTag
@@ -72,8 +75,6 @@ struct USERDATA
 	ePhysXTag USER_TAG;
 	NxU32 UserPointValue;
 	std::vector<NxU32> TargetPointValue;
-
-
 	NX_BOOL IsPickUp;
 	NxU32 CheckBoxID;
 
@@ -84,6 +85,11 @@ struct USERDATA
 	NX_BOOL RaycastClosestShape;
 	NX_BOOL RaycastAllShape;
 	NxVec3	RayHitPos;
+
+	/*   김선호 작업   */
+	bool isMyBomb;
+	NxVec3* m_pCarPosion;
+
 	USERDATA(ePhysXTag tag)
 	{
 		Init();
@@ -105,6 +111,9 @@ struct USERDATA
 		RayHitPos = NxVec3(0, 0, 0);
 		CheckBoxID = 0;
 		IsPickUp = NX_FALSE;
+
+		/*   김선호   */
+		isMyBomb = false;
 	}
 	void Reset()
 	{
@@ -169,6 +178,12 @@ private:
 	NxScene*		m_pNxScene;
 
 	std::map<E_MATERIAL, NxMaterial*> m_mapMaterial;
+
+	const NxU32 CONTACT_FLAGS = (
+		NX_NOTIFY_ON_START_TOUCH |
+		NX_NOTIFY_ON_TOUCH |
+		NX_NOTIFY_ON_END_TOUCH);
+
 public:
 	NxPhysicsSDK* GetPhysXSDK() { return m_pNxPhysicsSDK; }
 	NxScene* GetPhysXScene() { return m_pNxScene; }
@@ -188,6 +203,8 @@ public:
 	void RaycastClosestShape(D3DXVECTOR3 start, D3DXVECTOR3 dir);
 	void RaycastAllShapes(D3DXVECTOR3 start, D3DXVECTOR3 dir);
 
+	void PhysXReportSeting();
+	void CollisionEnable(bool collied,bool report, NxCollisionGroup group1, NxCollisionGroup group2);
 	void SetActorGroup(NxActor * actor, NxCollisionGroup group);
 
 
@@ -221,4 +238,6 @@ public:
 		bool IsTrigger = false, bool isStatic = false, bool isGravaty = true);
 
 	NxVehicle* createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERDATA* pUserData, bool frontWheelDrive, bool backWheelDrive);
+
+
 };

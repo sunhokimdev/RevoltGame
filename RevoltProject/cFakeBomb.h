@@ -2,17 +2,11 @@
 
 #include "cItem.h"
 
-class cFirework : public cItem
+class cFakeBomb : public cItem
 {
-private:
-	ST_PHYSX* m_pPhysX;
-
-	D3DXVECTOR3 m_pos;
-	bool m_isSleep;
-
 public:
-	cFirework();
-	virtual ~cFirework();
+	cFakeBomb();
+	virtual ~cFakeBomb();
 
 	virtual void Setup();
 	virtual void Update();

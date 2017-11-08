@@ -5,8 +5,10 @@ class cPlayerData
 public:
 	cPlayerData();
 	~cPlayerData();
+
+	cPlayerData(std::string IP, std::string ID, std::string CAR_NAME, bool IsAI);
 public:
-	bool IsAI = true;
+	bool IsAI;
 
 	std::string IP;
 	std::string ID;

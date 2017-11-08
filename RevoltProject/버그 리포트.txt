@@ -1,0 +1,31 @@
+#이미 기록된 버그.
+장에물 등에 올라가 몸체는 장에물에 다아 있으나 바퀴는 공중에 떠 있는경우. 바퀴자국에 공중에도 생김....
+
+
+11/08 합친 뒤 발견 된 버그 
+#1
+void cMyBomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
+{
+	m_pPhysX->pos.x = pos.x;
+	m_pPhysX->pos.y = pos.y + 1;
+	m_pPhysX->pos.z = pos.z;
+
+	if (m_isInit)
+	{
+		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(3.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
+		m_pPhysX->pPhysX->m_pActor->putToSleep();
+		m_pPhysX->pPhysX->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
+		SetActorGroup(m_pPhysX->pPhysX->m_pActor, 2);
+		this->SetPhysXData(m_pPhysX->pPhysX);
+		m_isInit = false;
+!.1-----m_pCar->GetPhysXData()->m_pUserData->isMyBomb = true;
+	}
+}
+
+!.1->
+m_pCar->GetPhysXData()->m_pUserData->isMyBomb = true;
+에서 NULL 값이 발샹하여 변수를 찾아 갈 수 없음.
+픽업(번개)를 먹은 뒤 발생함.
+
+#2
+화면에 숫자 3 이 사라지지 않음.

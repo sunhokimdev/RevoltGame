@@ -267,25 +267,19 @@ void Lobby::KeyUpdate()
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
+
 			//유저데이터에 자동차 선택한거 넘겨주고
 			//씬변경
 
 			g_pDataManager->mapName = m_pfileList->GetMapName();
 
-			//PLAYER
-			cPlayerData* playerData = new cPlayerData;
-			playerData->IP = "";
-			playerData->ID = "";
-			playerData->IsAI = false;
-			playerData->CAR_NAME = m_pfileList->GetCarName();
-			g_pDataManager->vecPlayerData.push_back(playerData);
-			//COM
-		//	g_pDataManager->vecPlayerData.push_back(new cPlayerData);
-		//	g_pDataManager->vecPlayerData.push_back(new cPlayerData);
-		//	g_pDataManager->vecPlayerData.push_back(new cPlayerData);
-		//	g_pDataManager->vecPlayerData.push_back(new cPlayerData);
-		//	g_pDataManager->vecPlayerData.push_back(new cPlayerData);
-		//
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", m_pfileList->GetCarName(), false));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc1", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
+		
 			g_SceneManager->ChangeScene("Race");
 			return;
 		}
