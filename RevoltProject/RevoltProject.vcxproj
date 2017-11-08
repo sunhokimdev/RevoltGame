@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="버그 리포트.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="c321GO.h" />
@@ -163,6 +164,8 @@
     <ClInclude Include="cClient.h" />
     <ClInclude Include="cCreateProfile.h" />
     <ClInclude Include="cDataManager.h" />
+    <ClInclude Include="cFakeBomb.h" />
+    <ClInclude Include="cFakeImpact.h" />
     <ClInclude Include="cFirework.h" />
     <ClInclude Include="cFollowPoint.h" />
     <ClInclude Include="cGravityball.h" />
@@ -171,6 +174,8 @@
     <ClInclude Include="cItem.h" />
     <ClInclude Include="cLight.h" />
     <ClInclude Include="cMesh.h" />
+    <ClInclude Include="cMyBomb.h" />
+    <ClInclude Include="cMybombImapct.h" />
     <ClInclude Include="cNetwork.h" />
     <ClInclude Include="cNetworkCreateRoom.h" />
     <ClInclude Include="cNetworkInRoom.h" />
@@ -277,6 +282,8 @@
     <ClCompile Include="cClient.cpp" />
     <ClCompile Include="cCreateProfile.cpp" />
     <ClCompile Include="cDataManager.cpp" />
+    <ClCompile Include="cFakeBomb.cpp" />
+    <ClCompile Include="cFakeImpact.cpp" />
     <ClCompile Include="cFirework.cpp" />
     <ClCompile Include="cFollowPoint.cpp" />
     <ClCompile Include="cGravityball.cpp" />
@@ -285,6 +292,8 @@
     <ClCompile Include="cItem.cpp" />
     <ClCompile Include="cLight.cpp" />
     <ClCompile Include="cMesh.cpp" />
+    <ClCompile Include="cMyBomb.cpp" />
+    <ClCompile Include="cMybombImapct.cpp" />
     <ClCompile Include="cNetwork.cpp" />
     <ClCompile Include="cNetworkCreateRoom.cpp" />
     <ClCompile Include="cNetworkInRoom.cpp" />

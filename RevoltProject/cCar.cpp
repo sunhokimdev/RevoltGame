@@ -248,6 +248,9 @@ void cCar::CreatePhsyX(stCARSPEC carspec)
 
 		SetPhysXData(physX);
 		physX->SetPosition(NxVec3(0, 0, 0));
+		physX->m_pActor->setGroup(3);
+		physX->m_pUserData->isMyBomb = false;
+		physX->m_pUserData->m_pCarPosion = &physX->m_pActor->getGlobalPosition();
 	}
 }
 
@@ -508,7 +511,8 @@ void cCar::CtrlPlayer()
 		//아이템사용
 		if (g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM))
 		{
-			//g_pItemManager->FireItem(ITEM_WBOMB, this);
+			g_pItemManager->FireItem(ITEM_MYBOMB, this);
+
 			if (m_eHoldItem != ITEM_NONE)
 			{
 				//아이템 사용 함수 호츨
