@@ -441,25 +441,46 @@ void cCar::CtrlPlayer()
 		float targetPower = 0.f;
 		bool power = false;
 		m_breakPower = 0.f;
-		if (g_pKeyManager->isStayKeyDown(KEY_ACCELERATOR))
-		{
-			m_moterPower += m_moterAcc;
-			if (m_moterPower > 1.f) m_moterPower = 1.f;
-			targetPower = m_moterPower * m_maxMoterPower;
-			power = true;
 
-			if (g_pNetworkManager->GetIsInGameNetwork())
-				g_pNetworkManager->SetUpKey(true);
+		if (!m_isUser)
+		{
+			if (g_pKeyManager->isStayKeyDown(KEY_ACCELERATOR))
+			{
+				m_moterPower += m_moterAcc;
+				if (m_moterPower > 1.f) m_moterPower = 1.f;
+				targetPower = m_moterPower * m_maxMoterPower;
+				power = true;
+
+				if (g_pNetworkManager->GetIsInGameNetwork())
+					g_pNetworkManager->SetUpKey(true);
+			}
+			if (g_pKeyManager->isStayKeyDown(KEY_REVERSE))
+			{
+				m_moterPower -= m_moterAcc;
+				if (m_moterPower < -1.f) m_moterPower = -1.f;
+				targetPower = m_moterPower * m_maxMoterPower;
+				power = true;
+
+				if (g_pNetworkManager->GetIsInGameNetwork())
+					g_pNetworkManager->SetDownKey(true);
+			}
 		}
-		if (g_pKeyManager->isStayKeyDown(KEY_REVERSE))
+		else
 		{
-			m_moterPower -= m_moterAcc;
-			if (m_moterPower < -1.f) m_moterPower = -1.f;
-			targetPower = m_moterPower * m_maxMoterPower;
-			power = true;
-
-			if (g_pNetworkManager->GetIsInGameNetwork())
-				g_pNetworkManager->SetDownKey(true);
+			if (m_keySet.up)
+			{
+				m_moterPower += m_moterAcc;
+				if (m_moterPower > 1.f) m_moterPower = 1.f;
+				targetPower = m_moterPower * m_maxMoterPower;
+				power = true;
+			}
+			if (m_keySet.down)
+			{
+				m_moterPower -= m_moterAcc;
+				if (m_moterPower < -1.f) m_moterPower = -1.f;
+				targetPower = m_moterPower * m_maxMoterPower;
+				power = true;
+			}
 		}
 		if (!power)
 		{
@@ -471,25 +492,46 @@ void cCar::CtrlPlayer()
 		//핸들
 		float targetAngle = m_wheelAngle * m_maxWheelAngle;
 		bool handle = false;
-		if (g_pKeyManager->isStayKeyDown(KEY_MOVE_LEFT))
-		{
-			m_wheelAngle += (m_wheelAcc);
-			if (m_wheelAngle > 1.f) m_wheelAngle = 1.f;
-			targetAngle = m_wheelAngle * m_maxWheelAngle;
-			handle = true;
 
-			if (g_pNetworkManager->GetIsInGameNetwork())
-				g_pNetworkManager->SetLeftKey(true);
+		if (!m_isUser)
+		{
+			if (g_pKeyManager->isStayKeyDown(KEY_MOVE_LEFT))
+			{
+				m_wheelAngle += (m_wheelAcc);
+				if (m_wheelAngle > 1.f) m_wheelAngle = 1.f;
+				targetAngle = m_wheelAngle * m_maxWheelAngle;
+				handle = true;
+
+				if (g_pNetworkManager->GetIsInGameNetwork())
+					g_pNetworkManager->SetLeftKey(true);
+			}
+			if (g_pKeyManager->isStayKeyDown(KEY_MOVE_RIGHT))
+			{
+				m_wheelAngle -= (m_wheelAcc);
+				if (m_wheelAngle < -1.f) m_wheelAngle = -1.f;
+				targetAngle = m_wheelAngle * (m_maxWheelAngle);
+				handle = true;
+
+				if (g_pNetworkManager->GetIsInGameNetwork())
+					g_pNetworkManager->SetRightKey(true);
+			}
 		}
-		if (g_pKeyManager->isStayKeyDown(KEY_MOVE_RIGHT))
+		else
 		{
-			m_wheelAngle -= (m_wheelAcc);
-			if (m_wheelAngle < -1.f) m_wheelAngle = -1.f;
-			targetAngle = m_wheelAngle * (m_maxWheelAngle);
-			handle = true;
-
-			if (g_pNetworkManager->GetIsInGameNetwork())
-				g_pNetworkManager->SetRightKey(true);
+			if (m_keySet.left)
+			{
+				m_wheelAngle += (m_wheelAcc);
+				if (m_wheelAngle > 1.f) m_wheelAngle = 1.f;
+				targetAngle = m_wheelAngle * m_maxWheelAngle;
+				handle = true;
+			}
+			if (m_keySet.right)
+			{
+				m_wheelAngle -= (m_wheelAcc);
+				if (m_wheelAngle < -1.f) m_wheelAngle = -1.f;
+				targetAngle = m_wheelAngle * (m_maxWheelAngle);
+				handle = true;
+			}
 		}
 		if (!handle)
 		{
@@ -516,58 +558,121 @@ void cCar::CtrlPlayer()
 		}
 
 		//아이템사용
-		if (g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM))
+		if (!m_isUser)
 		{
-			if (m_eHoldItem != ITEM_NONE)
+			if (g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM))
 			{
-				g_pItemManager->FireItem(ITEM_MYBOMB, this);
-				//아이템 사용 함수 호츨
-				m_nItemCount--;
-				if (m_nItemCount == 0)
+				if (m_eHoldItem != ITEM_NONE)
 				{
-					m_eHoldItem = ITEM_NONE;
-					GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
-				}
-				std::cout << "FIRE!" << std::endl;
+					g_pItemManager->FireItem(ITEM_MYBOMB, this);
+					//아이템 사용 함수 호츨
+					m_nItemCount--;
+					if (m_nItemCount == 0)
+					{
+						m_eHoldItem = ITEM_NONE;
+						GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
+					}
+					std::cout << "FIRE!" << std::endl;
 
-				if (g_pNetworkManager->GetIsInGameNetwork())
-					g_pNetworkManager->SetCtrlKey(true);
+					if (g_pNetworkManager->GetIsInGameNetwork())
+						g_pNetworkManager->SetCtrlKey(true);
+				}
+			}
+		}
+		else
+		{
+			if (m_keySet.ctrl)
+			{
+				if (m_eHoldItem != ITEM_NONE)
+				{
+					g_pItemManager->FireItem(ITEM_MYBOMB, this);
+					//아이템 사용 함수 호츨
+					m_nItemCount--;
+					if (m_nItemCount == 0)
+					{
+						m_eHoldItem = ITEM_NONE;
+						GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
+					}
+					std::cout << "FIRE!" << std::endl;
+
+				}
 			}
 		}
 
 		//RePosition
-		if (g_pKeyManager->isOnceKeyDown(KEY_REPOSITION))
-		{
-			if (g_pNetworkManager->GetIsInGameNetwork())
-				g_pNetworkManager->SetRKey(true);
 
-			CarRunStop();
-			if (m_countRapNum == -1)
+		if (!m_isUser)
+		{
+			if (g_pKeyManager->isOnceKeyDown(KEY_REPOSITION))
 			{
-				GetPhysXData()->SetPosition(D3DXVECTOR3(0, 1, 0));
-			}
-			else
-			{
-				std::vector<Object*>* chexkBox = m_pTrack->GetCheckBoxsPt();
-				D3DXVECTOR3 pos(0, 0, 0);
-				pos = (*chexkBox)[m_currCheckBoxID]->GetPosition();
-				pos.y = 1;
-				GetPhysXData()->SetPosition(pos);
+				if (g_pNetworkManager->GetIsInGameNetwork())
+					g_pNetworkManager->SetRKey(true);
+
+				CarRunStop();
+				if (m_countRapNum == -1)
+				{
+					GetPhysXData()->SetPosition(D3DXVECTOR3(0, 1, 0));
+				}
+				else
+				{
+					std::vector<Object*>* chexkBox = m_pTrack->GetCheckBoxsPt();
+					D3DXVECTOR3 pos(0, 0, 0);
+					pos = (*chexkBox)[m_currCheckBoxID]->GetPosition();
+					pos.y = 1;
+					GetPhysXData()->SetPosition(pos);
+				}
 			}
 		}
+		else
+		{
+			if (m_keySet.r_key)
+			{
+				if (g_pNetworkManager->GetIsInGameNetwork())
+					g_pNetworkManager->SetRKey(true);
+
+				CarRunStop();
+				if (m_countRapNum == -1)
+				{
+					GetPhysXData()->SetPosition(D3DXVECTOR3(0, 1, 0));
+				}
+				else
+				{
+					std::vector<Object*>* chexkBox = m_pTrack->GetCheckBoxsPt();
+					D3DXVECTOR3 pos(0, 0, 0);
+					pos = (*chexkBox)[m_currCheckBoxID]->GetPosition();
+					pos.y = 1;
+					GetPhysXData()->SetPosition(pos);
+				}
+			}
+		}
+		
 
 		//Fliping
 		NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
 		NxVec3 carUp = quat.transform(NxVec3(0, 1, 0), NxVec3(0, 0, 0));
 		if (carUp.y < 0.0f)
 		{
-			if (g_pKeyManager->isOnceKeyDown(KEY_CAR_FLIP) && isFliping == false)
+			if (!m_isUser)
 			{
-				if (g_pNetworkManager->GetIsInGameNetwork())
-					g_pNetworkManager->SetFKey(true);
+				if (g_pKeyManager->isOnceKeyDown(KEY_CAR_FLIP) && isFliping == false)
+				{
+					if (g_pNetworkManager->GetIsInGameNetwork())
+						g_pNetworkManager->SetFKey(true);
 
-				isFliping = true;
-				CarRunStop();
+					isFliping = true;
+					CarRunStop();
+				}
+			}
+			else
+			{
+				if (m_keySet.f_key && isFliping == false)
+				{
+					if (g_pNetworkManager->GetIsInGameNetwork())
+						g_pNetworkManager->SetFKey(true);
+
+					isFliping = true;
+					CarRunStop();
+				}
 			}
 		}
 
@@ -727,4 +832,33 @@ void cCar::CarRunStop()
 			m_carNxVehicle->getWheel(i)->getWheelShape()->getActor().putToSleep();
 		}
 	}
+}
+
+void cCar::SetResetNetworkKey()
+{
+	m_keySet.up = false;
+	m_keySet.down = false;
+	m_keySet.left = false;
+	m_keySet.right = false;
+	m_keySet.ctrl = false;
+	m_keySet.r_key = false;
+	m_keySet.f_key = false;
+}
+
+void cCar::SetNetworkKey(std::string str)
+{
+	if (str[0] == '1')
+		m_keySet.up = true;	
+	if (str[1] == '1')
+		m_keySet.down = true;
+	if (str[2] == '1')
+		m_keySet.left = true;
+	if (str[3] == '1')
+		m_keySet.right = true;
+	if (str[4] == '1')
+		m_keySet.ctrl = true;
+	if (str[5] == '1')
+		m_keySet.r_key = true;
+	if (str[5] == '1')
+		m_keySet.f_key = true;
 }

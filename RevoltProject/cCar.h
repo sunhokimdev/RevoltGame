@@ -14,6 +14,8 @@ struct stCARSPEC
 
 class cCar : public Object
 {
+	ST_KEYDONW m_keySet;
+
 	//바퀴 매쉬용 백터
 	std::vector<cMesh*> vecWheels;
 
@@ -95,4 +97,10 @@ public:
 	void LinkTrackPt(cTrack* track) { m_pTrack = track; }
 //	void RunStart();
 
+
+	/*   김선호   */
+	void SetResetNetworkKey();
+	void SetNetworkKey(std::string);
+
+	SYNTHESIZE(bool, m_isUser, IsUser);
 };

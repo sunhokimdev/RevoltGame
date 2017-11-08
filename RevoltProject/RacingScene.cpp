@@ -62,7 +62,12 @@ void RacingScene::Setup()
 	CreateCar(4, "tc5");
 	CreateCar(5, "tc6");
 
-	//vecCars[1]->m_isAI = true;
+	vecCars[0]->SetIsUser(false);
+	vecCars[1]->SetIsUser(true);
+	vecCars[2]->SetIsUser(true);
+	vecCars[3]->SetIsUser(true);
+	vecCars[4]->SetIsUser(true);
+	vecCars[5]->SetIsUser(true);
 
 	LinkUI(0);
 }
@@ -98,13 +103,33 @@ void RacingScene::Update()
 		}
 
 		str = "@" + g_pNetworkManager->GetClientIP() + 
-			"@" + g_pNetworkManager->GetKeYString();
+			"&" + g_pNetworkManager->GetKeYString();
 
 		g_pNetworkManager->SendMsg(str.c_str());
 		g_pNetworkManager->RecvMsg();
 		str = g_pNetworkManager->GetMsg();
-		if(str.size() > 5)
-			printf("%s\n", str.c_str());
+
+		char* pch = strtok((char*)str.c_str(), "@");
+
+		if (str.size() > 10)
+		{
+			if (g_pNetworkManager->GetClientIP().find(pch) == -1)
+			{
+				pch = strtok(NULL, "&");
+				vecCars[1]->SetResetNetworkKey();
+				vecCars[1]->SetNetworkKey(pch);
+
+				if (IsCarRunTrue(vecCars[0]))
+					vecCars[1]->Update();
+				else
+				{
+					vecCars[1]->RunEnd();
+					return;
+				}
+
+				printf("%s\n", pch);
+			}
+		}
 	}
 
 	else
