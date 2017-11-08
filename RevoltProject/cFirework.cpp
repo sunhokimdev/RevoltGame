@@ -36,35 +36,36 @@ void cFirework::Setup()
 
 	m_pTail = new PFirework(5);
 	m_pTail->Init(g_pD3DDevice, "Objects/firework/particle_flare.bmp");
-
 }
 
 void cFirework::Update()
 {
 	cItem::Update();
 
-	D3DXVECTOR3 fwPos;
 	fwPos.x = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().x;
 	fwPos.y = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().y;
 	fwPos.z = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().z;
 
-	D3DXVECTOR3 tar = D3DXVECTOR3(-10.0f, 0.0f, -10.0f);
-	D3DXVECTOR3 dir = tar - fwPos;
+	if (!m_pEffect->GetIsUse())
+	{
+		//
+		//D3DXVECTOR3 tar = D3DXVECTOR3(-10.0f, 0.0f, -10.0f);
+		//D3DXVECTOR3 dir = tar - fwPos;
+		//
+		//D3DXVec3Normalize(&dir, &dir);
+		//
+		//NxVec3 force;
+		//
+		//force.x = dir.x * 1000;
+		//force.y = dir.y * 500;
+		//force.z = dir.z * 500;
+		//
+		//m_pPhysX->pPhysX->m_pActor->addForce(force);
+	}
 
-	D3DXVec3Normalize(&dir, &dir);
-	
-	NxVec3 force;
-	
-	force.x = dir.x * 1000;
-	force.y = dir.y * 500;
-	force.z = dir.z * 500;
-	
-	m_pPhysX->pPhysX->m_pActor->addForce(force);
-	
 	m_pTail->SetPosition(&fwPos);
 	m_pTail->Update(0.1f);
 	m_pTail->Reset();
-	
 
 	if (m_isUse && m_fTime > FIREWORKEFFECT)
 	{
@@ -112,15 +113,21 @@ void cFirework::Render()
 
 void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {
+	m_pEffect->SetIsUse(false);
+
 	m_pPhysX->pos.x = pos.x;
 	m_pPhysX->pos.y = pos.y + 1;
 	m_pPhysX->pos.z = pos.z;
 	
 	NxVec3 force;
 
-	force.x = angle.x * 50;
-	force.y = angle.y * 10000;
-	force.z = angle.z * 50;
+	//force.x = angle.x * 50;
+	//force.y = angle.y * 10000;
+	//force.z = angle.z * 50;
+
+	force.x = angle.x * 10000;
+	force.y = 3000;
+	force.z = angle.z * 10000;
 	
 	if (m_isSleep)
 	{
@@ -131,7 +138,6 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 		m_pPhysX->pTrigger->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
 		m_isSleep = false;
 	}
-
 	// 초기화 부분
 	if (m_isInit)
 	{
@@ -148,5 +154,5 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 		m_pPhysX->pPhysX->m_pActor->setGlobalPosition(m_pPhysX->pos);
 
 	m_pPhysX->pPhysX->m_pActor->addForce(force);
-	//m_pPhysX->pPhysX->m_pActor->addTorque(NxVec3(angle.x, angle.y, angle.z));
+	m_pPhysX->pPhysX->m_pActor->addTorque(NxVec3(angle.x, angle.y, angle.z));
 }

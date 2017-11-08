@@ -98,8 +98,6 @@ public:
 	virtual void Render(LPD3DXSPRITE pSprite);
 	UIObject* GetUIObject() { return m_pRootUI; }
 	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
-	
-	void SetupTimer();
 
 	void UpdateSpeed();
 	void UpdateLabCount();									// UpdateCurrentLab

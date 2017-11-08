@@ -201,6 +201,20 @@ void cPhysXManager::PhysXReportSeting()
 
 	CollisionEnable(F, F, E_PHYSX_TAG_TRACK, E_PHYSX_TAG_TRACK);
 
+
+	//Add
+	CollisionEnable(T, T, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_NONE);
+	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_CHECKBOX);
+	CollisionEnable(T, T, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_CAR);
+	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_PICKUP);
+	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_FIREWORK);
+	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_WHATEBOMB);
+	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_METALBALL);
+	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_TRACK);
+	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_RAYCAST_TO_AI);
+
+
 	return;	//END
 	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_NONE);
 	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_CHECKBOX);
@@ -211,6 +225,7 @@ void cPhysXManager::PhysXReportSeting()
 	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_METALBALL);
 	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_GRIVATEBALL);
 	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_TRACK);
+	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_RAYCAST_TO_AI);
 	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_END);
 }
 
@@ -218,7 +233,7 @@ void cPhysXManager::CollisionEnable(bool collied, bool report, NxCollisionGroup 
 {
 	g_pPhysXScene->setGroupCollisionFlag(group1, group2, collied);
 	g_pPhysXScene->setActorGroupPairFlags(group1, group2, report);
-//	g_pPhysXScene->setDominanceGroupPair
+	//	g_pPhysXScene->setDominanceGroupPair
 }
 
 
@@ -386,6 +401,26 @@ void cPhysXManager::RaycastAllShapes(D3DXVECTOR3 start, D3DXVECTOR3 dir)
 	RaycastCallBack raycastHit;
 	MgrPhysXScene->raycastAllShapes(worldRay, raycastHit, NX_ALL_SHAPES);
 
+}
+
+NxRaycastHit cPhysXManager::RaycastClosestShape(D3DXVECTOR3 start, D3DXVECTOR3 dir, NxReal maxDist, NxU32 group)
+{
+	return RaycastClosestShape(MgrPhysX->D3DVecToNxVec(start), MgrPhysX->D3DVecToNxVec(dir), maxDist, group);
+}
+
+NxRaycastHit cPhysXManager::RaycastClosestShape(NxVec3 start, NxVec3 dir, NxReal maxDist, NxU32 group)
+{
+	NxRay worldRay;
+
+	worldRay.orig = start;
+	dir.normalize();
+	worldRay.dir = dir;
+
+	NxRaycastHit raycastHit;
+	raycastHit.shape = NULL;
+	MgrPhysXScene->raycastClosestShape(worldRay, NX_ALL_SHAPES, raycastHit, group, maxDist);// , 0xffffffff, NX_MAX_F32, 0xffffffff, NULL, NULL);
+
+	return raycastHit;
 }
 
 NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * mat, NxVec3 sizeValue, eMaterialTag materialTag, USERDATA * pUserData, bool IsTrigger, bool isStatic, bool isGravaty)
@@ -598,9 +633,9 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 				pUserData0->isMyBomb = false;
 				pUserData1->isMyBomb = true;
 
-			//	NxVec3 v = *pUserData0->m_pCarPosion;
-				//*pUserData0->m_pCarPosion = *pUserData1->m_pCarPosion;
-				//*pUserData1->m_pCarPosion = v;
+				//	NxVec3 v = *pUserData0->m_pCarPosion;
+					//*pUserData0->m_pCarPosion = *pUserData1->m_pCarPosion;
+					//*pUserData1->m_pCarPosion = v;
 			}
 			else if (pUserData1->isMyBomb)
 			{

@@ -287,86 +287,42 @@ void cCar::LoadWheel(std::string carName)
 
 void cCar::Update()
 {
-	NxVec3 pos = m_carNxVehicle->getGlobalPose().t;
+	//차가 땅에 박히는 걸 망지
 	m_carNxVehicle->getActor()->addForce(NxVec3(0, 0.001, 0));
+	INPUT_KEY.reset();
 
 
-
-	//자동차 정보 업데이트
-	//=================================================
-	//자동차 위치 갱신
-	m_position = {
-		GetNxVehicle()->getGlobalPose().t.x,
-		GetNxVehicle()->getGlobalPose().t.y,
-		GetNxVehicle()->getGlobalPose().t.z };
-
-
-	//자동차전용 회전 매트릭스
-	//회전 매트릭스 받아옴
-	NxF32 mat[9];
-	GetNxVehicle()->getGlobalPose().M.getColumnMajor(mat);
-	D3DXMatrixIdentity(&m_matCarRotation);
-	m_matCarRotation._11 = mat[0];
-	m_matCarRotation._12 = mat[1];
-	m_matCarRotation._13 = mat[2];
-	m_matCarRotation._21 = mat[3];
-	m_matCarRotation._22 = mat[4];
-	m_matCarRotation._23 = mat[5];
-	m_matCarRotation._31 = mat[6];
-	m_matCarRotation._32 = mat[7];
-	m_matCarRotation._33 = mat[8];
-
-	//=================================================
-
+	SettingCarPos();
 
 	if (m_isAI) CtrlAI();
 	else CtrlPlayer();
 
 	//이하 AI, PLAYER 의 동일 사용 함수
 
+	//자동차 움직임
+	CarMove();
+
+	//자동차 리포지션
+	if (INPUT_KEY[E_BITE_REPOS]) RePosition();
+
 	// PickUp 충돌
-	if (GetPhysXData()->m_pUserData->IsPickUp == NX_TRUE)
-	{
-		if (m_eHoldItem == ITEM_NONE)
-		{
-			CreateItem();
-			std::cout << m_eHoldItem << " - " << m_nItemCount << std::endl;
-			//GetPhysXData()->m_pUserData->IsPickUp == NX_FALSE;
-		}
-	}
+	if (INPUT_KEY[E_BITE_FLIP]) CollidePickUp();
+
+	//아이템 사용
+	if (INPUT_KEY[E_BITE_ITEM]) UsedItem();
+
+	//차 뒤집기
+	if (INPUT_KEY[E_BITE_FLIP]) CarFlip();
 
 	//스피드 계산
-	// : >>
+	SpeedMath();
 
-
-
-	float Dist = 0;
-
-	// 과거 위치값
-	for (int i = 3; i >= 0; i--)
-	{
-		D3DXVECTOR3 pos1 = m_szPrevPos[i];
-		D3DXVECTOR3 pos2 = m_szPrevPos[i + 1];
-
-		D3DXVECTOR3 vecDist = pos1 - pos2;
-		Dist += D3DXVec3Length(&vecDist);
-
-		m_szPrevPos[i + 1] = m_szPrevPos[i];
-	}
-
-	m_szPrevPos[0] = m_position;
-
-	m_fCurrentSpeed = (Dist * 0.25f) * 200.f;
-
+	//트랙 체크
 	TrackCheck();
 
-	CarFlip();
+	//바퀴 자국
+	CreateSkidMark();
 
-	if (m_pSkidMark)
-	{
-		DrawSkidMark();
-		m_pSkidMark->Update();
-	}
 
 }
 
@@ -444,154 +400,15 @@ void cCar::CtrlPlayer()
 {
 	if (m_carNxVehicle)
 	{
-		//엑셀
-		float targetPower = 0.f;
-		bool power = false;
-		m_breakPower = 0.f;
-		if (g_pKeyManager->isStayKeyDown(KEY_ACCELERATOR))
-		{
-			m_moterPower += m_moterAcc;
-			if (m_moterPower > 1.f) m_moterPower = 1.f;
-			targetPower = m_moterPower * m_maxMoterPower;
-			power = true;
-		}
-		if (g_pKeyManager->isStayKeyDown(KEY_REVERSE))
-		{
-			m_moterPower -= m_moterAcc;
-			if (m_moterPower < -1.f) m_moterPower = -1.f;
-			targetPower = m_moterPower * m_maxMoterPower;
-			power = true;
-		}
-		if (!power)
-		{
-			m_moterPower = 0.f;
-			targetPower = m_moterPower * m_maxMoterPower;
-			m_breakPower = m_maxMoterPower*0.5f;
-		}
-
-		//핸들
-		float targetAngle = m_wheelAngle * m_maxWheelAngle;
-		bool handle = false;
-		if (g_pKeyManager->isStayKeyDown(KEY_MOVE_LEFT))
-		{
-			m_wheelAngle += (m_wheelAcc);
-			if (m_wheelAngle > 1.f) m_wheelAngle = 1.f;
-			targetAngle = m_wheelAngle * m_maxWheelAngle;
-			handle = true;
-		}
-		if (g_pKeyManager->isStayKeyDown(KEY_MOVE_RIGHT))
-		{
-			m_wheelAngle -= (m_wheelAcc);
-			if (m_wheelAngle < -1.f) m_wheelAngle = -1.f;
-			targetAngle = m_wheelAngle * (m_maxWheelAngle);
-			handle = true;
-		}
-		if (!handle)
-		{
-			if (abs(m_wheelAngle) <= m_wheelAcc * 2) m_wheelAngle = 0.0f;
-			else if (m_wheelAngle > 0) m_wheelAngle -= m_wheelAcc * 2;
-			else if (m_wheelAngle < 0) m_wheelAngle += m_wheelAcc * 2;
-
-			targetAngle = m_wheelAngle * m_maxWheelAngle;
-		}
-
-		//이동
-		for (int i = 0; i < 4; i++)
-		{
-			NxWheel* wheel = m_carNxVehicle->getWheel(i);
-
-			if (i < 2)
-			{
-				float value = (1 - (wheel->getRpm() / m_maxRpm));
-				if (value < 0.5) value = 0.5f;
-				wheel->setAngle(targetAngle * value);
-			}
-			if (wheel->getRpm() < m_maxRpm)	wheel->tick(false, targetPower, m_breakPower, g_pTimeManager->GetElapsedTime());
-			else wheel->tick(false, 0, m_breakPower, g_pTimeManager->GetElapsedTime());
-		}
+		INPUT_KEY[E_BITE_UP] = g_pKeyManager->isStayKeyDown(KEY_ACCELERATOR);
+		INPUT_KEY[E_BITE_DOWN] = g_pKeyManager->isStayKeyDown(KEY_REVERSE);
+		INPUT_KEY[E_BITE_LEFT] = g_pKeyManager->isStayKeyDown(KEY_MOVE_LEFT);
+		INPUT_KEY[E_BITE_RIGHT] = g_pKeyManager->isStayKeyDown(KEY_MOVE_RIGHT);
 
 		//아이템사용
-		if (g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM))
-		{
-			g_pItemManager->FireItem(ITEM_MYBOMB, this);
-
-			if (m_eHoldItem != ITEM_NONE)
-			{
-				//아이템 사용 함수 호츨
-
-				m_nItemCount--;
-				if (m_nItemCount == 0)
-				{
-					g_pItemManager->FireItem(m_eHoldItem, this);
-					m_eHoldItem = ITEM_NONE;
-					GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
-				}
-				std::cout << "FIRE!" << std::endl;
-			}
-		}
-
-		//RePosition
-		if (g_pKeyManager->isOnceKeyDown(KEY_REPOSITION))
-		{
-			CarRunStop();
-			if (m_countRapNum == -1)
-			{
-				GetPhysXData()->SetPosition(D3DXVECTOR3(0, 1, 0));
-			}
-			else
-			{
-				std::vector<Object*>* chexkBox = m_pTrack->GetCheckBoxsPt();
-				D3DXVECTOR3 pos(0, 0, 0);
-				pos = (*chexkBox)[m_currCheckBoxID]->GetPosition();
-				pos.y = 1;
-				GetPhysXData()->SetPosition(pos);
-			}
-		}
-
-		//Fliping
-		NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
-		NxVec3 carUp = quat.transform(NxVec3(0, 1, 0), NxVec3(0, 0, 0));
-		if (carUp.y < 0.0f)
-		{
-			if (g_pKeyManager->isOnceKeyDown(KEY_CAR_FLIP) && isFliping == false)
-			{
-				isFliping = true;
-				CarRunStop();
-			}
-		}
-
-		//SkidTest
-
-		//레이초기화
-		NxRay RayCar;
-		RayCar.orig = NxVec3(m_position);
-		RayCar.orig.y += 0.2f;
-		RayCar.dir = NxVec3(0, -1, 0);
-
-		NxRaycastHit RayCarHit;
-		RayCarHit.shape = NULL;
-		g_pPhysXScene->raycastClosestShape(RayCar, NxShapesType::NX_ALL_SHAPES, RayCarHit);
-
-		float rpm = GetNxVehicle()->getWheel(0)->getRpm() / m_maxRpm;
-		if (fabsf(rpm) > 0.8f && fabs(m_wheelAngle) > 0.9f)
-		{
-			if (RayCarHit.distance < 0.2f)
-			{
-				m_pSkidMark->DrawSkidMark();
-			}
-		}
-
-		if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
-		{
-			if (RayCarHit.distance < 0.2f)
-			{
-				m_pSkidMark->DrawSkidMark();
-			}
-		}
-		if (g_pKeyManager->isStayKeyDown(VK_SPACE))
-		{
-			m_pSkidMark->Destory();
-		}
+		INPUT_KEY[E_BITE_ITEM] = g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM);
+		INPUT_KEY[E_BITE_REPOS] = g_pKeyManager->isOnceKeyDown(KEY_REPOSITION);
+		INPUT_KEY[E_BITE_FLIP] = g_pKeyManager->isOnceKeyDown(KEY_CAR_FLIP);
 	}
 }
 
@@ -684,36 +501,6 @@ void cCar::RunEnd()
 	}
 }
 
-void cCar::CarFlip()
-{
-	if (isFliping)
-	{
-		CarRunStop();
-
-		NxQuat quat = m_carNxVehicle->getActor()->getGlobalOrientationQuat();
-		NxVec3 carFront = quat.transform(NxVec3(1, 0, 0), NxVec3(0, 0, 0));
-		NxF32 angle = carFront.dot(NxVec3(1, 0, 0));
-		angle = acosf(angle);
-
-		NxVec3 arrow = carFront.cross(NxVec3(1, 0, 0));
-		if (arrow.y > 0)
-		{
-			angle *= -1;
-		}
-
-		NxQuat quat_;
-		quat.zero();
-		quat.fromAngleAxisFast(angle, NxVec3(0, 1, 0));
-
-		NxActor* p = m_carNxVehicle->getActor();
-		p->setGlobalOrientationQuat(quat);
-
-		NxVec3 carPos = p->getGlobalPose().t;
-		p->getGlobalPose().t.add(carPos, NxVec3(0, 3, 0));
-
-		isFliping = false;
-	}
-}
 
 void cCar::CarRunStop()
 {
@@ -760,4 +547,214 @@ void cCar::DrawSkidMark()
 	{
 		m_pSkidMark->Destory();
 	}
+}
+
+void cCar::SpeedMath()
+{
+	float Dist = 0;
+
+	// 과거 위치값
+	for (int i = 3; i >= 0; i--)
+	{
+		D3DXVECTOR3 pos1 = m_szPrevPos[i];
+		D3DXVECTOR3 pos2 = m_szPrevPos[i + 1];
+
+		D3DXVECTOR3 vecDist = pos1 - pos2;
+		Dist += D3DXVec3Length(&vecDist);
+
+		m_szPrevPos[i + 1] = m_szPrevPos[i];
+	}
+
+	m_szPrevPos[0] = m_position;
+
+	m_fCurrentSpeed = (Dist * 0.25f) * 200.f;
+}
+
+void cCar::CreateSkidMark()
+{
+	if (m_pSkidMark)
+	{
+		DrawSkidMark();
+		m_pSkidMark->Update();
+	}
+}
+
+void cCar::CollidePickUp()
+{
+	if (GetPhysXData()->m_pUserData->IsPickUp == NX_TRUE)
+	{
+		if (m_eHoldItem == ITEM_NONE)
+		{
+			CreateItem();
+			std::cout << m_eHoldItem << " - " << m_nItemCount << std::endl;
+			//GetPhysXData()->m_pUserData->IsPickUp == NX_FALSE;
+		}
+	}
+}
+
+void cCar::SettingCarPos()
+{
+	//자동차 정보 업데이트
+	//=================================================
+	//자동차 위치 갱신
+	m_position = {
+		GetNxVehicle()->getGlobalPose().t.x,
+		GetNxVehicle()->getGlobalPose().t.y,
+		GetNxVehicle()->getGlobalPose().t.z };
+
+
+	//자동차전용 회전 매트릭스
+	//회전 매트릭스 받아옴
+	NxF32 mat[9];
+	GetNxVehicle()->getGlobalPose().M.getColumnMajor(mat);
+	D3DXMatrixIdentity(&m_matCarRotation);
+	m_matCarRotation._11 = mat[0];
+	m_matCarRotation._12 = mat[1];
+	m_matCarRotation._13 = mat[2];
+	m_matCarRotation._21 = mat[3];
+	m_matCarRotation._22 = mat[4];
+	m_matCarRotation._23 = mat[5];
+	m_matCarRotation._31 = mat[6];
+	m_matCarRotation._32 = mat[7];
+	m_matCarRotation._33 = mat[8];
+
+	//=================================================
+}
+
+void cCar::CarMove()
+{
+	//엑셀
+	float targetPower = 0.f;
+	bool power = false;
+	m_breakPower = 0.f;
+	if (INPUT_KEY[E_BITE_UP])
+	{
+		m_moterPower += m_moterAcc;
+		if (m_moterPower > 1.f) m_moterPower = 1.f;
+		targetPower = m_moterPower * m_maxMoterPower;
+		power = true;
+	}
+	if (INPUT_KEY[E_BITE_DOWN])
+	{
+		m_moterPower -= m_moterAcc;
+		if (m_moterPower < -1.f) m_moterPower = -1.f;
+		targetPower = m_moterPower * m_maxMoterPower;
+		power = true;
+	}
+	if (!power)
+	{
+		m_moterPower = 0.f;
+		targetPower = m_moterPower * m_maxMoterPower;
+		m_breakPower = m_maxMoterPower*0.5f;
+	}
+	//핸들
+	float targetAngle = m_wheelAngle * m_maxWheelAngle;
+	bool handle = false;
+	if (INPUT_KEY[E_BITE_LEFT])
+	{
+		m_wheelAngle += (m_wheelAcc);
+		if (m_wheelAngle > 1.f) m_wheelAngle = 1.f;
+		targetAngle = m_wheelAngle * m_maxWheelAngle;
+		handle = true;
+	}
+	if (INPUT_KEY[E_BITE_RIGHT])
+	{
+		m_wheelAngle -= (m_wheelAcc);
+		if (m_wheelAngle < -1.f) m_wheelAngle = -1.f;
+		targetAngle = m_wheelAngle * (m_maxWheelAngle);
+		handle = true;
+	}
+	if (!handle)
+	{
+		if (abs(m_wheelAngle) <= m_wheelAcc * 2) m_wheelAngle = 0.0f;
+		else if (m_wheelAngle > 0) m_wheelAngle -= m_wheelAcc * 2;
+		else if (m_wheelAngle < 0) m_wheelAngle += m_wheelAcc * 2;
+
+		targetAngle = m_wheelAngle * m_maxWheelAngle;
+	}
+
+	//이동
+	for (int i = 0; i < 4; i++)
+	{
+		NxWheel* wheel = m_carNxVehicle->getWheel(i);
+
+		if (i < 2)
+		{
+			float value = (1 - (wheel->getRpm() / m_maxRpm));
+			if (value < 0.5) value = 0.5f;
+			wheel->setAngle(targetAngle * value);
+		}
+		if (wheel->getRpm() < m_maxRpm)	wheel->tick(false, targetPower, m_breakPower, g_pTimeManager->GetElapsedTime());
+		else wheel->tick(false, 0, m_breakPower, g_pTimeManager->GetElapsedTime());
+	}
+}
+
+void cCar::UsedItem()
+{
+	g_pItemManager->FireItem(ITEM_MYBOMB, this);
+
+	if (m_eHoldItem != ITEM_NONE)
+	{
+		//아이템 사용 함수 호츨
+
+		m_nItemCount--;
+		if (m_nItemCount == 0)
+		{
+			g_pItemManager->FireItem(m_eHoldItem, this);
+			m_eHoldItem = ITEM_NONE;
+			GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
+		}
+		std::cout << "FIRE!" << std::endl;
+	}
+}
+
+void cCar::RePosition()
+{
+
+	CarRunStop();
+	if (m_countRapNum == -1)
+	{
+		GetPhysXData()->SetPosition(D3DXVECTOR3(0, 1, 0));
+	}
+	else
+	{
+		std::vector<Object*>* chexkBox = m_pTrack->GetCheckBoxsPt();
+		D3DXVECTOR3 pos(0, 0, 0);
+		pos = (*chexkBox)[m_currCheckBoxID]->GetPosition();
+		pos.y = 1;
+		GetPhysXData()->SetPosition(pos);
+	}
+}
+
+void cCar::CarFlip()
+{
+	NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
+	NxVec3 carUp = quat.transform(NxVec3(0, 1, 0), NxVec3(0, 0, 0));
+	std::cout << carUp.y << std::endl;
+	if (carUp.y > 0.0f)
+	{
+		return;
+	}
+
+	CarRunStop();
+
+	NxVec3 carFront = quat.transform(NxVec3(1, 0, 0), NxVec3(0, 0, 0));
+	NxF32 angle = carFront.dot(NxVec3(1, 0, 0));
+	angle = acosf(angle);
+
+	NxVec3 arrow = carFront.cross(NxVec3(1, 0, 0));
+	if (arrow.y > 0)
+	{
+		angle *= -1;
+	}
+
+	NxQuat quat_;
+	quat.zero();
+	quat.fromAngleAxisFast(angle, NxVec3(0, 1, 0));
+
+	NxActor* p = m_carNxVehicle->getActor();
+	p->setGlobalOrientationQuat(quat);
+
+	NxVec3 carPos = p->getGlobalPose().t;
+	p->getGlobalPose().t.add(carPos, NxVec3(0, 3, 0));
 }
