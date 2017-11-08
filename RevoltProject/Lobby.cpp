@@ -122,7 +122,9 @@ void Lobby::Update()
 		g_pNetworkManager->SendMsg("#");
 
 		if(g_pNetworkManager->RecvMsg())
-			m_pInRoom->SetText(g_pNetworkManager->GetMsg().c_str());	
+			m_pInRoom->SetText(g_pNetworkManager->GetMsg().c_str());
+
+		printf("%s\n", g_pNetworkManager->GetMsg().c_str());
 	}
 
 	TimeUpdate();   // 시간 갱신 메서드

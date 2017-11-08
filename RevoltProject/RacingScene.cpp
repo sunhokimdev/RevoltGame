@@ -112,6 +112,29 @@ void RacingScene::Update()
 		char* pchIP = NULL;
 		char* pch = NULL;
 
+		pchIP = strtok((char*)str.c_str(), "@");
+		printf("%s\n", pchIP);
+		pch = strtok(NULL, "@");
+		printf("%s\n", pch);
+
+		if (pchIP && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
+		{
+			vecCars[1]->SetResetNetworkKey();
+			if (pch != NULL)
+			{
+				vecCars[1]->SetNetworkKey(pch);
+
+				if (IsCarRunTrue(vecCars[1]))
+					vecCars[1]->Update();
+				else
+				{
+					vecCars[1]->RunEnd();
+					return;
+				}
+			}
+		}
+
+		/*
 		if (str.size() > 10)
 		{
 			pchIP = strtok((char*)str.c_str(), "@");
@@ -138,6 +161,8 @@ void RacingScene::Update()
 				}
 			}
 		}
+
+		*/
 				/*
 			
 			if (IsCarRunTrue(vecCars[vecCars.size() - 1]))
