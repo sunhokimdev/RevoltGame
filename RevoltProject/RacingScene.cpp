@@ -16,7 +16,7 @@ RacingScene::~RacingScene() {}
 
 void RacingScene::Setup()
 {
-	m_eRaceProg = RACE_PROG_READY;
+	m_eRaceProg = RACE_PROG_GO;
 
 	UITextImageView::m_Select = &m_select;
 
