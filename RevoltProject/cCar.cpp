@@ -299,9 +299,6 @@ void cCar::Update()
 	m_carNxVehicle->getActor()->addForce(NxVec3(0, 0.001, 0));
 	INPUT_KEY.reset();
 
-	SettingCarPos();
-
-
 	//자동차 정보 업데이트
 	//=================================================
 	//자동차 위치 갱신
