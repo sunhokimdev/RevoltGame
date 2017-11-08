@@ -86,10 +86,10 @@ void TimeManager::Update(float lockFPS/* = 0.0f*/)
 	}
 
 
-	if (m_TimeElapsed > g_timeFix * 1.5f || m_TimeElapsed > 100.f || m_TimeElapsed < 0.00001)
-		m_TimeElapsed = g_timeFix;
-	else
-		g_timeFix = m_TimeElapsed;
+	//if (m_TimeElapsed > g_timeFix * 1.5f || m_TimeElapsed > 100.f || m_TimeElapsed < 0.00001)
+	//	m_TimeElapsed = g_timeFix;
+	//else
+	//	g_timeFix = m_TimeElapsed;
 
 
 

@@ -134,11 +134,12 @@
       <UniqueIdentifier>{d6c6e627-3050-44ec-98b5-77357c86a474}</UniqueIdentifier>
     </Filter>
     <Filter Include="Item\Firework\FireworkEffect">
-      <UniqueIdentifier>{6573aade-5c26-44ee-bf5f-a6b578e93dc2}</UniqueIdentifier>
+      <UniqueIdentifier>{75eeea70-c7e2-4725-b49e-0a4107d24892}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="버그 리포트.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -438,6 +439,9 @@
     <ClInclude Include="GravityBallImpact.h">
       <Filter>Item\GravityBall</Filter>
     </ClInclude>
+    <ClInclude Include="cFirework.h">
+      <Filter>Item\Firework</Filter>
+    </ClInclude>
     <ClInclude Include="cPlasmaImpact.h">
       <Filter>Item\GravityBall</Filter>
     </ClInclude>
@@ -447,14 +451,32 @@
     <ClInclude Include="cSkyBox.h">
       <Filter>Basic</Filter>
     </ClInclude>
+    <ClInclude Include="cDataManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="cPlayerData.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="c321GO.h">
+      <Filter>NewClass</Filter>
+    </ClInclude>
+    <ClInclude Include="cFakeBomb.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cFakeImpact.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cMybombImapct.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="cMyBomb.h">
+      <Filter>Item</Filter>
+    </ClInclude>
     <ClInclude Include="PFirework.h">
       <Filter>Item\Firework\FireworkEffect</Filter>
     </ClInclude>
     <ClInclude Include="PSystem.h">
       <Filter>Item\Firework\FireworkEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="cFirework.h">
-      <Filter>Item\Firework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -716,6 +738,9 @@
     <ClCompile Include="GravityBallImpact.cpp">
       <Filter>Item\GravityBall</Filter>
     </ClCompile>
+    <ClCompile Include="cFirework.cpp">
+      <Filter>Item\Firework</Filter>
+    </ClCompile>
     <ClCompile Include="cPlasmaImpact.cpp">
       <Filter>Item\GravityBall</Filter>
     </ClCompile>
@@ -725,14 +750,32 @@
     <ClCompile Include="cSkyBox.cpp">
       <Filter>Basic</Filter>
     </ClCompile>
+    <ClCompile Include="cDataManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlayerData.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="c321GO.cpp">
+      <Filter>NewClass</Filter>
+    </ClCompile>
+    <ClCompile Include="cFakeBomb.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cFakeImpact.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cMyBomb.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cMybombImapct.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
     <ClCompile Include="PFirework.cpp">
       <Filter>Item\Firework\FireworkEffect</Filter>
     </ClCompile>
     <ClCompile Include="PSystem.cpp">
       <Filter>Item\Firework\FireworkEffect</Filter>
-    </ClCompile>
-    <ClCompile Include="cFirework.cpp">
-      <Filter>Item\Firework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

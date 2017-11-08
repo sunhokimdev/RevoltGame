@@ -51,7 +51,6 @@ void CameraManager::Update()
 		m_vEye = *m_pvTarget;
 		m_vLookAt = m_vNextLootAt;
 
-	
 		//D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fCamTime);
 		//D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
 	}

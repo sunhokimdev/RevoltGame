@@ -7,6 +7,7 @@
 #include "cWbomb.h"
 #include "cFirework.h"
 #include "cCar.h"
+#include "cMyBomb.h"
 
 ItemManager::ItemManager()
 	: box1(NULL)
@@ -24,6 +25,10 @@ ItemManager::~ItemManager()
 void ItemManager::Init()
 {
 	MgrPhysXScene->setUserTriggerReport(new TriggerCallback());
+	MgrPhysXScene->setUserContactReport(new ContactCallBack());
+
+	if (MgrPhysXScene->getUserContactReport() == NULL)
+		printf("report error");
 
 	USERDATA* user1 = new USERDATA;
 	user1->USER_TAG = E_PHYSX_TAG_NONE;
@@ -40,13 +45,21 @@ void ItemManager::Init()
 	//	pItem->SetItemTag(ITEM_WBOMB);
 	//	m_vecItem.push_back(pItem);
 	//}
-	
-	
+
 	//for (int i = 0;i < 10;i++)
 	//{
 	//	cGravityball* pItem = new cGravityball;
 	//	pItem->Setup();
 	//	pItem->SetIsUse(true);
+	//	m_vecItem.push_back(pItem);
+	//}
+
+	//for (int i = 0;i < 10;i++)
+	//{
+	//	cMyBomb* pItem = new cMyBomb;
+	//	pItem->Setup();
+	//	pItem->SetIsUse(false);
+	//	pItem->SetItemTag(ITEM_MYBOMB);
 	//	m_vecItem.push_back(pItem);
 	//}
 
@@ -98,13 +111,22 @@ void ItemManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
 
 void ItemManager::InitCollisionGroup()
 {
+	//임시 박스
 	SetActorGroup(box1, 1);
-	SetActorGroup(box2, 1);
-	SetActorGroup(box3, 1);
-	SetActorGroup(box4, 1);
+	SetActorGroup(box2, 2);
+	SetActorGroup(box3, 2);
+	SetActorGroup(box4, 2);
 
-	MgrPhysXScene->setGroupCollisionFlag(1, 2, false);
-	MgrPhysXScene->setGroupCollisionFlag(2, 2, false);
+	box1->setGroup(1);
+	box2->setGroup(2);
+	box3->setGroup(2);
+	box4->setGroup(2);
+
+	MgrPhysXScene->setGroupCollisionFlag(1, 2, true);
+	MgrPhysXScene->setGroupCollisionFlag(2, 2, true);
+	MgrPhysXScene->setGroupCollisionFlag(1, 1, true);
+	MgrPhysXScene->setActorGroupPairFlags(3, 3, NX_NOTIFY_ON_END_TOUCH);
+
 }
 
 void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인터*/)
@@ -137,6 +159,12 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 		{
 			//m_vecItem[m_index]->Create(carDir, carPos);
 			//m_vecItem[m_index]->SetUse(true);
+		}
+		case ITEM_MYBOMB:
+		{
+			m_vecItem[m_index]->SetCar(car);
+			m_vecItem[m_index]->Create(carDir, carPos);
+			m_vecItem[m_index]->SetIsUse(true);
 		}
 		break;
 		default: break;
