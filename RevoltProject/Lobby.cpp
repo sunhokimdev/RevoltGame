@@ -30,6 +30,7 @@
 #include "cNetworkLobby.h"
 #include "cNetworkCreateRoom.h"
 #include "cNetworkInRoom.h"
+#include "cSelectNetworkLob.h"
 
 Lobby::Lobby()
 	: m_pSprite(NULL)
@@ -83,9 +84,6 @@ void Lobby::Setup()
 	m_pSelectMap = new SelectMap;
 	m_pSelectMap->Setup();
 
-	//m_pInGameUI = new InGameUI;
-	//m_pInGameUI->Setup();
-
 	m_multiLobby = new cNetworkLobby;
 	m_multiLobby->Setup();
 
@@ -104,12 +102,14 @@ void Lobby::Setup()
 	m_pInRoom = new cNetworkInRoom;
 	m_pInRoom->Setup();
 
+	m_pSelectServer = new cSelectNetworkLob;
+	m_pSelectServer->Setup();
+
 	SetUpUI();
 }
 
 void Lobby::Update()
 {
-
 	// Set Map Type Update
 	if (m_stateLobby == SELECT_MAP_LOBBY)
 	{
@@ -274,14 +274,21 @@ void Lobby::KeyUpdate()
 				m_mapLobby[m_stateLobby]->m_pNextLob[m_select] = NETWORK_LOBBY;
 				m_multiLobby->SetUserName(m_pCreateProfileLobby->GetName());
 				m_multiLobby->SetCarName(m_pSelectCarLobbby->GetCarName());
-				g_pNetworkManager->Start();
 			}		
+		}
+
+		else if (m_stateLobby == NETWORK_SELECT_LOBBY)
+		{
+			g_pNetworkManager->SetServerIP(m_pSelectServer->GetTextIP());
+			g_pNetworkManager->Start();
 		}
 
 		else if (m_stateLobby == NETWORK_CREATE_LOBBY)
 		{
 			m_pInRoom->SetMap(m_pCreateRoom->GetImageName());
 			m_pInRoom->SetUserName(m_multiLobby->GetName());
+			g_pNetworkManager->SetServerIP(m_pCreateRoom->GetRoomName());
+			g_pNetworkManager->Start();
 		}
 
 		else if (m_stateLobby == NETWORK_IN_LOBBY)
@@ -637,11 +644,28 @@ void Lobby::SetUpUI()
 	pImageView27->AddChild(pImageView31);
 	pImageView27->AddChild(pImageView26);
 
+
+
 	/*  Select Map Lobby  */
 
 	//=========================================== Add Lobby Ui ===========================================//
 
 	///////////////////////////////   구분   /////////////////////////////////////////
+
+	UITextImageView* pImageView32 = new UITextImageView;
+	pImageView32->SetIndex(0);
+	pImageView32->SetPosition(380, 270);
+	pImageView32->SetText("Create Lobby");
+	pImageView32->SetTexture("UIImage/font2.png");
+
+	UITextImageView* pImageView33 = new UITextImageView;
+	pImageView33->SetIndex(1);
+	pImageView33->SetPosition(380, 330);
+	pImageView33->SetText("Select Lobby");
+	pImageView33->SetTexture("UIImage/font2.png");
+
+	m_multiLobby->GetUIRoot()->AddChild(pImageView32);
+	m_multiLobby->GetUIRoot()->AddChild(pImageView33);
 
 	/*   로비 UI 추가하기   */
 
@@ -722,13 +746,24 @@ void Lobby::SetUpUI()
 
 	m_mapLobby[NETWORK_LOBBY] = new ST_Object;
 	m_mapLobby[NETWORK_LOBBY]->m_target = D3DXVECTOR3(4, 8, -5);
-	m_mapLobby[NETWORK_LOBBY]->m_count = 1;
-	m_mapLobby[NETWORK_LOBBY]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[NETWORK_LOBBY]->m_count = 2;
+	m_mapLobby[NETWORK_LOBBY]->m_pNextLob = new LOBBY[2];
 	m_mapLobby[NETWORK_LOBBY]->m_time = 50.0f;
 	m_mapLobby[NETWORK_LOBBY]->m_pObject = m_multiLobby->GetUIRoot();
 	m_mapLobby[NETWORK_LOBBY]->m_camLookAt = D3DXVECTOR3(14, 4, 8);
 	m_mapLobby[NETWORK_LOBBY]->m_pNextLob[0] = NETWORK_CREATE_LOBBY;
+	m_mapLobby[NETWORK_LOBBY]->m_pNextLob[1] = NETWORK_SELECT_LOBBY;
 	m_mapLobby[NETWORK_LOBBY]->m_prevLob = MAIN_LOBBY3;
+
+	m_mapLobby[NETWORK_SELECT_LOBBY] = new ST_Object;
+	m_mapLobby[NETWORK_SELECT_LOBBY]->m_target = D3DXVECTOR3(4, 8, -5);
+	m_mapLobby[NETWORK_SELECT_LOBBY]->m_count = 1;
+	m_mapLobby[NETWORK_SELECT_LOBBY]->m_pNextLob = new LOBBY[1];
+	m_mapLobby[NETWORK_SELECT_LOBBY]->m_time = 50.0f;
+	m_mapLobby[NETWORK_SELECT_LOBBY]->m_pObject = m_pSelectServer->GetUIRoot();
+	m_mapLobby[NETWORK_SELECT_LOBBY]->m_camLookAt = D3DXVECTOR3(14, 4, 8);
+	m_mapLobby[NETWORK_SELECT_LOBBY]->m_pNextLob[0] = NETWORK_IN_LOBBY;
+	m_mapLobby[NETWORK_SELECT_LOBBY]->m_prevLob = NETWORK_LOBBY;
 
 	m_mapLobby[NETWORK_CREATE_LOBBY] = new ST_Object;
 	m_mapLobby[NETWORK_CREATE_LOBBY]->m_target = D3DXVECTOR3(12, 3, -18);
@@ -787,16 +822,4 @@ void Lobby::SetUpUI()
 	m_mapLobby[IN_GAME_MAP]->m_camLookAt = D3DXVECTOR3(0, 0, 0);
 	m_mapLobby[IN_GAME_MAP]->m_prevLob = SELECT_MAP_LOBBY;
 	m_mapLobby[IN_GAME_MAP]->m_pObject = NULL;
-
-	//m_mapLobby[MARKET_MAP] = new ST_Object;
-	//m_mapLobby[MARKET_MAP]->m_target = D3DXVECTOR3(0, 10, -15);
-	//m_mapLobby[MARKET_MAP]->m_camLookAt = D3DXVECTOR3(0, 0, 0);
-	//m_mapLobby[MARKET_MAP]->m_prevLob = SELECT_MAP_LOBBY;
-	//m_mapLobby[MARKET_MAP]->m_pObject = m_pInGameUI->GetUIRoot();
-	
-	//m_mapLobby[GARDEN_MAP] = new ST_Object;
-	//m_mapLobby[GARDEN_MAP]->m_target = D3DXVECTOR3(0, 60, -15);
-	//m_mapLobby[GARDEN_MAP]->m_camLookAt = D3DXVECTOR3(0, -5, 0);
-	//m_mapLobby[GARDEN_MAP]->m_prevLob = SELECT_MAP_LOBBY;
-	//m_mapLobby[GARDEN_MAP]->m_pObject = m_pInGameUI->GetUIRoot();
 }

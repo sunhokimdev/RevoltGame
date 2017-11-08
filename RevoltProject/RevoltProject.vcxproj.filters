@@ -465,6 +465,9 @@
     <ClInclude Include="cFakeImpact.h">
       <Filter>Item\FakeBomb</Filter>
     </ClInclude>
+    <ClInclude Include="cSelectNetworkLob.h">
+      <Filter>Lobby\GameUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -748,6 +751,9 @@
     </ClCompile>
     <ClCompile Include="cFakeImpact.cpp">
       <Filter>Item\FakeBomb</Filter>
+    </ClCompile>
+    <ClCompile Include="cSelectNetworkLob.cpp">
+      <Filter>Lobby\GameUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

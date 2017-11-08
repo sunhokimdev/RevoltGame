@@ -25,13 +25,13 @@ void cNetworkManager::Start()
 
 	memset(&servAdr, 0, sizeof(servAdr));
 	servAdr.sin_family = AF_INET;
-	servAdr.sin_addr.s_addr = inet_addr("192.168.0.13");
+	servAdr.sin_addr.s_addr = inet_addr(m_serverIP.c_str());
 	servAdr.sin_port = htons(8080);
 
 	if (connect(m_hSock, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
 	{
 		ErrorHandling("connect() error");
-		MessageBoxA(g_hWnd, "소켓통신에러", "소켓통신에러", MB_OK);
+		MessageBoxA(g_hWnd, m_serverIP.c_str(), "소켓통신에러", MB_OK);
 	}
 
 	GetDefaultMyIP();
