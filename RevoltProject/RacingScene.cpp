@@ -103,33 +103,71 @@ void RacingScene::Update()
 		}
 
 		str = "@" + g_pNetworkManager->GetClientIP() + 
-			"&" + g_pNetworkManager->GetKeYString();
+			"@" + g_pNetworkManager->GetKeYString();
 
 		g_pNetworkManager->SendMsg(str.c_str());
 		g_pNetworkManager->RecvMsg();
 		str = g_pNetworkManager->GetMsg();
 
-		char* pch = strtok((char*)str.c_str(), "@");
+		char* pchIP = NULL;
+		char* pch = NULL;
 
 		if (str.size() > 10)
 		{
-			if (g_pNetworkManager->GetClientIP().find(pch) == -1)
-			{
-				pch = strtok(NULL, "&");
-				vecCars[1]->SetResetNetworkKey();
-				vecCars[1]->SetNetworkKey(pch);
+			pchIP = strtok((char*)str.c_str(), "@");
+			printf("%s\n", pchIP);
+			pch = strtok(NULL, "@");
+			printf("%s\n", pch);
+		}
 
-				if (IsCarRunTrue(vecCars[0]))
+		if (pchIP && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
+		{
+			char* ch = strtok(NULL, "@");
+
+			vecCars[1]->SetResetNetworkKey();
+			if (pch != NULL)
+			{
+				vecCars[1]->SetNetworkKey(pch);
+			
+				if (IsCarRunTrue(vecCars[1]))
 					vecCars[1]->Update();
 				else
 				{
 					vecCars[1]->RunEnd();
 					return;
 				}
-
-				printf("%s\n", pch);
 			}
 		}
+				/*
+			
+			if (IsCarRunTrue(vecCars[vecCars.size() - 1]))
+				vecCars[vecCars.size() - 1]->Update();
+			else
+			{
+				vecCars[vecCars.size() - 1]->RunEnd();
+				return;
+			}
+		}
+		*/
+		/*
+		if (str.size() > 10)
+		{
+			if (g_pNetworkManager->GetClientIP().find(pch) == -1)
+			{
+				pch = strtok(NULL, "&");
+				vecCars[vecCars.size()-1]->SetResetNetworkKey();
+				vecCars[vecCars.size()-1]->SetNetworkKey(pch);
+
+				if (IsCarRunTrue(vecCars[vecCars.size()-1]))
+					vecCars[vecCars.size()-1]->Update();
+				else
+				{
+					vecCars[vecCars.size()-1]->RunEnd();
+					return;
+				}
+			}
+		}
+		*/
 	}
 
 	else

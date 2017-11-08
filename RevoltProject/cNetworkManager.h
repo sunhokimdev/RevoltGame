@@ -29,6 +29,7 @@ private:
 
 	std::string m_serverIP;		// 서버 IP 주소
 	std::string m_msg;			// 데이터 이름
+	char* m_charMsg;
 public:
 	SINGLETONE(cNetworkManager);
 
@@ -59,6 +60,7 @@ public:
 
 	std::string GetKeYString();
 	std::string GetClientIP() { return m_vecMyIP[m_vecMyIP.size() - 1]; };
+	char* GetCharMsg() { return m_charMsg; };
 	sockaddr_in GetDefaultMyIP();
 };
 

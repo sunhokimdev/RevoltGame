@@ -63,6 +63,7 @@ bool cNetworkManager::RecvMsg()
 
 	nameMsg[strLen] = 0;
 
+	m_charMsg = nameMsg;
 	m_msg = std::string(nameMsg);
 
 	return true;
