@@ -38,17 +38,13 @@ void ItemManager::Init()
 	box3 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(4, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
 	box4 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(20, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
 
-<<<<<<< HEAD
-	for (int i = 0;i < 10;i++)
-	{
-		cItem* pItem = new cWbomb;
-		pItem->Setup();
-		pItem->SetItemTag(ITEM_WBOMB);
-		m_vecItem.push_back(pItem);
-	}
-	
-	
-
+	//for (int i = 0;i < 10;i++)
+	//{
+	//	cItem* pItem = new cWbomb;
+	//	pItem->Setup();
+	//	pItem->SetItemTag(ITEM_WBOMB);
+	//	m_vecItem.push_back(pItem);
+	//}
 	//for (int i = 0;i < 10;i++)
 	//{
 	//	cGravityball* pItem = new cGravityball;
@@ -64,32 +60,6 @@ void ItemManager::Init()
 	//	pItem->SetItemTag(ITEM_MYBOMB);
 	//	m_vecItem.push_back(pItem);
 	//}
-
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	cItem* pItem = new cFirework;
-	//	pItem->Setup();
-	//	pItem->SetItemTag(ITEM_FIREWORK);
-	//	m_vecItem.push_back(pItem);
-	//}
-=======
-	//for (int i = 0;i < 10;i++)
-	//{
-	//	cItem* pItem = new cWbomb;
-	//	pItem->Setup();
-	//	pItem->SetItemTag(ITEM_WBOMB);
-	//	m_vecItem.push_back(pItem);
-	//}
-	
-	
-	//for (int i = 0;i < 10;i++)
-	//{
-	//	cGravityball* pItem = new cGravityball;
-	//	pItem->Setup();
-	//	pItem->SetIsUse(true);
-	//	m_vecItem.push_back(pItem);
-	//}
-
 	for (int i = 0; i < 10; i++)
 	{
 		cItem* pItem = new cFirework;
@@ -97,7 +67,6 @@ void ItemManager::Init()
 		pItem->SetItemTag(ITEM_FIREWORK);
 		m_vecItem.push_back(pItem);
 	}
->>>>>>> bba1710e642d3e175f6f65961826ebce8ee1a571
 
 	InitCollisionGroup();
 }
