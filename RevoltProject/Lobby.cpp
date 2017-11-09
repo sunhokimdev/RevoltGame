@@ -99,10 +99,6 @@ void Lobby::Setup()
 	m_pInRoom->Setup();
 
 	m_pfileList = new ProfileList;
-<<<<<<< HEAD
-
-=======
->>>>>>> ea925ce1dc7f00e1eb718ddf6b6e1f41f3e4a1b0
 	m_pMap = new Map;
 
 	SetUpUI();
