@@ -107,6 +107,7 @@ public:
 	void UpdateLabTime();									// UpdateLabTimer
 	void UpdateRaceTime();									// UpdateRaceTimer
 	void UpdateArrowDir();									// 화살표 방향
+	void RaceResults();
 
 	/*          SYNTHESIZE          */
 

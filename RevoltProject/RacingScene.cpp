@@ -78,13 +78,9 @@ void RacingScene::Setup()
 	if (i == 0)
 	{
 		CreateCar(m_pTrack->GetStartPositions()[i], i,"tc1", false);
-		CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
+		//CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
 	}
 	vecCars[i]->SetIsUser(false);
-	//vecCars[i+1]->SetIsUser(true);
-
-	printf("%f\n", vecCars[1]->GetPosition().y);
-	vecCars[1]->GetPhysXData()->m_pActor->addForce(NxVec3(0, 10000, 10000));
 
 	m_pInGameUI = new InGameUI;
 	LinkUI(0); // 인게임 InGameUI::Setup(); 전에 위치해야함, new InGameUI 가 선언되어 있어야 함.
@@ -100,7 +96,8 @@ void RacingScene::Destroy()
 {
 	SAFE_DESTROY(m_pTrack);
 	SAFE_DELETE(m_pTrack);
-	SAFE_DELETE(m_pLightSun);
+	//SAFE_DELETE(m_pLightSun);
+	//m_pLightSun->Destroy();
 	SAFE_DELETE(m_pInGameUI);
 	SAFE_DESTROY(m_pSkyBox);
 	SAFE_DELETE(m_pSkyBox);
@@ -118,7 +115,7 @@ void RacingScene::Update()
 
 		g_pNetworkManager->SetResetKeyEvent();
 
-		if (IsCarRunTrue(vecCars[0])) 
+		if (IsCarRunTrue(vecCars[0]))
 			vecCars[0]->Update();
 		else
 		{
@@ -175,7 +172,6 @@ void RacingScene::Update()
 	{
 		m_pInGameUI->Update();
 	}
-
 }
 
 
@@ -236,6 +232,11 @@ void RacingScene::UpdateCamera()
 		vecCars[0]->GetPosition().y + 0.5f ,
 		vecCars[0]->GetPosition().z };
 
+	//D3DXVECTOR3 carPos = {
+	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().x,
+	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().y + 0.5f ,
+	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().z };
+
 	*camLookTarget = carPos;//D3DXVECTOR3(pos.x, pos.y + 2.f, pos.z);
 
 	D3DXVECTOR3 camDir = (*camLookTarget) - CAM_POS;
@@ -268,21 +269,32 @@ void RacingScene::UpdateCamera()
 
 	if (RayCamHit.shape)
 	{
-		if (RayCamHit.shape->getActor().getName() == "map")
+		if (RayCamHit.shape->getActor().getName())
 		{
-			x = RayCamHit.worldImpact.x;
-			//y = carPos.y + Height;//RayCamHit.worldImpact.y;
-			y = carPos.y + fCamHeight;
-			z = RayCamHit.worldImpact.z;
+			std::string str = RayCamHit.shape->getActor().getName();
+
+			if (str == "map")
+			{
+				x = RayCamHit.worldImpact.x;
+				//y = carPos.y + Height;//RayCamHit.worldImpact.y;
+				y = carPos.y + fCamHeight;
+				z = RayCamHit.worldImpact.z;
+			}
 		}
+
+
 	}
 
 	if (RayCamVerticalHit.shape != NULL)
 	{
-		if (RayCamVerticalHit.shape->getActor().getName() == "map")
+		if (RayCamHit.shape->getActor().getName())
 		{
-			fCamHeight = RayCamVerticalHit.distance;
-			y = carPos.y + fCamHeight;
+			std::string str = RayCamVerticalHit.shape->getActor().getName();
+			if (str == "map")
+			{
+				fCamHeight = RayCamVerticalHit.distance;
+				y = carPos.y + fCamHeight;
+			}
 		}
 	}
 

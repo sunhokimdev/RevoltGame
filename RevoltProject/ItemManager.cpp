@@ -40,7 +40,7 @@ void ItemManager::Init()
 
 	for (int i = 0;i < 10;i++)
 	{
-		cItem* pItem = new cWbomb;
+		cWbomb* pItem = new cWbomb;
 		pItem->Setup();
 		pItem->SetIsUse(false);
 		pItem->SetItemTag(ITEM_WBOMB);
@@ -83,15 +83,14 @@ void ItemManager::Init()
 
 void ItemManager::Update()
 {
-	for (int i = 0;i < 4;i++)
+	for (int i = 0; i < 4; ++i)
 	{
 		for (int j = 0; j < m_vecIndex[i]; ++j)
 		{
 			m_vecItem[j + i * 10]->Update();
 		}
 	}
-
-	for (int i = 0;i < 4;i++)
+	for (int i = 0; i < 4; ++i)
 	{
 		for (int j = 0; j < m_vecIndex[i]; ++j)
 		{
@@ -102,7 +101,7 @@ void ItemManager::Update()
 
 void ItemManager::Render()
 {
-	for (int i = 0;i < 4;i++)
+	for (int i = 0; i < 4; ++i)
 	{
 		for (int j = 0; j < m_vecIndex[i]; ++j)
 		{
@@ -159,10 +158,8 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 	{
 		case ITEM_WBOMB:
 		{
-			m_vecItem[m_vecIndex[0]]->Create(carDir, carPos);
-			m_vecItem[m_vecIndex[0]]->SetIsUse(true);
-
-			m_vecIndex[0]++;
+			m_vecItem[m_index]->Create(carDir, carPos);
+			m_vecItem[m_index]->SetIsUse(true);
 		}
 		break;
 		case ITEM_GRAVITY:

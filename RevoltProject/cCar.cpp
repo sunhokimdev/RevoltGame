@@ -13,7 +13,7 @@
 cCar::cCar()
 	:m_pSkidMark(NULL)
 {
-	m_countRapNum = -1;
+	m_countRapNum = 2;
 	m_currCheckBoxID = -1;
 	m_rapTimeCount = 0.f;
 	m_totlaTimeCount = 0.f;
@@ -302,6 +302,7 @@ void cCar::Update()
 	SettingCarPos();
 
 	CtrlPlayer();
+
 	if (g_pKeyManager->isStayKeyDown(VK_TAB))
 	{
 		if (m_isAI) CtrlAI();
@@ -555,25 +556,25 @@ void cCar::CtrlPlayer()
 				}
 			}
 		}
-		else
-		{
-			if (m_keySet.ctrl)
-			{
-				if (m_eHoldItem != ITEM_NONE)
-				{
-					g_pItemManager->FireItem(ITEM_MYBOMB, this);
-					//아이템 사용 함수 호츨
-					m_nItemCount--;
-					if (m_nItemCount == 0)
-					{
-						m_eHoldItem = ITEM_NONE;
-						GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
-					}
-					std::cout << "FIRE!" << std::endl;
-
-				}
-			}
-		}
+		//else
+		//{
+		//	if (m_keySet.ctrl)
+		//	{
+		//		if (m_eHoldItem != ITEM_NONE)
+		//		{
+		//			g_pItemManager->FireItem(ITEM_MYBOMB, this);
+		//			//아이템 사용 함수 호츨
+		//			m_nItemCount--;
+		//			if (m_nItemCount == 0)
+		//			{
+		//				m_eHoldItem = ITEM_NONE;
+		//				GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
+		//			}
+		//			std::cout << "FIRE!" << std::endl;
+		//
+		//		}
+		//	}
+		//}
 
 		//RePosition
 
@@ -731,7 +732,7 @@ void cCar::TrackCheck()
 			std::cout << "START" << std::endl;
 			m_nextCheckBoxID = 1;
 			m_currCheckBoxID = 0;	//체크 시작
-			m_countRapNum = 0;
+			m_countRapNum = 2;
 			m_rapTimeCount = 0.f;
 
 			if (!m_isAI) m_pInGameUI->SetLabCnt(m_countRapNum);
@@ -755,6 +756,7 @@ void cCar::TrackCheck()
 			m_countRapNum++;
 			if (!m_isAI) m_pInGameUI->SetLabCnt(m_countRapNum);
 			if (!m_isAI) m_pInGameUI->UpdateLastTime();
+			if (!m_isAI) m_pInGameUI->CompareBestTime();
 			if (!m_isAI) m_pInGameUI->SetLabElapseTime(0);
 			if (!m_isAI) m_pInGameUI->SetLabMinOneth(FONT2_NUM0);
 			if (!m_isAI) m_pInGameUI->SetLabMinTenth(FONT2_NUM0);

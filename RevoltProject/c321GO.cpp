@@ -34,6 +34,7 @@ void c321GO::Setup()
 	m_fTime = 0.0f;
 	m_isStart = false;
 	m_fAngleRatio = 0.f;
+	m_isRender = false;
 }
 
 void c321GO::Update()
@@ -50,7 +51,10 @@ void c321GO::Update()
 
 void c321GO::Render()
 {
-	m_vec321go[m_nCount]->Render();
+	if (m_isRender)
+	{
+		m_vec321go[m_nCount]->Render();
+	}
 }
 
 void c321GO::Destroy()
@@ -66,6 +70,7 @@ void c321GO::Destroy()
 void c321GO::StartCount()
 {
 	m_isStart = true;
+	m_isRender = true;
 	m_fAngle = D3DX_PI;
 	m_nCount = 3;
 	m_fTime = 0.0f;
@@ -220,6 +225,12 @@ void c321GO::Count()
 	else
 	{
 		D3DXVec3Lerp(&posStart, &posStart, &posEnd, Lerp);
+		D3DXVECTOR3 dist = posEnd - posStart;
+		float distance = D3DXVec3Length(&dist);
+		if (distance < 0.3)
+		{
+			m_isRender = false;
+		}
 	}
 
 	m_vec321go[m_nCount]->SetPosition(posStart);
