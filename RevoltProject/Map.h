@@ -5,7 +5,7 @@
 
 class MtlTex;
 class Thing;
-
+class cSkyBox;
 class cTrack;
 
 
@@ -25,7 +25,7 @@ private:
 	std::vector<std::string> m_vecMapName;		// 맵 이름을 저장하는 벡터 변수
 
 		// 맵 이름을 저장하는 벡터 변수
-	Camera* m_pCamera;
+	//Camera* m_pCamera;
 	//Front 전용 맵
 	LPD3DXMESH				m_pObjMesh;
 	std::vector<MtlTex*>	m_vecObjMtlTex;
@@ -36,6 +36,9 @@ private:
 	//트랙 전용 맵
 	std::map<int, cTrack*> m_track;
 
+	//스카이박스
+	cSkyBox* m_pSkyBox;
+
 public:
 	Map();
 	~Map();
@@ -44,11 +47,12 @@ public:
 
 	/*   기본 셋팅 맵 메서드   */
 	void Setup();
+	void Destroy();
 	void Update();
 	void Render();
 
 	void SetupThing();
-	void SetUpCamera(Camera* camera) { m_pCamera = camera; }
+	//void SetUpCamera(Camera* camera) { m_pCamera = camera; }
 
 	std::map<int, cTrack*> GetMapName() { return m_track; }
 };

@@ -4,6 +4,7 @@ class cAI_CtrlSpeed :
 	public cAI
 {
 private:
+
 	//	cPhysX* pCollider;
 	LPD3DXMESH* pMesh;
 

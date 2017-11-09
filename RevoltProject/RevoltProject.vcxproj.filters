@@ -472,17 +472,20 @@
     <ClInclude Include="cFakeImpact.h">
       <Filter>Item\FakeBomb</Filter>
     </ClInclude>
-    <ClInclude Include="PFirework.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="PSystem.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="c321GO.h">
       <Filter>Lobby\GameUI</Filter>
     </ClInclude>
     <ClInclude Include="cSelectNetworkLob.h">
       <Filter>Lobby\GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="cAI_Flip.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="PSystem.h">
+      <Filter>Item\Firework</Filter>
+    </ClInclude>
+    <ClInclude Include="PFirework.h">
+      <Filter>Item\Firework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -774,17 +777,20 @@
     <ClCompile Include="cFakeImpact.cpp">
       <Filter>Item\FakeBomb</Filter>
     </ClCompile>
-    <ClCompile Include="PFirework.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="PSystem.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="c321GO.cpp">
       <Filter>Lobby\GameUI</Filter>
     </ClCompile>
     <ClCompile Include="cSelectNetworkLob.cpp">
       <Filter>Lobby\GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_Flip.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="PFirework.cpp">
+      <Filter>Item\Firework</Filter>
+    </ClCompile>
+    <ClCompile Include="PSystem.cpp">
+      <Filter>Item\Firework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

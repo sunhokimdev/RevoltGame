@@ -34,7 +34,7 @@ void LobbyScene::Setup()
 	// 로비 조명효과 추가
 	// ==========================
 	SetupLight();
-	
+	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
 }
 
 void LobbyScene::Update()

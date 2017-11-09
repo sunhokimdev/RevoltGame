@@ -39,10 +39,12 @@ public:
 	//로딩씬 추가
 	GameNode* AddLoadingScene(std::string loadingSceneName, GameNode* scene);
 
-
 	//씬 교체 함수
 	HRESULT ChangeScene(std::string sceneName);
 	HRESULT ChangeScene(std::string sceneName, std::string loadingSceneName);
+
+	//현재 씬 반환
+	GameNode* GetCurrScene() { return _scCurrent; }
 
 	//나중에 만들어 쓸때 사용
 	friend DWORD CALLBACK LoadingThread(LPVOID prc);

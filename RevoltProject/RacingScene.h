@@ -1,6 +1,9 @@
 #pragma once
 #include "GameNode.h"
 
+//TrackEndCount 돌아야 되는 바퀴 수
+#define m_trackEndCount 3
+
 class cTrack;
 class cLight;
 class cCar;
@@ -10,16 +13,16 @@ class cSkyBox;
 
 enum eRACE_PROG
 {
-	RACE_PROG_READY,
-	RACE_PROG_SET,
-	RACE_PROG_GO,
-	RACE_PROG_FINISH
+	RACE_PROG_READY, // 준비
+	RACE_PROG_SET, // 프리카운트 321go
+	RACE_PROG_GO, // 경기중
+	RACE_PROG_FINISH // 경기끝
 };
 
 class RacingScene : public GameNode
 {
 private:
-	int playerIndex = 0;
+	int playerIndex;
 
 	InGameUI* m_pInGameUI;
 	cTrack* m_pTrack;
@@ -31,15 +34,13 @@ private:
 	
 	int m_select;
 	//
-	D3DXVECTOR3* camPos = new D3DXVECTOR3(0, 10, 0);
-	D3DXVECTOR3* camLookTarget = new D3DXVECTOR3(0, 0, 0);
+	D3DXVECTOR3* m_camPos;
+	D3DXVECTOR3* m_camLookTarget;
 
-	//TrackEndCount 돌아야 되는 바퀴 수
-	const int m_trackEndCount = 3;
-
+	
+	
 	//빌보드??이펙트??
 	LPD3DXSPRITE m_Sprite;
-	cBillBoardEffect*		 m_pBillBoardEffect;
 
 	bool m_isDrift;
 

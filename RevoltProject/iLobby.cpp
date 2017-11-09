@@ -10,6 +10,8 @@ iLobby::iLobby()
 
 iLobby::~iLobby()
 {
+	SAFE_DELETE(m_pRootUI);
+	//SAFE_RELEASE(m_pRootUI);
 }
 
 void iLobby::Setup()
