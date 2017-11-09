@@ -771,7 +771,6 @@ void cCar::TrackCheck()
 			if (!m_isAI) m_pInGameUI->SetLabMinOneth(FONT2_NUM0);
 			if (!m_isAI) m_pInGameUI->SetLabMinTenth(FONT2_NUM0);
 
-
 			if (m_bastRapTimeCount > m_rapTimeCount || m_bastRapTimeCount < 0.0f)
 			{
 				m_bastRapTimeCount = m_rapTimeCount;
@@ -994,7 +993,6 @@ void cCar::CarMove()
 		else wheel->tick(false, 0, m_breakPower, g_pTimeManager->GetElapsedTime());
 	}
 }
-
 
 void cCar::UsedItem()
 {

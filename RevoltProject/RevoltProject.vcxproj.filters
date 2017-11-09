@@ -460,12 +460,6 @@
     <ClInclude Include="cPlayerData.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="c321GO.h">
-      <Filter>NewClass</Filter>
-    </ClInclude>
-    <ClInclude Include="cSelectNetworkLob.h">
-      <Filter>Lobby\GameUI</Filter>
-    </ClInclude>
     <ClInclude Include="cMyBomb.h">
       <Filter>Item\MyBomb</Filter>
     </ClInclude>
@@ -477,6 +471,15 @@
     </ClInclude>
     <ClInclude Include="cFakeImpact.h">
       <Filter>Item\FakeBomb</Filter>
+    </ClInclude>
+    <ClInclude Include="PFirework.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PSystem.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="c321GO.h">
+      <Filter>Lobby\GameUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -756,12 +759,6 @@
     <ClCompile Include="cPlayerData.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="c321GO.cpp">
-      <Filter>NewClass</Filter>
-    </ClCompile>
-    <ClCompile Include="cSelectNetworkLob.cpp">
-      <Filter>Lobby\GameUI</Filter>
-    </ClCompile>
     <ClCompile Include="cMyBomb.cpp">
       <Filter>Item\MyBomb</Filter>
     </ClCompile>
@@ -773,6 +770,15 @@
     </ClCompile>
     <ClCompile Include="cFakeImpact.cpp">
       <Filter>Item\FakeBomb</Filter>
+    </ClCompile>
+    <ClCompile Include="PFirework.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PSystem.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="c321GO.cpp">
+      <Filter>Lobby\GameUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

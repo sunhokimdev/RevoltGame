@@ -33,7 +33,7 @@ void cNetworkManager::Start()
 	if (connect(m_hSock, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
 	{
 		ErrorHandling("connect() error");
-		MessageBoxA(g_hWnd, m_serverIP.c_str(), "소켓통신에러", MB_OK);
+		MessageBoxA(g_hWnd, "소켓통신에러", "소켓통신에러", MB_OK);
 	}
 
 	GetDefaultMyIP();
@@ -65,7 +65,6 @@ bool cNetworkManager::RecvMsg()
 
 	nameMsg[strLen] = 0;
 
-	m_charMsg = nameMsg;
 	m_msg = std::string(nameMsg);
 
 	return true;

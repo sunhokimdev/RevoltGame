@@ -7,9 +7,10 @@
 //===================================================================
 
 
-const DWORD ST_Particle::FVF = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_PSIZE;
+const DWORD ST_Particle::FVF = D3DFVF_XYZ | D3DFVF_DIFFUSE;
 
 PSystem::PSystem()
+	:m_isUse(false)
 {
 	_device = 0;
 	_vb = 0;
@@ -58,7 +59,7 @@ void PSystem::PreRender()
 	_device->SetRenderState(D3DRS_LIGHTING, false);
 	_device->SetRenderState(D3DRS_POINTSPRITEENABLE, true);
 	_device->SetRenderState(D3DRS_POINTSCALEENABLE, true);
-	_device->SetRenderState(D3DRS_POINTSIZE, FtoDw(32.0f));
+	_device->SetRenderState(D3DRS_POINTSIZE, FtoDw(_size));
 	_device->SetRenderState(D3DRS_POINTSIZE_MIN, FtoDw(0.0f));
 
 	// 거리에 따른 크기 제어

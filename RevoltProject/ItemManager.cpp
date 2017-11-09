@@ -76,11 +76,11 @@ void ItemManager::Init()
 
 void ItemManager::Update()
 {
-	for (int i = 0;i < m_index;++i)
+	for (int i = 0; i < m_index; ++i)
 	{
 		m_vecItem[i]->Update();
 	}
-	for (int i = 0;i < m_index;++i)
+	for (int i = 0; i < m_index; ++i)
 	{
 		m_vecItem[i]->LastUpdate();
 	}
@@ -88,7 +88,7 @@ void ItemManager::Update()
 
 void ItemManager::Render()
 {
-	for (int i = 0;i < m_index;++i)
+	for (int i = 0; i < m_index; ++i)
 	{
 		m_vecItem[i]->Render();
 	}

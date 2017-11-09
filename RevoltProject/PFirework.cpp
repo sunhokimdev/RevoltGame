@@ -6,10 +6,9 @@
 // - 불꽃놀이
 //===================================================================
 
-PFirework::PFirework(D3DXVECTOR3 * origin, int numParticles)
+PFirework::PFirework(int numParticles, float size)
 {
-	_origin = *origin;
-	_size = 0.9f;
+	_size = size;
 	_vbSize = 2048;
 	_vbOffset = 0;
 	_vbBatchSize = 512;
@@ -33,7 +32,7 @@ void PFirework::ResetParticle(ST_Attribute * attribute)
 	// 구체를 만들기 위한 정규화
 	D3DXVec3Normalize(&attribute->_velocity, &attribute->_velocity);
 
-	attribute->_velocity *= 1.0f;
+	attribute->_velocity *= 2.0f;
 
 	attribute->_color = D3DXCOLOR(PSystem::GetRandomFloat(0.0f, 1.0f),
 								PSystem::GetRandomFloat(0.0f, 1.0f), 
@@ -41,7 +40,7 @@ void PFirework::ResetParticle(ST_Attribute * attribute)
 								1.0f);
 
 	attribute->_age		 = 0.0f;
-	attribute->_lifeTime = 2.0f;	// 2초 동안의 수명을 가짐
+	attribute->_lifeTime = 3.0f;	// 2초 동안의 수명을 가짐
 }
 
 // 파티클 위치 갱신, 수명초과한 파티클 죽음처리(재활용 위해 죽은 파티클 제거 안함)
@@ -59,7 +58,10 @@ void PFirework::Update(float timeDelta)
 			i->_age += timeDelta;
 
 			if (i->_age > i->_lifeTime)	// 죽인다
+			{
 				i->_isAlive = false;
+				m_isUse = false;
+			}
 		}
 	}
 }

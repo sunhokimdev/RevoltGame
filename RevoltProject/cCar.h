@@ -15,7 +15,7 @@ struct stCARSPEC
 
 class cCar : public Object
 {
-	ST_KEYDONW m_keySet;
+	ST_KEYSET m_keySet;
 public:
 	std::bitset<BITESET_8_SIZE> INPUT_KEY;
 private:
@@ -114,7 +114,6 @@ public:
 	void UsedItem();
 	void RePosition();
 	void CarFlip();
-
 
 	/*   �輱ȣ   */
 	void SetResetNetworkKey();
