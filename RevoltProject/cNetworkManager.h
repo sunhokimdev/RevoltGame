@@ -28,6 +28,7 @@ private:
 	int data[BUF_SIZE];
 
 	std::string m_serverIP;		// 서버 IP 주소
+	std::string m_vPosition;	// 클라이언트 위치 지정
 	std::string m_msg;			// 데이터 이름
 	char* m_charMsg;
 public:
@@ -60,6 +61,8 @@ public:
 
 	std::string GetKeYString();
 	std::string GetClientIP() { return m_vecMyIP[m_vecMyIP.size() - 1]; };
+	void SetClientPosition(NxVec3 v);
+	std::string GetClientPosition();
 	char* GetCharMsg() { return m_charMsg; };
 	sockaddr_in GetDefaultMyIP();
 };

@@ -563,7 +563,7 @@ void cCar::CtrlPlayer()
 			{
 				if (m_eHoldItem != ITEM_NONE)
 				{
-					g_pItemManager->FireItem(ITEM_MYBOMB, this);
+					g_pItemManager->FireItem(ITEM_FIREWORK, this);
 					//아이템 사용 함수 호츨
 					m_nItemCount--;
 					if (m_nItemCount == 0)

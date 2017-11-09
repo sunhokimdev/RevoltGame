@@ -115,16 +115,18 @@ void RacingScene::Update()
 
 		g_pNetworkManager->SetResetKeyEvent();
 
-		if (IsCarRunTrue(vecCars[1])) 
-			vecCars[1]->Update();
+		if (IsCarRunTrue(vecCars[0])) 
+			vecCars[0]->Update();
 		else
 		{
-			vecCars[1]->RunEnd();
+			vecCars[0]->RunEnd();
 			return;
 		}
 
-		str = "@" + g_pNetworkManager->GetClientIP() + 
-			"@" + g_pNetworkManager->GetKeYString();
+		g_pNetworkManager->SetClientPosition(vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition());
+
+		str = "@" + g_pNetworkManager->GetClientIP() +
+			"@" + g_pNetworkManager->GetKeYString() + "@" + g_pNetworkManager->GetClientPosition();
 
 		g_pNetworkManager->SendMsg(str.c_str());
 		g_pNetworkManager->RecvMsg();
@@ -140,16 +142,16 @@ void RacingScene::Update()
 
 		if (pchIP && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
 		{
-			vecCars[0]->SetResetNetworkKey();
+			vecCars[1]->SetResetNetworkKey();
 			if (pch != NULL)
 			{
-				vecCars[0]->SetNetworkKey(pch);
+				vecCars[1]->SetNetworkKey(pch);
 
-				if (IsCarRunTrue(vecCars[0]))
-					vecCars[0]->Update();
+				if (IsCarRunTrue(vecCars[1]))
+					vecCars[1]->Update();
 				else
 				{
-					vecCars[0]->RunEnd();
+					vecCars[1]->RunEnd();
 					return;
 				}
 			}

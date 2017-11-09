@@ -142,6 +142,21 @@ std::string cNetworkManager::GetKeYString()
 	return str;
 }
 
+void cNetworkManager::SetClientPosition(NxVec3 v)
+{
+	std::string str = "";
+	str += std::to_string(v.x) + "/";
+	str += std::to_string(v.y) + "/";
+	str += std::to_string(v.z);
+
+	m_vPosition = str;
+}
+
+std::string cNetworkManager::GetClientPosition()
+{
+	return m_vPosition;
+}
+
 sockaddr_in cNetworkManager::GetDefaultMyIP()
 {
 	char localhostname[1024];

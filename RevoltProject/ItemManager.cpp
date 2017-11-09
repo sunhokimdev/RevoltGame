@@ -54,14 +54,14 @@ void ItemManager::Init()
 	//	m_vecItem.push_back(pItem);
 	//}
 
-	for (int i = 0;i < 10;i++)
-	{
-		cMyBomb* pItem = new cMyBomb;
-		pItem->Setup();
-		pItem->SetIsUse(false);
-		pItem->SetItemTag(ITEM_MYBOMB);
-		m_vecItem.push_back(pItem);
-	}
+	//for (int i = 0;i < 10;i++)
+	//{
+	//	cMyBomb* pItem = new cMyBomb;
+	//	pItem->Setup();
+	//	pItem->SetIsUse(false);
+	//	pItem->SetItemTag(ITEM_MYBOMB);
+	//	m_vecItem.push_back(pItem);
+	//}
 
 	for (int i = 0; i < 10; i++)
 	{
