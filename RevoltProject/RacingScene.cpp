@@ -113,7 +113,7 @@ void RacingScene::Update()
 			if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
 
 			//플레이어가 도착하면 레이스가 끝난다.
-			if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
+		//	if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
 		}
 	}
 	break;

@@ -52,6 +52,7 @@ private:
 
 	//Track 정보
 	cTrack* m_pTrack;
+	SYNTHESIZE(int, m_aICheckBoxID, AICheckBoxID);				//트랙 순서와 상관없이 항상 체크된 박스의 번호가 올라온다.
 	SYNTHESIZE(int, m_currCheckBoxID, CurrCheckBoxID);			//최근에 체크된 박스
 	SYNTHESIZE(int, m_nextCheckBoxID, NextCheckBoxID);			//드음에 체크할 박스
 	SYNTHESIZE(int, m_countRapNum, CountRapNum);				//돈 바퀴수
@@ -60,8 +61,8 @@ private:
 	SYNTHESIZE(float, m_bastRapTimeCount, BastRapTimeCount);	//가장 짭은 랩 시간
 	SYNTHESIZE(float, m_totlaTimeCount, TotlaTimeCount);		//총 경과된 랩 시간
 
-	//현 체크박스에서 다음 체크박스를 가리키는 방향
-	SYNTHESIZE(D3DXVECTOR3, m_nextDir,NextCheckDir);
+	//m_aICheckBoxID에서 다음 체크박스를 가리키는 방향
+//	SYNTHESIZE(D3DXVECTOR3, m_nextDir, NextCheckDir);
 
 	//Item 관련
 	SYNTHESIZE(eITEM_LIST, m_eHoldItem, HoldItem);

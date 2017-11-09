@@ -23,6 +23,9 @@ cAI_CtrlHandel::cAI_CtrlHandel()
 
 	AITag = AI_TAG_HANDLE;
 	HandleValue = 0.0f;
+
+
+	FindDirNum = 3;
 }
 
 
@@ -69,45 +72,62 @@ void cAI_CtrlHandel::Update()
 	RayHitDist(L__Hit, &L__Dist);
 	RayHitDist(R__Hit, &R__Dist);
 
-
 	float LRFScale = LF_Dist + RF_Dist;
-//	if (LF_Dist < LRF_DistRange)
+	if (LF_Dist < LRF_DistRange)
 	{
-	float add = CheckBoxPoint(dirLF) + ScaleValue(LF_Dist, LRFScale) * LRF_DistValue;
+		float add = CheckBoxPoint(dirLF) + ScaleValue(LF_Dist, LRFScale) * LRF_DistValue;
 		HandleValue += add;
-		std::cout << add << " + ";
-
 	}
-//	if (RF_Dist <LRF_DistRange)
+	else
+	{
+		HandleValue += CheckBoxPoint(dirLF);
+	}
+	if (RF_Dist < LRF_DistRange)
 	{
 		float add = CheckBoxPoint(dirRF) + ScaleValue(RF_Dist, LRFScale) * LRF_DistValue;
 		HandleValue -= add;
-		std::cout << add << " - ";
+	}
+	else
+	{
+		HandleValue -= CheckBoxPoint(dirRF);
 	}
 
 	float LRScale = L__Dist + R__Dist;
-//	if (L__Dist < LR__DistRange)
+	if (L__Dist < LR__DistRange)
 	{
 		float add = CheckBoxPoint(dirL_) + ScaleValue(L__Dist, LRScale) * LR__DistValue;
 		HandleValue += add;
-		std::cout << add << " + ";
 	}
-//	if (R__Dist < LR__DistRange)
+	else
+	{
+		HandleValue += CheckBoxPoint(dirL_);
+	}
+	if (R__Dist < LR__DistRange)
 	{
 		float add = CheckBoxPoint(dirR_) + ScaleValue(R__Dist, LRScale)* LR__DistValue;
 		HandleValue -= add;
-		std::cout << add << " - ";
+	}
+	else
+	{
+		HandleValue -= CheckBoxPoint(dirR_);
 	}
 
 
-	std::cout << HandleValue << std::endl;
-	//	m_pAICar->GetWheelAngle()
 
-	if (back > 90.f) HandleValue *= -1;
+	if (abs(HandleValue) < HandleDistance)
+	{
+		float add = 0;
+		add += CheckBoxPoint(dirL_) + ScaleValue(L__Dist, LRScale);
+		add -= CheckBoxPoint(dirR_) + ScaleValue(R__Dist, LRScale);
+		HandleValue += add;
+		std::cout << add << std::endl;
+	}
 
 	aiState = E_AIHandle_F;
-	if (HandleValue < -0.2f) aiState = E_AIHandle_L;
-	if (HandleValue > +0.2f) aiState = E_AIHandle_R;
+	//	if (back > 90.f) HandleValue *= -1;
+	if (HandleValue < -HandleDistance) aiState = E_AIHandle_L;
+	if (HandleValue > +HandleDistance) aiState = E_AIHandle_R;
+
 
 	SetBitKey(eBIT_KEY::E_BIT_LEFT, aiState == E_AIHandle_L);
 	SetBitKey(eBIT_KEY::E_BIT_RIGHT, aiState == E_AIHandle_R);
@@ -156,7 +176,27 @@ float cAI_CtrlHandel::ScaleValue(float dist, float Scale)
 float cAI_CtrlHandel::CheckBoxPoint(D3DXVECTOR3 dir)
 {
 	D3DXVec3Normalize(&dir, &dir);
-	return -D3DXVec3Dot(&m_pAICar->GetNextCheckDir(), &dir) * 0.5f + 0.5f;
+	cCheckBox* box = (cCheckBox*)(*m_pAICar->m_pTrack->GetCheckBoxsPt())[m_pAICar->GetAICheckBoxID()];
+	D3DXVECTOR3 dir1 = box->ToNextCheckBoxDir();
+	if (FindDirNum == 1)
+		return -(D3DXVec3Dot(&dir1, &dir) * 0.5f + 0.5f);
+
+	D3DXVECTOR3 dir2 = box->GetNextCheckBox()->ToNextCheckBoxDir();
+	if (FindDirNum == 2)
+	{
+		D3DXVec3Normalize(&dir2, &(dir1 + (dir2*0.5f)));
+		return -(D3DXVec3Dot(&dir2, &dir) * 0.5f + 0.5f);
+	}
+
+	D3DXVECTOR3 dir3 = box->GetNextCheckBox()->GetNextCheckBox()->ToNextCheckBoxDir();
+	if (FindDirNum == 3)
+	{
+		D3DXVec3Normalize(&dir3, &(dir1 + (dir2*0.5f) + (dir3*0.25f)));
+		return -(D3DXVec3Dot(&dir3, &dir) * 0.5f + 0.5f);
+	}
+
+	return 0;
+//	return -D3DXVec3Dot(&dir1, &dir) * 0.5f + 0.5f;
 }
 
 float cAI_CtrlHandel::CheckBoxPoint(NxVec3 dir)

@@ -31,18 +31,20 @@ public:
 	float R__Dist;
 
 	//distRange;
-	const float F___DistRange = 30.f;
-	const float LRF_DistRange = 30.f;
-	const float LR__DistRange = 20.f;
+	const float F___DistRange = 40.f;
+	const float LRF_DistRange = 40.f;
+	const float LR__DistRange = 40.f;
 
 	//회전값에 적용시킬 비율
-	const float F___DistValue = 1.0f;
-	const float LRF_DistValue = 1.7f;
-	const float LR__DistValue = 1.3f;
+//	const float F___DistValue = 1.0f;
+	const float LRF_DistValue = 1.0f;
+	const float LR__DistValue = 1.0f;
 
 
 	// -1 ~ 0 ~ 1
 	float HandleValue;
+	//핸들 체크의 세밀도
+	const float HandleDistance = 0.0f;
 
 	AIHandleState aiState;
 
@@ -53,8 +55,11 @@ public:
 	void Update();
 	void Render();
 
-
+	//ray 거리에 따른 비율값
 	float ScaleValue(float dist, float Scale);
+
+	//CheckBoxPoint() 애서 한번에 방향을 체크할 체크박스의 수 (1~3) 그 외의 값은 (return 0)
+	int FindDirNum;
 	float CheckBoxPoint(D3DXVECTOR3 dir);
 	float CheckBoxPoint(NxVec3 dir);
 };

@@ -15,6 +15,7 @@ cCar::cCar()
 {
 	m_countRapNum = -1;
 	m_currCheckBoxID = -1;
+	m_aICheckBoxID = 0;
 	m_rapTimeCount = 0.f;
 	m_totlaTimeCount = 0.f;
 	m_bastRapTimeCount = -1.0f;
@@ -98,7 +99,7 @@ void cCar::LoadCar(std::string carName)
 					else if (strcmp(szTemp, "WheelAcc") == 0)
 					{
 						LOAD >> szTemp;
-						wheelAcc = atof(szTemp);
+						wheelAcc = atof(szTemp) * 0.8f;
 					}
 					else if (strcmp(szTemp, "#") == 0)
 					{
@@ -387,10 +388,10 @@ void cCar::Render()
 
 	//if (m_isAI)
 	//{
-		for each (cAI* pAI in m_vecAI)
-		{
-			pAI->Render();
-		}
+	for each (cAI* pAI in m_vecAI)
+	{
+		pAI->Render();
+	}
 	//}
 
 	if (m_pSkidMark)
@@ -443,7 +444,10 @@ void cCar::TrackCheck()
 {
 	//체크박스 및 트랙 카운터
 	int checkId = GetPhysXData()->m_pUserData->CheckBoxID;
-	//시작 체크
+	m_aICheckBoxID = (checkId == -1) ? 0 : checkId;
+	//	m_nextDir = ((cCheckBox*)(m_pTrack->GetCheckBoxs()[m_aICheckBoxID]))->ToNextCheckBoxDir();
+
+		//시작 체크
 	if (m_currCheckBoxID == -1)
 	{
 		if (checkId == (*m_pTrack->GetCheckBoxsPt())[0]->GetPhysXData()->m_pUserData->CheckBoxID)
@@ -457,7 +461,7 @@ void cCar::TrackCheck()
 			if (!m_isAI) m_pInGameUI->SetLabCnt(m_countRapNum);
 
 			cCheckBox* nextCheckBox = (cCheckBox*)m_pTrack->GetCheckBoxs()[GetCurrCheckBoxID()];
-			m_nextDir = nextCheckBox->ToNextCheckBoxDir();
+
 		}
 		return;
 	}
@@ -473,7 +477,7 @@ void cCar::TrackCheck()
 		m_currCheckBoxID = m_nextCheckBoxID;
 		m_nextCheckBoxID = pCheckBox->GetNextCheckBox()->GetPhysXData()->m_pUserData->CheckBoxID;
 
-		m_nextDir = ((cCheckBox*)(*m_pTrack->GetCheckBoxsPt())[GetCurrCheckBoxID()])->ToNextCheckBoxDir();
+		//		m_nextDir = ((cCheckBox*)(*m_pTrack->GetCheckBoxsPt())[GetCurrCheckBoxID()])->ToNextCheckBoxDir();
 
 		if (m_currCheckBoxID == 0)
 		{
