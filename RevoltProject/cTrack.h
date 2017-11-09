@@ -39,6 +39,6 @@ public:
 //	int GetTrackCheckBoxSize() { return m_vecCheckBox.size(); }
 
 	//스타트지점
-	SYNTHESIZE(std::vector<D3DXVECTOR3>, vecStartPos,StartPositions);
+	SYNTHESIZE(std::vector<D3DXVECTOR3>, vecStartPos, StartPositions);
 };
 

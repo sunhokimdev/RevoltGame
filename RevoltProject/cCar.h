@@ -5,6 +5,7 @@ class cAI;
 class TriggerCallback;
 class cTrack;
 class cSkidMark;
+class InGameUI;
 
 struct stCARSPEC
 {
@@ -15,7 +16,9 @@ struct stCARSPEC
 class cCar : public Object
 {
 	ST_KEYDONW m_keySet;
-
+public:
+	std::bitset<BITESET_8_SIZE> INPUT_KEY;
+private:
 	//바퀴 매쉬용 백터
 	std::vector<cMesh*> vecWheels;
 
@@ -37,7 +40,7 @@ class cCar : public Object
 
 	//속도 계산
 	SYNTHESIZE(float, m_fCurrentSpeed, CurrentSpeed);
-	D3DXVECTOR3 m_szPrevPos[5];	
+	D3DXVECTOR3 m_szPrevPos[5];
 
 	SYNTHESIZE(D3DXMATRIX, m_matCarRotation, CarRotMatrix); // 자동차 전용 정확한 회전 매트릭스
 
@@ -52,7 +55,7 @@ class cCar : public Object
 	cTrack* m_pTrack;
 	SYNTHESIZE(int, m_currCheckBoxID, CurrCheckBoxID);			//최근에 체크된 박스
 	SYNTHESIZE(int, m_nextCheckBoxID, NextCheckBoxID);			//드음에 체크할 박스
-	SYNTHESIZE(int, m_countRapNum, CountRapNum);					//돈 바퀴수
+	SYNTHESIZE(int, m_countRapNum, CountRapNum);				//돈 바퀴수
 
 	SYNTHESIZE(float, m_rapTimeCount, RapTimeCount);			//현제 렙 시간
 	SYNTHESIZE(float, m_bastRapTimeCount, BastRapTimeCount);	//가장 짭은 랩 시간
@@ -61,8 +64,11 @@ class cCar : public Object
 	//Item 관련
 	SYNTHESIZE(eITEM_LIST, m_eHoldItem, HoldItem);
 	SYNTHESIZE(int, m_nItemCount, ItemCount);
-	
+
 	cSkidMark* m_pSkidMark;
+
+	//InGame UI
+	InGameUI* m_pInGameUI;
 
 public:
 	cCar();
@@ -72,8 +78,8 @@ public:
 	NxVehicle* GetNxVehicle() { return m_carNxVehicle; }
 
 	void LoadCar(std::string carName);
-	void SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc , bool isAI = false);
-	
+	void SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc, bool isAI = false);
+	void SetAI(bool isAI);
 	void CreateItem();
 
 	void CreatePhsyX(stCARSPEC carspec);
@@ -89,13 +95,25 @@ public:
 	void CtrlPlayer();
 	void CtrlAI();
 
-//	void GetRpm();
+	//	void GetRpm();
 	void TrackCheck();
 	void RunEnd();
-	void CarFlip();
 	void CarRunStop();
+	void DrawSkidMark();
 	void LinkTrackPt(cTrack* track) { m_pTrack = track; }
-//	void RunStart();
+	eITEM_LIST* GetHoldItemPt() { return &m_eHoldItem; }
+	void LinkUI(InGameUI* ingameUi) { m_pInGameUI = ingameUi; }
+	//	void RunStart();
+
+	void SpeedMath();
+	void CreateSkidMark();
+	void CollidePickUp();
+	void SettingCarPos();
+
+	void CarMove();
+	void UsedItem();
+	void RePosition();
+	void CarFlip();
 
 
 	/*   김선호   */
@@ -103,4 +121,7 @@ public:
 	void SetNetworkKey(std::string);
 
 	SYNTHESIZE(bool, m_isUser, IsUser);
+	//e
+	NxVec3 CarArrow(float radianAngle = 0);
+	NxVec3 WheelArrow(float degAngle = 0 , bool back = false);
 };

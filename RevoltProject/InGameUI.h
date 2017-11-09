@@ -7,6 +7,8 @@ class UITextImageView;
 class UIImageView;
 class cCar;
 class cTrack;
+class c321GO;
+class RacingScene;
 
 //===================================================================
 // - written by 김선호
@@ -29,6 +31,7 @@ private:
 
 	//Lab
 	UITextImageView* m_pLab;
+	UITextImageView* m_pCurrentLab;
 
 	//Last Time
 	UITextImageView* m_pLastDotOneTh;
@@ -59,13 +62,13 @@ private:
 	UITextImageView* m_pLabMinTenth;
 
 	//Race Time
-	UITextImageView* m_pElapseTime;   
-	UITextImageView* m_pDotTenth;	  
-	UITextImageView* m_pDotMilth;	  
-	UITextImageView* m_pSecOneth;	  
-	UITextImageView* m_pSecTenth;	  
-	UITextImageView* m_pMinOneth;	  
-	UITextImageView* m_pMinTenth;	  
+	UITextImageView* m_pElapseTime;
+	UITextImageView* m_pDotTenth;
+	UITextImageView* m_pDotMilth;
+	UITextImageView* m_pSecOneth;
+	UITextImageView* m_pSecTenth;
+	UITextImageView* m_pMinOneth;
+	UITextImageView* m_pMinTenth;
 
 	// 속도계
 	UITextImageView* pSpeed;
@@ -77,11 +80,14 @@ private:
 	UITextImageView* pITV_Rank2;
 	UIImageView* pIV_arrowDir;
 
+	//321go
+	c321GO* m_p321go;
+
 	int m_arrowIndex;
 	cTrack* m_pTrack;
 	// 차 정보
 	cCar* m_pCar;
-
+	RacingScene* m_pRacingScene;
 
 public:
 	InGameUI();
@@ -93,12 +99,15 @@ public:
 	UIObject* GetUIObject() { return m_pRootUI; }
 	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
 	
+	void SetupTimer();
+	void ControllLab();
 
 	void UpdateSpeed();
-	void CompareBestTime();
-	void UpdateLastTime();
-	void UpdateRaceTime();									// UpdateRaceTimer
+	void UpdateLabCount();									// UpdateCurrentLab
+	void UpdateLastTime();									// UpdateLastTimer
+	void CompareBestTime();									// UpdateBestTimer(Compare BestLab with CurrentLab)
 	void UpdateLabTime();									// UpdateLabTimer
+	void UpdateRaceTime();									// UpdateRaceTimer
 	void UpdateArrowDir();									// 화살표 방향
 
 
@@ -145,8 +154,11 @@ public:
 	SYNTHESIZE(int, m_MinOneth, MinOneth);
 	SYNTHESIZE(int, m_MinTenth, MinTenth);
 
-	void LinkCarPt(cCar* car) { m_pCar = car; }
+	void LinkCarPt(cCar* car)
+	{
+		m_pCar = car;
+	}
 	void LinkTrack(cTrack* track) { m_pTrack = track; }
-
+	void LinkRacingScene(RacingScene* rc) { m_pRacingScene = rc; }
 };
 

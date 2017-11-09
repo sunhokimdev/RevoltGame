@@ -17,6 +17,7 @@
 #include "Thing.h"
 #include "CarBox.h"
 #include "WheelTire.h"
+#include "cTrack.h"
 
 /*   로비 창 구현   */
 #include "ProfileList.h"
@@ -104,6 +105,9 @@ void Lobby::Setup()
 
 	m_pSelectServer = new cSelectNetworkLob;
 	m_pSelectServer->Setup();
+
+	m_pfileList = new ProfileList;
+	m_pMap = new Map;
 
 	SetUpUI();
 }
@@ -211,7 +215,7 @@ void Lobby::KeyUpdate()
 		if (m_stateLobby == SELECT_MAP_LOBBY)
 			m_leftAndrightSelect++;
 
-			m_pSelectMap->GetmagImage()->SetIsMove(true);
+		m_pSelectMap->GetmagImage()->SetIsMove(true);
 
 		if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
 			m_leftAndrightSelect = 0;
@@ -219,7 +223,7 @@ void Lobby::KeyUpdate()
 
 	if (g_pKeyManager->isOnceKeyDown(VK_LEFT))
 	{
-		if (m_stateLobby == START_LOBBY || 
+		if (m_stateLobby == START_LOBBY ||
 			m_stateLobby == SELECT_CAR_LOBBY)
 		{
 			m_leftAndrightSelect--;
@@ -253,16 +257,46 @@ void Lobby::KeyUpdate()
 	{
 		if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
+			std::map<int, cTrack*> trackName = m_pMap->GetMapName();
+			int index = m_leftAndrightSelect + 1;
+			if (index > m_mapLobby[m_stateLobby]->m_selectCnt)
+				index = 1;
+			else if (index < 0)
+				index = m_mapLobby[m_stateLobby]->m_selectCnt;
+
+			m_pfileList->SetMapName(trackName[index]->trackName);
+
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
+
 			//유저데이터에 자동차 선택한거 넘겨주고
 			//씬변경
+
+			g_pDataManager->mapName = m_pfileList->GetMapName();
+
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", m_pfileList->GetCarName(), false));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc1", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
+		
 			g_SceneManager->ChangeScene("Race");
-			
 			return;
 		}
-
+		else if (m_stateLobby == SELECT_CAR_LOBBY)
+		{
+			switch (m_leftAndrightSelect)
+			{
+			case 0:	m_pfileList->SetCarName("tc1"); break;
+			case 1: m_pfileList->SetCarName("tc2"); break;
+			case 2: m_pfileList->SetCarName("tc3"); break;
+			case 3: m_pfileList->SetCarName("tc4"); break;
+			case 4: m_pfileList->SetCarName("tc5"); break;
+			case 5: m_pfileList->SetCarName("tc6"); break;
+			}
+		}
 		else if (m_stateLobby == MAIN_LOBBY2)
 		{
 			if (m_select == 2)
@@ -276,7 +310,7 @@ void Lobby::KeyUpdate()
 				m_mapLobby[m_stateLobby]->m_pNextLob[m_select] = NETWORK_LOBBY;
 				m_multiLobby->SetUserName(m_pCreateProfileLobby->GetName());
 				m_multiLobby->SetCarName(m_pSelectCarLobbby->GetCarName());
-			}		
+			}
 		}
 
 		else if (m_stateLobby == NETWORK_SELECT_LOBBY)
@@ -312,7 +346,7 @@ void Lobby::KeyUpdate()
 			m_time = 0.0f;
 			m_select = 0;
 
-			if(m_stateLobby != VIEW_CAR_LOBBY)
+			if (m_stateLobby != VIEW_CAR_LOBBY)
 				m_leftAndrightSelect = 0;
 		}
 	}
@@ -333,7 +367,7 @@ void Lobby::KeyUpdate()
 			g_pSoundManager->Play("menuPrev.wav", 1.0f);
 		}
 	}
-	
+
 	if (g_pKeyManager->isOnceKeyDown(VK_F5))
 	{
 		if (m_stateLobby == NETWORK_LOBBY)
@@ -394,7 +428,7 @@ void Lobby::SetUpUI()
 	//===================================================================
 
 ///////////////////////////////   구분   /////////////////////////////////////////
-	
+
 	/*   인트로 이미지   */
 	UIImageView* pImageView1 = new UIImageView;
 	pImageView1->SetPosition(0, 0);

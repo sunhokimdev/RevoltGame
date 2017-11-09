@@ -8,6 +8,14 @@ class cBillBoardEffect;
 class InGameUI;
 class cSkyBox;
 
+enum eRACE_PROG
+{
+	RACE_PROG_READY,
+	RACE_PROG_SET,
+	RACE_PROG_GO,
+	RACE_PROG_FINISH
+};
+
 class RacingScene : public GameNode
 {
 private:
@@ -17,8 +25,6 @@ private:
 	cTrack* m_pTrack;
 
 	std::vector<cCar*> vecCars;
-	
-
 
 	cLight* m_pLightSun;
 	int m_nLightIDCount;
@@ -28,8 +34,8 @@ private:
 	D3DXVECTOR3* camPos = new D3DXVECTOR3(0, 10, 0);
 	D3DXVECTOR3* camLookTarget = new D3DXVECTOR3(0, 0, 0);
 
-	//TrackEndCount 돌아야 되는 바튀 수
-	const int m_trackEndCount = 3;
+	//TrackEndCount 돌아야 되는 바퀴 수
+	const int m_trackEndCount = 1;
 
 	//빌보드??이펙트??
 	LPD3DXSPRITE m_Sprite;
@@ -38,6 +44,8 @@ private:
 	bool m_isDrift;
 
 	cSkyBox* m_pSkyBox;
+
+	SYNTHESIZE(eRACE_PROG, m_eRaceProg, RaceProg);
 
 public:
 
@@ -56,6 +64,7 @@ public:
 
 
 //	void CreateCar(int carId) {}
+	void CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carName, bool isAI);
 	void CreateCar(int playerID, std::string carName);
 	void LinkUI(int playerID);
 };

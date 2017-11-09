@@ -314,7 +314,7 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 		pSprite->SetTransform(&tMat);
 
 		D3DXIMAGE_INFO stImageInfo;
-		std::string szTemp = std::string("Maps/Front/Image/charcursor.png");
+		std::string szTemp = std::string("UIImage/charcursor.png");
 
 		LPDIRECT3DTEXTURE9	tTexture = g_pTextureManager->GetTexture(szTemp, &stImageInfo);
 		SetRect(&rc, 0, 0, stImageInfo.Width, stImageInfo.Height);
@@ -327,7 +327,7 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 		pSprite->SetTransform(&m_matWorld);
 
 		D3DXIMAGE_INFO stImageInfo;
-		std::string szTemp = std::string("Maps/Front/Image/progressbar.png");
+		std::string szTemp = std::string("UIImage/progressbar.png");
 
 		LPDIRECT3DTEXTURE9	tTexture = g_pTextureManager->GetTexture(szTemp, &stImageInfo);
 

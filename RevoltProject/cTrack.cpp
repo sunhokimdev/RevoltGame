@@ -23,12 +23,12 @@ cTrack::cTrack()
 	//	g_pCamManager->SetLookAt(camLookTarget);
 
 
-	vecStartPos.push_back(D3DXVECTOR3(-1, 0, 1));
-	vecStartPos.push_back(D3DXVECTOR3(-2, 0, -1));
-	vecStartPos.push_back(D3DXVECTOR3(-3, 0, 1));
-	vecStartPos.push_back(D3DXVECTOR3(-4, 0, -1));
-	vecStartPos.push_back(D3DXVECTOR3(-5, 0, 1));
-	vecStartPos.push_back(D3DXVECTOR3(-6, 0, -1));
+	vecStartPos.push_back(D3DXVECTOR3(-0.0f, 0,  1.5));
+	vecStartPos.push_back(D3DXVECTOR3(-1.5f, 0, -1.5));
+	vecStartPos.push_back(D3DXVECTOR3(-3.0f, 0,  1.5));
+	vecStartPos.push_back(D3DXVECTOR3(-4.5f, 0, -1.5));
+	vecStartPos.push_back(D3DXVECTOR3(-6.0f, 0,  1.5));
+	vecStartPos.push_back(D3DXVECTOR3(-7.5f, 0, -1.5));
 }
 
 
@@ -128,6 +128,7 @@ void cTrack::LoadTrack(std::string FileName)
 				Obj->SetTag((eOBJECT_TAG)tag);
 				USERDATA* pUserData = new USERDATA;
 				pUserData->USER_TAG = physxTag;
+				pUserData->IsPickUp = NX_TRUE;
 				cPhysX* physx = new cPhysX;
 				NxShapeType type((NxShapeType)0);
 				NxVec3 position(0, 0, 0);
@@ -269,6 +270,7 @@ void cTrack::LoadTrack(std::string FileName)
 								isGravity);
 							if (pActor)
 							{
+								g_pPhysX->SetActorGroup(pActor, E_PHYSX_TAG_PICKUP);
 								physx->m_pActor = pActor;
 								physx->m_pUserData = pUserData;
 								Obj->SetPhysXData(physx);
@@ -296,6 +298,7 @@ void cTrack::LoadTrack(std::string FileName)
 								isGravity);
 							if (pActor)
 							{
+								g_pPhysX->SetActorGroup(pActor, E_PHYSX_TAG_CHECKBOX);
 								physx->m_pActor = pActor;
 								physx->m_pUserData = pUserData;
 								Obj->SetPhysXData(physx);
@@ -317,6 +320,7 @@ void cTrack::LoadTrack(std::string FileName)
 								isGravity);
 							if (pActor)
 							{
+								g_pPhysX->SetActorGroup(pActor, E_PHYSX_TAG_NONE);
 								physx->m_pActor = pActor;
 								Obj->SetPhysXData(physx);
 							}
@@ -375,7 +379,7 @@ void cTrack::CreateTrackPhysX()
 		NxTriangleMeshShapeDesc shapeDesc = MgrPhysX->CreateTringleMesh(GetMeshData()->m_pMesh);
 		shapeDesc.materialIndex = 1; // ÀçÁú : 0 (default)°ª
 		shapeDesc.localPose.t = NxVec3(0, 0, 0);
-		shapeDesc.group = 5;
+		shapeDesc.group = E_PHYSX_TAG_TRACK;
 		actorDesc.shapes.pushBack(&shapeDesc);
 		//actorDesc.body = &bodyDesc;
 

@@ -19,7 +19,7 @@ public:
 	SYNTHESIZE(int, m_selectMapType, selectMapType);
 	SYNTHESIZE(int, m_LockedTime, LockedTime);
 
-	SYNTHESIZE(bool, m_isOpenGarden, OpenGarden);							   // Map Open Garden
+	SYNTHESIZE(bool, m_isOpenGarden, OpenGarden);						   // Map Open Garden
 	SYNTHESIZE(bool, m_isOpenMuse, OpenMuse);							   // Map Open Muse 
 	SYNTHESIZE(bool, m_isOpenShip, OpenShip);							   // Map Open Ship 
 

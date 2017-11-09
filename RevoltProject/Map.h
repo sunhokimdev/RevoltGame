@@ -49,5 +49,6 @@ public:
 
 	void SetupThing();
 	void SetUpCamera(Camera* camera) { m_pCamera = camera; }
-};
 
+	std::map<int, cTrack*> GetMapName() { return m_track; }
+};

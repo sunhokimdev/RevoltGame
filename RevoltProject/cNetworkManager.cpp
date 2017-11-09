@@ -25,7 +25,9 @@ void cNetworkManager::Start()
 
 	memset(&servAdr, 0, sizeof(servAdr));
 	servAdr.sin_family = AF_INET;
+
 	servAdr.sin_addr.s_addr = inet_addr(m_serverIP.c_str());
+
 	servAdr.sin_port = htons(8080);
 
 	if (connect(m_hSock, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)

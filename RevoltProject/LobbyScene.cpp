@@ -22,9 +22,10 @@ void LobbyScene::Setup()
 	m_pMap = new Map;
 	m_pMap->Setup();
 
+
 	m_pLobby = new Lobby;
 	m_pLobby->Setup();
-
+	m_pLobby->LinkMap(m_pMap);
 	//앰비언트조명
 	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(100, 100, 100));
 

@@ -111,7 +111,7 @@ void cNetworkInRoom::Setup()
 	for (int i = 0; i < 1000; i++)
 	{
 		UITextImageView *pText = new UITextImageView;
-		pText->SetTexture("Maps/Front/Image/font2.png");
+		pText->SetTexture("UIImage/font2.png");
 		m_vecText.push_back(pText);
 
 		pImageView5->AddChild(m_vecText[i]);

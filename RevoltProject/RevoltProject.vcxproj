@@ -91,10 +91,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>Debug</GenerateDebugInformation>
       <AdditionalDependencies>NxCooking.lib;PhysXLoader.lib;NxCharacter.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -114,14 +116,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>Debug</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>NxCooking.lib;PhysXLoader.lib;NxCharacter.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -145,8 +148,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="버그 리포트.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="c321GO.h" />
     <ClInclude Include="cAI.h" />
     <ClInclude Include="cAI_Collider.h" />
     <ClInclude Include="cAI_CtrlHandel.h" />
@@ -161,6 +166,7 @@
     <ClInclude Include="cCheckBox.h" />
     <ClInclude Include="cClient.h" />
     <ClInclude Include="cCreateProfile.h" />
+    <ClInclude Include="cDataManager.h" />
     <ClInclude Include="cFakeBomb.h" />
     <ClInclude Include="cFakeImpact.h" />
     <ClInclude Include="cFirework.h" />
@@ -182,6 +188,7 @@
     <ClInclude Include="cPhysXManager.h" />
     <ClInclude Include="cPickUp.h" />
     <ClInclude Include="cPlasmaImpact.h" />
+    <ClInclude Include="cPlayerData.h" />
     <ClInclude Include="cSelectCarLob.h" />
     <ClInclude Include="cSelectNetworkLob.h" />
     <ClInclude Include="cSkidMark.h" />
@@ -263,6 +270,7 @@
     <ClInclude Include="WheelTire.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="c321GO.cpp" />
     <ClCompile Include="cAI.cpp" />
     <ClCompile Include="cAI_Collider.cpp" />
     <ClCompile Include="cAI_CtrlHandel.cpp" />
@@ -277,6 +285,7 @@
     <ClCompile Include="cCheckBox.cpp" />
     <ClCompile Include="cClient.cpp" />
     <ClCompile Include="cCreateProfile.cpp" />
+    <ClCompile Include="cDataManager.cpp" />
     <ClCompile Include="cFakeBomb.cpp" />
     <ClCompile Include="cFakeImpact.cpp" />
     <ClCompile Include="cFirework.cpp" />
@@ -298,6 +307,7 @@
     <ClCompile Include="cPhysXManager.cpp" />
     <ClCompile Include="cPickUp.cpp" />
     <ClCompile Include="cPlasmaImpact.cpp" />
+    <ClCompile Include="cPlayerData.cpp" />
     <ClCompile Include="cSelectCarLob.cpp" />
     <ClCompile Include="cSelectNetworkLob.cpp" />
     <ClCompile Include="cSkidMark.cpp" />

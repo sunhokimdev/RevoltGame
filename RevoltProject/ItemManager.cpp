@@ -5,6 +5,7 @@
 #include "cImpact.h"
 #include "cGravityball.h"
 #include "cWbomb.h"
+#include "cFirework.h"
 #include "cCar.h"
 #include "cMyBomb.h"
 
@@ -62,6 +63,14 @@ void ItemManager::Init()
 		m_vecItem.push_back(pItem);
 	}
 
+	for (int i = 0; i < 10; i++)
+	{
+		cItem* pItem = new cFirework;
+		pItem->Setup();
+		pItem->SetItemTag(ITEM_FIREWORK);
+		m_vecItem.push_back(pItem);
+	}
+
 	InitCollisionGroup();
 }
 
@@ -102,6 +111,7 @@ void ItemManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
 
 void ItemManager::InitCollisionGroup()
 {
+	//임시 박스
 	SetActorGroup(box1, 1);
 	SetActorGroup(box2, 2);
 	SetActorGroup(box3, 2);
@@ -116,6 +126,7 @@ void ItemManager::InitCollisionGroup()
 	MgrPhysXScene->setGroupCollisionFlag(2, 2, true);
 	MgrPhysXScene->setGroupCollisionFlag(1, 1, true);
 	MgrPhysXScene->setActorGroupPairFlags(3, 3, NX_NOTIFY_ON_END_TOUCH);
+
 }
 
 void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인터*/)
@@ -140,7 +151,8 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 		break;
 		case ITEM_FIREWORK:
 		{
-
+			m_vecItem[m_index]->Create(carDir, carPos);
+			m_vecItem[m_index]->SetIsUse(true);
 		}
 		break;
 		case ITEM_GRAVITY:

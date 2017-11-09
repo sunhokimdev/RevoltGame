@@ -5,7 +5,11 @@
 class cFirework : public cItem
 {
 private:
-	std::vector<ST_PHYSX*>	m_vecPhysX;
+	ST_PHYSX* m_pPhysX;
+
+	D3DXVECTOR3 m_pos;
+	bool m_isSleep;
+
 public:
 	cFirework();
 	virtual ~cFirework();

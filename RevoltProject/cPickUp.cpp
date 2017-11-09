@@ -5,7 +5,7 @@
 cPickUp::cPickUp()
 	:m_isExist(true)
 	,m_isTimerRoll(false)
-	,m_fRespawnTime(10)
+	,m_fRespawnTime(0)
 	,m_fAngle(0)
 {
 }
@@ -30,16 +30,14 @@ void cPickUp::Update()
 	if (m_isTimerRoll)
 	{
 		m_fRespawnTime += g_pTimeManager->GetElapsedTime();
+		if (m_fRespawnTime > 10)
+		{
+			GetPhysXData()->m_pUserData->IsPickUp = NX_TRUE;
+			m_isTimerRoll = false;
+			m_fRespawnTime = 0;
+		}
 	}
-
-	if (m_fRespawnTime > 10)
-	{
-		GetPhysXData()->m_pUserData->IsPickUp = NX_TRUE;
-		m_isTimerRoll = false;
-		m_fRespawnTime = 0;
-	}
-
-	
+		
 	//m_isEnable 체크후
 	//lightIndex를 이용해 라이트 온/오프
 }

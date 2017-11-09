@@ -55,8 +55,11 @@ void cSkidMark::DrawSkidMark()
 {
 	stRubber rubberL,rubberR;
 
-	rubberL.matR = m_pCar->GetCarRotMatrix();
-	rubberR.matR = m_pCar->GetCarRotMatrix();
+	//rubberL.matR = m_pCar->GetCarRotMatrix();
+	rubberL.matR = m_pCar->GetMatrix(0, 1, 0);
+
+	//rubberR.matR = m_pCar->GetCarRotMatrix();
+	rubberR.matR = m_pCar->GetMatrix(0, 1, 0);
 
 	D3DXVECTOR3 posWheelL = {
 		m_pCar->GetNxVehicle()->getWheel(3)->getWheelPos().x,
@@ -72,8 +75,14 @@ void cSkidMark::DrawSkidMark()
 	D3DXVec3TransformCoord(&posWheelL, &posWheelL, &rubberL.matR);
 	D3DXVec3TransformCoord(&posWheelR, &posWheelR, &rubberR.matR);
 
-	rubberL.position = m_pCar->GetPosition() + posWheelL;
-	rubberR.position = m_pCar->GetPosition() + posWheelR;
+	D3DXVECTOR3 carpos = {
+		m_pCar->GetPhysXData()->m_pActor->getGlobalPosition().x,
+		m_pCar->GetPhysXData()->m_pActor->getGlobalPosition().y,
+		m_pCar->GetPhysXData()->m_pActor->getGlobalPosition().z };
+
+	rubberL.position = carpos + posWheelL;
+	rubberR.position = carpos + posWheelR;
+
 	rubberL.position.y += 0.001f;
 	rubberR.position.y += 0.001f;
 		
