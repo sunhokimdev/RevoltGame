@@ -44,6 +44,7 @@ private:
 	int m_max;
 	int m_index;
 	int m_vecIndex[4];
+	eITEM_LIST m_eItemList;
 
 	NxActor* box1;
 	NxActor* box2;
@@ -61,5 +62,8 @@ public:
 	void SetActorGroup(NxActor* actor, NxCollisionGroup group);
 	void InitCollisionGroup();
 	void FireItem(eITEM_LIST tag/*아이템종류*/,cCar* car/*자동차 포인터*/);
+
+	int GetItemID();
+	void SetItemID(eITEM_LIST e) { m_eItemList = e; };
 };
 

@@ -281,13 +281,11 @@ void RacingScene::UpdateCamera()
 				z = RayCamHit.worldImpact.z;
 			}
 		}
-
-
 	}
 
 	if (RayCamVerticalHit.shape != NULL)
 	{
-		if (RayCamHit.shape->getActor().getName())
+		if (RayCamVerticalHit.shape->getActor().getName())
 		{
 			std::string str = RayCamVerticalHit.shape->getActor().getName();
 			if (str == "map")

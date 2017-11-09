@@ -15,6 +15,7 @@ ItemManager::ItemManager()
 	, box3(NULL)
 	, m_max(50)
 	, m_index(0)
+	, m_eItemList(ITEM_NONE)
 {
 }
 
@@ -158,8 +159,10 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 	{
 		case ITEM_WBOMB:
 		{
-			m_vecItem[m_index]->Create(carDir, carPos);
-			m_vecItem[m_index]->SetIsUse(true);
+			m_vecItem[m_vecIndex[0]]->Create(carDir, carPos);
+			m_vecItem[m_vecIndex[0]]->SetIsUse(true);
+
+			m_vecIndex[0]++;
 		}
 		break;
 		case ITEM_GRAVITY:
@@ -195,4 +198,18 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 		if (m_vecIndex[i] == 10)
 			m_vecIndex[i] = 0;
 	}
+}
+
+int ItemManager::GetItemID()
+{
+	if (m_eItemList == ITEM_WBOMB)
+		return 8;
+	else if (m_eItemList == ITEM_FIREWORK)
+		return 6;
+	else if (m_eItemList == ITEM_MYBOMB)
+		return 5;
+	else if (m_eItemList == ITEM_GRAVITY)
+		return 4;
+	else
+		return INT_MAX;
 }

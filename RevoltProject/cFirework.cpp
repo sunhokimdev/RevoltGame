@@ -126,7 +126,7 @@ void cFirework::Render()
 
 void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {
-	m_isTarget = true;
+	m_isTarget = false;
 	dir = angle;
 
 	m_pPhysX->pos.x = pos.x;

@@ -18,12 +18,6 @@ void cWbomb::Setup()
 {
 	cItem::Setup();
 
-	m_pPhysX = new ST_PHYSX;
-
-	m_pPhysX->pPhysX = new cPhysX;
-	m_pPhysX->pTrigger = new cPhysX;
-	m_pPhysX->pMesh = new cMesh;
-
 	ObjectLoader::LoadMesh(m_pPhysX->pMesh, "Objects/wbomb", "wbomb.obj");
 
 	m_pImapt = new cWaterBombImpact;
@@ -47,15 +41,12 @@ void cWbomb::Update()
 
 		NxVec3 n = m_pPhysX->pPhysX->m_pActor->getGlobalPosition();
 
-		printf("%f %f %f\n", n.x, n.y, n.z);
 		m_pImapt->SetIsUse(true);
 		m_pImapt->SetPosition(D3DXVECTOR3(n.x,n.y,n.z));
 		m_isUse = false;
 		m_isSleep = true;
 		m_fTime = 0;
 	}
-
-	printf("asdf\n");
 
 	if (!m_pImapt->GetIsUse())
 	{
@@ -96,8 +87,6 @@ void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	force.y = 3000;
 	force.z = angle.z * 10000;
 
-	printf("%f %f %f\n", force.x, force.y, force.z);
-
 	if (m_isSleep)
 	{
 		m_pPhysX->pPhysX->m_pActor->wakeUp();
@@ -115,8 +104,6 @@ void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(3.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
 		
 		NxVec3 v = m_pPhysX->pPhysX->m_pActor->getGlobalPosition();
-
-		printf("%f %f %f\n", v.x, v.y, v.z);
 
 		m_pPhysX->pTrigger->m_pActor->putToSleep();
 		m_pPhysX->pTrigger->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
