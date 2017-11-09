@@ -577,7 +577,6 @@ NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * 
 	ActorDesc.globalPose.M.setColumnMajor(mat);
 
 	if (pUserData != NULL) ActorDesc.userData = (pUserData);
-
 	NxActor* actor = m_pNxScene->createActor(ActorDesc);
 	if (actor == NULL)
 	{

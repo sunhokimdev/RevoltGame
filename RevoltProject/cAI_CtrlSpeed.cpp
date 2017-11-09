@@ -46,7 +46,7 @@ void cAI_CtrlSpeed::Update()
 			goFront = true;
 			goback = false;
 		}
-		std::cout << "Up" << std::endl;
+		//std::cout << "Up" << std::endl;
 	}
 	else if (rayHitFront->distance < AI_distance)
 	{
@@ -55,7 +55,7 @@ void cAI_CtrlSpeed::Update()
 			goFront = false;
 			goback = true;
 		}
-		std::cout << "Down" << std::endl;
+		//std::cout << "Down" << std::endl;
 	}
 
 
