@@ -4,6 +4,9 @@
 
 class cCar;
 
+enum AISpeedState { E_SpeedStateFront, E_SpeedStateBack };
+enum AIHandleState { E_AIHandle_L, E_AIHandle_F, E_AIHandle_R };
+
 enum AI_TAG
 {
 	AI_TAG_MASTER = 0,
@@ -22,6 +25,7 @@ public:
 	cCar* m_pAICar;
 	NxActor* m_pAICarActor;
 
+	cAI* pParent;
 	std::vector<cAI*> chiledAI;
 
 	ID3DXMesh* pMesh;
@@ -46,6 +50,9 @@ public:
 
 	void RayHitPos(NxRaycastHit* Ray, D3DXVECTOR3* pos);
 	void RayHitDist(NxRaycastHit* Ray, float* dist);
+
+	cAI* FindMaster();
+	cAI* FindAITag(AI_TAG tag);
 
 };
 

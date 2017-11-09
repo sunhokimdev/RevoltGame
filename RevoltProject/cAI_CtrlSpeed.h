@@ -22,7 +22,6 @@ public:
 	float backDelta;
 
 
-	enum AISpeedState { E_SpeedStateFront, E_SpeedStateBack };
 	AISpeedState aiState;
 
 

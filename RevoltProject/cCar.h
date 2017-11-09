@@ -60,6 +60,9 @@ private:
 	SYNTHESIZE(float, m_bastRapTimeCount, BastRapTimeCount);	//가장 짭은 랩 시간
 	SYNTHESIZE(float, m_totlaTimeCount, TotlaTimeCount);		//총 경과된 랩 시간
 
+	//현 체크박스에서 다음 체크박스를 가리키는 방향
+	SYNTHESIZE(D3DXVECTOR3, m_nextDir,NextCheckDir);
+
 	//Item 관련
 	SYNTHESIZE(eITEM_LIST, m_eHoldItem, HoldItem);
 	SYNTHESIZE(int, m_nItemCount, ItemCount);

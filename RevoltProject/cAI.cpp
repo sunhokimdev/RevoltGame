@@ -9,6 +9,7 @@
 cAI::cAI()
 {
 	AITag = AI_TAG_MASTER;
+	pParent = NULL;
 }
 
 
@@ -63,7 +64,7 @@ void cAI::AddAICtrl(cAI * pAI)
 	pAI->m_pAICar = this->m_pAICar;
 	pAI->m_pAICarActor = this->m_pAICarActor;
 	pAI->pMesh = this->pMesh;
-
+	pAI->pParent = this;
 	chiledAI.push_back(pAI);
 }
 
@@ -100,6 +101,28 @@ void cAI::RayHitDist(NxRaycastHit * Ray, float * dist)
 	{
 		//	*pos = D3DXVECTOR3(0, 0, 0);
 	}
+}
+
+cAI * cAI::FindMaster()
+{
+	if (this->pParent == NULL)
+	{
+		return this;
+	}
+	else
+	{
+		return this->pParent->FindMaster();
+	}
+}
+
+cAI * cAI::FindAITag(AI_TAG tag)
+{
+	for each(cAI* p in chiledAI)
+	{
+		if (p->AITag == tag)
+			return p;
+	}
+	return nullptr;
 }
 
 

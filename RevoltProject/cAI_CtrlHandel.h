@@ -6,6 +6,8 @@ class cAI_CtrlHandel :
 public:
 
 	//LPD3DXMESH* pMesh;
+	
+
 
 	//Ray
 	NxRaycastHit* F__Hit;
@@ -29,19 +31,19 @@ public:
 	float R__Dist;
 
 	//distRange;
-	const float F___DistRange = 20.f;
-	const float LRF_DistRange = 20.f;
-	const float LR__DistRange = 5.f;
+	const float F___DistRange = 30.f;
+	const float LRF_DistRange = 30.f;
+	const float LR__DistRange = 20.f;
 
 	//회전값에 적용시킬 비율
-	const float F___DistValue = 0.5f;
-	const float LRF_DistValue = 0.1f;
-	const float LR__DistValue = 0.5f;
+	const float F___DistValue = 1.0f;
+	const float LRF_DistValue = 1.7f;
+	const float LR__DistValue = 1.3f;
 
 
-	// 0.5 > 0 < 0.5
+	// -1 ~ 0 ~ 1
 	float HandleValue;
-	enum AIHandleState { E_AIHandle_L, E_AIHandle_F, E_AIHandle_R };
+
 	AIHandleState aiState;
 
 
@@ -51,5 +53,9 @@ public:
 	void Update();
 	void Render();
 
+
+	float ScaleValue(float dist, float Scale);
+	float CheckBoxPoint(D3DXVECTOR3 dir);
+	float CheckBoxPoint(NxVec3 dir);
 };
 

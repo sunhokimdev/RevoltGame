@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "cAI_CtrlHandel.h"
+#include "cAI_CtrlSpeed.h"
 #include "cCar.h"
+#include "cTrack.h"
+#include "cCheckBox.h"
 
 cAI_CtrlHandel::cAI_CtrlHandel()
 {
@@ -30,7 +33,13 @@ cAI_CtrlHandel::~cAI_CtrlHandel()
 void cAI_CtrlHandel::Update()
 {
 	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.3, 0);
-	NxVec3 dirF_ = m_pAICar->CarArrow(+00);		//dirF_.y = 0;
+
+	float back = 0.0f;
+	cAI_CtrlSpeed* pAiSpeed = (cAI_CtrlSpeed*)FindMaster()->FindAITag(AI_TAG::AI_TAG_SPEED);
+	if (pAiSpeed->aiState == AISpeedState::E_SpeedStateBack) back = 180.f;
+
+
+	NxVec3 dirF_ = m_pAICar->WheelArrow(back + 0);						//dirF_.y = 0;
 	F__Hit = &RAYCAST(raypos, dirF_);
 	RayHitPos(F__Hit, &F__Pos);
 	RayHitDist(F__Hit, &F__Dist);
@@ -39,10 +48,10 @@ void cAI_CtrlHandel::Update()
 	if (F__Dist < F___DistRange)
 		frontValue = ((F___DistRange - F__Dist) / F___DistRange);
 
-	NxVec3 dirLF = m_pAICar->CarArrow(-45 * frontValue);		//dirLF.y = 0;
-	NxVec3 dirRF = m_pAICar->CarArrow(+45 * frontValue);		//dirRF.y = 0;
-	NxVec3 dirL_ = m_pAICar->CarArrow(-90);		//dirL_.y = 0;
-	NxVec3 dirR_ = m_pAICar->CarArrow(+90);		//dirR_.y = 0;
+	NxVec3 dirLF = m_pAICar->WheelArrow((back - 30) * frontValue);		//dirLF.y = 0;
+	NxVec3 dirRF = m_pAICar->WheelArrow((back + 30) * frontValue);		//dirRF.y = 0;
+	NxVec3 dirL_ = m_pAICar->WheelArrow((back - 45) * 1.f);				//dirL_.y = 0;
+	NxVec3 dirR_ = m_pAICar->WheelArrow((back + 45) * 1.f);				//dirR_.y = 0;
 
 	LF_Hit = &RAYCAST(raypos, dirLF);
 	RF_Hit = &RAYCAST(raypos, dirRF);
@@ -62,25 +71,43 @@ void cAI_CtrlHandel::Update()
 
 
 	float LRFScale = LF_Dist + RF_Dist;
-	if (L__Dist < LRF_DistRange)
-		HandleValue += ((LRFScale - LF_Dist) / LRFScale)*LRF_DistValue;
+//	if (LF_Dist < LRF_DistRange)
+	{
+	float add = CheckBoxPoint(dirLF) + ScaleValue(LF_Dist, LRFScale) * LRF_DistValue;
+		HandleValue += add;
+		std::cout << add << " + ";
 
-	if (R__Dist < LRF_DistRange)
-		HandleValue -= ((LRFScale - RF_Dist) / LRFScale)*LRF_DistValue;
+	}
+//	if (RF_Dist <LRF_DistRange)
+	{
+		float add = CheckBoxPoint(dirRF) + ScaleValue(RF_Dist, LRFScale) * LRF_DistValue;
+		HandleValue -= add;
+		std::cout << add << " - ";
+	}
 
+	float LRScale = L__Dist + R__Dist;
+//	if (L__Dist < LR__DistRange)
+	{
+		float add = CheckBoxPoint(dirL_) + ScaleValue(L__Dist, LRScale) * LR__DistValue;
+		HandleValue += add;
+		std::cout << add << " + ";
+	}
+//	if (R__Dist < LR__DistRange)
+	{
+		float add = CheckBoxPoint(dirR_) + ScaleValue(R__Dist, LRScale)* LR__DistValue;
+		HandleValue -= add;
+		std::cout << add << " - ";
+	}
 
-	//float LRScale = L__Dist + R__Dist;
-	//if (L__Dist < LR__DistRange)
-	//	HandleValue += ((LRScale - L__Dist) / LRScale)*LR__DistValue;
-	//
-	//if (R__Dist < LR__DistRange)
-	//	HandleValue -= ((LRScale - R__Dist) / LRScale)*LR__DistValue;
 
 	std::cout << HandleValue << std::endl;
+	//	m_pAICar->GetWheelAngle()
+
+	if (back > 90.f) HandleValue *= -1;
 
 	aiState = E_AIHandle_F;
-	if (HandleValue < -0.0f) aiState = E_AIHandle_L;
-	if (HandleValue > +0.0f) aiState = E_AIHandle_R;
+	if (HandleValue < -0.2f) aiState = E_AIHandle_L;
+	if (HandleValue > +0.2f) aiState = E_AIHandle_R;
 
 	SetBitKey(eBIT_KEY::E_BIT_LEFT, aiState == E_AIHandle_L);
 	SetBitKey(eBIT_KEY::E_BIT_RIGHT, aiState == E_AIHandle_R);
@@ -118,4 +145,21 @@ void cAI_CtrlHandel::Render()
 	D3DXMatrixTranslation(&mat16, R__Pos.x, R__Pos.y, R__Pos.z);
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
 	(pMesh)->DrawSubset(0);
+}
+
+float cAI_CtrlHandel::ScaleValue(float dist, float Scale)
+{
+	return ((Scale - dist) / Scale);
+}
+
+//0~1 Á¡
+float cAI_CtrlHandel::CheckBoxPoint(D3DXVECTOR3 dir)
+{
+	D3DXVec3Normalize(&dir, &dir);
+	return -D3DXVec3Dot(&m_pAICar->GetNextCheckDir(), &dir) * 0.5f + 0.5f;
+}
+
+float cAI_CtrlHandel::CheckBoxPoint(NxVec3 dir)
+{
+	return CheckBoxPoint(D3DXVECTOR3(dir.x, dir.y, dir.z));
 }

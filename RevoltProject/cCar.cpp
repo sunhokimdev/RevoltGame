@@ -385,13 +385,13 @@ void cCar::Render()
 	}
 
 
-	if (m_isAI)
-	{
+	//if (m_isAI)
+	//{
 		for each (cAI* pAI in m_vecAI)
 		{
 			pAI->Render();
 		}
-	}
+	//}
 
 	if (m_pSkidMark)
 	{
@@ -455,6 +455,9 @@ void cCar::TrackCheck()
 			m_rapTimeCount = 0.f;
 
 			if (!m_isAI) m_pInGameUI->SetLabCnt(m_countRapNum);
+
+			cCheckBox* nextCheckBox = (cCheckBox*)m_pTrack->GetCheckBoxs()[GetCurrCheckBoxID()];
+			m_nextDir = nextCheckBox->ToNextCheckBoxDir();
 		}
 		return;
 	}
@@ -469,6 +472,8 @@ void cCar::TrackCheck()
 		cCheckBox* pCheckBox = (cCheckBox*)(*m_pTrack->GetCheckBoxsPt())[m_nextCheckBoxID];
 		m_currCheckBoxID = m_nextCheckBoxID;
 		m_nextCheckBoxID = pCheckBox->GetNextCheckBox()->GetPhysXData()->m_pUserData->CheckBoxID;
+
+		m_nextDir = ((cCheckBox*)(*m_pTrack->GetCheckBoxsPt())[GetCurrCheckBoxID()])->ToNextCheckBoxDir();
 
 		if (m_currCheckBoxID == 0)
 		{
