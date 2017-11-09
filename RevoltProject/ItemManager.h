@@ -43,6 +43,7 @@ private:
 //	std::map<eITEM_LIST, std::vector<cItem*>>	m_mapItem;
 	int m_max;
 	int m_index;
+	int m_vecIndex[4];
 
 	NxActor* box1;
 	NxActor* box2;
