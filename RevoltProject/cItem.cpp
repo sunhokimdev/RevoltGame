@@ -27,6 +27,7 @@ void cItem::Setup()
 	m_pPhysX = new ST_PHYSX;
 	m_pPhysX->pPhysX = new cPhysX;
 	m_pPhysX->pTrigger = new cPhysX;
+	m_pPhysX->pMesh = new cMesh;
 }
 
 void cItem::Update()

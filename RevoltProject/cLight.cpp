@@ -104,7 +104,7 @@ void cLight::Destroy()
 {
 	//Object::Destroy();
 	g_pD3DDevice->LightEnable(m_nIndex, false);
-	g_pD3DDevice->SetLight(m_nIndex, NULL);
+	//g_pD3DDevice->SetLight(m_nIndex, NULL);
 }
 
 void cLight::Switch(bool on)

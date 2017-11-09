@@ -57,6 +57,7 @@ void UITextImageView::SetTexture(char * szFullPath)
 		m_textPos.x = 8;
 		m_textPos.y = 16;
 	}
+
 }
 
 std::string UITextImageView::GetCarName()
@@ -197,7 +198,17 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 	int tYPos = m_matWorld._42;
 	std::string tStr = "";
 
-	int tTempValue = (m_stSize.nWitdh / m_textPos.x);
+	int tTempValue;
+
+	if (m_textPos.x != 0)
+	{
+		tTempValue = (m_stSize.nWitdh / m_textPos.x);
+	}
+	else
+	{
+		tTempValue = 1;
+	}
+
 
 	if (m_isHidden) return;
 	if (pSprite == NULL) return;

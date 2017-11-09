@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CameraManager.h"
+#include "GameNode.h"
 
 CameraManager::CameraManager()
 	: m_vEye(0, 2, -20)
@@ -38,7 +39,7 @@ void CameraManager::Update()
 {
 	//	Move();
 
-	m_fCamTime += 0.0005f;
+	m_fCamTime += 0.001f;
 
 	D3DXMATRIXA16 matR, matRX, matRY;
 	D3DXMatrixRotationX(&matRX, m_vCamRotAngle.x);
@@ -50,9 +51,16 @@ void CameraManager::Update()
 	{
 		m_vEye = *m_pvTarget;
 		m_vLookAt = m_vNextLootAt;
-
-		//D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fCamTime);
-		//D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
+		//if (g_SceneManager->GetCurrScene()->GetSceneName() == "Race")
+		//{
+		//	m_vEye = *m_pvTarget;
+		//	m_vLookAt = m_vNextLootAt;
+		//}
+		//else
+		//{
+		//	D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fCamTime);
+		//	D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
+		//}
 	}
 	else m_vEye = D3DXVECTOR3(0, 0, 0);
 
@@ -76,85 +84,10 @@ void CameraManager::Destroy()
 
 void CameraManager::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	switch (message)
-	{
-	case WM_LBUTTONDOWN:
-		//m_ptPrevMouse.x = LOWORD(lParam);
-		//m_ptPrevMouse.y = HIWORD(lParam);
-		//m_isLButtonDown = true;
-		break;
 
-	case WM_LBUTTONUP:
-		//m_isLButtonDown = false;
-		break;
-
-	case WM_MOUSEMOVE:
-		//if (m_isLButtonDown)
-		//{
-		//	POINT ptCurrMouse;
-		//	ptCurrMouse.x = LOWORD(lParam);
-		//	ptCurrMouse.y = HIWORD(lParam);
-		//
-		//	float fDeltaX = (float)ptCurrMouse.x - m_ptPrevMouse.x;
-		//	float fDeltaY = (float)ptCurrMouse.y - m_ptPrevMouse.y;
-		//
-		//	m_vCamRotAngle.y += (fDeltaX / 100.0f);
-		//	m_vCamRotAngle.x += (fDeltaY / 100.0f);
-		//	m_ptPrevMouse = ptCurrMouse;
-		//}
-		break;
-
-	case WM_MOUSEWHEEL:
-		//m_fCameraDistance -=
-		//	(GET_WHEEL_DELTA_WPARAM(wParam) / 30.0f);
-		//
-		//if (m_fCameraDistance < 0.0001f)
-		//	m_fCameraDistance = 0.0001f;
-
-		break;
-	}
 }
 
 void CameraManager::Move()
 {
-	//if (g_pKeyManager->isOnceKeyDown(VK_RBUTTON))
-	//{
-	//	m_ptPrevMouse = g_ptMouse;
-	//}
-	float KeyMoveSpd = 0.5f;
 
-	if (g_pKeyManager->isStayKeyDown(VK_LEFT))
-	{
-		m_vEye.x -= KeyMoveSpd;
-		m_vLookAt.x -= KeyMoveSpd;
-	}
-	if (g_pKeyManager->isStayKeyDown(VK_RIGHT))
-	{
-		m_vEye.x += KeyMoveSpd;
-		m_vLookAt.x += KeyMoveSpd;
-	}
-	if (g_pKeyManager->isStayKeyDown(VK_DOWN))
-	{
-		if (g_pKeyManager->isStayKeyDown(VK_CONTROL))
-		{
-			m_vEye.y -= KeyMoveSpd;
-		}
-		else
-		{
-			m_vEye.z -= KeyMoveSpd;
-			m_vLookAt.z -= KeyMoveSpd;
-		}
-	}
-	if (g_pKeyManager->isStayKeyDown(VK_UP))
-	{
-		if (g_pKeyManager->isStayKeyDown(VK_CONTROL))
-		{
-			m_vEye.y += KeyMoveSpd;
-		}
-		else
-		{
-			m_vEye.z += KeyMoveSpd;
-			m_vLookAt.z += KeyMoveSpd;
-		}
-	}
 }

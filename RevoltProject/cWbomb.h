@@ -9,7 +9,6 @@ class cWaterBombImpact;
 class cWbomb : public cItem
 {
 private:
-	ST_PHYSX* m_pPhysX;
 	cWaterBombImpact* m_pImapt;
 	bool m_isSleep;
 public:

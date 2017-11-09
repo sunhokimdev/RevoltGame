@@ -10,10 +10,10 @@ cSkyBox::~cSkyBox()
 {
 }
 
-void cSkyBox::Setup()
+void cSkyBox::Setup(std::string folder, std::string fileName)
 {
 	Object::Setup();
-	m_pMeshData->LoadMesh("Maps/SkyBox", "SkyBox.obj");
+	m_pMeshData->LoadMesh(folder, fileName);
 }
 
 void cSkyBox::Update()

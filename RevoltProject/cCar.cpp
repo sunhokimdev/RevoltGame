@@ -13,7 +13,7 @@
 cCar::cCar()
 	:m_pSkidMark(NULL)
 {
-	m_countRapNum = 2;
+	m_countRapNum = -1;
 	m_currCheckBoxID = -1;
 	m_rapTimeCount = 0.f;
 	m_totlaTimeCount = 0.f;
@@ -236,8 +236,8 @@ void cCar::CreateItem()
 	{
 		while (1)
 		{
-			//m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
-			m_eHoldItem = eITEM_LIST::ITEM_WBOMB;
+			m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
+			//m_eHoldItem = eITEM_LIST::ITEM_WBOMB;
 			if (m_eHoldItem) break;
 		}
 		m_nItemCount = 1;
@@ -299,6 +299,8 @@ void cCar::Update()
 	m_carNxVehicle->getActor()->addForce(NxVec3(0, 0.001, 0));
 	INPUT_KEY.reset();
 
+	SettingCarPos();
+
 	CtrlPlayer();
 
 	if (g_pKeyManager->isStayKeyDown(VK_TAB))
@@ -316,8 +318,8 @@ void cCar::Update()
 	if (INPUT_KEY[E_BIT_REPOS]) RePosition();
 
 	// PickUp 충돌
-	if (INPUT_KEY[E_BIT_FLIP]) CollidePickUp();
-
+	//if (INPUT_KEY[E_BIT_FLIP]) CollidePickUp();
+	CollidePickUp();
 	//아이템 사용
 	if (INPUT_KEY[E_BIT_ITEM]) UsedItem();
 
@@ -535,16 +537,16 @@ void cCar::CtrlPlayer()
 		{
 			if (g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM))
 			{
-				g_pItemManager->FireItem(ITEM_GRAVITY, this);
-
 				if (m_eHoldItem != ITEM_NONE)
 				{
-					g_pItemManager->FireItem(ITEM_GRAVITY, this);
+					g_pItemManager->FireItem(m_eHoldItem, this);
+
 					//아이템 사용 함수 호츨
 					m_nItemCount--;
 					if (m_nItemCount == 0)
 					{
 						m_eHoldItem = ITEM_NONE;
+						g_pItemManager->SetItemID(ITEM_NONE);
 						GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
 					}
 					std::cout << "FIRE!" << std::endl;
@@ -554,25 +556,25 @@ void cCar::CtrlPlayer()
 				}
 			}
 		}
-		//else
-		//{
-		//	if (m_keySet.ctrl)
-		//	{
-		//		if (m_eHoldItem != ITEM_NONE)
-		//		{
-		//			g_pItemManager->FireItem(ITEM_MYBOMB, this);
-		//			//아이템 사용 함수 호츨
-		//			m_nItemCount--;
-		//			if (m_nItemCount == 0)
-		//			{
-		//				m_eHoldItem = ITEM_NONE;
-		//				GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
-		//			}
-		//			std::cout << "FIRE!" << std::endl;
-		//
-		//		}
-		//	}
-		//}
+		else
+		{
+			if (m_keySet.ctrl)
+			{
+				if (m_eHoldItem != ITEM_NONE)
+				{
+					g_pItemManager->FireItem(m_eHoldItem, this);
+					//아이템 사용 함수 호츨
+					m_nItemCount--;
+					if (m_nItemCount == 0)
+					{
+						m_eHoldItem = ITEM_NONE;
+						GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
+					}
+					std::cout << "FIRE!" << std::endl;
+		
+				}
+			}
+		}
 
 		//RePosition
 
@@ -821,10 +823,13 @@ void cCar::DrawSkidMark()
 	float rpm = GetNxVehicle()->getWheel(0)->getRpm() / m_maxRpm;
 	if (fabsf(rpm) > 0.8f && fabs(m_wheelAngle) > 0.9f)
 	{
-		if (RayCarHit.distance < 0.2f
-			&& RayCarHit.shape->getActor().getName() == "map")
+		if (RayCarHit.shape->getActor().getName())
 		{
-			m_pSkidMark->DrawSkidMark();
+			std::string str = RayCarHit.shape->getActor().getName();
+			if (RayCarHit.distance < 0.2f && str == "map")
+			{
+				m_pSkidMark->DrawSkidMark();
+			}
 		}
 	}
 
@@ -880,6 +885,7 @@ void cCar::CollidePickUp()
 		{
 			CreateItem();
 			std::cout << m_eHoldItem << " - " << m_nItemCount << std::endl;
+			g_pItemManager->SetItemID(m_eHoldItem);
 			//GetPhysXData()->m_pUserData->IsPickUp == NX_FALSE;
 		}
 	}
