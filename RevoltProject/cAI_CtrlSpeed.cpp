@@ -6,11 +6,9 @@
 cAI_CtrlSpeed::cAI_CtrlSpeed()
 {
 	rayHitFront = NULL;
-
-	pMesh = new LPD3DXMESH;
+	rayHitBack = NULL;
 
 	aiState = E_SpeedStateFront;
-
 
 	frontDistPrev = 0;
 	frontDistCurr = 0;
@@ -40,8 +38,8 @@ cAI_CtrlSpeed::~cAI_CtrlSpeed()
 void cAI_CtrlSpeed::Update()
 {
 	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.3, 0);
-	NxVec3 dirFront = m_pAICar->WheelArrow(0, false); dirFront.y = 0;
-	NxVec3 dirBack = m_pAICar->WheelArrow(180, true); dirBack.y = 0;
+	NxVec3 dirFront = m_pAICar->WheelArrow(0, false); //dirFront.y = 0;
+	NxVec3 dirBack = m_pAICar->WheelArrow(180, true); //dirBack.y = 0;
 
 	dirFront.normalize();
 	dirBack.normalize();
@@ -98,13 +96,22 @@ void cAI_CtrlSpeed::Update()
 
 void cAI_CtrlSpeed::Render()
 {
-	D3DXCreateSphere(g_pD3DDevice, 0.5, 8, 8, pMesh, NULL);
+//	g_pD3DDevice->SetTransform(D3DTS_WORLD);
+	D3DMATERIAL9 material;
+	material.Ambient = CX_YELLOW;
+	material.Diffuse = CX_YELLOW;
+	material.Specular = CX_YELLOW;
+	material.Emissive = CX_YELLOW;
+	g_pD3DDevice->SetMaterial(&material);
+
+
+//	D3DXCreateSphere(g_pD3DDevice, 0.5, 8, 8, pMesh, NULL);
 	D3DXMATRIXA16 mat16;
 	D3DXMatrixTranslation(&mat16, FrontPos.x, FrontPos.y, FrontPos.z);
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
-	(*pMesh)->DrawSubset(0);
+	(pMesh)->DrawSubset(0);
 
 	D3DXMatrixTranslation(&mat16, BackPos.x, BackPos.y, BackPos.z);
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
-	(*pMesh)->DrawSubset(0);
+	(pMesh)->DrawSubset(0);
 }

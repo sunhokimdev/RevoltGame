@@ -24,6 +24,8 @@ public:
 
 	std::vector<cAI*> chiledAI;
 
+	ID3DXMesh* pMesh;
+
 	cAI();
 	~cAI();
 
@@ -40,5 +42,10 @@ public:
 
 	void SetBitKey(eBIT_KEY keySet, bool onoff);
 	bool GetBytKey(eBIT_KEY keyGet);
+
+
+	void RayHitPos(NxRaycastHit* Ray, D3DXVECTOR3* pos);
+	void RayHitDist(NxRaycastHit* Ray, float* dist);
+
 };
 

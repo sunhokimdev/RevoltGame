@@ -3,10 +3,9 @@
 class cAI_CtrlSpeed :
 	public cAI
 {
-private:
+public:
 
 	//	cPhysX* pCollider;
-	LPD3DXMESH* pMesh;
 
 	NxRaycastHit* rayHitFront;
 	NxRaycastHit* rayHitBack;
