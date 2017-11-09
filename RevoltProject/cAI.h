@@ -4,9 +4,21 @@
 
 class cCar;
 
+enum AI_TAG
+{
+	AI_TAG_MASTER = 0,
+	AI_TAG_SPEED,
+	AI_TAG_HANDLE,
+	AI_TAG_03,
+	AI_TAG_04,
+	AI_TAG_05,
+};
+
 class cAI
 {
 public:
+	AI_TAG AITag;
+
 	cCar* m_pAICar;
 	NxActor* m_pAICarActor;
 

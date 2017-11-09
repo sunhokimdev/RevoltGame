@@ -7,6 +7,7 @@
 
 cAI::cAI()
 {
+	AITag = AI_TAG_MASTER;
 }
 
 
