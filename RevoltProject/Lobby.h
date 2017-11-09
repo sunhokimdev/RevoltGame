@@ -45,7 +45,7 @@ struct ST_Object
 	{
 		m_time = 0.0f;
 		m_count = 0;
-		m_target = D3DXVECTOR3(-1, 2, -55);
+		m_target = D3DXVECTOR3(0, 0, 0);
 		m_camLookAt = D3DXVECTOR3(0, 0, 0);
 	}
 };
@@ -64,6 +64,10 @@ protected:
 	float	m_time;								// 변경 시간을 나타내는 타임 변수
 	int		m_select;							// 현재 위아래 커서의 위치
 	int		m_leftAndrightSelect;				// 현재 오른쪽 왼쪽 커서의 위치;
+
+	float m_CamLerpSpd;
+	D3DXVECTOR3 m_vCamPos;
+	D3DXVECTOR3 m_vLookAt;
 
 	//===================================================================
 	// - written by 윤동훈
