@@ -16,6 +16,7 @@ cFirework::cFirework()
 cFirework::~cFirework()
 {
 	SAFE_DELETE(m_pEffect);
+	SAFE_DELETE(m_pTail);
 }
 
 void cFirework::Setup()
@@ -65,12 +66,12 @@ void cFirework::Update()
 		}
 		else
 		{
-			dir.y = 0.0f - dir.y;
+			dir.y = 0.0f;
 			D3DXVec3Normalize(&dir, &dir);
 
-			force.x = dir.x * 500;
-			force.y = dir.y * 500;
-			force.z = dir.z * 500;
+			force.x = dir.x * 300;
+			force.y = -dir.y * 1000;
+			force.z = dir.z * 300;
 		}
 		
 		m_pPhysX->pPhysX->m_pActor->addForce(force);
@@ -139,7 +140,7 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	D3DXVec3Normalize(&angle,&angle);
 
 	force.x = angle.x * 50;
-	force.y = 2000;
+	force.y = 1500;
 	force.z = angle.z * 50;
 	
 	if (m_isSleep)

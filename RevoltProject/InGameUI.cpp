@@ -497,9 +497,9 @@ void InGameUI::UpdateSpeed()
 	if (fTemp >= 999)
 		fTemp = 999;
 
-	int nOne;
-	int nTen;
-	int nHun;
+	int nOne = FONT2_NUM0;
+	int nTen = FONT2_NUM0;
+	int nHun = FONT2_NUM0;
 
 	nOne = (int)(fTemp % 10) + FONT2_NUM0;
 	nTen = (int)((fTemp / 10)%10) + FONT2_NUM0;

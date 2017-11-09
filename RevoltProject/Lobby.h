@@ -65,6 +65,9 @@ protected:
 	int		m_select;							// 현재 위아래 커서의 위치
 	int		m_leftAndrightSelect;				// 현재 오른쪽 왼쪽 커서의 위치;
 
+
+
+	D3DXVECTOR3 eye;
 	//===================================================================
 	// - written by 윤동훈
 	// - 맵 선택

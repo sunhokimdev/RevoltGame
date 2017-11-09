@@ -42,6 +42,7 @@ Lobby::Lobby()
 	, m_leftAndrightSelect(0)
 	, m_stateMapType(NONE)
 	, m_pfileList(NULL)
+	, eye(0, 2, -20)
 {
 }
 
@@ -334,7 +335,8 @@ void Lobby::KeyUpdate()
 		if (m_stateLobby > INTRO3)
 		{
 			g_pSoundManager->Play("menuNext.wav", 1.0f);
-			g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
+			D3DXVec3Lerp(&eye, &eye, &m_mapLobby[m_stateLobby]->m_target, 0.0005f);
+			g_pCamManager->Setup(&eye);      // 카메라 변경
 			g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			m_time = 0.0f;
 			m_select = 0;
