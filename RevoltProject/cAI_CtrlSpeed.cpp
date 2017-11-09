@@ -7,6 +7,8 @@ cAI_CtrlSpeed::cAI_CtrlSpeed()
 {
 	rayHitFront = NULL;
 
+	pMesh = new LPD3DXMESH;
+
 	aiState = E_SpeedStateFront;
 
 
@@ -35,24 +37,31 @@ cAI_CtrlSpeed::~cAI_CtrlSpeed()
 
 void cAI_CtrlSpeed::Update()
 {
-	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.2, 0);
+	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 1, 0);
 	NxVec3 dirFront = m_pAICar->WheelArrow(0, false); dirFront.y = 0;
-	NxVec3 dirBack = m_pAICar->WheelArrow(0, true); dirBack.y = 0;
+	NxVec3 dirBack = m_pAICar->WheelArrow(180, true); dirBack.y = 0;
 	dirFront.normalize();
 	dirBack.normalize();
 
-	rayHitFront = &RAYCAST(raypos, dirFront, AI_distanceFront);
-	rayHitBack = &RAYCAST(raypos, dirBack, AI_distanceBack);
+	rayHitFront = &RAYCAST(raypos, dirFront, 100);
+	rayHitBack = &RAYCAST(raypos, dirBack, 100);
 
-	if (rayHitFront->shape)
+	if (rayHitBack->shape)
 	{
 		backDistCurr = rayHitBack->distance;
 		backDelta = backDistCurr - backDistPrev;
+
+		NxVec3 pos = rayHitFront->worldImpact;
+		BackPos = D3DXVECTOR3(pos.x, pos.y, pos.z);
+
 	}
 	if (rayHitFront->shape)
 	{
 		frontDistCurr = rayHitFront->distance;
 		frontDelta = frontDistCurr - frontDistPrev;
+
+		NxVec3 pos = rayHitFront->worldImpact;
+		FrontPos = D3DXVECTOR3(pos.x, pos.y, pos.z);
 	}
 
 	//
@@ -63,24 +72,41 @@ void cAI_CtrlSpeed::Update()
 		if (frontDistCurr < AI_distanceFront)
 		{
 			aiState = E_SpeedStateBack;
+//			std::cout << "Back" << std::endl;
 		}
 	}
+	
+
 
 	if ((backDelta < AI_value) || (backDistCurr < AI_distanceMin))
 	{
 		if (backDistCurr < AI_distanceBack)
 		{
 			aiState = E_SpeedStateFront;
+//			std::cout << "Front" << std::endl;
 		}
 	}
 
 
-//	std::cout << aiState << std::endl;
+	//	std::cout << aiState << std::endl;
 
-	//
+		//
 	frontDistPrev = frontDistCurr;
 	backDistPrev = backDistCurr;
 
 	SetBitKey(eBIT_KEY::E_BIT_UP, aiState == E_SpeedStateFront);
 	SetBitKey(eBIT_KEY::E_BIT_DOWN, aiState == E_SpeedStateBack);
+}
+
+void cAI_CtrlSpeed::Render()
+{
+	D3DXCreateSphere(g_pD3DDevice, 0.5, 8, 8, pMesh, NULL);
+	D3DXMATRIXA16 mat16;
+	D3DXMatrixTranslation(&mat16, FrontPos.x, FrontPos.y, FrontPos.z);
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
+	(*pMesh)->DrawSubset(0);
+
+	D3DXMatrixTranslation(&mat16, BackPos.x, BackPos.y, BackPos.z);
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
+	(*pMesh)->DrawSubset(0);
 }

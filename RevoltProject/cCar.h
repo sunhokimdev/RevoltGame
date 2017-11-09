@@ -115,7 +115,7 @@ public:
 	void CarFlip();
 
 
-
+	//e
 	NxVec3 CarArrow(float radianAngle = 0);
-	NxVec3 WheelArrow(float radianAngle = 0 , bool back = false);
+	NxVec3 WheelArrow(float degAngle = 0 , bool back = false);
 };

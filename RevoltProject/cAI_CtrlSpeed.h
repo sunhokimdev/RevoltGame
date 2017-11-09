@@ -5,9 +5,13 @@ class cAI_CtrlSpeed :
 {
 private:
 	//	cPhysX* pCollider;
+	LPD3DXMESH* pMesh;
 
 	NxRaycastHit* rayHitFront;
 	NxRaycastHit* rayHitBack;
+
+	D3DXVECTOR3 FrontPos;
+	D3DXVECTOR3 BackPos;
 
 	float frontDistPrev;
 	float frontDistCurr;
@@ -33,5 +37,6 @@ public:
 	~cAI_CtrlSpeed();
 
 	void Update();
+	void Render();
 };
 
