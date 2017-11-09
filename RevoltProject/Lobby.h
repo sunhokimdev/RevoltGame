@@ -78,6 +78,12 @@ protected:
 	// - 프로필 Load/Save작업
 	// - 로비 구현 할 때 이 클래스 내부에서만 처리할 것
 	//===================================================================
+	std::vector<std::string> m_vProfileList;	// 프로필 목록
+	std::string				 m_PlayerName;		// 선택된 이름
+	bool					 m_isCreate;		// 프로필 생성할지 확인
+	bool					 m_isEnterName;		// 이름 입력 확인
+	bool					 m_isflag;			// 이름 불러오기
+
 	ProfileList*		 	 m_pfileList;		// 프로필 리스트
 	Map*					 m_pMap;
 	std::vector<std::string> m_vecMapName;

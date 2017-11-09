@@ -76,11 +76,11 @@ void ItemManager::Init()
 
 void ItemManager::Update()
 {
-	for (int i = 0;i < m_index;++i)
+	for (int i = 0; i < m_index; ++i)
 	{
 		m_vecItem[i]->Update();
 	}
-	for (int i = 0;i < m_index;++i)
+	for (int i = 0; i < m_index; ++i)
 	{
 		m_vecItem[i]->LastUpdate();
 	}
@@ -88,7 +88,7 @@ void ItemManager::Update()
 
 void ItemManager::Render()
 {
-	for (int i = 0;i < m_index;++i)
+	for (int i = 0; i < m_index; ++i)
 	{
 		m_vecItem[i]->Render();
 	}
@@ -135,7 +135,7 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 	D3DXMATRIXA16 matR;
 	D3DXMatrixIdentity(&matR);
 	matR = car->GetCarRotMatrix();
-	D3DXVECTOR3 carDir = { 1,1,0 }; // 자동차 정면 방향벡터
+	D3DXVECTOR3 carDir = { 1,0,0 }; // 자동차 정면 방향벡터
 	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
 	
 	if (m_index == m_vecItem.size())

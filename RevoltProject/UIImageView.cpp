@@ -83,8 +83,8 @@ void UIImageView::Update()
 			srand(time(NULL));
 			if (m_itemID > MAX_ID)
 			{
-				//m_itemID = rand() % 12;
-				m_itemID = m_pCar->GetHoldItem();
+				m_itemID = rand() % 12;
+				//m_itemID = m_pCar->GetHoldItem();
 			}
 				
 			if (m_itemPrevID > MAX_ID)

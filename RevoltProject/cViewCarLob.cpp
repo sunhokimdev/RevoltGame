@@ -40,6 +40,7 @@ void cViewCarLob::Setup()
 	UITextImageView* pImageView4 = new UITextImageView;
 	pImageView4->SetTexture("UIImage/font1.png");
 	pImageView4->SetText("SELECT CAR");
+	pImageView4->SetIndex(INT_MAX);
 	pImageView4->SetXSize(1.5f);
 	pImageView4->SetYSize(1.5f);
 	pImageView4->SetPosition(180, 45);

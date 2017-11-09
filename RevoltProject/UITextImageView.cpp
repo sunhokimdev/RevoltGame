@@ -9,6 +9,9 @@
 
 int* UITextImageView::m_Select;
 int* UITextImageView::m_LeftAndRightSelect;
+std::string	UITextImageView::m_PlayerName;
+bool* UITextImageView::m_isCreate;
+bool* UITextImageView::m_isflag;
 
 UITextImageView::UITextImageView()
 	: m_pTexture(NULL)
@@ -31,6 +34,7 @@ UITextImageView::~UITextImageView()
 	SAFE_RELEASE(m_pTexture);
 	SAFE_DELETE(m_Select);
 	SAFE_DELETE(m_LeftAndRightSelect);
+	SAFE_DELETE(m_isCreate);
 }
 
 void UITextImageView::SetTexture(char * szFullPath)
@@ -67,6 +71,13 @@ std::string UITextImageView::GetCarName()
 void UITextImageView::KeyEvent()
 {
 	int tSize = m_chatText.size();
+	
+	if (!(*m_isflag))
+	{
+		*m_isflag = true;
+		m_chatText = "";
+		m_chatText += m_PlayerName;
+	}
 
 	if (g_pKeyManager->isOnceKeyDown('A'))
 		m_chatText += 'a';
@@ -175,6 +186,13 @@ void UITextImageView::Update()
 	if (m_isChatingText)
 	{
 		KeyEvent();
+
+		if (*m_isCreate && (m_chatText.size() > 0))
+		{
+			*m_isCreate = false;
+			UserFileLoader* Create = new UserFileLoader;
+			Create->CreateProfile(m_chatText);
+		}
 
 		if ((m_cursorTime / CURSORRENDER) % 2 == 1)
 			m_isCursorRender = true;

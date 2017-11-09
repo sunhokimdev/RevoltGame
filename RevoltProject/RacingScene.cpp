@@ -54,19 +54,19 @@ void RacingScene::Setup()
 
 
 	int i = 0;
-	for each(cPlayerData* p in g_pDataManager->vecPlayerData)
-	{
-		if (i + 1 == m_pTrack->GetStartPositions().size()) break;
-		CreateCar(m_pTrack->GetStartPositions()[i], i, p->CAR_NAME, p->IsAI);
-		i++;
-	}
+
+	//for each(cPlayerData* p in g_pDataManager->vecPlayerData)
+	//{
+	//	if (i + 1 == m_pTrack->GetStartPositions().size()) break;
+	//	CreateCar(m_pTrack->GetStartPositions()[i], i, p->CAR_NAME, p->IsAI);
+	//	i++;
+	//}
+
 	if (i == 0)
 	{
 		CreateCar(m_pTrack->GetStartPositions()[i], i,"tc1", false);
 		CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
 	}
-
-
 
 	m_pInGameUI = new InGameUI;
 	LinkUI(0); // 인게임 InGameUI::Setup(); 전에 위치해야함, new InGameUI 가 선언되어 있어야 함.

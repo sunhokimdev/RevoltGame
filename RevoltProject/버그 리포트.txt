@@ -26,6 +26,3 @@ void cMyBomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 m_pCar->GetPhysXData()->m_pUserData->isMyBomb = true;
 에서 NULL 값이 발샹하여 변수를 찾아 갈 수 없음.
 픽업(번개)를 먹은 뒤 발생함.
-
-#2
-화면에 숫자 3 이 사라지지 않음.

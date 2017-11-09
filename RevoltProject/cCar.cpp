@@ -461,6 +461,7 @@ void cCar::TrackCheck()
 			m_countRapNum++;
 			m_pInGameUI->SetLabCnt(m_countRapNum);
 			m_pInGameUI->UpdateLastTime();
+			m_pInGameUI->CompareBestTime();
 			m_pInGameUI->SetLabElapseTime(0);
 			m_pInGameUI->SetLabMinOneth(FONT2_NUM0);
 			m_pInGameUI->SetLabMinTenth(FONT2_NUM0);
@@ -687,7 +688,6 @@ void cCar::CarMove()
 		else wheel->tick(false, 0, m_breakPower, g_pTimeManager->GetElapsedTime());
 	}
 }
-
 
 void cCar::UsedItem()
 {

@@ -27,6 +27,9 @@ public:
 
 	static int*			m_Select;						// 현재 텍스트의 선택된 위치
 	static int*			m_LeftAndRightSelect;			// 현재 오른쪽 왼쪽 선택된 위치
+	static std::string	m_PlayerName;			// 이름 정보
+	static bool*		m_isCreate;				// 프로필 생성할지 확인
+	static bool*		m_isflag;						// 프로필 이름 불러오기 내용
 
 	SYNTHESIZE(std::string, m_sText, Text);				// 텍스트의 내용을 저장하는 변수
 	SYNTHESIZE(int, m_index, Index);					// 현재 위치에서 텍스트의 위치
