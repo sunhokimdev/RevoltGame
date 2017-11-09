@@ -42,13 +42,12 @@ void cAI_CtrlSpeed::Update()
 	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.3, 0);
 	NxVec3 dirFront = m_pAICar->WheelArrow(0, false); dirFront.y = 0;
 	NxVec3 dirBack = m_pAICar->WheelArrow(180, true); dirBack.y = 0;
-	std::cout << dirBack.x << std::endl;
 
 	dirFront.normalize();
 	dirBack.normalize();
 
-	rayHitFront = &RAYCAST(raypos, dirFront, 100);//,ePhysXTag::E_PHYSX_TAG_RAYCAST_TO_AI);
-	rayHitBack = &RAYCAST(raypos, dirBack, 100);
+	rayHitFront = &RAYCAST(raypos, dirFront);
+	rayHitBack = &RAYCAST(raypos, dirBack);
 
 	if (rayHitBack->shape)
 	{
