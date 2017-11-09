@@ -135,6 +135,9 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	
 	NxVec3 force;
 
+
+	D3DXVec3Normalize(&angle,&angle);
+
 	force.x = angle.x * 50;
 	force.y = 2000;
 	force.z = angle.z * 50;
