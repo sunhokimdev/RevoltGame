@@ -300,19 +300,13 @@ void cCar::Update()
 	INPUT_KEY.reset();
 
 	CtrlPlayer();
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> c8722a07111c9ac47fc59bb100ac26dcd9dbbdf5
-=======
 	if (g_pKeyManager->isStayKeyDown(VK_TAB))
 	{
 		if (m_isAI) CtrlAI();
 		else CtrlPlayer();
 	}
 
->>>>>>> origin/LeeGeonBae
 	//이하 AI, PLAYER 의 동일 사용 함수
 
 	//자동차 움직임

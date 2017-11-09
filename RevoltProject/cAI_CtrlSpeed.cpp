@@ -77,12 +77,6 @@ void cAI_CtrlSpeed::Update()
 			aiState = E_SpeedStateBack;
 			//			std::cout << "Back" << std::endl;
 		}
-<<<<<<< HEAD
-=======
-	}
-
->>>>>>> c8722a07111c9ac47fc59bb100ac26dcd9dbbdf5
-
 		//std::cout << "Up" << std::endl;
 	}
 
@@ -92,16 +86,11 @@ void cAI_CtrlSpeed::Update()
 		{
 			aiState = E_SpeedStateFront;
 		}
-
-<<<<<<< HEAD
 		//std::cout << "Down" << std::endl;
 
 	}
 	//	std::cout << aiState << std::endl;
 
-		//
-=======
->>>>>>> origin/LeeGeonBae
 	frontDistPrev = frontDistCurr;
 	backDistPrev = backDistCurr;
 
