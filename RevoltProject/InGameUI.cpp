@@ -7,7 +7,6 @@
 #include "Object.h"
 #include "cCheckBox.h"
 #include "c321GO.h"
-#include "RacingScene.h"
 
 #define TIMEMAX 60
 
@@ -52,11 +51,7 @@ InGameUI::~InGameUI()
 {
 	SAFE_DELETE(m_pRootUI);
 	SAFE_DELETE(m_pItemImage);
-	if (m_p321go)
-	{
-		m_p321go->Destroy();
-		delete(m_p321go);
-	}
+	//SAFE_DELETE(m_pCar);
 }
 
 void InGameUI::Setup()
@@ -66,24 +61,23 @@ void InGameUI::Setup()
 
 
 	//Lab
-
-	UITextImageView* pImageView1 = new UITextImageView;
-	pImageView1->SetTexture("UIImage/font2.png");
-	pImageView1->SetText("Lab");
-	pImageView1->SetXSize(1.0f);
-	pImageView1->SetYSize(1.0f);
-	pImageView1->SetPosition(30, 20);
-	pImageView1->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+	UITextImageView* pLabCntFont = new UITextImageView;
+	pLabCntFont->SetTexture("UIImage/font2.png");
+	pLabCntFont->SetText("Lab");
+	pLabCntFont->SetXSize(1.0f);
+	pLabCntFont->SetYSize(1.0f);
+	pLabCntFont->SetPosition(30, 20);
+	pLabCntFont->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
 	m_pCurrentLab = new UITextImageView;
 	m_pCurrentLab->SetTexture("UIImage/font2.png");
 	m_pCurrentLab->SetPosition(0, 20);
 
 
-	UITextImageView* pMaxLab = new UITextImageView;
-	pMaxLab->SetTexture("UIImage/font2.png");
-	pMaxLab->SetPosition(10, 0);
-	pMaxLab->SetText("/3");
+	m_pMaxLab = new UITextImageView;
+	m_pMaxLab->SetTexture("UIImage/font2.png");
+	m_pMaxLab->SetPosition(10, 0);
+	m_pMaxLab->SetText("/3");
 
 	// Last Lab Timer
 	UITextImageView* pLastLabFont = new UITextImageView;
@@ -298,6 +292,7 @@ void InGameUI::Setup()
 	m_pMinTenth = new UITextImageView;
 	m_pMinTenth->SetTexture("UIImage/font2.png");
 	m_pMinTenth->SetPosition(-10, 0);
+	// << :
 
 	UIImageView* pImageView6 = new UIImageView;
 	pImageView6->SetXSize(1.2f);
@@ -313,7 +308,7 @@ void InGameUI::Setup()
 	pImageView7->SetTexture("UIImage/ring.png");
 
 
-	// 방향 화살표
+	//방향 화살표
 	pIV_arrowDir = new UIImageView;
 	pIV_arrowDir->SetIsArrowDir(true);
 	pIV_arrowDir->SetXSize(1.2f);
@@ -321,7 +316,7 @@ void InGameUI::Setup()
 	pIV_arrowDir->SetPosition(150, 550);
 	pIV_arrowDir->SetTexture("UIImage/arrowDirection.png");
 
-	// 등수
+	//등수
 	pITV_Rank = new UITextImageView;
 	pITV_Rank->SetXSize(3.0f);
 	pITV_Rank->SetYSize(3.0f);
@@ -344,7 +339,7 @@ void InGameUI::Setup()
 	m_pItemImage->SetIsItem(true);
 	m_pItemImage->SetTexture("UIImage/itemlist.png");
 
-	// 속도계 추가
+	//속도계 추가
 
 	UIImageView* pSpeedFrame = new UIImageView;
 	pSpeedFrame->SetIsSpeedFrame(true);
@@ -384,16 +379,16 @@ void InGameUI::Setup()
 
 	/*          Set Child          */
 
-	// Basic
-	m_pRootUI->AddChild(pImageView1);
+	//Basic
+	m_pRootUI->AddChild(pLabCntFont);
 	m_pRootUI->AddChild(pLastLabFont);
 	m_pRootUI->AddChild(pImageView7);
 	m_pRootUI->AddChild(pSpeedFrame);
 	m_pRootUI->AddChild(pIV_arrowDir);
 
-	pImageView1->AddChild(pImageView6);
-	pImageView1->AddChild(m_pCurrentLab);
-	m_pCurrentLab->AddChild(pMaxLab);
+	pLabCntFont->AddChild(pImageView6);
+	pLabCntFont->AddChild(m_pCurrentLab);
+	m_pCurrentLab->AddChild(m_pMaxLab);
 	pLastLabFont->AddChild(pBestLabFont);
 	pLastLabFont->AddChild(pLabFont);
 	pLastLabFont->AddChild(pRaceFont);
@@ -409,7 +404,7 @@ void InGameUI::Setup()
 	pSpeed->AddChild(pSpeed2);
 
 
-	// Last Font
+	//Last Font
 	pLastLabFont->AddChild(m_pLastDotOneTh);
 	m_pLastDotOneTh->AddChild(m_pLastDotTenth);
 	m_pLastDotTenth->AddChild(m_pLastDotMilth);
@@ -419,8 +414,8 @@ void InGameUI::Setup()
 	m_pLastSecTenth->AddChild(pLastMinColon);
 	pLastMinColon->AddChild(m_pLastMinOneth);
 	m_pLastMinOneth->AddChild(m_pLastMinTenth);
-	//
-	//// Best Font
+
+	// Best Font
 	pBestLabFont->AddChild(m_pBestDotOneTh);
 	m_pBestDotOneTh->AddChild(m_pBestDotTenth);
 	m_pBestDotTenth->AddChild(m_pBestDotMilth);
@@ -430,8 +425,8 @@ void InGameUI::Setup()
 	m_pBestSecTenth->AddChild(pBestMinColon);
 	pBestMinColon->AddChild(m_pBestMinOneth);
 	m_pBestMinOneth->AddChild(m_pBestMinTenth);
-	//
-	//// LabFont
+
+	// LabFont
 	pLabFont->AddChild(m_pLabElapseTime);
 	m_pLabElapseTime->AddChild(m_pLabDotTenth);
 	m_pLabDotTenth->AddChild(m_pLabDotMilth);
@@ -441,8 +436,8 @@ void InGameUI::Setup()
 	m_pLabSecTenth->AddChild(pLabMinColon);
 	pLabMinColon->AddChild(m_pLabMinOneth);
 	m_pLabMinOneth->AddChild(m_pLabMinTenth);
-	//
-	//// RaceFont
+
+	// RaceFont
 	pRaceFont->AddChild(m_pElapseTime);
 	m_pElapseTime->AddChild(m_pDotTenth);
 	m_pDotTenth->AddChild(m_pDotMilth);
@@ -453,10 +448,6 @@ void InGameUI::Setup()
 	pMinColon->AddChild(m_pMinOneth);
 	m_pMinOneth->AddChild(m_pMinTenth);
 
-	m_p321go = new c321GO;
-	m_p321go->LinkRacingScene(m_pRacingScene);
-	m_p321go->Setup();
-
 }
 
 void InGameUI::Update()
@@ -464,22 +455,23 @@ void InGameUI::Update()
 	UpdateSpeed();
 	UpdateLabCount();
 
-	if (m_LabCnt != -1)	UpdateLabTime();
+	if (m_LabCnt > -1 && m_LabCnt < 3)
+	{
+		UpdateLabTime();
+	}
 
 	UpdateArrowDir();
-	UpdateRaceTime();
+
+	if (m_LabCnt < 3)
+		UpdateRaceTime();
 
 	iLobby::Update();
 
-	if (m_p321go) m_p321go->Update();
-	//UpdateArrowDir();
 }
 
 void InGameUI::Render(LPD3DXSPRITE pSprite)
 {
 	iLobby::Render(pSprite);
-
-	if (m_p321go) m_p321go->Render();
 }
 
 void InGameUI::UpdateSpeed()
@@ -508,7 +500,7 @@ void InGameUI::UpdateSpeed()
 void InGameUI::UpdateLabCount()
 {
 	if (m_LabCnt < 1)	m_pCurrentLab->SetText("1");
-	if (m_LabCnt == 1) m_pCurrentLab->SetText("2"); 
+	if (m_LabCnt == 1) m_pCurrentLab->SetText("2");
 	if (m_LabCnt == 2) m_pCurrentLab->SetText("3");
 	if (m_LabCnt > 2)
 	{
@@ -607,8 +599,6 @@ void InGameUI::CompareBestTime()
 			m_BestSecTenth = CurrentSecTenth;
 			m_BestMinOneth = CurrentMinOneth;
 			m_BestMinTenth = CurrentMinTenth;
-
-			int Check = 1;
 		}
 		else if (m_BestMinTenth == CurrentMinTenth)
 		{
@@ -621,8 +611,6 @@ void InGameUI::CompareBestTime()
 				m_BestSecTenth = CurrentSecTenth;
 				m_BestMinOneth = CurrentMinOneth;
 				m_BestMinTenth = CurrentMinTenth;
-
-				int Check = 1;
 			}
 			else if (m_BestMinOneth == CurrentMinOneth)
 			{
@@ -635,8 +623,6 @@ void InGameUI::CompareBestTime()
 					m_BestSecTenth = CurrentSecTenth;
 					m_BestMinOneth = CurrentMinOneth;
 					m_BestMinTenth = CurrentMinTenth;
-
-					int Check = 1;
 				}
 				else if (m_BestSecTenth == CurrentSecTenth)
 				{
@@ -649,8 +635,6 @@ void InGameUI::CompareBestTime()
 						m_BestSecTenth = CurrentSecTenth;
 						m_BestMinOneth = CurrentMinOneth;
 						m_BestMinTenth = CurrentMinTenth;
-
-						int Check = 1;
 					}
 					else if (m_BestSecOneth == CurrentSecOneth)
 					{
@@ -663,8 +647,6 @@ void InGameUI::CompareBestTime()
 							m_BestSecTenth = CurrentSecTenth;
 							m_BestMinOneth = CurrentMinOneth;
 							m_BestMinTenth = CurrentMinTenth;
-
-							int Check = 1;
 						}
 						else if (m_BestDotMilth == CurrentDotMilth)
 						{
@@ -677,8 +659,6 @@ void InGameUI::CompareBestTime()
 								m_BestSecTenth = CurrentSecTenth;
 								m_BestMinOneth = CurrentMinOneth;
 								m_BestMinTenth = CurrentMinTenth;
-
-								int Check = 1;
 							}
 							else if (m_BestDotTenth == CurrentDotTenth)
 							{
@@ -691,8 +671,6 @@ void InGameUI::CompareBestTime()
 									m_BestSecTenth = CurrentSecTenth;
 									m_BestMinOneth = CurrentMinOneth;
 									m_BestMinTenth = CurrentMinTenth;
-
-									int Check = 1;
 								}
 							}
 						}
@@ -709,8 +687,6 @@ void InGameUI::CompareBestTime()
 	BestSecTenth = m_BestSecTenth;
 	BestMinOneth = m_BestMinOneth;
 	BestMinTenth = m_BestMinTenth;
-
-	int Check = 1;
 
 	m_pBestDotOneTh->SetText(BestDotOneth);
 	m_pBestDotTenth->SetText(BestDotTenth);
@@ -834,7 +810,7 @@ void InGameUI::UpdateRaceTime()
 														//      Therefore Current Second : 59
 
 
-																//		EX : m_ElapseTime = 9.876
+														//		EX : m_ElapseTime = 9.876
 	float CalcDP = (m_ElapseTime - (int)m_ElapseTime) * 10.0f;	//		CalcDP = (9.876 - 9) * 10 = 8.76
 	DotMilth = (int)(CalcDP)+FONT2_NUM0;						//		x.?xx = x.8xx
 	CalcDP -= (int)CalcDP;										//		CalcDP = 8.76 - 8 = 0.76
@@ -845,7 +821,7 @@ void InGameUI::UpdateRaceTime()
 	ElapseTime = (int)CalcDP + FONT2_NUM0;						//		x.87? = x.876
 	m_WorldDotOneth = (int)CalcDP + FONT2_NUM0;;								//		Therefore Calculation Decimal Point = 0.876
 
-	/*          Add String          */
+																				/*          Add String          */
 	SecOneth = m_SecOneth;
 	SecTenth = m_SecTenth;
 
@@ -893,6 +869,6 @@ void InGameUI::UpdateArrowDir()
 	{
 		angle = -angle;
 	}
-	
+
 	pIV_arrowDir->SetArrowAngle(-angle);
 }
