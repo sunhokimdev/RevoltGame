@@ -469,6 +469,9 @@
     <ClInclude Include="cMyBomb.h">
       <Filter>Item</Filter>
     </ClInclude>
+    <ClInclude Include="cAI_Flip.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -761,6 +764,9 @@
     </ClCompile>
     <ClCompile Include="cMybombImapct.cpp">
       <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_Flip.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

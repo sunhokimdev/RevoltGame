@@ -432,6 +432,17 @@ void cCar::CtrlAI()
 //	float rpm;
 //}
 
+float cCar::GetRpm()
+{
+	float p1 = GetNxVehicle()->getWheel(0)->getRpm();
+	float p2 = GetNxVehicle()->getWheel(1)->getRpm();
+	float p3 = GetNxVehicle()->getWheel(2)->getRpm();
+	float p4 = GetNxVehicle()->getWheel(3)->getRpm();
+
+	float pValue = p1 + p2 + p3 + p4;
+	return pValue * 0.25;
+}
+
 void cCar::TrackCheck()
 {
 	//체크박스 및 트랙 카운터
@@ -601,31 +612,31 @@ void cCar::CollidePickUp()
 
 void cCar::SettingCarPos()
 {
-	//자동차 정보 업데이트
-	//=================================================
-	//자동차 위치 갱신
-	m_position = {
-		GetNxVehicle()->getGlobalPose().t.x,
-		GetNxVehicle()->getGlobalPose().t.y,
-		GetNxVehicle()->getGlobalPose().t.z };
-
-
-	//자동차전용 회전 매트릭스
-	//회전 매트릭스 받아옴
-	NxF32 mat[9];
-	GetNxVehicle()->getGlobalPose().M.getColumnMajor(mat);
-	D3DXMatrixIdentity(&m_matCarRotation);
-	m_matCarRotation._11 = mat[0];
-	m_matCarRotation._12 = mat[1];
-	m_matCarRotation._13 = mat[2];
-	m_matCarRotation._21 = mat[3];
-	m_matCarRotation._22 = mat[4];
-	m_matCarRotation._23 = mat[5];
-	m_matCarRotation._31 = mat[6];
-	m_matCarRotation._32 = mat[7];
-	m_matCarRotation._33 = mat[8];
-
-	//=================================================
+	//	//자동차 정보 업데이트
+	//	//=================================================
+	//	//자동차 위치 갱신
+	//	m_position = {
+	//		GetNxVehicle()->getGlobalPose().t.x,
+	//		GetNxVehicle()->getGlobalPose().t.y,
+	//		GetNxVehicle()->getGlobalPose().t.z };
+	//
+	//
+	//	//자동차전용 회전 매트릭스
+	//	//회전 매트릭스 받아옴
+	//	NxF32 mat[9];
+	//	GetNxVehicle()->getGlobalPose().M.getColumnMajor(mat);
+	//	D3DXMatrixIdentity(&m_matCarRotation);
+	//	m_matCarRotation._11 = mat[0];
+	//	m_matCarRotation._12 = mat[1];
+	//	m_matCarRotation._13 = mat[2];
+	//	m_matCarRotation._21 = mat[3];
+	//	m_matCarRotation._22 = mat[4];
+	//	m_matCarRotation._23 = mat[5];
+	//	m_matCarRotation._31 = mat[6];
+	//	m_matCarRotation._32 = mat[7];
+	//	m_matCarRotation._33 = mat[8];
+	//
+	//	//=================================================
 }
 
 void cCar::CarMove()
@@ -695,7 +706,6 @@ void cCar::CarMove()
 		else wheel->tick(false, 0, m_breakPower, g_pTimeManager->GetElapsedTime());
 	}
 }
-
 
 void cCar::UsedItem()
 {

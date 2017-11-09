@@ -94,7 +94,8 @@ public:
 	void CtrlPlayer();
 	void CtrlAI();
 
-	//	void GetRpm();
+	float GetRpm();
+
 	void TrackCheck();
 	void RunEnd();
 	void CarRunStop();

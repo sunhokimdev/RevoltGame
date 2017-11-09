@@ -153,6 +153,7 @@
     <ClInclude Include="cAI_Collider.h" />
     <ClInclude Include="cAI_CtrlHandel.h" />
     <ClInclude Include="cAI_CtrlSpeed.h" />
+    <ClInclude Include="cAI_Flip.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Car.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="cAI_Collider.cpp" />
     <ClCompile Include="cAI_CtrlHandel.cpp" />
     <ClCompile Include="cAI_CtrlSpeed.cpp" />
+    <ClCompile Include="cAI_Flip.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Car.cpp" />
