@@ -105,15 +105,15 @@ BOOL cPhysXManager::InitNxPhysX()
 	}
 
 
-
-	g_pPhysXScene->setUserTriggerReport(new TriggerCallback());
-	g_pPhysXScene->setUserContactReport(new ContactCallBack());
+	//	해당 {} 내부의 순서 변경 금지
+	{
+		PhysXReportSeting();
+		g_pPhysXScene->setUserTriggerReport(new TriggerCallback());
+		g_pPhysXScene->setUserContactReport(new ContactCallBack());
+	}
 
 
 	//	
-
-	PhysXReportSeting();
-
 	return S_OK;
 }
 
@@ -148,23 +148,23 @@ void cPhysXManager::PhysXReportSeting()
 	const bool F = false;
 	//CollisionEnable(충돌,리보트,그룹1,그룹2);
 	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_NONE);
-	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_CHECKBOX);
+	CollisionEnable(F, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_CHECKBOX);
 	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_CAR);
 	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_PICKUP);
 	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_FIREWORK);
 	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_WHATEBOMB);
 	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_METALBALL);
-	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(F, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_GRIVATEBALL);
 	CollisionEnable(T, F, E_PHYSX_TAG_NONE, E_PHYSX_TAG_TRACK);
 
-	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_CHECKBOX);
-	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_CAR);
-	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_PICKUP);
-	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_FIREWORK);
-	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_WHATEBOMB);
-	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_METALBALL);
-	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_GRIVATEBALL);
-	CollisionEnable(T, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_TRACK);
+	CollisionEnable(F, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_CHECKBOX);
+	CollisionEnable(T, T, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_CAR);
+	CollisionEnable(F, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_PICKUP);
+	CollisionEnable(F, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_FIREWORK);
+	CollisionEnable(F, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_WHATEBOMB);
+	CollisionEnable(F, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_METALBALL);
+	CollisionEnable(F, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(F, F, E_PHYSX_TAG_CHECKBOX, E_PHYSX_TAG_TRACK);
 
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_CAR);
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_PICKUP);
@@ -201,19 +201,17 @@ void cPhysXManager::PhysXReportSeting()
 
 	CollisionEnable(F, F, E_PHYSX_TAG_TRACK, E_PHYSX_TAG_TRACK);
 
-
 	//Add
-	CollisionEnable(T, T, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_NONE);
+	CollisionEnable(T, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_NONE);
 	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_CHECKBOX);
-	CollisionEnable(T, T, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_CAR);
+	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_CAR);
 	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_PICKUP);
 	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_FIREWORK);
 	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_WHATEBOMB);
 	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_METALBALL);
 	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_GRIVATEBALL);
-	CollisionEnable(T, T, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_TRACK);
+	CollisionEnable(T, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_TRACK);
 	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_RAYCAST_TO_AI);
-
 
 	return;	//END
 	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_NONE);
@@ -233,7 +231,13 @@ void cPhysXManager::CollisionEnable(bool collied, bool report, NxCollisionGroup 
 {
 	g_pPhysXScene->setGroupCollisionFlag(group1, group2, collied);
 	g_pPhysXScene->setActorGroupPairFlags(group1, group2, report);
-	//	g_pPhysXScene->setDominanceGroupPair
+	//	g_pPhysXScene->setShapePairFlags(NULL, NULL, NX_SF_DISABLE_RAYCASTING);
+		//	g_pPhysXScene->setDominanceGroupPair
+
+	//	g_pPhysXScene->setShapePairFlags()
+
+
+
 }
 
 
@@ -247,7 +251,10 @@ void cPhysXManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
 	for (int i = 0; i < actor->getNbShapes(); i++)
 	{
 		shapes[i]->setGroup(group);
+		if (!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_RAYCAST_TO_AI, group))
+			shapes[i]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
 	}
+
 }
 
 NxTriangleMeshShapeDesc cPhysXManager::CreateTringleMesh(ID3DXMesh* pMesh, D3DXMATRIXA16* matS)

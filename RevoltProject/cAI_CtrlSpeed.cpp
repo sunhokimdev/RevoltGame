@@ -27,6 +27,8 @@ cAI_CtrlSpeed::cAI_CtrlSpeed()
 	AI_value = 0.2f;		//delta 의 인지범위
 	AI_distanceMin = 2.f;	//무조건 유지하려는 거리
 
+
+	AITag = AI_TAG_SPEED;
 }
 
 
@@ -37,13 +39,15 @@ cAI_CtrlSpeed::~cAI_CtrlSpeed()
 
 void cAI_CtrlSpeed::Update()
 {
-	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 1, 0);
+	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.3, 0);
 	NxVec3 dirFront = m_pAICar->WheelArrow(0, false); dirFront.y = 0;
 	NxVec3 dirBack = m_pAICar->WheelArrow(180, true); dirBack.y = 0;
+	std::cout << dirBack.x << std::endl;
+
 	dirFront.normalize();
 	dirBack.normalize();
 
-	rayHitFront = &RAYCAST(raypos, dirFront, 100);
+	rayHitFront = &RAYCAST(raypos, dirFront, 100);//,ePhysXTag::E_PHYSX_TAG_RAYCAST_TO_AI);
 	rayHitBack = &RAYCAST(raypos, dirBack, 100);
 
 	if (rayHitBack->shape)
@@ -51,9 +55,8 @@ void cAI_CtrlSpeed::Update()
 		backDistCurr = rayHitBack->distance;
 		backDelta = backDistCurr - backDistPrev;
 
-		NxVec3 pos = rayHitFront->worldImpact;
+		NxVec3 pos = rayHitBack->worldImpact;
 		BackPos = D3DXVECTOR3(pos.x, pos.y, pos.z);
-
 	}
 	if (rayHitFront->shape)
 	{
@@ -72,10 +75,10 @@ void cAI_CtrlSpeed::Update()
 		if (frontDistCurr < AI_distanceFront)
 		{
 			aiState = E_SpeedStateBack;
-//			std::cout << "Back" << std::endl;
+			//			std::cout << "Back" << std::endl;
 		}
 	}
-	
+
 
 
 	if ((backDelta < AI_value) || (backDistCurr < AI_distanceMin))
@@ -83,16 +86,12 @@ void cAI_CtrlSpeed::Update()
 		if (backDistCurr < AI_distanceBack)
 		{
 			aiState = E_SpeedStateFront;
-//			std::cout << "Front" << std::endl;
 		}
 	}
 
-
-	//	std::cout << aiState << std::endl;
-
-		//
 	frontDistPrev = frontDistCurr;
 	backDistPrev = backDistCurr;
+
 
 	SetBitKey(eBIT_KEY::E_BIT_UP, aiState == E_SpeedStateFront);
 	SetBitKey(eBIT_KEY::E_BIT_DOWN, aiState == E_SpeedStateBack);
