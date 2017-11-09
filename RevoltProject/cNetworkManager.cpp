@@ -25,18 +25,14 @@ void cNetworkManager::Start()
 
 	memset(&servAdr, 0, sizeof(servAdr));
 	servAdr.sin_family = AF_INET;
-<<<<<<< HEAD
 	//servAdr.sin_addr.s_addr = inet_addr("192.168.0.72");
 	servAdr.sin_addr.s_addr = inet_addr("192.168.0.13");
-=======
-	servAdr.sin_addr.s_addr = inet_addr(m_serverIP.c_str());
->>>>>>> 2043831021ea01154eeaf0ba9ad476945cbb1e76
 	servAdr.sin_port = htons(8080);
 
 	if (connect(m_hSock, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
 	{
 		ErrorHandling("connect() error");
-		MessageBoxA(g_hWnd, m_serverIP.c_str(), "소켓통신에러", MB_OK);
+		MessageBoxA(g_hWnd, "소켓통신에러", "소켓통신에러", MB_OK);
 	}
 
 	GetDefaultMyIP();
@@ -68,7 +64,6 @@ bool cNetworkManager::RecvMsg()
 
 	nameMsg[strLen] = 0;
 
-	m_charMsg = nameMsg;
 	m_msg = std::string(nameMsg);
 
 	return true;
@@ -91,58 +86,6 @@ void cNetworkManager::SetName(std::string str)
 {
 	for (int i = 0; i < str.size(); ++i)
 		name[i] = str[i];
-}
-
-void cNetworkManager::SetResetKeyEvent()
-{
-	m_keyEvent.ctrl = false;
-	m_keyEvent.down = false;
-	m_keyEvent.f_key = false;
-	m_keyEvent.left = false;
-	m_keyEvent.right = false;
-	m_keyEvent.r_key = false;
-	m_keyEvent.up = false;
-}
-
-std::string cNetworkManager::GetKeYString()
-{
-	std::string str = "";
-
-	if (m_keyEvent.up)
-		str += "1";
-	else
-		str += "0";
-
-	if (m_keyEvent.down)
-		str += "1";
-	else
-		str += "0";
-	if (m_keyEvent.left)
-		str += "1";
-	else
-		str += "0";
-
-	if (m_keyEvent.right)
-		str += "1";
-	else
-		str += "0";
-
-	if (m_keyEvent.ctrl)
-		str += "1";
-	else
-		str += "0";
-
-	if (m_keyEvent.r_key)
-		str += "1";
-	else
-		str += "0";
-
-	if (m_keyEvent.f_key)
-		str += "1";
-	else
-		str += "0";
-
-	return str;
 }
 
 sockaddr_in cNetworkManager::GetDefaultMyIP()

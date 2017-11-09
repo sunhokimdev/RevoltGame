@@ -187,7 +187,6 @@
     <ClInclude Include="cPlasmaImpact.h" />
     <ClInclude Include="cPlayerData.h" />
     <ClInclude Include="cSelectCarLob.h" />
-    <ClInclude Include="cSelectNetworkLob.h" />
     <ClInclude Include="cSkidMark.h" />
     <ClInclude Include="cSkyBox.h" />
     <ClInclude Include="cStringUtil.h" />
@@ -308,7 +307,6 @@
     <ClCompile Include="cPlasmaImpact.cpp" />
     <ClCompile Include="cPlayerData.cpp" />
     <ClCompile Include="cSelectCarLob.cpp" />
-    <ClCompile Include="cSelectNetworkLob.cpp" />
     <ClCompile Include="cSkidMark.cpp" />
     <ClCompile Include="cSkyBox.cpp" />
     <ClCompile Include="cStringUtil.cpp" />

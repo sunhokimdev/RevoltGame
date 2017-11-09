@@ -50,20 +50,7 @@ void RacingScene::Setup()
 
 	m_pSkyBox = new cSkyBox;
 	m_pSkyBox->Setup();
-	/*
-	CreateCar(0, "tc1");
-	CreateCar(1, "tc2");
-	CreateCar(2, "tc3");
-	CreateCar(3, "tc4");
-	CreateCar(4, "tc5");
-	CreateCar(5, "tc6");
-	*/
-	vecCars[0]->SetIsUser(false);
-	vecCars[1]->SetIsUser(true);
-	vecCars[2]->SetIsUser(true);
-	vecCars[3]->SetIsUser(true);
-	vecCars[4]->SetIsUser(true);
-	vecCars[5]->SetIsUser(true);
+
 
 
 	int i = 0;
@@ -104,120 +91,10 @@ void RacingScene::Update()
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
 
-	if (g_pNetworkManager->GetIsInGameNetwork())
+	for (int i = 0; i < vecCars.size(); i++)
 	{
-		std::string str;
-
-		g_pNetworkManager->SetResetKeyEvent();
-
-		if (IsCarRunTrue(vecCars[0])) 
-			vecCars[0]->Update();
-		else
-		{
-			vecCars[0]->RunEnd();
-			return;
-		}
-
-		str = "@" + g_pNetworkManager->GetClientIP() + 
-			"@" + g_pNetworkManager->GetKeYString();
-
-		g_pNetworkManager->SendMsg(str.c_str());
-		g_pNetworkManager->RecvMsg();
-		str = g_pNetworkManager->GetMsg();
-
-		char* pchIP = NULL;
-		char* pch = NULL;
-
-		pchIP = strtok((char*)str.c_str(), "@");
-		printf("%s\n", pchIP);
-		pch = strtok(NULL, "@");
-		printf("%s\n", pch);
-
-		if (pchIP && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
-		{
-			vecCars[1]->SetResetNetworkKey();
-			if (pch != NULL)
-			{
-				vecCars[1]->SetNetworkKey(pch);
-
-				if (IsCarRunTrue(vecCars[1]))
-					vecCars[1]->Update();
-				else
-				{
-					vecCars[1]->RunEnd();
-					return;
-				}
-			}
-		}
-
-		/*
-		if (str.size() > 10)
-		{
-			pchIP = strtok((char*)str.c_str(), "@");
-			printf("%s\n", pchIP);
-			pch = strtok(NULL, "@");
-			printf("%s\n", pch);
-		}
-
-		if (pchIP && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
-		{
-			char* ch = strtok(NULL, "@");
-
-			vecCars[1]->SetResetNetworkKey();
-			if (pch != NULL)
-			{
-				vecCars[1]->SetNetworkKey(pch);
-			
-				if (IsCarRunTrue(vecCars[1]))
-					vecCars[1]->Update();
-				else
-				{
-					vecCars[1]->RunEnd();
-					return;
-				}
-			}
-		}
-
-		*/
-				/*
-			
-			if (IsCarRunTrue(vecCars[vecCars.size() - 1]))
-				vecCars[vecCars.size() - 1]->Update();
-			else
-			{
-				vecCars[vecCars.size() - 1]->RunEnd();
-				return;
-			}
-		}
-		*/
-		/*
-		if (str.size() > 10)
-		{
-			if (g_pNetworkManager->GetClientIP().find(pch) == -1)
-			{
-				pch = strtok(NULL, "&");
-				vecCars[vecCars.size()-1]->SetResetNetworkKey();
-				vecCars[vecCars.size()-1]->SetNetworkKey(pch);
-
-				if (IsCarRunTrue(vecCars[vecCars.size()-1]))
-					vecCars[vecCars.size()-1]->Update();
-				else
-				{
-					vecCars[vecCars.size()-1]->RunEnd();
-					return;
-				}
-			}
-		}
-		*/
-	}
-
-	else
-	{
-		for (int i = 0; i < vecCars.size(); i++)
-		{
-			if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
-			else vecCars[i]->RunEnd();
-		}
+		if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
+		else vecCars[i]->RunEnd();
 	}
 
 	if (m_pInGameUI)

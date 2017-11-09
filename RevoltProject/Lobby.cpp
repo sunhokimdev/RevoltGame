@@ -17,6 +17,7 @@
 #include "Thing.h"
 #include "CarBox.h"
 #include "WheelTire.h"
+#include "cTrack.h"
 
 /*   로비 창 구현   */
 #include "ProfileList.h"
@@ -30,7 +31,6 @@
 #include "cNetworkLobby.h"
 #include "cNetworkCreateRoom.h"
 #include "cNetworkInRoom.h"
-#include "cSelectNetworkLob.h"
 
 Lobby::Lobby()
 	: m_pSprite(NULL)
@@ -40,11 +40,7 @@ Lobby::Lobby()
 	, m_select(0)
 	, m_leftAndrightSelect(0)
 	, m_stateMapType(NONE)
-	, m_PlayerName("")
-	, m_isCreate(false)
-	, m_isEnterName(false)
 	, m_pfileList(NULL)
-	, m_isflag(false)
 {
 }
 
@@ -73,9 +69,6 @@ void Lobby::Setup()
 
 	UITextImageView::m_Select = &m_select;
 	UITextImageView::m_LeftAndRightSelect = &m_leftAndrightSelect;
-	UITextImageView::m_PlayerName = m_PlayerName;
-	UITextImageView::m_isCreate = &m_isCreate;
-	UITextImageView::m_isflag = &m_isflag;
 	Thing::g_LobbyState = &m_stateLobby;
 	CarBox::g_select = &m_leftAndrightSelect;
 	Map::g_LobbyState = &m_stateLobby;
@@ -83,6 +76,9 @@ void Lobby::Setup()
 
 	m_pSelectMap = new SelectMap;
 	m_pSelectMap->Setup();
+
+	//m_pInGameUI = new InGameUI;
+	//m_pInGameUI->Setup();
 
 	m_multiLobby = new cNetworkLobby;
 	m_multiLobby->Setup();
@@ -102,14 +98,16 @@ void Lobby::Setup()
 	m_pInRoom = new cNetworkInRoom;
 	m_pInRoom->Setup();
 
-	m_pSelectServer = new cSelectNetworkLob;
-	m_pSelectServer->Setup();
+	m_pfileList = new ProfileList;
+
+	m_pMap = new Map;
 
 	SetUpUI();
 }
 
 void Lobby::Update()
 {
+
 	// Set Map Type Update
 	if (m_stateLobby == SELECT_MAP_LOBBY)
 	{
@@ -121,10 +119,8 @@ void Lobby::Update()
 		/*    서버에서 recv가 무한대기에 빠지지 않도록 메시지를 계속해서 보낸다    */
 		g_pNetworkManager->SendMsg("#");
 
-		if(g_pNetworkManager->RecvMsg())
+		if (g_pNetworkManager->RecvMsg())
 			m_pInRoom->SetText(g_pNetworkManager->GetMsg().c_str());
-
-		printf("%s\n", g_pNetworkManager->GetMsg().c_str());
 	}
 
 	TimeUpdate();   // 시간 갱신 메서드
@@ -162,8 +158,7 @@ void Lobby::KeyUpdate()
 
 		if (m_stateLobby == START_LOBBY)
 		{
-			if (m_vProfileList.size() <= m_select)
-				m_select = 0;
+	
 		}
 		else
 		{
@@ -179,8 +174,7 @@ void Lobby::KeyUpdate()
 
 		if (m_stateLobby == START_LOBBY)
 		{
-			if (m_select < 0)
-				m_select = m_vProfileList.size() - 1;
+	
 		}
 		else
 		{
@@ -211,7 +205,7 @@ void Lobby::KeyUpdate()
 		if (m_stateLobby == SELECT_MAP_LOBBY)
 			m_leftAndrightSelect++;
 
-			m_pSelectMap->GetmagImage()->SetIsMove(true);
+		m_pSelectMap->GetmagImage()->SetIsMove(true);
 
 		if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
 			m_leftAndrightSelect = 0;
@@ -219,7 +213,7 @@ void Lobby::KeyUpdate()
 
 	if (g_pKeyManager->isOnceKeyDown(VK_LEFT))
 	{
-		if (m_stateLobby == START_LOBBY || 
+		if (m_stateLobby == START_LOBBY ||
 			m_stateLobby == SELECT_CAR_LOBBY)
 		{
 			m_leftAndrightSelect--;
@@ -253,16 +247,46 @@ void Lobby::KeyUpdate()
 	{
 		if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
+			std::map<int, cTrack*> trackName = m_pMap->GetMapName();
+			int index = m_leftAndrightSelect + 1;
+			if (index > m_mapLobby[m_stateLobby]->m_selectCnt)
+				index = 1;
+			else if (index < 0)
+				index = m_mapLobby[m_stateLobby]->m_selectCnt;
+
+			m_pfileList->SetMapName(trackName[index]->trackName);
+
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
+
 			//유저데이터에 자동차 선택한거 넘겨주고
 			//씬변경
+
+			g_pDataManager->mapName = m_pfileList->GetMapName();
+
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", m_pfileList->GetCarName(), false));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc1", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
+		
 			g_SceneManager->ChangeScene("Race");
-			
 			return;
 		}
-
+		else if (m_stateLobby == SELECT_CAR_LOBBY)
+		{
+			switch (m_leftAndrightSelect)
+			{
+			case 0:	m_pfileList->SetCarName("tc1"); break;
+			case 1: m_pfileList->SetCarName("tc2"); break;
+			case 2: m_pfileList->SetCarName("tc3"); break;
+			case 3: m_pfileList->SetCarName("tc4"); break;
+			case 4: m_pfileList->SetCarName("tc5"); break;
+			case 5: m_pfileList->SetCarName("tc6"); break;
+			}
+		}
 		else if (m_stateLobby == MAIN_LOBBY2)
 		{
 			if (m_select == 2)
@@ -276,22 +300,14 @@ void Lobby::KeyUpdate()
 				m_mapLobby[m_stateLobby]->m_pNextLob[m_select] = NETWORK_LOBBY;
 				m_multiLobby->SetUserName(m_pCreateProfileLobby->GetName());
 				m_multiLobby->SetCarName(m_pSelectCarLobbby->GetCarName());
-			}		
-		}
-
-		else if (m_stateLobby == NETWORK_SELECT_LOBBY)
-		{
-			m_pInRoom->SetUserName(m_multiLobby->GetName());
-			g_pNetworkManager->SetServerIP(m_pSelectServer->GetTextIP());
-			g_pNetworkManager->Start();
+				g_pNetworkManager->Start();
+			}
 		}
 
 		else if (m_stateLobby == NETWORK_CREATE_LOBBY)
 		{
 			m_pInRoom->SetMap(m_pCreateRoom->GetImageName());
 			m_pInRoom->SetUserName(m_multiLobby->GetName());
-			g_pNetworkManager->SetServerIP(m_pCreateRoom->GetRoomName());
-			g_pNetworkManager->Start();
 		}
 
 		else if (m_stateLobby == NETWORK_IN_LOBBY)
@@ -312,7 +328,7 @@ void Lobby::KeyUpdate()
 			m_time = 0.0f;
 			m_select = 0;
 
-			if(m_stateLobby != VIEW_CAR_LOBBY)
+			if (m_stateLobby != VIEW_CAR_LOBBY)
 				m_leftAndrightSelect = 0;
 		}
 	}
@@ -333,7 +349,7 @@ void Lobby::KeyUpdate()
 			g_pSoundManager->Play("menuPrev.wav", 1.0f);
 		}
 	}
-	
+
 	if (g_pKeyManager->isOnceKeyDown(VK_F5))
 	{
 		if (m_stateLobby == NETWORK_LOBBY)
@@ -344,19 +360,6 @@ void Lobby::KeyUpdate()
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
-		}
-		else if (m_stateLobby == NETWORK_IN_LOBBY)
-		{
-			m_time = 0.0f;
-			m_select = 0;
-			m_leftAndrightSelect = 0;
-			//유저데이터에 자동차 선택한거 넘겨주고
-			//씬변경
-
-			g_pNetworkManager->SetIsInGameNetwork(true);
-			g_pNetworkManager->SendMsg("@");
-			g_SceneManager->ChangeScene("Race");
-			return;
 		}
 	}
 
@@ -394,7 +397,7 @@ void Lobby::SetUpUI()
 	//===================================================================
 
 ///////////////////////////////   구분   /////////////////////////////////////////
-	
+
 	/*   인트로 이미지   */
 	UIImageView* pImageView1 = new UIImageView;
 	pImageView1->SetPosition(0, 0);
@@ -660,28 +663,11 @@ void Lobby::SetUpUI()
 	pImageView27->AddChild(pImageView31);
 	pImageView27->AddChild(pImageView26);
 
-
-
 	/*  Select Map Lobby  */
 
 	//=========================================== Add Lobby Ui ===========================================//
 
 	///////////////////////////////   구분   /////////////////////////////////////////
-
-	UITextImageView* pImageView32 = new UITextImageView;
-	pImageView32->SetIndex(0);
-	pImageView32->SetPosition(380, 270);
-	pImageView32->SetText("Create Lobby");
-	pImageView32->SetTexture("UIImage/font2.png");
-
-	UITextImageView* pImageView33 = new UITextImageView;
-	pImageView33->SetIndex(1);
-	pImageView33->SetPosition(380, 330);
-	pImageView33->SetText("Select Lobby");
-	pImageView33->SetTexture("UIImage/font2.png");
-
-	m_multiLobby->GetUIRoot()->AddChild(pImageView32);
-	m_multiLobby->GetUIRoot()->AddChild(pImageView33);
 
 	/*   로비 UI 추가하기   */
 
@@ -762,24 +748,13 @@ void Lobby::SetUpUI()
 
 	m_mapLobby[NETWORK_LOBBY] = new ST_Object;
 	m_mapLobby[NETWORK_LOBBY]->m_target = D3DXVECTOR3(4, 8, -5);
-	m_mapLobby[NETWORK_LOBBY]->m_count = 2;
-	m_mapLobby[NETWORK_LOBBY]->m_pNextLob = new LOBBY[2];
+	m_mapLobby[NETWORK_LOBBY]->m_count = 1;
+	m_mapLobby[NETWORK_LOBBY]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[NETWORK_LOBBY]->m_time = 50.0f;
 	m_mapLobby[NETWORK_LOBBY]->m_pObject = m_multiLobby->GetUIRoot();
 	m_mapLobby[NETWORK_LOBBY]->m_camLookAt = D3DXVECTOR3(14, 4, 8);
 	m_mapLobby[NETWORK_LOBBY]->m_pNextLob[0] = NETWORK_CREATE_LOBBY;
-	m_mapLobby[NETWORK_LOBBY]->m_pNextLob[1] = NETWORK_SELECT_LOBBY;
 	m_mapLobby[NETWORK_LOBBY]->m_prevLob = MAIN_LOBBY3;
-
-	m_mapLobby[NETWORK_SELECT_LOBBY] = new ST_Object;
-	m_mapLobby[NETWORK_SELECT_LOBBY]->m_target = D3DXVECTOR3(4, 8, -5);
-	m_mapLobby[NETWORK_SELECT_LOBBY]->m_count = 1;
-	m_mapLobby[NETWORK_SELECT_LOBBY]->m_pNextLob = new LOBBY[1];
-	m_mapLobby[NETWORK_SELECT_LOBBY]->m_time = 50.0f;
-	m_mapLobby[NETWORK_SELECT_LOBBY]->m_pObject = m_pSelectServer->GetUIRoot();
-	m_mapLobby[NETWORK_SELECT_LOBBY]->m_camLookAt = D3DXVECTOR3(14, 4, 8);
-	m_mapLobby[NETWORK_SELECT_LOBBY]->m_pNextLob[0] = NETWORK_IN_LOBBY;
-	m_mapLobby[NETWORK_SELECT_LOBBY]->m_prevLob = NETWORK_LOBBY;
 
 	m_mapLobby[NETWORK_CREATE_LOBBY] = new ST_Object;
 	m_mapLobby[NETWORK_CREATE_LOBBY]->m_target = D3DXVECTOR3(12, 3, -18);
@@ -838,4 +813,16 @@ void Lobby::SetUpUI()
 	m_mapLobby[IN_GAME_MAP]->m_camLookAt = D3DXVECTOR3(0, 0, 0);
 	m_mapLobby[IN_GAME_MAP]->m_prevLob = SELECT_MAP_LOBBY;
 	m_mapLobby[IN_GAME_MAP]->m_pObject = NULL;
+
+	//m_mapLobby[MARKET_MAP] = new ST_Object;
+	//m_mapLobby[MARKET_MAP]->m_target = D3DXVECTOR3(0, 10, -15);
+	//m_mapLobby[MARKET_MAP]->m_camLookAt = D3DXVECTOR3(0, 0, 0);
+	//m_mapLobby[MARKET_MAP]->m_prevLob = SELECT_MAP_LOBBY;
+	//m_mapLobby[MARKET_MAP]->m_pObject = m_pInGameUI->GetUIRoot();
+
+	//m_mapLobby[GARDEN_MAP] = new ST_Object;
+	//m_mapLobby[GARDEN_MAP]->m_target = D3DXVECTOR3(0, 60, -15);
+	//m_mapLobby[GARDEN_MAP]->m_camLookAt = D3DXVECTOR3(0, -5, 0);
+	//m_mapLobby[GARDEN_MAP]->m_prevLob = SELECT_MAP_LOBBY;
+	//m_mapLobby[GARDEN_MAP]->m_pObject = m_pInGameUI->GetUIRoot();
 }
