@@ -133,6 +133,12 @@
     <Filter Include="Item\Firework">
       <UniqueIdentifier>{d6c6e627-3050-44ec-98b5-77357c86a474}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Item\MyBomb">
+      <UniqueIdentifier>{4c9199c5-3273-42b7-9a5e-19b2c030cd07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Item\FakeBomb">
+      <UniqueIdentifier>{b4f05561-0ccf-41a2-94e0-86875c4963b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -454,20 +460,32 @@
     <ClInclude Include="cPlayerData.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="c321GO.h">
-      <Filter>NewClass</Filter>
-    </ClInclude>
-    <ClInclude Include="cFakeBomb.h">
-      <Filter>Item</Filter>
-    </ClInclude>
-    <ClInclude Include="cFakeImpact.h">
-      <Filter>Item</Filter>
+    <ClInclude Include="cMyBomb.h">
+      <Filter>Item\MyBomb</Filter>
     </ClInclude>
     <ClInclude Include="cMybombImapct.h">
-      <Filter>Item</Filter>
+      <Filter>Item\MyBomb</Filter>
     </ClInclude>
-    <ClInclude Include="cMyBomb.h">
-      <Filter>Item</Filter>
+    <ClInclude Include="cFakeBomb.h">
+      <Filter>Item\FakeBomb</Filter>
+    </ClInclude>
+    <ClInclude Include="cFakeImpact.h">
+      <Filter>Item\FakeBomb</Filter>
+    </ClInclude>
+    <ClInclude Include="PFirework.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PSystem.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="c321GO.h">
+      <Filter>Lobby\GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="cSelectNetworkLob.h">
+      <Filter>Lobby\GameUI</Filter>
+    </ClInclude>
+    <ClInclude Include="cAI_Flip.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -747,20 +765,32 @@
     <ClCompile Include="cPlayerData.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="c321GO.cpp">
-      <Filter>NewClass</Filter>
-    </ClCompile>
-    <ClCompile Include="cFakeBomb.cpp">
-      <Filter>Item</Filter>
-    </ClCompile>
-    <ClCompile Include="cFakeImpact.cpp">
-      <Filter>Item</Filter>
-    </ClCompile>
     <ClCompile Include="cMyBomb.cpp">
-      <Filter>Item</Filter>
+      <Filter>Item\MyBomb</Filter>
     </ClCompile>
     <ClCompile Include="cMybombImapct.cpp">
-      <Filter>Item</Filter>
+      <Filter>Item\MyBomb</Filter>
+    </ClCompile>
+    <ClCompile Include="cFakeBomb.cpp">
+      <Filter>Item\FakeBomb</Filter>
+    </ClCompile>
+    <ClCompile Include="cFakeImpact.cpp">
+      <Filter>Item\FakeBomb</Filter>
+    </ClCompile>
+    <ClCompile Include="PFirework.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PSystem.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="c321GO.cpp">
+      <Filter>Lobby\GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="cSelectNetworkLob.cpp">
+      <Filter>Lobby\GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_Flip.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

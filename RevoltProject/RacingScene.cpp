@@ -52,6 +52,20 @@ void RacingScene::Setup()
 	m_pSkyBox = new cSkyBox;
 	m_pSkyBox->Setup();
 
+	//CreateCar(0, "tc1");
+	//vecCars[0]->SetIsUser(false);
+	//CreateCar(1, "tc2");
+	//CreateCar(2, "tc3");
+	//CreateCar(3, "tc4");
+	//CreateCar(4, "tc5");
+	//CreateCar(5, "tc6");
+	//
+	//vecCars[0]->SetIsUser(true);
+	//vecCars[1]->SetIsUser(false);
+	//vecCars[2]->SetIsUser(true);
+	//vecCars[3]->SetIsUser(true);
+	//vecCars[4]->SetIsUser(true);
+	//vecCars[5]->SetIsUser(true);
 
 
 	int i = 0;
@@ -67,8 +81,7 @@ void RacingScene::Setup()
 
 		//CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
 	}
-
-
+	vecCars[i]->SetIsUser(false);
 
 	m_pInGameUI = new InGameUI;
 	LinkUI(0); // 인게임 InGameUI::Setup(); 전에 위치해야함, new InGameUI 가 선언되어 있어야 함.
@@ -95,39 +108,124 @@ void RacingScene::Update()
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
 
-	switch (m_eRaceProg)
+	/*   네트워크 부분   */
+	if (g_pNetworkManager->GetIsInGameNetwork())
 	{
-	case RACE_PROG_READY:
-	{
+		std::string str;
 
+		g_pNetworkManager->SetResetKeyEvent();
+
+		if (IsCarRunTrue(vecCars[0])) 
+			vecCars[0]->Update();
+		else
+		{
+			vecCars[0]->RunEnd();
+			return;
+		}
+
+		g_pNetworkManager->SetClientPosition(vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition());
+
+		str = "@" + g_pNetworkManager->GetClientIP() +
+			"@" + g_pNetworkManager->GetKeYString() + "@" + g_pNetworkManager->GetClientPosition();
+
+		g_pNetworkManager->SendMsg(str.c_str());
+		g_pNetworkManager->RecvMsg();
+		str = g_pNetworkManager->GetMsg();
+
+		char* pchIP = NULL;
+		char* pch = NULL;
+
+		pchIP = strtok((char*)str.c_str(), "@");
+		printf("%s\n", pchIP);
+		pch = strtok(NULL, "@");
+		printf("%s\n", pch);
+
+		if (pchIP && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
+		{
+			vecCars[1]->SetResetNetworkKey();
+			if (pch != NULL)
+			{
+				vecCars[1]->SetNetworkKey(pch);
+
+				if (IsCarRunTrue(vecCars[1]))
+					vecCars[1]->Update();
+				else
+				{
+					vecCars[1]->RunEnd();
+					return;
+				}
+			}
+		}
+
+		/*
+		if (str.size() > 10)
+		{
+			pchIP = strtok((char*)str.c_str(), "@");
+			printf("%s\n", pchIP);
+			pch = strtok(NULL, "@");
+			printf("%s\n", pch);
+		}
+
+		if (pchIP && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
+		{
+			char* ch = strtok(NULL, "@");
+
+			vecCars[1]->SetResetNetworkKey();
+			if (pch != NULL)
+			{
+				vecCars[1]->SetNetworkKey(pch);
+			
+				if (IsCarRunTrue(vecCars[1]))
+					vecCars[1]->Update();
+				else
+				{
+					vecCars[1]->RunEnd();
+					return;
+				}
+			}
+		}
+
+		*/
+				/*
+			
+			if (IsCarRunTrue(vecCars[vecCars.size() - 1]))
+				vecCars[vecCars.size() - 1]->Update();
+			else
+			{
+				vecCars[vecCars.size() - 1]->RunEnd();
+				return;
+			}
+		}
+		*/
+		/*
+		if (str.size() > 10)
+		{
+			if (g_pNetworkManager->GetClientIP().find(pch) == -1)
+			{
+				pch = strtok(NULL, "&");
+				vecCars[vecCars.size()-1]->SetResetNetworkKey();
+				vecCars[vecCars.size()-1]->SetNetworkKey(pch);
+
+				if (IsCarRunTrue(vecCars[vecCars.size()-1]))
+					vecCars[vecCars.size()-1]->Update();
+				else
+				{
+					vecCars[vecCars.size()-1]->RunEnd();
+					return;
+				}
+			}
+		}
+		*/
 	}
-	break;
-	case RACE_PROG_SET:
-	{
-		
-	}
-	break;
-	case RACE_PROG_GO:
+
+	else
 	{
 		for (int i = 0; i < vecCars.size(); i++)
 		{
 			if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
 
-			//플레이어가 도착하면 레이스가 끝난다.
-			if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
+			else vecCars[i]->RunEnd();
 		}
-	}
-	break;
-	case RACE_PROG_FINISH:
-	{
-		for (int i = 0; i < vecCars.size(); i++)
-		{
-			vecCars[i]->RunEnd();
-		}
-	}
-	break;
-	default:
-		break;
 	}
 
 	if (m_pInGameUI)
@@ -286,6 +384,15 @@ void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carNam
 	//pCar->SetAI(isAI);
 
 	pCar->SetAI(true);
+	vecCars.push_back(pCar);
+
+	pCar->GetPhysXData()->SetPosition(m_pTrack->GetStartPositions()[playerID]);
+}
+
+void RacingScene::CreateCar(int playerID, std::string carName)
+{
+	cCar* pCar = new cCar;
+	pCar->LoadCar(carName);
 	vecCars.push_back(pCar);
 
 	pCar->GetPhysXData()->SetPosition(m_pTrack->GetStartPositions()[playerID]);

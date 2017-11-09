@@ -65,6 +65,7 @@ public:
 
 //	void CreateCar(int carId) {}
 	void CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carName, bool isAI);
+	void CreateCar(int playerID, std::string carName);
 	void LinkUI(int playerID);
 };
 

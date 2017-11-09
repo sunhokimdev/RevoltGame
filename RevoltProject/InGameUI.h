@@ -32,6 +32,7 @@ private:
 	//Lab
 	UITextImageView* m_pLab;
 	UITextImageView* m_pCurrentLab;
+	UITextImageView* m_pMaxLab;
 
 	//Last Time
 	UITextImageView* m_pLastDotOneTh;
@@ -98,9 +99,6 @@ public:
 	virtual void Render(LPD3DXSPRITE pSprite);
 	UIObject* GetUIObject() { return m_pRootUI; }
 	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
-	
-	void SetupTimer();
-	void ControllLab();
 
 	void UpdateSpeed();
 	void UpdateLabCount();									// UpdateCurrentLab
@@ -109,9 +107,6 @@ public:
 	void UpdateLabTime();									// UpdateLabTimer
 	void UpdateRaceTime();									// UpdateRaceTimer
 	void UpdateArrowDir();									// 화살표 방향
-
-
-
 
 	/*          SYNTHESIZE          */
 

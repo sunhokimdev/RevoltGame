@@ -15,6 +15,7 @@ struct stCARSPEC
 
 class cCar : public Object
 {
+	ST_KEYSET m_keySet;
 public:
 	std::bitset<BITESET_8_SIZE> INPUT_KEY;
 private:
@@ -94,7 +95,8 @@ public:
 	void CtrlPlayer();
 	void CtrlAI();
 
-	//	void GetRpm();
+	float GetRpm();
+
 	void TrackCheck();
 	void RunEnd();
 	void CarRunStop();
@@ -114,7 +116,11 @@ public:
 	void RePosition();
 	void CarFlip();
 
+	/*   �輱ȣ   */
+	void SetResetNetworkKey();
+	void SetNetworkKey(std::string);
 
+	SYNTHESIZE(bool, m_isUser, IsUser);
 	//e
 	NxVec3 CarArrow(float radianAngle = 0);
 	NxVec3 WheelArrow(float degAngle = 0 , bool back = false);

@@ -25,8 +25,9 @@ void cNetworkManager::Start()
 
 	memset(&servAdr, 0, sizeof(servAdr));
 	servAdr.sin_family = AF_INET;
-	//servAdr.sin_addr.s_addr = inet_addr("192.168.0.72");
-	servAdr.sin_addr.s_addr = inet_addr("192.168.0.13");
+
+	servAdr.sin_addr.s_addr = inet_addr(m_serverIP.c_str());
+
 	servAdr.sin_port = htons(8080);
 
 	if (connect(m_hSock, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
@@ -86,6 +87,73 @@ void cNetworkManager::SetName(std::string str)
 {
 	for (int i = 0; i < str.size(); ++i)
 		name[i] = str[i];
+}
+
+void cNetworkManager::SetResetKeyEvent()
+{
+	m_keyEvent.ctrl = false;
+	m_keyEvent.down = false;
+	m_keyEvent.f_key = false;
+	m_keyEvent.left = false;
+	m_keyEvent.right = false;
+	m_keyEvent.r_key = false;
+	m_keyEvent.up = false;
+}
+
+std::string cNetworkManager::GetKeYString()
+{
+	std::string str = "";
+
+	if (m_keyEvent.up)
+		str += "1";
+	else
+		str += "0";
+
+	if (m_keyEvent.down)
+		str += "1";
+	else
+		str += "0";
+	if (m_keyEvent.left)
+		str += "1";
+	else
+		str += "0";
+
+	if (m_keyEvent.right)
+		str += "1";
+	else
+		str += "0";
+
+	if (m_keyEvent.ctrl)
+		str += "1";
+	else
+		str += "0";
+
+	if (m_keyEvent.r_key)
+		str += "1";
+	else
+		str += "0";
+
+	if (m_keyEvent.f_key)
+		str += "1";
+	else
+		str += "0";
+
+	return str;
+}
+
+void cNetworkManager::SetClientPosition(NxVec3 v)
+{
+	std::string str = "";
+	str += std::to_string(v.x) + "/";
+	str += std::to_string(v.y) + "/";
+	str += std::to_string(v.z);
+
+	m_vPosition = str;
+}
+
+std::string cNetworkManager::GetClientPosition()
+{
+	return m_vPosition;
 }
 
 sockaddr_in cNetworkManager::GetDefaultMyIP()

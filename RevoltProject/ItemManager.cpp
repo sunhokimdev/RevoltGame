@@ -38,21 +38,21 @@ void ItemManager::Init()
 	box3 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(4, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
 	box4 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(20, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
 
-	//for (int i = 0;i < 10;i++)
-	//{
-	//	cItem* pItem = new cWbomb;
-	//	pItem->Setup();
-	//	pItem->SetItemTag(ITEM_WBOMB);
-	//	m_vecItem.push_back(pItem);
-	//}
+	for (int i = 0;i < 10;i++)
+	{
+		cItem* pItem = new cWbomb;
+		pItem->Setup();
+		pItem->SetItemTag(ITEM_WBOMB);
+		m_vecItem.push_back(pItem);
+	}
 
-	//for (int i = 0;i < 10;i++)
-	//{
-	//	cGravityball* pItem = new cGravityball;
-	//	pItem->Setup();
-	//	pItem->SetIsUse(true);
-	//	m_vecItem.push_back(pItem);
-	//}
+	for (int i = 0;i < 10;i++)
+	{
+		cGravityball* pItem = new cGravityball;
+		pItem->Setup();
+		pItem->SetIsUse(true);
+		m_vecItem.push_back(pItem);
+	}
 
 	for (int i = 0;i < 10;i++)
 	{
@@ -71,26 +71,41 @@ void ItemManager::Init()
 		m_vecItem.push_back(pItem);
 	}
 
+	for (int i = 0;i < 4;i++)
+	{
+		m_vecIndex[i] = 0;
+	}
+
 	InitCollisionGroup();
 }
 
 void ItemManager::Update()
 {
-	for (int i = 0;i < m_index;++i)
+	for (int i = 0;i < 4;i++)
 	{
-		m_vecItem[i]->Update();
+		for (int j = 0; j < m_vecIndex[i]; ++j)
+		{
+			m_vecItem[m_vecIndex[i]]->Update();
+		}
 	}
-	for (int i = 0;i < m_index;++i)
+
+	for (int i = 0;i < 4;i++)
 	{
-		m_vecItem[i]->LastUpdate();
+		for (int j = 0; j < m_vecIndex[i]; ++j)
+		{
+			m_vecItem[m_vecIndex[i]]->LastUpdate();
+		}
 	}
 }
 
 void ItemManager::Render()
 {
-	for (int i = 0;i < m_index;++i)
+	for (int i = 0;i < 4;i++)
 	{
-		m_vecItem[i]->Render();
+		for (int j = 0; j < m_vecIndex[i]; ++j)
+		{
+			m_vecItem[m_vecIndex[i]]->Render();
+		}
 	}
 }
 
@@ -145,33 +160,42 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 	{
 		case ITEM_WBOMB:
 		{
-			m_vecItem[m_index]->Create(carDir, carPos);
-			m_vecItem[m_index]->SetIsUse(true);
+			m_vecItem[m_vecIndex[0]]->Create(carDir, carPos);
+			m_vecItem[m_vecIndex[0]]->SetIsUse(true);
+
+			m_vecIndex[0]++;
 		}
 		break;
 		case ITEM_FIREWORK:
 		{
-			m_vecItem[m_index]->Create(carDir, carPos);
-			m_vecItem[m_index]->SetIsUse(true);
+			m_vecItem[m_vecIndex[1]]->Create(carDir, carPos);
+			m_vecItem[m_vecIndex[1]]->SetIsUse(true);
+
+			m_vecIndex[1]++;
 		}
 		break;
 		case ITEM_GRAVITY:
 		{
-			//m_vecItem[m_index]->Create(carDir, carPos);
-			//m_vecItem[m_index]->SetUse(true);
+			m_vecItem[m_vecIndex[2]]->Create(carDir, carPos);
+			m_vecItem[m_vecIndex[2]]->SetIsUse(true);
+
+			m_vecIndex[2]++;
 		}
 		case ITEM_MYBOMB:
 		{
-			m_vecItem[m_index]->SetCar(car);
-			m_vecItem[m_index]->Create(carDir, carPos);
-			m_vecItem[m_index]->SetIsUse(true);
+			m_vecItem[m_vecIndex[3]]->SetCar(car);
+			m_vecItem[m_vecIndex[3]]->Create(carDir, carPos);
+			m_vecItem[m_vecIndex[3]]->SetIsUse(true);
+
+			m_vecIndex[3]++;
 		}
 		break;
 		default: break;
 	}
 
-	//	m_vecItem[m_index]->Create();
-		m_index++;
-	//
-		if (m_index == m_vecItem.size()) m_index = 0;
+	for (int i = 0;i < 4;i++)
+	{
+		if (m_vecIndex[i] == 10)
+			m_vecIndex[i] = 0;
+	}
 }

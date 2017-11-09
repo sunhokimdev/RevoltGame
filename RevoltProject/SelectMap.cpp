@@ -25,6 +25,11 @@ void SelectMap::Setup()
 	m_mapName = new UITextImageView;
 	m_mapLength = new UITextImageView;
 	m_mapDifficulty = new UITextImageView;
+
+	m_mapName->SetIndex(INT_MAX);
+	m_mapLength->SetIndex(INT_MAX);
+	m_mapDifficulty->SetIndex(INT_MAX);
+
 	m_mapImage = new UIImageView;
 	m_mapImage->SetXSize(1.5f);
 	m_mapImage->SetPosition(250, 100);
@@ -53,6 +58,7 @@ void SelectMap::Setup()
 	UITextImageView* pImageView65 = new UITextImageView;
 	pImageView65->SetTexture("UIImage/font1.png");
 	pImageView65->SetText("SELECT TRACK");
+	pImageView65->SetIndex(INT_MAX);
 	pImageView65->SetXSize(1.5f);
 	pImageView65->SetYSize(1.5f);
 	pImageView65->SetPosition(180, 40);
@@ -67,10 +73,12 @@ void SelectMap::Setup()
 	UITextImageView* pImageView67 = new UITextImageView;
 	pImageView67->SetTexture("UIImage/font2.png");
 	pImageView67->SetText("Length");
+	pImageView67->SetIndex(INT_MAX);
 	pImageView67->SetPosition(60, 80);
 
 	UITextImageView* pImageView68 = new UITextImageView;
 	pImageView68->SetTexture("UIImage/font2.png");
+	pImageView68->SetIndex(INT_MAX);
 	pImageView68->SetText("Difficulty");
 	pImageView68->SetPosition(60, 105);
 
@@ -85,6 +93,7 @@ void SelectMap::Setup()
 	m_LockedTextImage->SetTexture("UIImage/font2.png");
 	m_LockedTextImage->SetColor(D3DCOLOR_ARGB(255, 255, 0, 0));
 	m_LockedTextImage->SetText("Locked");
+	m_LockedTextImage->SetIndex(INT_MAX);
 	m_LockedTextImage->SetPosition(15, 20);
 
 
