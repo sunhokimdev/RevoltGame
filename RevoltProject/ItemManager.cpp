@@ -51,6 +51,7 @@ void ItemManager::Init()
 		cGravityball* pItem = new cGravityball;
 		pItem->Setup();
 		pItem->SetIsUse(true);
+		pItem->SetItemTag(ITEM_GRAVITY);
 		m_vecItem.push_back(pItem);
 	}
 
@@ -63,13 +64,13 @@ void ItemManager::Init()
 		m_vecItem.push_back(pItem);
 	}
 
-	for (int i = 0; i < 10; i++)
-	{
-		cItem* pItem = new cFirework;
-		pItem->Setup();
-		pItem->SetItemTag(ITEM_FIREWORK);
-		m_vecItem.push_back(pItem);
-	}
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	cItem* pItem = new cFirework;
+	//	pItem->Setup();
+	//	pItem->SetItemTag(ITEM_FIREWORK);
+	//	m_vecItem.push_back(pItem);
+	//}
 
 	for (int i = 0;i < 4;i++)
 	{

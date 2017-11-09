@@ -554,25 +554,25 @@ void cCar::CtrlPlayer()
 				}
 			}
 		}
-		else
-		{
-			if (m_keySet.ctrl)
-			{
-				if (m_eHoldItem != ITEM_NONE)
-				{
-					g_pItemManager->FireItem(ITEM_MYBOMB, this);
-					//아이템 사용 함수 호츨
-					m_nItemCount--;
-					if (m_nItemCount == 0)
-					{
-						m_eHoldItem = ITEM_NONE;
-						GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
-					}
-					std::cout << "FIRE!" << std::endl;
-
-				}
-			}
-		}
+		//else
+		//{
+		//	if (m_keySet.ctrl)
+		//	{
+		//		if (m_eHoldItem != ITEM_NONE)
+		//		{
+		//			g_pItemManager->FireItem(ITEM_MYBOMB, this);
+		//			//아이템 사용 함수 호츨
+		//			m_nItemCount--;
+		//			if (m_nItemCount == 0)
+		//			{
+		//				m_eHoldItem = ITEM_NONE;
+		//				GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
+		//			}
+		//			std::cout << "FIRE!" << std::endl;
+		//
+		//		}
+		//	}
+		//}
 
 		//RePosition
 
@@ -754,6 +754,7 @@ void cCar::TrackCheck()
 			m_countRapNum++;
 			if (!m_isAI) m_pInGameUI->SetLabCnt(m_countRapNum);
 			if (!m_isAI) m_pInGameUI->UpdateLastTime();
+			if (!m_isAI) m_pInGameUI->CompareBestTime();
 			if (!m_isAI) m_pInGameUI->SetLabElapseTime(0);
 			if (!m_isAI) m_pInGameUI->SetLabMinOneth(FONT2_NUM0);
 			if (!m_isAI) m_pInGameUI->SetLabMinTenth(FONT2_NUM0);
