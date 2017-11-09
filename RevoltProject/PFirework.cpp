@@ -58,7 +58,10 @@ void PFirework::Update(float timeDelta)
 			i->_age += timeDelta;
 
 			if (i->_age > i->_lifeTime)	// Á×ÀÎ´Ù
+			{
 				i->_isAlive = false;
+				m_isUse = false;
+			}
 		}
 	}
 }

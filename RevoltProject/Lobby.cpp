@@ -40,11 +40,7 @@ Lobby::Lobby()
 	, m_select(0)
 	, m_leftAndrightSelect(0)
 	, m_stateMapType(NONE)
-	, m_PlayerName("")
-	, m_isCreate(false)
-	, m_isEnterName(false)
 	, m_pfileList(NULL)
-	, m_isflag(false)
 {
 }
 
@@ -73,9 +69,6 @@ void Lobby::Setup()
 
 	UITextImageView::m_Select = &m_select;
 	UITextImageView::m_LeftAndRightSelect = &m_leftAndrightSelect;
-	UITextImageView::m_PlayerName = m_PlayerName;
-	UITextImageView::m_isCreate = &m_isCreate;
-	UITextImageView::m_isflag = &m_isflag;
 	Thing::g_LobbyState = &m_stateLobby;
 	CarBox::g_select = &m_leftAndrightSelect;
 	Map::g_LobbyState = &m_stateLobby;
@@ -106,6 +99,7 @@ void Lobby::Setup()
 	m_pInRoom->Setup();
 
 	m_pfileList = new ProfileList;
+
 	m_pMap = new Map;
 
 	SetUpUI();
@@ -164,8 +158,7 @@ void Lobby::KeyUpdate()
 
 		if (m_stateLobby == START_LOBBY)
 		{
-			if (m_vProfileList.size() <= m_select)
-				m_select = 0;
+	
 		}
 		else
 		{
@@ -181,8 +174,7 @@ void Lobby::KeyUpdate()
 
 		if (m_stateLobby == START_LOBBY)
 		{
-			if (m_select < 0)
-				m_select = m_vProfileList.size() - 1;
+	
 		}
 		else
 		{

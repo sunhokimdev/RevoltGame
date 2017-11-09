@@ -11,7 +11,7 @@
 class PFirework : public PSystem
 {
 public:
-	// 시스템 원천(폭팔할 장소)으로의 포인터, 시스템이 가진 파티클의 수
+	// 시스템이 가진 파티클의 수, 각 파티클 크기
 	PFirework(int numParticles, float size);
 
 	virtual void SetPosition(D3DXVECTOR3* origin) { _origin = *origin; }

@@ -9,7 +9,6 @@ ProfileList::ProfileList()
 {
 }
 
-
 ProfileList::~ProfileList()
 {
 }
