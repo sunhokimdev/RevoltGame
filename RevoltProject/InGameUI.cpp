@@ -448,6 +448,14 @@ void InGameUI::Setup()
 	pMinColon->AddChild(m_pMinOneth);
 	m_pMinOneth->AddChild(m_pMinTenth);
 
+
+	//========================================
+	// ½ÃÀÛ½Ã 321GO 
+	// by. ÅÂ¼·
+	//========================================
+	m_p321go = new c321GO;
+	m_p321go->LinkRacingScene(m_pRacingScene);
+	m_p321go->Setup();
 }
 
 void InGameUI::Update()
@@ -467,11 +475,20 @@ void InGameUI::Update()
 
 	iLobby::Update();
 
+	if (m_p321go)
+	{
+		m_p321go->Update();
+	}
 }
 
 void InGameUI::Render(LPD3DXSPRITE pSprite)
 {
 	iLobby::Render(pSprite);
+
+	if (m_p321go)
+	{
+		m_p321go->Render();
+	}
 }
 
 void InGameUI::UpdateSpeed()

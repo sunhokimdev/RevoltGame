@@ -15,6 +15,7 @@ public:
 
 	void SetLookAt(D3DXVECTOR3* pvLookAt) { m_vNextLootAt = *pvLookAt; }
 	void SetCamPos(D3DXVECTOR3* pvCamPos) { m_pvTarget = pvCamPos; }
+	
 	void Move();
 	D3DXVECTOR3* GetLookAt() { return &m_vLookAt; }
 	D3DXVECTOR3* GetCamPos() { return &m_vEye; };
