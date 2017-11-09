@@ -328,6 +328,7 @@ void cCar::Update()
 
 	if (m_isAI) CtrlAI();
 	else CtrlPlayer();
+	CtrlPlayer();
 
 	//이하 AI, PLAYER 의 동일 사용 함수
 

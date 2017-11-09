@@ -378,7 +378,7 @@ void cPhysXManager::RaycastClosestShape(D3DXVECTOR3 start, D3DXVECTOR3 dir)
 
 	NxRaycastHit raycastHit;
 	MgrPhysXScene->raycastClosestShape(worldRay, NX_ALL_SHAPES, raycastHit);// , 0xffffffff, NX_MAX_F32, 0xffffffff, NULL, NULL);
-
+	
 	if (raycastHit.shape)
 	{
 
@@ -421,6 +421,20 @@ NxRaycastHit cPhysXManager::RaycastClosestShape(NxVec3 start, NxVec3 dir, NxReal
 	MgrPhysXScene->raycastClosestShape(worldRay, NX_ALL_SHAPES, raycastHit, group, maxDist);// , 0xffffffff, NX_MAX_F32, 0xffffffff, NULL, NULL);
 
 	return raycastHit;
+}
+
+void cPhysXManager::RaycastClosestShapePt(NxRaycastHit * raycasthit, NxVec3 start, NxVec3 dir, NxReal maxDist, NxU32 group)
+{
+	NxRay worldRay;
+
+	
+	worldRay.orig = start;
+	dir.normalize();
+	worldRay.dir = dir;
+
+	//NxRaycastHit raycastHit;
+	//raycastHit.shape = NULL;
+	MgrPhysXScene->raycastClosestShape(worldRay, NX_ALL_SHAPES, *raycasthit, group, maxDist);// , 0xffffffff, NX_MAX_F32, 0xffffffff, NULL, NULL);
 }
 
 NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * mat, NxVec3 sizeValue, eMaterialTag materialTag, USERDATA * pUserData, bool IsTrigger, bool isStatic, bool isGravaty)

@@ -74,13 +74,9 @@ void cAI_CtrlSpeed::Update()
 			aiState = E_SpeedStateBack;
 //			std::cout << "Back" << std::endl;
 		}
-<<<<<<< HEAD
-		//std::cout << "Up" << std::endl;
-=======
->>>>>>> 71003d870dffef69b1cbc5b84ebbbe446a19ca1f
-	}
-	
 
+		//std::cout << "Up" << std::endl;
+	}
 
 	if ((backDelta < AI_value) || (backDistCurr < AI_distanceMin))
 	{
@@ -89,13 +85,10 @@ void cAI_CtrlSpeed::Update()
 			aiState = E_SpeedStateFront;
 //			std::cout << "Front" << std::endl;
 		}
-<<<<<<< HEAD
+
 		//std::cout << "Down" << std::endl;
-=======
->>>>>>> 71003d870dffef69b1cbc5b84ebbbe446a19ca1f
+
 	}
-
-
 	//	std::cout << aiState << std::endl;
 
 		//
