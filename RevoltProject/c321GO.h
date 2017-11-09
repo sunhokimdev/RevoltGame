@@ -12,6 +12,7 @@ class c321GO
 	float m_fTime;
 	int m_nCount;
 	bool m_isStart;
+	bool m_isRender;
 	D3DXVECTOR3 posStart, posEnd;
 
 	RacingScene* m_pRacingScene;

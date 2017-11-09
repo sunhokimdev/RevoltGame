@@ -78,7 +78,8 @@ void RacingScene::Setup()
 	if (i == 0)
 	{
 		CreateCar(m_pTrack->GetStartPositions()[i], i,"tc1", false);
-		CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
+
+		//CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
 	}
 	vecCars[i]->SetIsUser(false);
 
@@ -96,7 +97,8 @@ void RacingScene::Destroy()
 {
 	SAFE_DESTROY(m_pTrack);
 	SAFE_DELETE(m_pTrack);
-	SAFE_DELETE(m_pLightSun);
+	//SAFE_DELETE(m_pLightSun);
+	//m_pLightSun->Destroy();
 	SAFE_DELETE(m_pInGameUI);
 	SAFE_DESTROY(m_pSkyBox);
 	SAFE_DELETE(m_pSkyBox);
@@ -114,7 +116,7 @@ void RacingScene::Update()
 
 		g_pNetworkManager->SetResetKeyEvent();
 
-		if (IsCarRunTrue(vecCars[0])) 
+		if (IsCarRunTrue(vecCars[0]))
 			vecCars[0]->Update();
 		else
 		{
@@ -159,60 +161,60 @@ void RacingScene::Update()
 		/*
 		if (str.size() > 10)
 		{
-			pchIP = strtok((char*)str.c_str(), "@");
-			printf("%s\n", pchIP);
-			pch = strtok(NULL, "@");
-			printf("%s\n", pch);
+		pchIP = strtok((char*)str.c_str(), "@");
+		printf("%s\n", pchIP);
+		pch = strtok(NULL, "@");
+		printf("%s\n", pch);
 		}
 
 		if (pchIP && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
 		{
-			char* ch = strtok(NULL, "@");
+		char* ch = strtok(NULL, "@");
 
-			vecCars[1]->SetResetNetworkKey();
-			if (pch != NULL)
-			{
-				vecCars[1]->SetNetworkKey(pch);
-			
-				if (IsCarRunTrue(vecCars[1]))
-					vecCars[1]->Update();
-				else
-				{
-					vecCars[1]->RunEnd();
-					return;
-				}
-			}
+		vecCars[1]->SetResetNetworkKey();
+		if (pch != NULL)
+		{
+		vecCars[1]->SetNetworkKey(pch);
+
+		if (IsCarRunTrue(vecCars[1]))
+		vecCars[1]->Update();
+		else
+		{
+		vecCars[1]->RunEnd();
+		return;
+		}
+		}
 		}
 
 		*/
-				/*
-			
-			if (IsCarRunTrue(vecCars[vecCars.size() - 1]))
-				vecCars[vecCars.size() - 1]->Update();
-			else
-			{
-				vecCars[vecCars.size() - 1]->RunEnd();
-				return;
-			}
+		/*
+
+		if (IsCarRunTrue(vecCars[vecCars.size() - 1]))
+		vecCars[vecCars.size() - 1]->Update();
+		else
+		{
+		vecCars[vecCars.size() - 1]->RunEnd();
+		return;
+		}
 		}
 		*/
 		/*
 		if (str.size() > 10)
 		{
-			if (g_pNetworkManager->GetClientIP().find(pch) == -1)
-			{
-				pch = strtok(NULL, "&");
-				vecCars[vecCars.size()-1]->SetResetNetworkKey();
-				vecCars[vecCars.size()-1]->SetNetworkKey(pch);
+		if (g_pNetworkManager->GetClientIP().find(pch) == -1)
+		{
+		pch = strtok(NULL, "&");
+		vecCars[vecCars.size()-1]->SetResetNetworkKey();
+		vecCars[vecCars.size()-1]->SetNetworkKey(pch);
 
-				if (IsCarRunTrue(vecCars[vecCars.size()-1]))
-					vecCars[vecCars.size()-1]->Update();
-				else
-				{
-					vecCars[vecCars.size()-1]->RunEnd();
-					return;
-				}
-			}
+		if (IsCarRunTrue(vecCars[vecCars.size()-1]))
+		vecCars[vecCars.size()-1]->Update();
+		else
+		{
+		vecCars[vecCars.size()-1]->RunEnd();
+		return;
+		}
+		}
 		}
 		*/
 	}
@@ -231,7 +233,6 @@ void RacingScene::Update()
 	{
 		m_pInGameUI->Update();
 	}
-
 }
 
 
@@ -297,6 +298,11 @@ void RacingScene::UpdateCamera()
 		vecCars[0]->GetPosition().y + 0.5f ,
 		vecCars[0]->GetPosition().z };
 
+	//D3DXVECTOR3 carPos = {
+	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().x,
+	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().y + 0.5f ,
+	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().z };
+
 	*camLookTarget = carPos;//D3DXVECTOR3(pos.x, pos.y + 2.f, pos.z);
 
 	D3DXVECTOR3 camDir = (*camLookTarget) - CAM_POS;
@@ -329,21 +335,32 @@ void RacingScene::UpdateCamera()
 
 	if (RayCamHit.shape)
 	{
-		if (RayCamHit.shape->getActor().getName() == "map")
+		if (RayCamHit.shape->getActor().getName())
 		{
-			x = RayCamHit.worldImpact.x;
-			//y = carPos.y + Height;//RayCamHit.worldImpact.y;
-			y = carPos.y + fCamHeight;
-			z = RayCamHit.worldImpact.z;
+			std::string str = RayCamHit.shape->getActor().getName();
+
+			if (str == "map")
+			{
+				x = RayCamHit.worldImpact.x;
+				//y = carPos.y + Height;//RayCamHit.worldImpact.y;
+				y = carPos.y + fCamHeight;
+				z = RayCamHit.worldImpact.z;
+			}
 		}
+
+
 	}
 
 	if (RayCamVerticalHit.shape != NULL)
 	{
-		if (RayCamVerticalHit.shape->getActor().getName() == "map")
+		if (RayCamHit.shape->getActor().getName())
 		{
-			fCamHeight = RayCamVerticalHit.distance;
-			y = carPos.y + fCamHeight;
+			std::string str = RayCamVerticalHit.shape->getActor().getName();
+			if (str == "map")
+			{
+				fCamHeight = RayCamVerticalHit.distance;
+				y = carPos.y + fCamHeight;
+			}
 		}
 	}
 

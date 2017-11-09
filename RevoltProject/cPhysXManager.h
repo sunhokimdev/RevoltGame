@@ -210,6 +210,7 @@ public:
 
 	NxRaycastHit RaycastClosestShape(D3DXVECTOR3 start, D3DXVECTOR3 dir, NxReal maxDist = NX_MAX_F32, NxU32 group = 0xffffffff);
 	NxRaycastHit RaycastClosestShape(NxVec3 start, NxVec3 dir, NxReal maxDist = NX_MAX_F32, NxU32 group = 0xffffffff);
+	void RaycastClosestShapePt(NxRaycastHit* raycasthit, NxVec3 start, NxVec3 dir, NxReal maxDist = NX_MAX_F32, NxU32 group = 0xffffffff);
 
 	void PhysXReportSeting();
 	void CollisionEnable(bool collied,bool report, NxCollisionGroup group1, NxCollisionGroup group2);

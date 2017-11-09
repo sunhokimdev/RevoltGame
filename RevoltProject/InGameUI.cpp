@@ -452,21 +452,24 @@ void InGameUI::Setup()
 
 void InGameUI::Update()
 {
+	iLobby::Update();
+
 	UpdateSpeed();
 	UpdateLabCount();
 
-	if (m_LabCnt > -1 && m_LabCnt < 3)
-	{
-		UpdateLabTime();
-	}
-
 	UpdateArrowDir();
 
-	if (m_LabCnt < 3)
-		UpdateRaceTime();
-
-	iLobby::Update();
-
+	if (m_LabCnt > -1 && m_LabCnt < 3)	UpdateLabTime();
+	if (m_LabCnt < 3)	UpdateRaceTime();
+	if (m_LabCnt >= 3)
+	{
+		RaceResults();
+		if (g_pKeyManager->isOnceKeyDown(VK_RETURN))
+		{
+			g_SceneManager->ChangeScene("Lobby");
+			*iLobby::m_gLobbyState = START_LOBBY;
+		}
+	}
 }
 
 void InGameUI::Render(LPD3DXSPRITE pSprite)
@@ -810,16 +813,16 @@ void InGameUI::UpdateRaceTime()
 														//      Therefore Current Second : 59
 
 
-														//		EX : m_ElapseTime = 9.876
+																//		EX : m_ElapseTime = 9.876
 	float CalcDP = (m_ElapseTime - (int)m_ElapseTime) * 10.0f;	//		CalcDP = (9.876 - 9) * 10 = 8.76
-	DotMilth = (int)(CalcDP)+FONT2_NUM0;						//		x.?xx = x.8xx
+	DotMilth = m_DotMilth = (int)(CalcDP) + FONT2_NUM0;	//		x.?xx = x.8xx
 	CalcDP -= (int)CalcDP;										//		CalcDP = 8.76 - 8 = 0.76
 	CalcDP *= 10.0f;											//		CalcDP = 0.76 * 10 = 7.6
-	DotTenth = (int)CalcDP + FONT2_NUM0;						//		x.8?x = x.87x
+	DotTenth = m_DotTenth = (int)CalcDP + FONT2_NUM0;						//		x.8?x = x.87x
 	CalcDP -= (int)CalcDP;										//		CalcDP = 7.6 - 7 = 0.6
 	CalcDP *= 10.0f;											//		CalcDP = 0.6 * 10 = 6
 	ElapseTime = (int)CalcDP + FONT2_NUM0;						//		x.87? = x.876
-	m_WorldDotOneth = (int)CalcDP + FONT2_NUM0;;								//		Therefore Calculation Decimal Point = 0.876
+	m_WorldDotOneth = (int)CalcDP + FONT2_NUM0;;				//		Therefore Calculation Decimal Point = 0.876
 
 																				/*          Add String          */
 	SecOneth = m_SecOneth;
@@ -871,4 +874,113 @@ void InGameUI::UpdateArrowDir()
 	}
 
 	pIV_arrowDir->SetArrowAngle(-angle);
+}
+
+void InGameUI::RaceResults()
+{
+	std::string ResultElapseTime;							// Elase(x.xx0)
+	std::string ResultDotTenth;								//		 x.x0x
+	std::string ResultDotMilth;								//		 x.0xx
+	std::string ResultSecOneth;								//		 0.xxx
+	std::string ResultSecTenth;								//		0x.xxx
+	std::string ResultMinOneth;								//	  0.xx.xxx
+	std::string ResultMinTenth;								//	 0x.xx.xxx
+
+	ResultElapseTime = m_WorldDotOneth;
+	ResultDotTenth = m_DotTenth;
+	ResultDotMilth = m_DotMilth;
+	ResultSecOneth = m_SecOneth;
+	ResultSecTenth = m_SecTenth;
+	ResultMinOneth = m_MinOneth;
+	ResultMinTenth = m_MinTenth;
+
+
+	UIImageView* pResultRing = new UIImageView;
+	pResultRing->SetIsBoard(true);
+	pResultRing->SetXSize(15.0f);
+	pResultRing->SetYSize(12.5f);
+	pResultRing->SetPosition(400, 200);
+	pResultRing->SetTexture("UIImage/ring.png");
+
+	UITextImageView* pRaceResult = new UITextImageView;
+	pRaceResult->SetTexture("UIImage/font2.png");
+	pRaceResult->SetText("Race Results");
+	pRaceResult->SetXSize(1.0f);
+	pRaceResult->SetYSize(1.0f);
+	pRaceResult->SetPosition(10, 10);
+	pRaceResult->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+
+	UITextImageView* pFirst = new UITextImageView;
+	pFirst->SetTexture("UIImage/font2.png");
+	pFirst->SetText("01");
+	pFirst->SetXSize(1.0f);
+	pFirst->SetYSize(1.0f);
+	pFirst->SetPosition(0, 30);
+
+	g_pDataManager->vecPlayerData[0]->ID = std::string("Hi");
+
+	UITextImageView* pPlayerName = new UITextImageView;
+	pPlayerName->SetText(g_pDataManager->vecPlayerData[0]->ID);
+	pPlayerName->SetTexture("UIImage/font2.png");
+	pPlayerName->SetPosition(30, 0);
+	pPlayerName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+
+	UITextImageView* pMinTenth = new UITextImageView;
+	pMinTenth->SetTexture("UIImage/font2.png");
+	pMinTenth->SetText(ResultMinTenth);
+	pMinTenth->SetPosition(160, 0);
+
+	UITextImageView* pMinOneth = new UITextImageView;
+	pMinOneth->SetTexture("UIImage/font2.png");
+	pMinOneth->SetText(ResultMinOneth);
+	pMinOneth->SetPosition(10, 0);
+
+	UITextImageView* pMinColon = new UITextImageView;
+	pMinColon->SetTexture("UIImage/font2.png");
+	pMinColon->SetText(":");
+	pMinColon->SetPosition(10, 0);
+
+	UITextImageView* pSecTenth = new UITextImageView;
+	pSecTenth->SetTexture("UIImage/font2.png");
+	pSecTenth->SetText(ResultSecTenth);
+	pSecTenth->SetPosition(10, 0);
+
+	UITextImageView* pSecOneth = new UITextImageView;
+	pSecOneth->SetTexture("UIImage/font2.png");
+	pSecOneth->SetText(ResultSecOneth);
+	pSecOneth->SetPosition(10, 0);
+
+	UITextImageView* pSecColon = new UITextImageView;
+	pSecColon->SetTexture("UIImage/font2.png");
+	pSecColon->SetText(":");
+	pSecColon->SetPosition(10, 0);
+
+	UITextImageView* pDotMilth = new UITextImageView;
+	pDotMilth->SetTexture("UIImage/font2.png");
+	pDotMilth->SetText(ResultDotMilth);
+	pDotMilth->SetPosition(10, 0);
+
+	UITextImageView* pDotTenth = new UITextImageView;
+	pDotTenth->SetTexture("UIImage/font2.png");
+	pDotTenth->SetText(ResultDotTenth);
+	pDotTenth->SetPosition(10, 0);
+
+	UITextImageView* pDotOneth = new UITextImageView;
+	pDotOneth->SetTexture("UIImage/font2.png");
+	pDotOneth->SetText(ResultElapseTime);
+	pDotOneth->SetPosition(10, 0);
+
+	m_pRootUI->AddChild(pResultRing);
+	pResultRing->AddChild(pRaceResult);
+	pRaceResult->AddChild(pFirst);
+	pFirst->AddChild(pMinTenth);
+	pFirst->AddChild(pPlayerName);
+	pMinTenth->AddChild(pMinOneth);
+	pMinOneth->AddChild(pMinColon);
+	pMinColon->AddChild(pSecTenth);
+	pSecTenth->AddChild(pSecOneth);
+	pSecOneth->AddChild(pSecColon);
+	pSecColon->AddChild(pDotMilth);
+	pDotMilth->AddChild(pDotTenth);
+	pDotTenth->AddChild(pDotOneth);
 }

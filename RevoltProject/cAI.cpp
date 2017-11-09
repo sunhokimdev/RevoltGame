@@ -7,6 +7,7 @@
 
 cAI::cAI()
 {
+	AITag = AI_TAG_MASTER;
 }
 
 
@@ -19,14 +20,14 @@ void cAI::SetCar(cCar * pAICar)
 	m_pAICar = pAICar;
 	m_pAICarActor = m_pAICar->GetPhysXData()->m_pActor;
 
+	//{
+	//	cAI_CtrlSpeed* p = new cAI_CtrlSpeed;
+	//	this->AddAICtrl(p);
+	//}
 	{
-		cAI_CtrlSpeed* p = new cAI_CtrlSpeed;
+		cAI_CtrlHandel* p = new cAI_CtrlHandel;
 		this->AddAICtrl(p);
 	}
-//	{
-//		cAI_CtrlHandel* p = new cAI_CtrlHandel;
-//		this->AddAICtrl(p);
-//	}
 //	{
 //		cAI_CtrlHandel* p = new cAI_CtrlHandel;
 //		this->AddAICtrl(p);

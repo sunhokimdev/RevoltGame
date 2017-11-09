@@ -484,6 +484,9 @@
     <ClInclude Include="cSelectNetworkLob.h">
       <Filter>Lobby\GameUI</Filter>
     </ClInclude>
+    <ClInclude Include="cAI_Flip.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -785,6 +788,9 @@
     </ClCompile>
     <ClCompile Include="cSelectNetworkLob.cpp">
       <Filter>Lobby\GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_Flip.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
