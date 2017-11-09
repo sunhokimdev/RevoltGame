@@ -27,6 +27,8 @@ cAI_CtrlSpeed::cAI_CtrlSpeed()
 	AI_value = 0.2f;		//delta 의 인지범위
 	AI_distanceMin = 2.f;	//무조건 유지하려는 거리
 
+
+	AITag = AI_TAG_SPEED;
 }
 
 
@@ -37,7 +39,7 @@ cAI_CtrlSpeed::~cAI_CtrlSpeed()
 
 void cAI_CtrlSpeed::Update()
 {
-	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 1, 0);
+	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.3, 0);
 	NxVec3 dirFront = m_pAICar->WheelArrow(0, false); dirFront.y = 0;
 	NxVec3 dirBack = m_pAICar->WheelArrow(180, true); dirBack.y = 0;
 	std::cout << dirBack.x << std::endl;
@@ -84,22 +86,15 @@ void cAI_CtrlSpeed::Update()
 		if (backDistCurr < AI_distanceBack)
 		{
 			aiState = E_SpeedStateFront;
-			//			std::cout << "Front" << std::endl;
 		}
 	}
 
-
-	//	std::cout << aiState << std::endl;
-
-		//
 	frontDistPrev = frontDistCurr;
 	backDistPrev = backDistCurr;
 
-	if (g_pKeyManager->isStayKeyDown(VK_TAB))
-	{
-		SetBitKey(eBIT_KEY::E_BIT_UP, aiState == E_SpeedStateFront);
-		SetBitKey(eBIT_KEY::E_BIT_DOWN, aiState == E_SpeedStateBack);
-	}
+
+	SetBitKey(eBIT_KEY::E_BIT_UP, aiState == E_SpeedStateFront);
+	SetBitKey(eBIT_KEY::E_BIT_DOWN, aiState == E_SpeedStateBack);
 }
 
 void cAI_CtrlSpeed::Render()

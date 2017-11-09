@@ -299,9 +299,13 @@ void cCar::Update()
 	m_carNxVehicle->getActor()->addForce(NxVec3(0, 0.001, 0));
 	INPUT_KEY.reset();
 
-	if (m_isAI) CtrlAI();
-	else CtrlPlayer();
 	CtrlPlayer();
+	if (g_pKeyManager->isStayKeyDown(VK_TAB))
+	{
+		if (m_isAI) CtrlAI();
+		else CtrlPlayer();
+	}
+
 	//이하 AI, PLAYER 의 동일 사용 함수
 
 	//자동차 움직임
