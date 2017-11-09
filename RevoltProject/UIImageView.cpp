@@ -83,7 +83,7 @@ void UIImageView::Update()
 			srand(time(NULL));
 			if (m_itemID > MAX_ID)
 			{
-				m_itemID = rand() % 12;
+				m_itemID = 3;
 				//m_itemID = m_pCar->GetHoldItem();
 			}
 				
@@ -102,7 +102,7 @@ void UIImageView::Update()
 				m_itemPrevID++;
 			}
 
-			m_updateTIme-=2;
+			m_updateTIme -= 2;
 		}
 	}
 	else if (m_isSpeed)
