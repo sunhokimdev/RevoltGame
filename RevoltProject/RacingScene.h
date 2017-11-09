@@ -35,7 +35,7 @@ private:
 	D3DXVECTOR3* camLookTarget = new D3DXVECTOR3(0, 0, 0);
 
 	//TrackEndCount 돌아야 되는 바퀴 수
-	const int m_trackEndCount = 1;
+	const int m_trackEndCount = 3;
 
 	//빌보드??이펙트??
 	LPD3DXSPRITE m_Sprite;

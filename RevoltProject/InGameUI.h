@@ -72,9 +72,10 @@ private:
 	UITextImageView* m_pMinTenth;
 
 	// 속도계
-	UITextImageView* pSpeed;
-	UITextImageView* pSpeed2;
-	UIImageView* pSpeedometerImage;
+	UITextImageView* m_pSpeedOne;
+	UITextImageView* m_pSpeedTen;
+	UITextImageView* m_pSpeedHun;
+	UIImageView* m_pSpeedometerImage;
 
 	// 등수, 방향 화살표
 	UITextImageView* pITV_Rank;

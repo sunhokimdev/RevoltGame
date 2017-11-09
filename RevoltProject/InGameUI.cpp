@@ -353,26 +353,33 @@ void InGameUI::Setup()
 	pSpeedFrame->SetPosition(750, 650);
 	pSpeedFrame->SetTexture("UIImage/speedFrame.png");
 
-	pSpeedometerImage = new UIImageView;
-	pSpeedometerImage->SetIsSpeed(true);
-	pSpeedometerImage->SetXSize(1.2f);
-	pSpeedometerImage->SetYSize(1.2f);
-	pSpeedometerImage->SetPosition(0, 0);
-	pSpeedometerImage->SetTexture("UIImage/speed.png");
+	m_pSpeedometerImage = new UIImageView;
+	m_pSpeedometerImage->SetIsSpeed(true);
+	m_pSpeedometerImage->SetXSize(1.2f);
+	m_pSpeedometerImage->SetYSize(1.2f);
+	m_pSpeedometerImage->SetPosition(0, 0);
+	m_pSpeedometerImage->SetTexture("UIImage/speed.png");
 
-	pSpeed = new UITextImageView;			// 10의 자리
-	pSpeed->SetTexture("UIImage/font2.png");
-	pSpeed->SetText("");
-	pSpeed->SetXSize(1.2f);
-	pSpeed->SetYSize(1.2f);
-	pSpeed->SetPosition(140, 8);
+	m_pSpeedOne = new UITextImageView;			// 1의 자리
+	m_pSpeedOne->SetTexture("UIImage/font2.png");
+	m_pSpeedOne->SetText("0");
+	m_pSpeedOne->SetXSize(1.2f);
+	m_pSpeedOne->SetYSize(1.2f);
+	m_pSpeedOne->SetPosition(150, 0);
 
-	pSpeed2 = new UITextImageView;			// 1의 자리
-	pSpeed2->SetTexture("UIImage/font2.png");
-	pSpeed2->SetText("0");
-	pSpeed2->SetXSize(1.2f);
-	pSpeed2->SetYSize(1.2f);
-	pSpeed2->SetPosition(10, 0);
+	m_pSpeedTen = new UITextImageView;			// 10의 자리
+	m_pSpeedTen->SetTexture("UIImage/font2.png");
+	m_pSpeedTen->SetText("");
+	m_pSpeedTen->SetXSize(1.2f);
+	m_pSpeedTen->SetYSize(1.2f);
+	m_pSpeedTen->SetPosition(-10, 0);
+
+	m_pSpeedHun = new UITextImageView;			// 100의 자리
+	m_pSpeedHun->SetTexture("UIImage/font2.png");
+	m_pSpeedHun->SetText("");
+	m_pSpeedHun->SetXSize(1.2f);
+	m_pSpeedHun->SetYSize(1.2f);
+	m_pSpeedHun->SetPosition(-10, 0);
 
 	UITextImageView* pSpeed_mph = new UITextImageView;
 	pSpeed_mph->SetTexture("UIImage/font2.png");
@@ -403,10 +410,11 @@ void InGameUI::Setup()
 	pImageView7->AddChild(pITV_Rank);
 	pImageView7->AddChild(pITV_Rank2);
 
-	pSpeedFrame->AddChild(pSpeedometerImage);
-	pSpeedFrame->AddChild(pSpeed);
+	pSpeedFrame->AddChild(m_pSpeedometerImage);
+	pSpeedFrame->AddChild(m_pSpeedOne);
 	pSpeedFrame->AddChild(pSpeed_mph);
-	pSpeed->AddChild(pSpeed2);
+	m_pSpeedOne->AddChild(m_pSpeedTen);
+	m_pSpeedTen->AddChild(m_pSpeedHun);
 
 
 	// Last Font
@@ -486,23 +494,30 @@ void InGameUI::UpdateSpeed()
 {
 	int fTemp;
 	fTemp = m_pCar->GetCurrentSpeed();
-	int nTen;
+	if (fTemp >= 999)
+		fTemp = 999;
+
 	int nOne;
+	int nTen;
+	int nHun;
 
-	nTen = (int)fTemp / 10 + FONT2_NUM0;
 	nOne = (int)(fTemp % 10) + FONT2_NUM0;
+	nTen = (int)((fTemp / 10)%10) + FONT2_NUM0;
+	nHun = (int)(fTemp / 100) + FONT2_NUM0;
 
+	std::string strHun;
 	std::string strTen;
 	std::string strOne;
 
+	strHun = nHun;
 	strTen = nTen;
 	strOne = nOne;
 
+	m_pSpeedHun->SetText(strHun);
+	m_pSpeedTen->SetText(strTen);
+	m_pSpeedOne->SetText(strOne);
 
-	pSpeed->SetText(strTen);
-	pSpeed2->SetText(strOne);
-
-	pSpeedometerImage->SetRpmGauge(m_pCar->GetNxVehicle()->getWheel(1)->getRpm());
+	m_pSpeedometerImage->SetRpmGauge(m_pCar->GetNxVehicle()->getWheel(1)->getRpm());
 }
 
 void InGameUI::UpdateLabCount()

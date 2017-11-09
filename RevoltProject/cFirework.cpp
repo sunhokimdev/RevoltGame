@@ -126,7 +126,7 @@ void cFirework::Render()
 
 void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {
-	m_isTarget = true;
+	m_isTarget = false;
 	dir = angle;
 
 	m_pPhysX->pos.x = pos.x;
@@ -134,6 +134,9 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	m_pPhysX->pos.z = pos.z;
 	
 	NxVec3 force;
+
+
+	D3DXVec3Normalize(&angle,&angle);
 
 	force.x = angle.x * 50;
 	force.y = 2000;

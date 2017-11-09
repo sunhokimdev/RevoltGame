@@ -299,6 +299,8 @@ void cCar::Update()
 	m_carNxVehicle->getActor()->addForce(NxVec3(0, 0.001, 0));
 	INPUT_KEY.reset();
 
+	SettingCarPos();
+
 	//자동차 정보 업데이트
 	//=================================================
 	//자동차 위치 갱신
@@ -440,7 +442,7 @@ void cCar::CtrlPlayer()
 		float targetPower = 0.f;
 		bool power = false;
 		m_breakPower = 0.f;
-
+		
 		if (!m_isUser)
 		{
 			if (g_pKeyManager->isStayKeyDown(KEY_ACCELERATOR))
@@ -449,7 +451,7 @@ void cCar::CtrlPlayer()
 				if (m_moterPower > 1.f) m_moterPower = 1.f;
 				targetPower = m_moterPower * m_maxMoterPower;
 				power = true;
-
+		
 				if (g_pNetworkManager->GetIsInGameNetwork())
 					g_pNetworkManager->SetUpKey(true);
 			}
@@ -459,7 +461,7 @@ void cCar::CtrlPlayer()
 				if (m_moterPower < -1.f) m_moterPower = -1.f;
 				targetPower = m_moterPower * m_maxMoterPower;
 				power = true;
-
+		
 				if (g_pNetworkManager->GetIsInGameNetwork())
 					g_pNetworkManager->SetDownKey(true);
 			}
@@ -487,11 +489,11 @@ void cCar::CtrlPlayer()
 			targetPower = m_moterPower * m_maxMoterPower;
 			m_breakPower = m_maxMoterPower*0.5f;
 		}
-
+		
 		//핸들
 		float targetAngle = m_wheelAngle * m_maxWheelAngle;
 		bool handle = false;
-
+		
 		if (!m_isUser)
 		{
 			if (g_pKeyManager->isStayKeyDown(KEY_MOVE_LEFT))
@@ -500,7 +502,7 @@ void cCar::CtrlPlayer()
 				if (m_wheelAngle > 1.f) m_wheelAngle = 1.f;
 				targetAngle = m_wheelAngle * m_maxWheelAngle;
 				handle = true;
-
+		
 				if (g_pNetworkManager->GetIsInGameNetwork())
 					g_pNetworkManager->SetLeftKey(true);
 			}
@@ -510,7 +512,7 @@ void cCar::CtrlPlayer()
 				if (m_wheelAngle < -1.f) m_wheelAngle = -1.f;
 				targetAngle = m_wheelAngle * (m_maxWheelAngle);
 				handle = true;
-
+		
 				if (g_pNetworkManager->GetIsInGameNetwork())
 					g_pNetworkManager->SetRightKey(true);
 			}
@@ -537,15 +539,15 @@ void cCar::CtrlPlayer()
 			if (abs(m_wheelAngle) <= m_wheelAcc * 2) m_wheelAngle = 0.0f;
 			else if (m_wheelAngle > 0) m_wheelAngle -= m_wheelAcc * 2;
 			else if (m_wheelAngle < 0) m_wheelAngle += m_wheelAcc * 2;
-
+		
 			targetAngle = m_wheelAngle * m_maxWheelAngle;
 		}
-
+		
 		//이동
 		for (int i = 0; i < 4; i++)
 		{
 			NxWheel* wheel = m_carNxVehicle->getWheel(i);
-
+		
 			if (i < 2)
 			{
 				float value = (1 - (wheel->getRpm() / m_maxRpm));
@@ -555,9 +557,9 @@ void cCar::CtrlPlayer()
 			if (wheel->getRpm() < m_maxRpm)	wheel->tick(false, targetPower, m_breakPower, g_pTimeManager->GetElapsedTime());
 			else wheel->tick(false, 0, m_breakPower, g_pTimeManager->GetElapsedTime());
 		}
-
+		
 		//아이템사용
-		if (!m_isUser)
+		if (m_isUser)
 		{
 			if (g_pKeyManager->isOnceKeyDown(KEY_FIRE_ITEM))
 			{
@@ -572,7 +574,7 @@ void cCar::CtrlPlayer()
 						GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
 					}
 					std::cout << "FIRE!" << std::endl;
-
+		
 					if (g_pNetworkManager->GetIsInGameNetwork())
 						g_pNetworkManager->SetCtrlKey(true);
 				}
@@ -593,20 +595,20 @@ void cCar::CtrlPlayer()
 						GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
 					}
 					std::cout << "FIRE!" << std::endl;
-
+		
 				}
 			}
 		}
-
+		
 		//RePosition
-
+		
 		if (!m_isUser)
 		{
 			if (g_pKeyManager->isOnceKeyDown(KEY_REPOSITION))
 			{
 				if (g_pNetworkManager->GetIsInGameNetwork())
 					g_pNetworkManager->SetRKey(true);
-
+		
 				CarRunStop();
 				if (m_countRapNum == -1)
 				{
@@ -628,7 +630,7 @@ void cCar::CtrlPlayer()
 			{
 				if (g_pNetworkManager->GetIsInGameNetwork())
 					g_pNetworkManager->SetRKey(true);
-
+		
 				CarRunStop();
 				if (m_countRapNum == -1)
 				{
@@ -645,7 +647,7 @@ void cCar::CtrlPlayer()
 			}
 		}
 		
-
+		
 		//Fliping
 		NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
 		NxVec3 carUp = quat.transform(NxVec3(0, 1, 0), NxVec3(0, 0, 0));
@@ -657,7 +659,7 @@ void cCar::CtrlPlayer()
 				{
 					if (g_pNetworkManager->GetIsInGameNetwork())
 						g_pNetworkManager->SetFKey(true);
-
+		
 					isFliping = true;
 					CarRunStop();
 				}
@@ -668,25 +670,25 @@ void cCar::CtrlPlayer()
 				{
 					if (g_pNetworkManager->GetIsInGameNetwork())
 						g_pNetworkManager->SetFKey(true);
-
+		
 					isFliping = true;
 					CarRunStop();
 				}
 			}
 		}
-
+		
 		//SkidTest
-
+		
 		//레이초기화
 		NxRay RayCar;
 		RayCar.orig = NxVec3(m_position);
 		RayCar.orig.y += 0.2f;
 		RayCar.dir = NxVec3(0,-1,0);
-
+		
 		NxRaycastHit RayCarHit;
 		RayCarHit.shape = NULL;
 		g_pPhysXScene->raycastClosestShape(RayCar, NxShapesType::NX_ALL_SHAPES, RayCarHit);
-
+		
 		float rpm = GetNxVehicle()->getWheel(0)->getRpm() / m_maxRpm;
 		if (fabsf(rpm) > 0.8f && fabs(m_wheelAngle) > 0.9f)
 		{
@@ -695,7 +697,7 @@ void cCar::CtrlPlayer()
 				m_pSkidMark->DrawSkidMark();
 			}
 		}
-
+		
 		if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
 		{
 			if (RayCarHit.distance < 0.2f)
