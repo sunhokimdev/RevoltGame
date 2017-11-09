@@ -298,6 +298,11 @@ void RacingScene::UpdateCamera()
 		vecCars[0]->GetPosition().y + 0.5f ,
 		vecCars[0]->GetPosition().z };
 
+	//D3DXVECTOR3 carPos = {
+	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().x,
+	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().y + 0.5f ,
+	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().z };
+
 	*camLookTarget = carPos;//D3DXVECTOR3(pos.x, pos.y + 2.f, pos.z);
 
 	D3DXVECTOR3 camDir = (*camLookTarget) - CAM_POS;
@@ -330,7 +335,8 @@ void RacingScene::UpdateCamera()
 
 	if (RayCamHit.shape)
 	{
-		if (RayCamHit.shape->getActor().getName() == "map")
+		std::string str = RayCamHit.shape->getActor().getName();
+		if (str == "map")
 		{
 			x = RayCamHit.worldImpact.x;
 			//y = carPos.y + Height;//RayCamHit.worldImpact.y;
@@ -341,7 +347,8 @@ void RacingScene::UpdateCamera()
 
 	if (RayCamVerticalHit.shape != NULL)
 	{
-		if (RayCamVerticalHit.shape->getActor().getName() == "map")
+		std::string str = RayCamVerticalHit.shape->getActor().getName();
+		if (str == "map")
 		{
 			fCamHeight = RayCamVerticalHit.distance;
 			y = carPos.y + fCamHeight;

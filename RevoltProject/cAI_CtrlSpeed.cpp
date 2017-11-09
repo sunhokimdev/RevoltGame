@@ -19,8 +19,7 @@ cAI_CtrlSpeed::cAI_CtrlSpeed()
 	backDistPrev = 0;
 	backDistCurr = 0;
 	backDelta = 0;
-
-
+	
 
 	AI_distanceFront = 5;		//인지범위 
 	AI_distanceBack = 3;		//인지범위 
@@ -77,10 +76,6 @@ void cAI_CtrlSpeed::Update()
 			aiState = E_SpeedStateBack;
 			//			std::cout << "Back" << std::endl;
 		}
-<<<<<<< HEAD
-		//std::cout << "Up" << std::endl;
-=======
->>>>>>> c73d014a3caf8d7c5c4b9b47584d2f2c4bcdb6e5
 	}
 
 	if ((backDelta < AI_value) || (backDistCurr < AI_distanceMin))
@@ -89,11 +84,6 @@ void cAI_CtrlSpeed::Update()
 		{
 			aiState = E_SpeedStateFront;
 		}
-<<<<<<< HEAD
-		//std::cout << "Down" << std::endl;
-
-=======
->>>>>>> c73d014a3caf8d7c5c4b9b47584d2f2c4bcdb6e5
 	}
 	//	std::cout << aiState << std::endl;
 
