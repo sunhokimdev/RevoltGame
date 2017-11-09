@@ -302,9 +302,10 @@ void cCar::Update()
 	CtrlPlayer();
 	if (g_pKeyManager->isStayKeyDown(VK_TAB))
 	{
-		if (m_isAI) CtrlAI();
-		else CtrlPlayer();
+		CtrlAI();
 	}
+	//	if (m_isAI) CtrlAI();
+	//	else CtrlPlayer();
 
 	//이하 AI, PLAYER 의 동일 사용 함수
 
@@ -426,11 +427,6 @@ void cCar::CtrlAI()
 		if (m_carNxVehicle) pAI->Update();
 	}
 }
-
-//void cCar::GetRpm()
-//{
-//	float rpm;
-//}
 
 float cCar::GetRpm()
 {

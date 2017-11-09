@@ -469,7 +469,7 @@
     <ClInclude Include="cMyBomb.h">
       <Filter>Item</Filter>
     </ClInclude>
-    <ClInclude Include="cAI_Flip.h">
+    <ClInclude Include="cAI_CtrlFlip.h">
       <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
@@ -765,7 +765,7 @@
     <ClCompile Include="cMybombImapct.cpp">
       <Filter>Item</Filter>
     </ClCompile>
-    <ClCompile Include="cAI_Flip.cpp">
+    <ClCompile Include="cAI_CtrlFlip.cpp">
       <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>

@@ -3,7 +3,8 @@
 #include "cCar.h"
 
 #include "cAI_CtrlHandel.h"
-#include "cAI_CtrlSpeed.h"[]
+#include "cAI_CtrlSpeed.h"
+#include "cAI_CtrlFlip.h"
 
 cAI::cAI()
 {
@@ -28,10 +29,10 @@ void cAI::SetCar(cCar * pAICar)
 //		cAI_CtrlHandel* p = new cAI_CtrlHandel;
 //		this->AddAICtrl(p);
 //	}
-//	{
-//		cAI_CtrlHandel* p = new cAI_CtrlHandel;
-//		this->AddAICtrl(p);
-//	}
+	{
+		cAI_CtrlFlip* p = new cAI_CtrlFlip;
+		this->AddAICtrl(p);
+	}
 //	{
 //		cAI_CtrlHandel* p = new cAI_CtrlHandel;
 //		this->AddAICtrl(p);

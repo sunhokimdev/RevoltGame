@@ -1,11 +1,11 @@
 #pragma once
 #include "cAI.h"
-class cAI_Flip :
+class cAI_CtrlFlip :
 	public cAI
 {
 public:
-	cAI_Flip();
-	~cAI_Flip();
+	cAI_CtrlFlip();
+	~cAI_CtrlFlip();
 
 	void Update();
 	void Render();
