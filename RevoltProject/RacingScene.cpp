@@ -56,7 +56,7 @@ void RacingScene::Setup()
 	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
 
 	m_pSkyBox = new cSkyBox;
-	m_pSkyBox->Setup();
+	m_pSkyBox->Setup("Maps/SkyBox", "SkyBox.obj");
 
 	//CreateCar(0, "tc1");
 	//vecCars[0]->SetIsUser(false);

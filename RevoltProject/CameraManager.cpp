@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CameraManager.h"
+#include "GameNode.h"
 
 CameraManager::CameraManager()
 	: m_vEye(0, 2, -20)
@@ -38,7 +39,7 @@ void CameraManager::Update()
 {
 	//	Move();
 
-	m_fCamTime += 0.0005f;
+	m_fCamTime += 0.001f;
 
 	D3DXMATRIXA16 matR, matRX, matRY;
 	D3DXMatrixRotationX(&matRX, m_vCamRotAngle.x);
@@ -48,11 +49,16 @@ void CameraManager::Update()
 
 	if (m_pvTarget)
 	{
-		m_vEye = *m_pvTarget;
-		m_vLookAt = m_vNextLootAt;
-
-		//D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fCamTime);
-		//D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
+		if (g_SceneManager->GetCurrScene()->GetSceneName() == "Race")
+		{
+			m_vEye = *m_pvTarget;
+			m_vLookAt = m_vNextLootAt;
+		}
+		else
+		{
+			D3DXVec3Lerp(&m_vEye, &m_vEye, m_pvTarget, m_fCamTime);
+			D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_vNextLootAt, m_fCamTime);
+		}
 	}
 	else m_vEye = D3DXVECTOR3(0, 0, 0);
 

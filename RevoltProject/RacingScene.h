@@ -2,7 +2,7 @@
 #include "GameNode.h"
 
 //TrackEndCount 돌아야 되는 바퀴 수
-#define m_trackEndCount 3
+#define m_trackEndCount 1
 
 class cTrack;
 class cLight;

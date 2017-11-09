@@ -34,6 +34,8 @@ void LobbyScene::Setup()
 	// 로비 조명효과 추가
 	// ==========================
 	SetupLight();
+
+	
 	
 }
 

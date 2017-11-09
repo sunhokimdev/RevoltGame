@@ -62,6 +62,20 @@ void cTrack::Render()
 	}
 }
 
+void cTrack::Destory()
+{
+	for each(auto p in m_vecCheckBox)
+	{
+		p->Destroy();
+		SAFE_DELETE(p);
+	}
+	for each(auto p in m_vecObject)
+	{
+		p->Destroy();
+		SAFE_DELETE(p);
+	}
+}
+
 void cTrack::SetData()
 {
 

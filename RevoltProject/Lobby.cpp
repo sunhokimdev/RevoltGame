@@ -106,6 +106,8 @@ void Lobby::Setup()
 	m_pMap = new Map;
 
 	SetUpUI();
+
+	
 }
 
 void Lobby::Update()
@@ -331,7 +333,7 @@ void Lobby::KeyUpdate()
 
 		m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
 
-		if (m_stateLobby > INTRO3)
+		if (m_stateLobby > INTRO1)
 		{
 			g_pSoundManager->Play("menuNext.wav", 1.0f);
 			g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
@@ -699,6 +701,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[INTRO3]->m_pObject = pImageView3;
 	m_mapLobby[INTRO3]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[INTRO3]->m_pNextLob[0] = START_LOBBY;
+	m_mapLobby[INTRO3]->m_target = D3DXVECTOR3(-1, 2, -55);
 
 	m_mapLobby[START_LOBBY] = new ST_Object;
 	m_mapLobby[START_LOBBY]->m_target = D3DXVECTOR3(-1, 2, -55);

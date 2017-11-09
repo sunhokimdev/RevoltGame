@@ -45,7 +45,7 @@ struct ST_Object
 	{
 		m_time = 0.0f;
 		m_count = 0;
-		m_target = D3DXVECTOR3(0, 0, 0);
+		m_target = D3DXVECTOR3(-1, 2, -55);
 		m_camLookAt = D3DXVECTOR3(0, 0, 0);
 	}
 };

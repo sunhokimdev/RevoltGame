@@ -10,6 +10,7 @@
 #include "MapLoader.h"
 #include "cTrack.h"
 #include "Camera.h"
+#include "cSkyBox.h"
 LOBBY* Map::g_LobbyState;
 
 
@@ -21,6 +22,7 @@ Map::Map()
 
 Map::~Map()
 {
+
 }
 
 void Map::Setup()
@@ -47,6 +49,30 @@ void Map::Setup()
 	m_track[3]->trackNum = 3;
 	m_track[4]->trackName = "Toytanic";
 	m_track[4]->trackNum = 4;
+
+	m_pSkyBox = new cSkyBox;
+	m_pSkyBox->Setup("Maps/GalaxyBox", "GalaxyBox.obj");
+}
+
+void Map::Destroy()
+{
+	SAFE_DESTROY(m_pSkyBox);
+	SAFE_DELETE(m_pSkyBox);
+	
+	for each(auto p in m_track)
+	{
+		p.second->Destory();
+		SAFE_DELETE(p.second);
+	}
+	for each(auto p in m_vecObjMtlTex)
+	{
+		SAFE_DELETE(p);
+	}
+	for each(auto p in m_vecThing)
+	{
+		p->Destroy();
+		SAFE_DELETE(p);
+	}
 }
 
 void Map::Update()
@@ -85,6 +111,12 @@ void Map::Render()
 {
 	g_pD3DDevice->SetTexture(0, NULL);
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
+
+	//½ºÄ«ÀÌ¹Ú½º
+	if (m_pSkyBox)
+	{
+		m_pSkyBox->Render();
+	}
 
 	// ¸Ê ·»´õ
 
