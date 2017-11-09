@@ -40,10 +40,12 @@ void cAI_CtrlSpeed::Update()
 	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 1, 0);
 	NxVec3 dirFront = m_pAICar->WheelArrow(0, false); dirFront.y = 0;
 	NxVec3 dirBack = m_pAICar->WheelArrow(180, true); dirBack.y = 0;
+	std::cout << dirBack.x << std::endl;
+
 	dirFront.normalize();
 	dirBack.normalize();
 
-	rayHitFront = &RAYCAST(raypos, dirFront, 100);
+	rayHitFront = &RAYCAST(raypos, dirFront, 100);//,ePhysXTag::E_PHYSX_TAG_RAYCAST_TO_AI);
 	rayHitBack = &RAYCAST(raypos, dirBack, 100);
 
 	if (rayHitBack->shape)
@@ -51,9 +53,8 @@ void cAI_CtrlSpeed::Update()
 		backDistCurr = rayHitBack->distance;
 		backDelta = backDistCurr - backDistPrev;
 
-		NxVec3 pos = rayHitFront->worldImpact;
+		NxVec3 pos = rayHitBack->worldImpact;
 		BackPos = D3DXVECTOR3(pos.x, pos.y, pos.z);
-
 	}
 	if (rayHitFront->shape)
 	{
@@ -72,8 +73,13 @@ void cAI_CtrlSpeed::Update()
 		if (frontDistCurr < AI_distanceFront)
 		{
 			aiState = E_SpeedStateBack;
-//			std::cout << "Back" << std::endl;
+			//			std::cout << "Back" << std::endl;
 		}
+<<<<<<< HEAD
+=======
+	}
+
+>>>>>>> c8722a07111c9ac47fc59bb100ac26dcd9dbbdf5
 
 		//std::cout << "Up" << std::endl;
 	}
@@ -83,7 +89,7 @@ void cAI_CtrlSpeed::Update()
 		if (backDistCurr < AI_distanceBack)
 		{
 			aiState = E_SpeedStateFront;
-//			std::cout << "Front" << std::endl;
+			//			std::cout << "Front" << std::endl;
 		}
 
 		//std::cout << "Down" << std::endl;
@@ -95,8 +101,11 @@ void cAI_CtrlSpeed::Update()
 	frontDistPrev = frontDistCurr;
 	backDistPrev = backDistCurr;
 
-	SetBitKey(eBIT_KEY::E_BIT_UP, aiState == E_SpeedStateFront);
-	SetBitKey(eBIT_KEY::E_BIT_DOWN, aiState == E_SpeedStateBack);
+	if (g_pKeyManager->isStayKeyDown(VK_TAB))
+	{
+		SetBitKey(eBIT_KEY::E_BIT_UP, aiState == E_SpeedStateFront);
+		SetBitKey(eBIT_KEY::E_BIT_DOWN, aiState == E_SpeedStateBack);
+	}
 }
 
 void cAI_CtrlSpeed::Render()

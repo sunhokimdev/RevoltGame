@@ -64,7 +64,11 @@ void RacingScene::Setup()
 	if (i == 0)
 	{
 		CreateCar(m_pTrack->GetStartPositions()[i], i,"tc1", false);
+<<<<<<< HEAD
 		//CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
+=======
+	//	CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
+>>>>>>> c8722a07111c9ac47fc59bb100ac26dcd9dbbdf5
 	}
 
 
@@ -282,7 +286,10 @@ void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carNam
 {
 	cCar* pCar = new cCar;
 	pCar->LoadCar(carName);
+<<<<<<< HEAD
 	//pCar->SetAI(isAI);
+=======
+>>>>>>> c8722a07111c9ac47fc59bb100ac26dcd9dbbdf5
 	pCar->SetAI(true);
 	vecCars.push_back(pCar);
 
