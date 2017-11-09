@@ -68,8 +68,6 @@ void RacingScene::Setup()
 		CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
 	}
 
-
-
 	m_pInGameUI = new InGameUI;
 	LinkUI(0); // 인게임 InGameUI::Setup(); 전에 위치해야함, new InGameUI 가 선언되어 있어야 함.
 	m_pInGameUI->Setup();
