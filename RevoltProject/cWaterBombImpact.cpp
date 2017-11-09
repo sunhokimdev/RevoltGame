@@ -23,7 +23,6 @@ void cWaterBombImpact::Setup()
 	cImpact::Setup();
 	D3DXCreateSprite(g_pD3DDevice, &m_pSprite);
 	
-
 	D3DXIMAGE_INFO stImageInfo;
 
 	m_pTexture = g_pTextureManager->GetTexture("Objects/wbomb/bombsprite.png", &stImageInfo);
@@ -39,6 +38,7 @@ void cWaterBombImpact::Update()
 	if (m_isUse)
 	{
 		m_fTime++;
+
 		if (m_fTime % UPDATE_TIME == 0)
 		{
 			m_currentX++;
@@ -59,6 +59,8 @@ void cWaterBombImpact::Update()
 		m_index = 0;
 		m_currentX = 0;
 		m_currentY = 0;
+
+		printf("asdf\n");
 	}
 }
 

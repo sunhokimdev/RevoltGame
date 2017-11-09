@@ -42,6 +42,7 @@ void ItemManager::Init()
 	{
 		cItem* pItem = new cWbomb;
 		pItem->Setup();
+		pItem->SetIsUse(false);
 		pItem->SetItemTag(ITEM_WBOMB);
 		m_vecItem.push_back(pItem);
 	}
@@ -50,7 +51,7 @@ void ItemManager::Init()
 	{
 		cGravityball* pItem = new cGravityball;
 		pItem->Setup();
-		pItem->SetIsUse(true);
+		pItem->SetIsUse(false);
 		m_vecItem.push_back(pItem);
 	}
 
@@ -65,8 +66,9 @@ void ItemManager::Init()
 
 	for (int i = 0; i < 10; i++)
 	{
-		cItem* pItem = new cFirework;
+		cFirework* pItem = new cFirework;
 		pItem->Setup();
+		pItem->SetIsUse(false);
 		pItem->SetItemTag(ITEM_FIREWORK);
 		m_vecItem.push_back(pItem);
 	}
@@ -85,7 +87,7 @@ void ItemManager::Update()
 	{
 		for (int j = 0; j < m_vecIndex[i]; ++j)
 		{
-			m_vecItem[m_vecIndex[i]]->Update();
+			m_vecItem[j + i * 10]->Update();
 		}
 	}
 
@@ -93,7 +95,7 @@ void ItemManager::Update()
 	{
 		for (int j = 0; j < m_vecIndex[i]; ++j)
 		{
-			m_vecItem[m_vecIndex[i]]->LastUpdate();
+			m_vecItem[j + i * 10]->LastUpdate();
 		}
 	}
 }
@@ -104,7 +106,7 @@ void ItemManager::Render()
 	{
 		for (int j = 0; j < m_vecIndex[i]; ++j)
 		{
-			m_vecItem[m_vecIndex[i]]->Render();
+			m_vecItem[j + i * 10]->Render();
 		}
 	}
 }
@@ -127,20 +129,17 @@ void ItemManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
 void ItemManager::InitCollisionGroup()
 {
 	//임시 박스
-	SetActorGroup(box1, 1);
-	SetActorGroup(box2, 2);
-	SetActorGroup(box3, 2);
-	SetActorGroup(box4, 2);
-
-	box1->setGroup(1);
-	box2->setGroup(2);
-	box3->setGroup(2);
-	box4->setGroup(2);
-
-	MgrPhysXScene->setGroupCollisionFlag(1, 2, true);
-	MgrPhysXScene->setGroupCollisionFlag(2, 2, true);
-	MgrPhysXScene->setGroupCollisionFlag(1, 1, true);
-	MgrPhysXScene->setActorGroupPairFlags(3, 3, NX_NOTIFY_ON_END_TOUCH);
+	//SetActorGroup(box1, 1);
+	//SetActorGroup(box2, 2);
+	//SetActorGroup(box3, 2);
+	//SetActorGroup(box4, 2);
+	//
+	//box1->setGroup(1);
+	//box2->setGroup(2);
+	//box3->setGroup(2);
+	//box4->setGroup(2);
+	//
+	//MgrPhysXScene->setActorGroupPairFlags(3, 3, NX_NOTIFY_ON_END_TOUCH);
 
 }
 
@@ -150,12 +149,12 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 	D3DXMATRIXA16 matR;
 	D3DXMatrixIdentity(&matR);
 	matR = car->GetCarRotMatrix();
-	D3DXVECTOR3 carDir = { 1,0,0 }; // 자동차 정면 방향벡터
-	D3DXVec3TransformNormal(&carDir, &carDir, &matR);
+	D3DXVECTOR3 carDir;// = car->CarArrow(); // 자동차 정면 방향벡터
+	carDir.x = car->CarArrow(0).x;
+	carDir.y = car->CarArrow(0).y;
+	carDir.z = car->CarArrow(0).z;
+	//D3DXVec3TransformNormal(&carDir, &carDir, &matR);
 	
-	if (m_index == m_vecItem.size())
-		m_index = 0;
-
 	switch (tag)
 	{
 		case ITEM_WBOMB:
@@ -166,26 +165,27 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 			m_vecIndex[0]++;
 		}
 		break;
-		case ITEM_FIREWORK:
+		case ITEM_GRAVITY:
 		{
-			m_vecItem[m_vecIndex[1]]->Create(carDir, carPos);
-			m_vecItem[m_vecIndex[1]]->SetIsUse(true);
+			m_vecItem[m_vecIndex[1] + 10]->Create(carDir, carPos);
+			m_vecItem[m_vecIndex[1] + 10]->SetIsUse(true);
 
 			m_vecIndex[1]++;
 		}
 		break;
-		case ITEM_GRAVITY:
+		case ITEM_MYBOMB:
 		{
-			m_vecItem[m_vecIndex[2]]->Create(carDir, carPos);
-			m_vecItem[m_vecIndex[2]]->SetIsUse(true);
+			m_vecItem[m_vecIndex[2] + 20]->SetCar(car);
+			m_vecItem[m_vecIndex[2] + 20]->Create(carDir, carPos);
+			m_vecItem[m_vecIndex[2] + 20]->SetIsUse(true);
 
 			m_vecIndex[2]++;
 		}
-		case ITEM_MYBOMB:
+		break;
+		case ITEM_FIREWORK:
 		{
-			m_vecItem[m_vecIndex[3]]->SetCar(car);
-			m_vecItem[m_vecIndex[3]]->Create(carDir, carPos);
-			m_vecItem[m_vecIndex[3]]->SetIsUse(true);
+			m_vecItem[m_vecIndex[3] + 30]->Create(carDir, carPos);
+			m_vecItem[m_vecIndex[3] + 30]->SetIsUse(true);
 
 			m_vecIndex[3]++;
 		}

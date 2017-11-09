@@ -78,9 +78,13 @@ void RacingScene::Setup()
 	if (i == 0)
 	{
 		CreateCar(m_pTrack->GetStartPositions()[i], i,"tc1", false);
-	//	CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
+		CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
 	}
 	vecCars[i]->SetIsUser(false);
+	//vecCars[i+1]->SetIsUser(true);
+
+	printf("%f\n", vecCars[1]->GetPosition().y);
+	vecCars[1]->GetPhysXData()->m_pActor->addForce(NxVec3(0, 10000, 10000));
 
 	m_pInGameUI = new InGameUI;
 	LinkUI(0); // 인게임 InGameUI::Setup(); 전에 위치해야함, new InGameUI 가 선언되어 있어야 함.
@@ -155,66 +159,6 @@ void RacingScene::Update()
 				}
 			}
 		}
-
-		/*
-		if (str.size() > 10)
-		{
-			pchIP = strtok((char*)str.c_str(), "@");
-			printf("%s\n", pchIP);
-			pch = strtok(NULL, "@");
-			printf("%s\n", pch);
-		}
-
-		if (pchIP && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
-		{
-			char* ch = strtok(NULL, "@");
-
-			vecCars[1]->SetResetNetworkKey();
-			if (pch != NULL)
-			{
-				vecCars[1]->SetNetworkKey(pch);
-			
-				if (IsCarRunTrue(vecCars[1]))
-					vecCars[1]->Update();
-				else
-				{
-					vecCars[1]->RunEnd();
-					return;
-				}
-			}
-		}
-
-		*/
-				/*
-			
-			if (IsCarRunTrue(vecCars[vecCars.size() - 1]))
-				vecCars[vecCars.size() - 1]->Update();
-			else
-			{
-				vecCars[vecCars.size() - 1]->RunEnd();
-				return;
-			}
-		}
-		*/
-		/*
-		if (str.size() > 10)
-		{
-			if (g_pNetworkManager->GetClientIP().find(pch) == -1)
-			{
-				pch = strtok(NULL, "&");
-				vecCars[vecCars.size()-1]->SetResetNetworkKey();
-				vecCars[vecCars.size()-1]->SetNetworkKey(pch);
-
-				if (IsCarRunTrue(vecCars[vecCars.size()-1]))
-					vecCars[vecCars.size()-1]->Update();
-				else
-				{
-					vecCars[vecCars.size()-1]->RunEnd();
-					return;
-				}
-			}
-		}
-		*/
 	}
 
 	else
@@ -252,11 +196,6 @@ void RacingScene::Render()
 		p->Render();
 	}
 
-	//D3DXMATRIXA16 matWorld;
-	//
-	//D3DXMatrixIdentity(&matWorld);
-	//
-	//g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
 	m_pInGameUI->Render(m_Sprite);
 }
 
@@ -350,12 +289,6 @@ void RacingScene::UpdateCamera()
 	// 카메라 목적지
 	D3DXVECTOR3 vDest = { x,y,z };
 
-	//D3DXVECTOR3 moveDir;
-	//moveDir = vDest - CAM_POS;
-	//D3DXVec3Normalize(&moveDir, &moveDir);
-
-	//D3DXVECTOR3 distToDest = vDest - CAM_POS;
-
 	// 카메라 무빙
 	if (m_eRaceProg == RACE_PROG_GO)
 	{
@@ -380,7 +313,7 @@ void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carNam
 {
 	cCar* pCar = new cCar;
 	pCar->LoadCar(carName);
-	pCar->SetAI(true);
+	pCar->SetAI(isAI);
 	vecCars.push_back(pCar);
 
 	pCar->GetPhysXData()->SetPosition(m_pTrack->GetStartPositions()[playerID]);

@@ -299,6 +299,8 @@ void cCar::Update()
 	m_carNxVehicle->getActor()->addForce(NxVec3(0, 0.001, 0));
 	INPUT_KEY.reset();
 
+	SettingCarPos();
+
 	CtrlPlayer();
 	if (g_pKeyManager->isStayKeyDown(VK_TAB))
 	{
