@@ -29,7 +29,11 @@ enum eBITE_KEY
 
 class cCar : public Object
 {
+<<<<<<< HEAD
 	std::bitset<BITESET_8_SIZE> INPUT_KEY;
+=======
+	ST_KEYDONW m_keySet;
+>>>>>>> 2043831021ea01154eeaf0ba9ad476945cbb1e76
 
 	//바퀴 매쉬용 백터
 	std::vector<cMesh*> vecWheels;
@@ -127,4 +131,10 @@ public:
 	void RePosition();
 	void CarFlip();
 
+
+	/*   김선호   */
+	void SetResetNetworkKey();
+	void SetNetworkKey(std::string);
+
+	SYNTHESIZE(bool, m_isUser, IsUser);
 };

@@ -478,6 +478,9 @@
     <ClInclude Include="PSystem.h">
       <Filter>Item\Firework\FireworkEffect</Filter>
     </ClInclude>
+    <ClInclude Include="cSelectNetworkLob.h">
+      <Filter>Lobby\GameUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -776,6 +779,9 @@
     </ClCompile>
     <ClCompile Include="PSystem.cpp">
       <Filter>Item\Firework\FireworkEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="cSelectNetworkLob.cpp">
+      <Filter>Lobby\GameUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
