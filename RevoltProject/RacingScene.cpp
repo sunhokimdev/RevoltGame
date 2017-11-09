@@ -62,8 +62,8 @@ void RacingScene::Setup()
 	CreateCar(4, "tc5");
 	CreateCar(5, "tc6");
 
-	vecCars[0]->SetIsUser(false);
-	vecCars[1]->SetIsUser(true);
+	vecCars[0]->SetIsUser(true);
+	vecCars[1]->SetIsUser(false);
 	vecCars[2]->SetIsUser(true);
 	vecCars[3]->SetIsUser(true);
 	vecCars[4]->SetIsUser(true);
@@ -94,11 +94,11 @@ void RacingScene::Update()
 
 		g_pNetworkManager->SetResetKeyEvent();
 
-		if (IsCarRunTrue(vecCars[0])) 
-			vecCars[0]->Update();
+		if (IsCarRunTrue(vecCars[1])) 
+			vecCars[1]->Update();
 		else
 		{
-			vecCars[0]->RunEnd();
+			vecCars[1]->RunEnd();
 			return;
 		}
 
@@ -119,16 +119,16 @@ void RacingScene::Update()
 
 		if (pchIP && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
 		{
-			vecCars[1]->SetResetNetworkKey();
+			vecCars[0]->SetResetNetworkKey();
 			if (pch != NULL)
 			{
-				vecCars[1]->SetNetworkKey(pch);
+				vecCars[0]->SetNetworkKey(pch);
 
-				if (IsCarRunTrue(vecCars[1]))
-					vecCars[1]->Update();
+				if (IsCarRunTrue(vecCars[0]))
+					vecCars[0]->Update();
 				else
 				{
-					vecCars[1]->RunEnd();
+					vecCars[0]->RunEnd();
 					return;
 				}
 			}
