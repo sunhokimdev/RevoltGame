@@ -57,8 +57,6 @@ InGameUI::~InGameUI()
 		m_p321go->Destroy();
 		delete(m_p321go);
 	}
-		
-	//SAFE_DELETE(m_pCar);
 }
 
 void InGameUI::Setup()
@@ -77,9 +75,9 @@ void InGameUI::Setup()
 	pImageView1->SetPosition(30, 20);
 	pImageView1->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
-	//m_pCurrentLab = new UITextImageView;
-	//m_pCurrentLab->SetTexture("UIImage/font2.png");
-	//m_pCurrentLab->SetPosition(0, 20);
+	m_pCurrentLab = new UITextImageView;
+	m_pCurrentLab->SetTexture("UIImage/font2.png");
+	m_pCurrentLab->SetPosition(0, 20);
 
 
 	UITextImageView* pMaxLab = new UITextImageView;
@@ -454,6 +452,11 @@ void InGameUI::Setup()
 	m_pSecTenth->AddChild(pMinColon);
 	pMinColon->AddChild(m_pMinOneth);
 	m_pMinOneth->AddChild(m_pMinTenth);
+
+	m_p321go = new c321GO;
+	m_p321go->LinkRacingScene(m_pRacingScene);
+	m_p321go->Setup();
+
 }
 
 void InGameUI::Update()

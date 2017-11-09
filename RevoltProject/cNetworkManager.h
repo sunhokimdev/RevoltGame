@@ -55,6 +55,7 @@ public:
 	void SetClientPosition(NxVec3 v);
 	std::string GetClientPosition();
 	char* GetCharMsg() { return m_charMsg; };
+	void SetServerIP(std::string str) { m_serverIP = str; }
 
 	void SetUpKey(bool b) { m_keyEvent.up = b; };
 	void SetDownKey(bool b) { m_keyEvent.down = b; };

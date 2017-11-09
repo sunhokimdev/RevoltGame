@@ -31,6 +31,7 @@
 #include "cNetworkLobby.h"
 #include "cNetworkCreateRoom.h"
 #include "cNetworkInRoom.h"
+#include "cSelectNetworkLob.h"
 
 Lobby::Lobby()
 	: m_pSprite(NULL)
@@ -98,8 +99,8 @@ void Lobby::Setup()
 	m_pInRoom = new cNetworkInRoom;
 	m_pInRoom->Setup();
 
-//m_pSelectServer = new cSelectNetworkLob;
-//m_pSelectServer->Setup();
+	m_pSelectServer = new cSelectNetworkLob;
+	m_pSelectServer->Setup();
 
 	m_pfileList = new ProfileList;
 	m_pMap = new Map;
@@ -307,12 +308,12 @@ void Lobby::KeyUpdate()
 			}
 		}
 
-		//else if (m_stateLobby == NETWORK_SELECT_LOBBY)
-		//{
-		//	m_pInRoom->SetUserName(m_multiLobby->GetName());
-		//	g_pNetworkManager->SetServerIP(m_pSelectServer->GetTextIP());
-		//	g_pNetworkManager->Start();
-		//}
+		else if (m_stateLobby == NETWORK_SELECT_LOBBY)
+		{
+			m_pInRoom->SetUserName(m_multiLobby->GetName());
+			g_pNetworkManager->SetServerIP(m_pSelectServer->GetTextIP());
+			g_pNetworkManager->Start();
+		}
 
 		else if (m_stateLobby == NETWORK_CREATE_LOBBY)
 		{

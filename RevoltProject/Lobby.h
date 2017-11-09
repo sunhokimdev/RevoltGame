@@ -17,6 +17,7 @@ class cSelectCarLob;			// 자동차 선택UI클래스
 class cViewCarLob;				// 자동차 보여주는 
 class cNetworkCreateRoom;		// 방 생성 클래스
 class cNetworkInRoom;			// 방 클래스
+class cSelectNetworkLob;
 //===================================================================
 // - written by 김선호
 // - 로비 창 구현
@@ -97,6 +98,7 @@ protected:
 	cViewCarLob*		m_pViewCarLobby;			// 자동차 뷰어 로비 클래스
 	cNetworkCreateRoom* m_pCreateRoom;				// 멀티 방 생성 클래스
 	cNetworkInRoom*		m_pInRoom;					// 멀티 방 클래스
+	cSelectNetworkLob* m_pSelectServer;
 public:
 	Lobby();
 	~Lobby();

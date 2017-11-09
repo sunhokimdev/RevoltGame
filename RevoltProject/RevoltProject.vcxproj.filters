@@ -481,6 +481,9 @@
     <ClInclude Include="c321GO.h">
       <Filter>Lobby\GameUI</Filter>
     </ClInclude>
+    <ClInclude Include="cSelectNetworkLob.h">
+      <Filter>Lobby\GameUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -778,6 +781,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="c321GO.cpp">
+      <Filter>Lobby\GameUI</Filter>
+    </ClCompile>
+    <ClCompile Include="cSelectNetworkLob.cpp">
       <Filter>Lobby\GameUI</Filter>
     </ClCompile>
   </ItemGroup>
