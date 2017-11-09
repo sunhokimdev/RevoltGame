@@ -98,8 +98,8 @@ void cSkidMark::DrawSkidMark()
 	
 	//D3DXCreateSphere(g_pD3DDevice, 0.05f, 20, 20, &rubberL.mesh, 0);
 	//D3DXCreateSphere(g_pD3DDevice, 0.05f, 20, 20, &rubberR.mesh, 0);
-	D3DXCreateBox(g_pD3DDevice, 0.05f, 0, 0.1f, &rubberL.mesh, 0);
-	D3DXCreateBox(g_pD3DDevice, 0.05f, 0, 0.1f, &rubberR.mesh, 0);
+	D3DXCreateBox(g_pD3DDevice, 0.1f, 0, 0.1f, &rubberL.mesh, 0);
+	D3DXCreateBox(g_pD3DDevice, 0.1f, 0, 0.1f, &rubberR.mesh, 0);
 
 	rubberL.timer = 0;
 	rubberR.timer = 0;

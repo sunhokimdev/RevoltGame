@@ -6,7 +6,7 @@ public:
 	cSkyBox();
 	~cSkyBox();
 
-	void Setup();
+	void Setup(std::string folder, std::string fileName);
 	void Update();
 	void Destroy();
 	void Render();

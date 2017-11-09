@@ -106,6 +106,10 @@ void Lobby::Setup()
 	m_pMap = new Map;
 
 	SetUpUI();
+
+	m_CamLerpSpd = 0.05f;
+	m_vCamPos = { 1,2,-55 };
+	m_vLookAt = { 0,0,0 };
 }
 
 void Lobby::Update()
@@ -334,8 +338,10 @@ void Lobby::KeyUpdate()
 		if (m_stateLobby > INTRO3)
 		{
 			g_pSoundManager->Play("menuNext.wav", 1.0f);
-			g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
-			g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+			
+			//g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
+			//g_pCamManager->SetCamPos(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
+			//g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			m_time = 0.0f;
 			m_select = 0;
 
@@ -351,12 +357,12 @@ void Lobby::KeyUpdate()
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
 
 			if (m_stateLobby != MAIN_LOBBY2)
-				g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);
+				//g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);
 
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
-			g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+			//g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			g_pSoundManager->Play("menuPrev.wav", 1.0f);
 		}
 	}
@@ -374,7 +380,12 @@ void Lobby::KeyUpdate()
 		}
 	}
 
-	g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+	D3DXVec3Lerp(&m_vCamPos, &m_vCamPos, &m_mapLobby[m_stateLobby]->m_target, m_CamLerpSpd);
+	D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_mapLobby[m_stateLobby]->m_camLookAt, m_CamLerpSpd);
+
+	g_pCamManager->SetCamPos(&m_vCamPos);
+	//g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+	g_pCamManager->SetLookAt(&m_vLookAt);
 }
 
 void Lobby::TimeUpdate()
@@ -699,6 +710,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[INTRO3]->m_pObject = pImageView3;
 	m_mapLobby[INTRO3]->m_pNextLob = new LOBBY[1];
 	m_mapLobby[INTRO3]->m_pNextLob[0] = START_LOBBY;
+	m_mapLobby[INTRO3]->m_target = D3DXVECTOR3(-1, 2, -55);
 
 	m_mapLobby[START_LOBBY] = new ST_Object;
 	m_mapLobby[START_LOBBY]->m_target = D3DXVECTOR3(-1, 2, -55);

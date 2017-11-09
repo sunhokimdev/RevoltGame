@@ -157,5 +157,6 @@ public:
 	}
 	void LinkTrack(cTrack* track) { m_pTrack = track; }
 	void LinkRacingScene(RacingScene* rc) { m_pRacingScene = rc; }
+	c321GO* Get321goPt() { return m_p321go; }
 };
 

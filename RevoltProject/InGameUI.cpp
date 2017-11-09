@@ -456,16 +456,31 @@ void InGameUI::Setup()
 	pMinColon->AddChild(m_pMinOneth);
 	m_pMinOneth->AddChild(m_pMinTenth);
 
+
+	//========================================
+	// ½ÃÀÛ½Ã 321GO 
+	// by. ÅÂ¼·
+	//========================================
+	m_p321go = new c321GO;
+	m_p321go->LinkRacingScene(m_pRacingScene);
+	m_p321go->Setup();
 }
 
 void InGameUI::Update()
 {
 	iLobby::Update();
+	
 
 	UpdateSpeed();
 	UpdateLabCount();
 
 	UpdateArrowDir();
+
+	if (m_p321go)
+	{
+		m_p321go->Update();
+	}
+
 
 	if (m_LabCnt > -1 && m_LabCnt < 3)	UpdateLabTime();
 	if (m_LabCnt < 3)	UpdateRaceTime();
@@ -478,11 +493,18 @@ void InGameUI::Update()
 			*iLobby::m_gLobbyState = START_LOBBY;
 		}
 	}
+
+
 }
 
 void InGameUI::Render(LPD3DXSPRITE pSprite)
 {
 	iLobby::Render(pSprite);
+
+	if (m_p321go)
+	{
+		m_p321go->Render();
+	}
 }
 
 void InGameUI::UpdateSpeed()
