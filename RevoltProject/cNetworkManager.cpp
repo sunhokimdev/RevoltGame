@@ -4,6 +4,8 @@
 #include "cCar.h"
 
 cNetworkManager::cNetworkManager()
+	: m_isInNetwork(false)
+	, m_isNetwork(false)
 {
 }
 

@@ -24,6 +24,7 @@ void cItem::Setup()
 
 	m_pUser = new USERDATA;
 	m_pUser->IsPickUp = NX_TRUE;
+
 	m_pPhysX = new ST_PHYSX;
 	m_pPhysX->pPhysX = new cPhysX;
 	m_pPhysX->pTrigger = new cPhysX;

@@ -538,8 +538,7 @@ void cCar::CtrlPlayer()
 			{
 				if (m_eHoldItem != ITEM_NONE)
 				{
-					g_pItemManager->FireItem(m_eHoldItem, this);
-
+					g_pItemManager->FireItem(ITEM_WBOMB, this);
 					//아이템 사용 함수 호츨
 					m_nItemCount--;
 					if (m_nItemCount == 0)
@@ -563,6 +562,7 @@ void cCar::CtrlPlayer()
 				{
 					g_pItemManager->FireItem(m_eHoldItem, this);
 					//아이템 사용 함수 호츨
+					printf("asfd\n");
 					m_nItemCount--;
 					if (m_nItemCount == 0)
 					{

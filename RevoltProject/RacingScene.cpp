@@ -385,8 +385,6 @@ void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carNam
 	pCar->LoadCar(carName);
 	pCar->SetAI(isAI);
 
-	vecCars.push_back(pCar);
-
 	pCar->GetPhysXData()->SetPosition(m_pTrack->GetStartPositions()[playerID]);
 }
 
