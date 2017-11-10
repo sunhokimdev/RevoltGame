@@ -47,21 +47,7 @@ Lobby::Lobby()
 
 Lobby::~Lobby()
 {
-	SAFE_RELEASE(m_pSprite);
-	SAFE_RELEASE(m_pObjMesh);
-	SAFE_DELETE(m_pSelectMap);
-	//SAFE_DELETE(m_pInGameUI);
-	SAFE_DELETE(m_multiLobby);
-	SAFE_DELETE(m_pCreateProfileLobby);
-	SAFE_DELETE(m_pSelectCarLobbby);
-
-	for each(auto a in m_mapLobby)
-	{
-		delete[] a.second->m_pNextLob;
-		SAFE_DELETE(a.second->m_pObject);
-	}
-
-	Destroy();
+	
 }
 
 void Lobby::Setup()
@@ -148,15 +134,24 @@ void Lobby::Render()
 
 void Lobby::Destroy()
 {
+	m_pSprite->Release();
 	SAFE_RELEASE(m_pSprite);
 	SAFE_RELEASE(m_pObjMesh);
 	SAFE_DELETE(m_pSelectMap);
+	//SAFE_DELETE(m_pInGameUI);
+	SAFE_DELETE(m_multiLobby);
+	SAFE_DELETE(m_pCreateProfileLobby);
+	SAFE_DELETE(m_pSelectCarLobbby);
 
 	for each(auto a in m_mapLobby)
 	{
+		
 		delete[] a.second->m_pNextLob;
 		SAFE_DELETE(a.second->m_pObject);
 	}
+	m_mapLobby.clear();
+
+
 }
 
 void Lobby::KeyUpdate()

@@ -61,18 +61,21 @@ void Map::Destroy()
 	
 	for each(auto p in m_track)
 	{
-		p.second->Destory();
+		p.second->Destroy();
 		SAFE_DELETE(p.second);
 	}
+	m_track.clear();
 	for each(auto p in m_vecObjMtlTex)
 	{
 		SAFE_DELETE(p);
 	}
+	m_vecObjMtlTex.clear();
 	for each(auto p in m_vecThing)
 	{
 		p->Destroy();
 		SAFE_DELETE(p);
 	}
+	m_vecThing.clear();
 }
 
 void Map::Update()

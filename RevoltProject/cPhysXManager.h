@@ -195,7 +195,7 @@ public:
 	BOOL InitNxPhysX();
 
 	void Update();
-	void Destory();
+	void Destroy();
 
 	void Render();
 

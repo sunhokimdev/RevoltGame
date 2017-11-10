@@ -47,11 +47,11 @@ void cAI::SetCar(cCar * pAICar)
 
 
 }
-void cAI::Destory()
+void cAI::Destroy()
 {
 	for each(cAI* p in chiledAI)
 	{
-		p->Destory();
+		p->Destroy();
 	}
 }
 void cAI::AddAICtrl(cAI * pAI)

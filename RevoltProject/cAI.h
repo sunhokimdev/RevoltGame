@@ -28,7 +28,7 @@ public:
 	~cAI();
 
 	virtual void SetCar(cCar* m_pAICar);
-	virtual void Destory();
+	virtual void Destroy();
 	virtual void Update();
 	virtual void Render();
 	virtual void AddAICtrl(cAI* pAI);

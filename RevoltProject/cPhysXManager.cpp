@@ -117,7 +117,7 @@ BOOL cPhysXManager::InitNxPhysX()
 	return S_OK;
 }
 
-void cPhysXManager::Destory()
+void cPhysXManager::Destroy()
 {
 	if (m_pNxPhysicsSDK != NULL)
 	{

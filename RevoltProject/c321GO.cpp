@@ -14,18 +14,22 @@ c321GO::~c321GO()
 void c321GO::Setup()
 {
 	Object* gogo = new Object;
+	gogo->SetMeshData(new cMesh);
 	gogo->GetMeshData()->LoadMesh("Objects/gogo", "gogo.obj");
 	m_vec321go.push_back(gogo);
 
 	Object* go1 = new Object;
+	go1->SetMeshData(new cMesh);
 	go1->GetMeshData()->LoadMesh("Objects/go1", "go1.obj");
 	m_vec321go.push_back(go1);
 
 	Object* go2 = new Object;
+	go2->SetMeshData(new cMesh);
 	go2->GetMeshData()->LoadMesh("Objects/go2", "go2.obj");
 	m_vec321go.push_back(go2);
 
 	Object* go3 = new Object;
+	go3->SetMeshData(new cMesh);
 	go3->GetMeshData()->LoadMesh("Objects/go3", "go3.obj");
 	m_vec321go.push_back(go3);
 
@@ -61,7 +65,7 @@ void c321GO::Destroy()
 {
 	for each(Object* p in m_vec321go)
 	{
-		p->GetMeshData()->m_pMesh->Release();
+		p->Destroy();
 		SAFE_DELETE(p);
 	}
 	m_vec321go.clear();

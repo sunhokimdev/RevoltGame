@@ -266,6 +266,7 @@ void cCar::CreatePhsyX(stCARSPEC carspec)
 
 void cCar::LoadMesh(std::string carName)
 {
+	SetMeshData(new cMesh);
 	GetMeshData()->LoadCarMesh("Cars/" + carName, carName + ".obj");
 }
 
@@ -282,7 +283,7 @@ void cCar::LoadWheel(std::string carName)
 	{
 		for each(cMesh* p in vecWheels)
 		{
-			p->Destory();
+			p->Destroy();
 		}
 		vecWheels.clear();
 	}
@@ -401,11 +402,26 @@ void cCar::Render()
 	}
 }
 
-void cCar::Destory()
+void cCar::Destroy()
 {
-	if (m_pSkidMark) m_pSkidMark->Destory();
+	if (m_pSkidMark) m_pSkidMark->Destroy();
 	SAFE_DELETE(m_pSkidMark);
+	SAFE_DELETE(m_carNxVehicle);
+	for each(cMesh* p in vecWheels)
+	{
+		p->Destroy();
+		SAFE_DELETE(p);
+	}
+	vecWheels.clear();
+	for each(cAI* p in m_vecAI)
+	{
+		p->Destroy();
+		SAFE_DELETE(p);
+	}
+	m_vecAI.clear();
 	Object::Destroy();
+	m_pInGameUI = NULL;
+	m_pTrack = NULL;
 }
 
 void cCar::CtrlPlayer()
@@ -683,7 +699,7 @@ void cCar::CtrlPlayer()
 		}
 		if (g_pKeyManager->isStayKeyDown(VK_SPACE))
 		{
-			m_pSkidMark->Destory();
+			m_pSkidMark->Destroy();
 		}
 
 		INPUT_KEY[E_BIT_UP] = g_pKeyManager->isStayKeyDown(KEY_ACCELERATOR);
@@ -843,7 +859,7 @@ void cCar::DrawSkidMark()
 	}
 	if (g_pKeyManager->isStayKeyDown(VK_SPACE))
 	{
-		m_pSkidMark->Destory();
+		m_pSkidMark->Destroy();
 	}
 }
 

@@ -105,10 +105,23 @@ void RacingScene::Destroy()
 	SAFE_DELETE(m_pSkyBox);
 	SAFE_DELETE(m_camPos);
 	SAFE_DELETE(m_camLookTarget);
+
+	for each(cCar* p in vecCars)
+	{
+		p->Destroy();
+		SAFE_DELETE(p);
+	}
+	vecCars.clear();
 }
 
 void RacingScene::Update()
 {
+	if (g_pKeyManager->isOnceKeyDown(VK_ESCAPE))
+	{
+		m_eRaceProg = RACE_PROG_FINISH;
+		g_SceneManager->ChangeScene("Lobby");
+	}
+
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
 

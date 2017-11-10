@@ -46,7 +46,7 @@ void cSkidMark::Render()
 	}
 }
 
-void cSkidMark::Destory()
+void cSkidMark::Destroy()
 {
 	m_vecRubbers.clear();
 }
