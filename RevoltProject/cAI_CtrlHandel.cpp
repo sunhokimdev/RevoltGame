@@ -25,7 +25,7 @@ cAI_CtrlHandel::cAI_CtrlHandel()
 	HandleValue = 0.0f;
 
 
-	FindDirNum = 2;
+	FindDirNum = 3;
 
 
 	F___DistRange = 50.f;
@@ -46,12 +46,7 @@ void cAI_CtrlHandel::Update()
 {
 	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.3, 0);
 
-	cCheckBox* box = (cCheckBox*)(*m_pAICar->m_pTrack->GetCheckBoxsPt())[m_pAICar->GetAICheckBoxID()];
-	D3DXVECTOR3 nextPos = box->GetNextCheckBox()->GetPosition() - D3DXVECTOR3(0, 0.1, 0);
-	D3DXVECTOR3 carpos = m_pAICar->GetPhysXData()->GetPositionToD3DXVec3();
-	D3DXVECTOR3 dirCheck;
-	D3DXVec3Normalize(&dirCheck, &(nextPos - carpos));
-	float dirY = dirCheck.y;
+	float dirY = RayDirY();
 
 	cAI_CtrlSpeed* pAiSpeed = (cAI_CtrlSpeed*)FindMaster()->FindAITag(AI_TAG::AI_TAG_SPEED);
 	float back = 0.0f;
@@ -65,13 +60,13 @@ void cAI_CtrlHandel::Update()
 
 	//정면 거리에 따른 측면 측정각 조절
 	float frontValue = 0;
-	if (F__Dist < F___DistRange) frontValue = ((F___DistRange - F__Dist) / F___DistRange);
+	frontValue = 1.0f - ((F__Dist / F___DistRange) > 1.0f ? 1.f : F__Dist / F___DistRange);
 
 	//측면 측정
-	NxVec3 dirLF = m_pAICar->WheelArrow((back - 30) * frontValue);		dirLF.y = dirY;
-	NxVec3 dirRF = m_pAICar->WheelArrow((back + 30) * frontValue);		dirRF.y = dirY;
-	NxVec3 dirL_ = m_pAICar->WheelArrow((back - 30) * 1.f);				dirL_.y = dirY;
-	NxVec3 dirR_ = m_pAICar->WheelArrow((back + 30) * 1.f);				dirR_.y = dirY;
+	NxVec3 dirLF = m_pAICar->WheelArrow((back -  5) - 30 * frontValue);		dirLF.y = dirY;
+	NxVec3 dirRF = m_pAICar->WheelArrow((back +  5) + 30 * frontValue);		dirRF.y = dirY;
+	NxVec3 dirL_ = m_pAICar->WheelArrow((back - 35) - 50 * frontValue);				dirL_.y = dirY;
+	NxVec3 dirR_ = m_pAICar->WheelArrow((back + 35) + 50 * frontValue);				dirR_.y = dirY;
 
 	LF_Hit = &RAYCAST(raypos, dirLF);
 	RF_Hit = &RAYCAST(raypos, dirRF);
@@ -89,56 +84,50 @@ void cAI_CtrlHandel::Update()
 	RayHitDist(R__Hit, &R__Dist);
 
 	float LRFScale = LF_Dist + RF_Dist;
-	if (LF_Dist < LRF_DistRange * (frontValue + 1.414))
-	{
-		float add = CheckBoxPoint(dirLF) + ScaleValue(LF_Dist, LRFScale) * LRF_DistValue;
-		HandleValue += add;
-	}
-	else
-	{
-		HandleValue += CheckBoxPoint(dirLF);
-	}
-	if (RF_Dist < LRF_DistRange * (frontValue + 1.414))
-	{
-		float add = CheckBoxPoint(dirRF) + ScaleValue(RF_Dist, LRFScale) * LRF_DistValue;
-		HandleValue -= add;
-	}
-	else
-	{
-		HandleValue -= CheckBoxPoint(dirRF);
-	}
-
 	float LRScale = L__Dist + R__Dist;
-	if (L__Dist < LR__DistRange)
+
+	//	if (L__Dist < LR__DistRange)
 	{
-		float add = CheckBoxPoint(dirL_) + ScaleValue(L__Dist, LRScale) * LR__DistValue;
-		HandleValue += add;
-	}
-	else
-	{
-		HandleValue += CheckBoxPoint(dirL_);
-	}
-	if (R__Dist < LR__DistRange)
-	{
-		float add = CheckBoxPoint(dirR_) + ScaleValue(R__Dist, LRScale)* LR__DistValue;
+		float add = FrontValue(L__Dist, 0.5f) * ScaleValue(L__Dist, LRScale) * CheckBoxPoint(dirL_);
 		HandleValue -= add;
+		//	std::cout << add << "  -  ";
 	}
-	else
+	//	if (LF_Dist < LRF_DistRange )
 	{
-		HandleValue -= CheckBoxPoint(dirR_);
+		float add = FrontValue(LF_Dist) * ScaleValue(LF_Dist, LRFScale) * CheckBoxPoint(dirLF);
+		HandleValue -= add;
+		//	std::cout << add << "  -  ";
 	}
-
-
-	std::cout << HandleValue << std::endl;
-
-	if (abs(HandleValue) < HandleDistance)
+	//	if (RF_Dist < LRF_DistRange )
 	{
-		float add = 0;
-		add += CheckBoxPoint(dirL_) + ScaleValue(L__Dist, LRScale);
-		add -= CheckBoxPoint(dirR_) + ScaleValue(R__Dist, LRScale);
+		float add = FrontValue(RF_Dist) * ScaleValue(RF_Dist, LRFScale) * CheckBoxPoint(dirRF);
 		HandleValue += add;
-		//	std::cout << add << std::endl;
+		//	std::cout << add << "  +  ";
 	}
+	//	if (R__Dist < LR__DistRange)
+	{
+		float add = FrontValue(R__Dist, 0.5f) * ScaleValue(R__Dist, LRScale) * CheckBoxPoint(dirR_);
+		HandleValue += add;
+		//	std::cout << add << "  =  ";
+	}
+	//std::cout << HandleValue << std::endl;
+
+	float add = 0;
+	//	add += CheckBoxPoint(dirL_); std::cout << CheckBoxPoint(dirL_) << "  +  ";
+	//	add += CheckBoxPoint(dirLF); std::cout << CheckBoxPoint(dirLF) << "  +  ";
+	//	add += CheckBoxPoint(dirRF); std::cout << CheckBoxPoint(dirRF) << "  +  ";
+	//	add += CheckBoxPoint(dirR_); std::cout << CheckBoxPoint(dirR_) << "  =  ";
+
+	//	std::cout << add << std::endl;
+
+		//if (abs(HandleValue) < HandleDistance)
+		//{
+		//	float add = 0;
+		//	add += CheckBoxPoint(dirL_) + ScaleValue(L__Dist, LRScale);
+		//	add -= CheckBoxPoint(dirR_) + ScaleValue(R__Dist, LRScale);
+		//	HandleValue += add;
+		//	//	std::cout << add << std::endl;
+		//}
 
 	aiState = E_AIHandle_F;
 	//	if (back > 90.f) HandleValue *= -1;
@@ -171,9 +160,9 @@ void cAI_CtrlHandel::Render()
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
 	(pMesh)->DrawSubset(0);
 
-	D3DXMatrixTranslation(&mat16, F__Pos.x, F__Pos.y, F__Pos.z);
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
-	(pMesh)->DrawSubset(0);
+	//D3DXMatrixTranslation(&mat16, F__Pos.x, F__Pos.y, F__Pos.z);
+	//g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
+	//(pMesh)->DrawSubset(0);
 
 	D3DXMatrixTranslation(&mat16, RF_Pos.x, RF_Pos.y, RF_Pos.z);
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
@@ -186,7 +175,12 @@ void cAI_CtrlHandel::Render()
 
 float cAI_CtrlHandel::ScaleValue(float dist, float Scale)
 {
-	return ((Scale - dist) / Scale);
+	return (dist / Scale);
+}
+
+float cAI_CtrlHandel::FrontValue(float dist, float value)
+{
+	return (dist * value / F__Dist);
 }
 
 //0~1 점
@@ -196,20 +190,20 @@ float cAI_CtrlHandel::CheckBoxPoint(D3DXVECTOR3 dir)
 	cCheckBox* box = (cCheckBox*)(*m_pAICar->m_pTrack->GetCheckBoxsPt())[m_pAICar->GetAICheckBoxID()];
 	D3DXVECTOR3 dir1 = box->ToNextCheckBoxDir();
 	if (FindDirNum == 1)
-		return -(D3DXVec3Dot(&dir1, &dir) * 0.5f + 0.5f);
+		return (D3DXVec3Dot(&dir1, &dir));
 
 	D3DXVECTOR3 dir2 = box->GetNextCheckBox()->ToNextCheckBoxDir();
 	if (FindDirNum == 2)
 	{
 		D3DXVec3Normalize(&dir2, &(dir1 + (dir2*0.5f)));
-		return -(D3DXVec3Dot(&dir2, &dir) * 0.5f + 0.5f);
+		return (D3DXVec3Dot(&dir2, &dir));
 	}
 
 	D3DXVECTOR3 dir3 = box->GetNextCheckBox()->GetNextCheckBox()->ToNextCheckBoxDir();
 	if (FindDirNum == 3)
 	{
 		D3DXVec3Normalize(&dir3, &(dir1 + (dir2*0.5f) + (dir3*0.25f)));
-		return -(D3DXVec3Dot(&dir3, &dir) * 0.5f + 0.5f);
+		return (D3DXVec3Dot(&dir3, &dir));
 	}
 
 	return 0;

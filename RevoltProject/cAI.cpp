@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "cAI.h"
 #include "cCar.h"
+#include "cCheckBox.h"
+#include "cTrack.h"
+
 
 #include "cAI_CtrlHandel.h"
 #include "cAI_CtrlSpeed.h"
@@ -54,6 +57,13 @@ void cAI::SetCar(cCar * pAICar)
 }
 void cAI::Destory()
 {
+	for each(cAI* p in chiledAI)
+	{
+		p->pMesh = NULL;
+		p->Destory();
+	}
+	chiledAI.clear();
+
 	if(pMesh) pMesh->Release();
 }
 void cAI::AddAICtrl(cAI * pAI)
@@ -120,6 +130,16 @@ cAI * cAI::FindAITag(AI_TAG tag)
 			return p;
 	}
 	return nullptr;
+}
+
+float cAI::RayDirY()
+{
+	cCheckBox* box = (cCheckBox*)(*m_pAICar->m_pTrack->GetCheckBoxsPt())[m_pAICar->GetAICheckBoxID()];
+	D3DXVECTOR3 nextPos = box->GetNextCheckBox()->GetPosition() - D3DXVECTOR3(0, 0.1, 0);
+	D3DXVECTOR3 carpos = m_pAICar->GetPhysXData()->GetPositionToD3DXVec3();
+	D3DXVECTOR3 dirCheck(0,0,0);
+	D3DXVec3Normalize(&dirCheck, &(nextPos - carpos));
+	return dirCheck.y;
 }
 
 

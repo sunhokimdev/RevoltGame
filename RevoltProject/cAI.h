@@ -54,5 +54,7 @@ public:
 	cAI* FindMaster();
 	cAI* FindAITag(AI_TAG tag);
 
+
+	float RayDirY();
 };
 

@@ -7,7 +7,6 @@ public:
 
 	//LPD3DXMESH* pMesh;
 	
-
 	//Ray
 	NxRaycastHit* F__Hit;
 	NxRaycastHit* LF_Hit;
@@ -43,7 +42,7 @@ public:
 	// -1 ~ 0 ~ 1
 	float HandleValue;
 	//핸들 체크의 세밀도
-	const float HandleDistance = 0.1f;
+	const float HandleDistance = 0.2f;
 
 	AIHandleState aiState;
 
@@ -56,6 +55,7 @@ public:
 
 	//ray 거리에 따른 비율값
 	float ScaleValue(float dist, float Scale);
+	float FrontValue(float dist, float value = 1.0f);
 
 	//CheckBoxPoint() 애서 한번에 방향을 체크할 체크박스의 수 (1~3) 그 외의 값은 (return 0)
 	int FindDirNum;
