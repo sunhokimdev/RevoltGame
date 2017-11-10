@@ -118,6 +118,7 @@ void Lobby::Update()
 	// Set Map Type Update
 	if (m_stateLobby == SELECT_MAP_LOBBY)
 	{
+		m_pSelectMap->Update();
 		m_pSelectMap->SetMapType(&m_stateMapType, m_leftAndrightSelect);
 	}
 
@@ -144,6 +145,9 @@ void Lobby::Render()
 {
 	if (m_mapLobby[m_stateLobby]->m_pObject)
 		m_mapLobby[m_stateLobby]->m_pObject->Render(m_pSprite);
+
+	if(m_stateLobby > INTRO3)
+		m_pSelectMap->Render(m_pSprite);
 }
 
 void Lobby::Destroy()
@@ -151,6 +155,15 @@ void Lobby::Destroy()
 	SAFE_RELEASE(m_pSprite);
 	SAFE_RELEASE(m_pObjMesh);
 	SAFE_DELETE(m_pSelectMap);
+
+	SAFE_DELETE(m_multiLobby);
+	SAFE_DELETE(m_pCreateProfileLobby);
+	SAFE_DELETE(m_pSelectCarLobbby);
+	SAFE_DELETE(m_pViewCarLobby);
+	SAFE_DELETE(m_pCreateRoom);
+	SAFE_DELETE(m_pInRoom);
+	SAFE_DELETE(m_pSelectServer);
+
 
 	for each(auto a in m_mapLobby)
 	{
@@ -214,7 +227,8 @@ void Lobby::KeyUpdate()
 		if (m_stateLobby == SELECT_MAP_LOBBY)
 			m_leftAndrightSelect++;
 
-		m_pSelectMap->GetmagImage()->SetIsMove(true);
+		//m_pSelectMap->GetmagImage()->SetIsMove(true);
+		m_pSelectMap->SetMove(true);
 
 		if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
 			m_leftAndrightSelect = 0;
@@ -242,7 +256,8 @@ void Lobby::KeyUpdate()
 		{
 			m_leftAndrightSelect--;
 
-			m_pSelectMap->GetmagImage()->SetIsMove(true);
+			//m_pSelectMap->GetmagImage()->SetIsMove(true);
+			m_pSelectMap->SetMove(true);
 
 			if (m_leftAndrightSelect < 0)
 				m_leftAndrightSelect = m_mapLobby[m_stateLobby]->m_selectCnt - 1;

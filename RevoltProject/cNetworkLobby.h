@@ -19,6 +19,7 @@ public:
 	virtual void Setup();
 	virtual void Update();
 	virtual void Render(LPD3DXSPRITE pSprite);
+	virtual void Destroy();
 
 	/*   유저 이름, 자동차 이름 셋업   */
 	void SetUserName(std::string Name);

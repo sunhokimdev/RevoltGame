@@ -132,6 +132,8 @@ void RacingScene::Update()
 
 			if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
 		}
+
+		m_pInGameUI->UpdateRaceTime();
 	}
 	break;
 	case RACE_PROG_FINISH:

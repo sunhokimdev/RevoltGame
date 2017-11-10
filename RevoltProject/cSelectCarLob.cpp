@@ -172,6 +172,13 @@ void cSelectCarLob::Render(LPD3DXSPRITE pSprite)
 	iLobby::Render(pSprite);
 }
 
+void cSelectCarLob::Destroy()
+{
+	SAFE_DELETE(m_pCarName);
+
+	iLobby::Destroy();
+}
+
 std::string cSelectCarLob::GetCarName()
 {
 	return m_pCarName->GetCarName();

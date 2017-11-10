@@ -19,12 +19,6 @@ void cNetworkCreateRoom::Setup()
 {
 	iLobby::Setup();
 
-	m_pMapImage = new UIImageView;
-	m_pMapImage->SetXSize(1.5);
-	m_pMapImage->SetPosition(250, 100);
-	m_pMapImage->SetIsNoise(true);
-	m_pMapImage->SetTexture("Maps/Front/Image/market.bmp");
-
 	m_pRoomName = new UITextImageView;
 	m_pRoomName->SetIsChatingText(true);
 	m_pRoomName->SetTexture("UIImage/font2.png");
@@ -54,6 +48,7 @@ void cNetworkCreateRoom::Setup()
 	UITextImageView* pImageView3 = new UITextImageView;
 	pImageView3->SetTexture("UIImage/font1.png");
 	pImageView3->SetText("SELECT TRACK");
+	pImageView3->SetIndex(INT_MAX);
 	pImageView3->SetXSize(1.5f);
 	pImageView3->SetYSize(1.5f);
 	pImageView3->SetPosition(180, 40);
@@ -68,11 +63,13 @@ void cNetworkCreateRoom::Setup()
 	UITextImageView* pImageView5 = new UITextImageView;
 	pImageView5->SetTexture("UIImage/font2.png");
 	pImageView5->SetText("Length");
+	pImageView5->SetIndex(INT_MAX);
 	pImageView5->SetPosition(60, 80);
 
 	UITextImageView* pImageView6 = new UITextImageView;
 	pImageView6->SetTexture("UIImage/font2.png");
 	pImageView6->SetText("Difficulty");
+	pImageView6->SetIndex(INT_MAX);
 	pImageView6->SetPosition(60, 105);
 
 	UIImageView* pImageView7 = new UIImageView;
@@ -83,7 +80,6 @@ void cNetworkCreateRoom::Setup()
 	pImageView7->SetTexture("UIImage/ring.png");
 
 	m_pRootUI->AddChild(pImageView0);
-	pImageView0->AddChild(m_pMapImage);
 	pImageView0->AddChild(pImageView1);
 	pImageView0->AddChild(pImageView2);
 	pImageView0->AddChild(pImageView3);
@@ -102,6 +98,17 @@ void cNetworkCreateRoom::Update()
 void cNetworkCreateRoom::Render(LPD3DXSPRITE pSprite)
 {
 	iLobby::Render(pSprite);
+}
+
+void cNetworkCreateRoom::Destroy()
+{
+	SAFE_DELETE(m_pMapName)
+	SAFE_DELETE(m_pMapDifficult)
+	SAFE_DELETE(m_pMapLength)
+	SAFE_DELETE(m_pRoomName)	
+
+
+	iLobby::Destroy();
 }
 
 std::string cNetworkCreateRoom::GetRoomName()

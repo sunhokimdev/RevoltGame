@@ -2,10 +2,6 @@
 #include "UIImageView.h"
 #include "cCar.h"
 
-#define INCREASE_NOISE_X	20.0f
-#define LEFT_NOISE_X		-500.0f
-#define RIGHT_NOISE_X		-512.0f
-#define LIMIT_NOISE_X		-256.0f
 
 
 UIImageView::UIImageView()
@@ -14,16 +10,10 @@ UIImageView::UIImageView()
 	, m_xSize(1.0f)
 	, m_ySize(1.0f)
 	, m_color(D3DXCOLOR(255, 255, 255, 255))
-	, m_isMove(false)
-	, m_isNoise(false)
 	, m_isItem(false)
 	, m_isSpeed(false)
 	, m_isSpeedFrame(false)
 	, m_isArrowDir(false)
-	, LeftNoiseX(LEFT_NOISE_X)
-	, RightNoiseX(RIGHT_NOISE_X)
-	, UpNoiseY(-256.0f)
-	, DownNoiseY(-512.0f)
 	, m_itemID(0)
 	, m_itemPrevID(8)
 	, m_alpha(0)
@@ -56,22 +46,9 @@ void UIImageView::SetTexture(char * szFullPath)
 
 void UIImageView::Update()
 {
-	if (m_isNoise)
-	{
-		if (m_isMove)
-		{
-			if (LeftNoiseX < LIMIT_NOISE_X)   LeftNoiseX += INCREASE_NOISE_X;
-			else
-			{
-				m_isMove = false;
-				LeftNoiseX = LEFT_NOISE_X;
-				RightNoiseX = RIGHT_NOISE_X;
-			}
-		}
-	}
 
 	/*   현재 이미지가 아이템 리스트 라면   */
-	else if (m_isItem)
+	if (m_isItem)
 	{
 		/*   update타입이 100이하면 선택된 m_item이 된다   */
 		if (g_pItemManager->GetItemID() == INT_MAX)
@@ -88,7 +65,7 @@ void UIImageView::Update()
 			srand(time(NULL));
 			if (m_itemID > MAX_ID)
 			{
-				m_itemID = rand() % 12;
+				m_itemID = 3;
 				//m_itemID = m_pCar->GetHoldItem();
 			}
 				
@@ -107,7 +84,7 @@ void UIImageView::Update()
 				m_itemPrevID++;
 			}
 
-			m_updateTIme-=2;
+			m_updateTIme -= 2;
 		}
 	}
 	else if (m_isSpeed)
@@ -215,18 +192,6 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(220, 255, 255, 255));
 
 	} // << if(m_isBoard) end
-	else if (m_isNoise && m_isMove)
-	{
-		RECT rc;
-
-		tMat._11 = m_xSize;
-		tMat._22 = m_ySize;
-
-		pSprite->SetTransform(&tMat);
-		SetRect(&rc, RightNoiseX, 0, LeftNoiseX, m_stSize.nHeight);
-		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
-	}
-
 	else if (m_isItem)
 	{
 		if (g_pItemManager->GetItemID() == INT_MAX)
@@ -343,7 +308,7 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
 
 	}
-	else if ((!m_isBoard || !m_isNoise) && !m_isMove)
+	else if ((!m_isBoard))
 	{
 		RECT rc;
 
