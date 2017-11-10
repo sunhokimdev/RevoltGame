@@ -13,8 +13,6 @@ LobbyScene::LobbyScene()
 
 LobbyScene::~LobbyScene()
 {
-	SAFE_DELETE(m_pMap);
-	SAFE_DELETE(m_pLobby);
 }
 
 void LobbyScene::Setup()
@@ -27,7 +25,7 @@ void LobbyScene::Setup()
 	m_pLobby->Setup();
 	m_pLobby->LinkMap(m_pMap);
 	//¾Úºñ¾ðÆ®Á¶¸í
-	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(100, 100, 100));
+	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(80, 80, 80));
 
 	//===========================
 	// write by ÀÌÅÂ¼·
@@ -75,6 +73,21 @@ void LobbyScene::Render()
 	//mesh->DrawSubset(0);
 	
 	//====================================================
+}
+
+void LobbyScene::Destroy()
+{
+	if (m_pMap)
+	{
+		m_pMap->Destroy();
+		SAFE_DELETE(m_pMap);
+	}
+	if (m_pLobby)
+	{
+		m_pLobby->Destroy();
+	}
+	
+	SAFE_DELETE(m_pLobby);
 }
 
 void LobbyScene::SetupLight()

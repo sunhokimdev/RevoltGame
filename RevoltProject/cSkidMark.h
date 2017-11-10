@@ -92,7 +92,7 @@ public:
 	void Setup();
 	void Update();
 	void Render();
-	void Destory();
+	void Destroy();
 
 	void DrawSkidMark();
 	inline void LinkCar(cCar* car) { m_pCar = car; }

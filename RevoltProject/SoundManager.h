@@ -29,7 +29,7 @@ private:
 	SINGLETONE(SoundManager);
 public:
 	void Setup();
-	void Destory();
+	void Destroy();
 	void Update();
 
 	void Setup3DCamera(D3DXVECTOR3 pos, D3DXVECTOR3 forward, D3DXVECTOR3 up = D3DXVECTOR3(0.f, 1.f, 0.f));

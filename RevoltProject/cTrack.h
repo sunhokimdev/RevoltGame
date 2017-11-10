@@ -31,7 +31,7 @@ public:
 	void Update();
 	void LastUpdate();
 	void Render();
-	void Destory();
+	void Destroy();
 
 	void SetData();
 	void LoadTrack(std::string FileName);

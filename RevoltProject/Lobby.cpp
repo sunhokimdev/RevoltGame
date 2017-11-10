@@ -47,7 +47,11 @@ Lobby::Lobby()
 
 Lobby::~Lobby()
 {
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 5cf43c88f4815595f1e96b623b34a7752d667401
 }
 
 void Lobby::Setup()
@@ -135,8 +139,10 @@ void Lobby::Render()
 
 void Lobby::Destroy()
 {
+	m_pSprite->Release();
 	SAFE_RELEASE(m_pSprite);
 	SAFE_RELEASE(m_pObjMesh);
+<<<<<<< HEAD
 
 	if(m_pSelectMap)
 	{
@@ -197,13 +203,26 @@ void Lobby::Destroy()
 		m_pMap->Destroy();
 		SAFE_DELETE(m_pMap);
 	}
+=======
+	SAFE_DELETE(m_pSelectMap);
+	//SAFE_DELETE(m_pInGameUI);
+	SAFE_DELETE(m_multiLobby);
+	SAFE_DELETE(m_pCreateProfileLobby);
+	SAFE_DELETE(m_pSelectCarLobbby);
+>>>>>>> 5cf43c88f4815595f1e96b623b34a7752d667401
 
 	for each(auto a in m_mapLobby)
 	{
+		
 		delete[] a.second->m_pNextLob;
 		SAFE_DELETE(a.second->m_pObject);
 	}
 	m_mapLobby.clear();
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 5cf43c88f4815595f1e96b623b34a7752d667401
 }
 
 void Lobby::KeyUpdate()

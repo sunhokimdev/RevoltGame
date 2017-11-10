@@ -9,7 +9,7 @@ public:
 	std::vector<MtlTex*> m_vecMtlTex;
 
 public:
-	void Destory();
+	void Destroy();
 	void Render();
 
 	cMesh();
