@@ -9,6 +9,9 @@
 
 int* UITextImageView::m_Select;
 int* UITextImageView::m_LeftAndRightSelect;
+std::string	UITextImageView::m_PlayerName;
+bool* UITextImageView::m_isCreate;
+bool* UITextImageView::m_isflag;
 
 UITextImageView::UITextImageView()
 	: m_pTexture(NULL)
@@ -31,6 +34,7 @@ UITextImageView::~UITextImageView()
 	SAFE_RELEASE(m_pTexture);
 	SAFE_DELETE(m_Select);
 	SAFE_DELETE(m_LeftAndRightSelect);
+	SAFE_DELETE(m_isCreate);
 }
 
 void UITextImageView::SetTexture(char * szFullPath)
@@ -57,7 +61,6 @@ void UITextImageView::SetTexture(char * szFullPath)
 		m_textPos.x = 8;
 		m_textPos.y = 16;
 	}
-
 }
 
 std::string UITextImageView::GetCarName()
@@ -121,12 +124,28 @@ void UITextImageView::KeyEvent()
 		m_chatText += 'y';
 	else if (g_pKeyManager->isOnceKeyDown('Z'))
 		m_chatText += 'z';
-	else if (g_pKeyManager->isOnceKeyDown(' '))
-		m_chatText += ' ';
-	else if (g_pKeyManager->isOnceKeyDown('?'))
-		m_chatText += '?';
-	else if (g_pKeyManager->isOnceKeyDown('!'))
-		m_chatText += '!';
+	else if (g_pKeyManager->isOnceKeyDown('0'))
+		m_chatText += '0';
+	else if (g_pKeyManager->isOnceKeyDown('1'))
+		m_chatText += '1';
+	else if (g_pKeyManager->isOnceKeyDown('2'))
+		m_chatText += '2';
+	else if (g_pKeyManager->isOnceKeyDown('3'))
+		m_chatText += '3';
+	else if (g_pKeyManager->isOnceKeyDown('4'))
+		m_chatText += '4';
+	else if (g_pKeyManager->isOnceKeyDown('5'))
+		m_chatText += '5';
+	else if (g_pKeyManager->isOnceKeyDown('6'))
+		m_chatText += '6';
+	else if (g_pKeyManager->isOnceKeyDown('7'))
+		m_chatText += '7';
+	else if (g_pKeyManager->isOnceKeyDown('8'))
+		m_chatText += '8';
+	else if (g_pKeyManager->isOnceKeyDown('9'))
+		m_chatText += '9';
+	else if (g_pKeyManager->isOnceKeyDown(VK_OEM_PERIOD))
+		m_chatText += '.';
 	else if (g_pKeyManager->isOnceKeyDown(VK_BACK))
 	{
 		if (m_chatText.size() != 0)
@@ -198,17 +217,7 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 	int tYPos = m_matWorld._42;
 	std::string tStr = "";
 
-	int tTempValue;
-
-	if (m_textPos.x != 0)
-	{
-		tTempValue = (m_stSize.nWitdh / m_textPos.x);
-	}
-	else
-	{
-		tTempValue = 1;
-	}
-
+	int tTempValue = (m_stSize.nWitdh / m_textPos.x);
 
 	if (m_isHidden) return;
 	if (pSprite == NULL) return;
@@ -291,7 +300,7 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 		pSprite->SetTransform(&tMat);
 
 		D3DXIMAGE_INFO stImageInfo;
-		std::string szTemp = std::string("UIImage/charcursor.png");
+		std::string szTemp = std::string("Maps/Front/Image/charcursor.png");
 
 		LPDIRECT3DTEXTURE9	tTexture = g_pTextureManager->GetTexture(szTemp, &stImageInfo);
 		SetRect(&rc, 0, 0, stImageInfo.Width, stImageInfo.Height);
@@ -304,7 +313,7 @@ void UITextImageView::Render(LPD3DXSPRITE pSprite)
 		pSprite->SetTransform(&m_matWorld);
 
 		D3DXIMAGE_INFO stImageInfo;
-		std::string szTemp = std::string("UIImage/progressbar.png");
+		std::string szTemp = std::string("Maps/Front/Image/progressbar.png");
 
 		LPDIRECT3DTEXTURE9	tTexture = g_pTextureManager->GetTexture(szTemp, &stImageInfo);
 
