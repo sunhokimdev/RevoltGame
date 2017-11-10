@@ -30,3 +30,9 @@ void iLobby::Render(LPD3DXSPRITE pSprite)
 	if (m_pRootUI)
 		m_pRootUI->Render(pSprite);
 }
+void iLobby::Destroy()
+{
+	if (m_pRootUI)
+		m_pRootUI->Destroy();
+}
+

@@ -71,6 +71,7 @@ void cNetworkInRoom::Setup()
 	UITextImageView* pImageView4 = new UITextImageView;
 	pImageView4->SetTexture("UIImage/font1.png");
 	pImageView4->SetText("MULTIPLAYER ROOM");
+	pImageView4->SetIndex(INT_MAX);
 	pImageView4->SetXSize(1.5f);
 	pImageView4->SetYSize(1.5f);
 	pImageView4->SetPosition(180, 45);
@@ -112,6 +113,7 @@ void cNetworkInRoom::Setup()
 	{
 		UITextImageView *pText = new UITextImageView;
 		pText->SetTexture("UIImage/font2.png");
+		pText->SetIndex(INT_MAX);
 		m_vecText.push_back(pText);
 
 		pImageView5->AddChild(m_vecText[i]);
@@ -126,6 +128,23 @@ void cNetworkInRoom::Update()
 void cNetworkInRoom::Render(LPD3DXSPRITE pSprite)
 {
 	iLobby::Render(pSprite);
+}
+
+void cNetworkInRoom::Destroy()
+{
+	SAFE_DELETE(m_pMap);
+	SAFE_DELETE(m_pMapName);
+	SAFE_DELETE(m_pChating);
+	SAFE_DELETE(m_pText);
+	SAFE_DELETE(pImageView5);
+
+	for each(UITextImageView* p in m_vecText)
+	{
+		SAFE_DELETE(p);
+	}
+	m_vecText.clear();
+
+	iLobby::Destroy();
 }
 
 void cNetworkInRoom::SetMap(std::string mapName)

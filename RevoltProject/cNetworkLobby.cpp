@@ -40,6 +40,7 @@ void cNetworkLobby::Setup()
 	UITextImageView* pImageView4 = new UITextImageView;
 	pImageView4->SetTexture("UIImage/font1.png");
 	pImageView4->SetText("MULTIPLAYER LOBBY");
+	pImageView4->SetIndex(INT_MAX);
 	pImageView4->SetXSize(1.5f);
 	pImageView4->SetYSize(1.5f);
 	pImageView4->SetPosition(180, 45);
@@ -68,6 +69,7 @@ void cNetworkLobby::Setup()
 	UITextImageView* pImageView8 = new UITextImageView;
 	pImageView8->SetTexture("UIImage/font2.png");
 	pImageView8->SetText("F5 CREATE ROOM");
+	pImageView8->SetIndex(INT_MAX);
 	pImageView8->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
 	pImageView8->SetXSize(1.5f);
 	pImageView8->SetYSize(1.5f);
@@ -77,6 +79,7 @@ void cNetworkLobby::Setup()
 	pImageView9->SetTexture("UIImage/font2.png");
 	pImageView9->SetText("USER NAME");
 	pImageView9->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
+	pImageView9->SetIndex(INT_MAX);
 	pImageView9->SetXSize(1.5f);
 	pImageView9->SetYSize(1.5f);
 	pImageView9->SetPosition(25, 60);
@@ -84,6 +87,7 @@ void cNetworkLobby::Setup()
 	UITextImageView* pImageView10 = new UITextImageView;
 	pImageView10->SetTexture("UIImage/font2.png");
 	pImageView10->SetText("CAR NAME");
+	pImageView10->SetIndex(INT_MAX);
 	pImageView10->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
 	pImageView10->SetXSize(1.5f);
 	pImageView10->SetYSize(1.5f);
@@ -92,6 +96,7 @@ void cNetworkLobby::Setup()
 	m_pUserName = new UITextImageView;
 	m_pUserName->SetTexture("UIImage/font2.png");
 	m_pUserName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+	m_pUserName->SetIndex(INT_MAX);
 	m_pUserName->SetXSize(1.5f);
 	m_pUserName->SetYSize(1.5f);
 	m_pUserName->SetPosition(25, 100);
@@ -99,6 +104,7 @@ void cNetworkLobby::Setup()
 	m_pCarName = new UITextImageView;
 	m_pCarName->SetTexture("UIImage/font2.png");
 	m_pCarName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+	m_pCarName->SetIndex(INT_MAX);
 	m_pCarName->SetXSize(1.5f);
 	m_pCarName->SetYSize(1.5f);
 	m_pCarName->SetPosition(25, 190);
@@ -125,6 +131,14 @@ void cNetworkLobby::Update()
 void cNetworkLobby::Render(LPD3DXSPRITE pSprite)
 {
 	iLobby::Render(pSprite);
+}
+
+void cNetworkLobby::Destroy()
+{
+	SAFE_DELETE(m_pUserName);
+	SAFE_DELETE(m_pCarName);
+
+	iLobby::Destroy();
 }
 
 void cNetworkLobby::SetUserName(std::string pName)

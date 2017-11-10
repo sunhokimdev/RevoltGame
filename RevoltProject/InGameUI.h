@@ -98,6 +98,8 @@ public:
 	virtual void Setup();
 	virtual void Update();
 	virtual void Render(LPD3DXSPRITE pSprite);
+	virtual void Destroy();
+
 	UIObject* GetUIObject() { return m_pRootUI; }
 	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
 
