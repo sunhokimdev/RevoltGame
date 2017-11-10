@@ -214,7 +214,6 @@ void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float bre
 	m_moterPower = 0;
 	m_eHoldItem = ITEM_NONE;
 	m_nItemCount = 0;
-
 }
 
 void cCar::SetAI(bool isAI)
@@ -732,7 +731,7 @@ void cCar::TrackCheck()
 			std::cout << "START" << std::endl;
 			m_nextCheckBoxID = 1;
 			m_currCheckBoxID = 0;	//체크 시작
-			m_countRapNum = 2;
+			m_countRapNum = 0;
 			m_rapTimeCount = 0.f;
 
 			if (!m_isAI) m_pInGameUI->SetLabCnt(m_countRapNum);
@@ -823,13 +822,10 @@ void cCar::DrawSkidMark()
 	float rpm = GetNxVehicle()->getWheel(0)->getRpm() / m_maxRpm;
 	if (fabsf(rpm) > 0.8f && fabs(m_wheelAngle) > 0.9f)
 	{
-		if (RayCarHit.shape->getActor().getName())
+		if (RayCarHit.distance < 0.2f
+			&& RayCarHit.shape->getActor().getName() == "map")
 		{
-			std::string str = RayCarHit.shape->getActor().getName();
-			if (RayCarHit.distance < 0.2f && str == "map")
-			{
-				m_pSkidMark->DrawSkidMark();
-			}
+			m_pSkidMark->DrawSkidMark();
 		}
 	}
 

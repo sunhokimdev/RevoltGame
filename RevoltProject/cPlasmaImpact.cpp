@@ -77,6 +77,4 @@ void cPlasmaImpact::Render()
 	m_pSprite->End();
 
 	cImpact::Render();
-
-	cImpact::Render();
 }

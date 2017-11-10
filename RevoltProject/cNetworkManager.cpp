@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "cNetworkManager.h"
 #include "MainGame.h"
+#include "cCar.h"
 
 cNetworkManager::cNetworkManager()
 {

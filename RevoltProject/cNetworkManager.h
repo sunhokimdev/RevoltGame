@@ -5,6 +5,8 @@
 
 #define g_pNetworkManager cNetworkManager::GetInstance()
 
+class cCar;
+
 struct ST_KEYSET
 {
 	bool up;
@@ -22,7 +24,7 @@ private:
 	ST_KEYSET m_keyEvent;
 	SOCKET m_hSock;
 	std::vector<std::string> m_vecMyIP;
-	
+
 	char name[NAME_SIZE];		// 자동차 이름
 	char roomName[NAME_SIZE];
 	int data[BUF_SIZE];

@@ -96,9 +96,6 @@ void RacingScene::Setup()
 	m_pInGameUI = new InGameUI;
 	LinkUI(0); // 인게임 InGameUI::Setup(); 전에 위치해야함, new InGameUI 가 선언되어 있어야 함.
 	m_pInGameUI->Setup();
-	
-
-
 
 	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 }
@@ -157,63 +154,66 @@ void RacingScene::Update()
 	}
 
 	/*   네트워크 부분   */
-	//if (g_pNetworkManager->GetIsInGameNetwork())
-	//{
-	//	std::string str;
+	if (g_pNetworkManager->GetIsInGameNetwork())
+	{
+		std::string str;
 
-	//	g_pNetworkManager->SetResetKeyEvent();
+		g_pNetworkManager->SetResetKeyEvent();
 
-	//	if (IsCarRunTrue(vecCars[0])) 
-	//		vecCars[0]->Update();
-	//	else
-	//	{
-	//		vecCars[0]->RunEnd();
-	//		return;
-	//	}
+		if (IsCarRunTrue(vecCars[0]))
+			vecCars[0]->Update();
+		else
+		{
+			vecCars[0]->RunEnd();
+			return;
+		}
 
-	//	g_pNetworkManager->SetClientPosition(vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition());
+		g_pNetworkManager->SetClientPosition(vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition());
 
-	//	str = "@" + g_pNetworkManager->GetClientIP() +
-	//		"@" + g_pNetworkManager->GetKeYString() + "@" + g_pNetworkManager->GetClientPosition();
+		str = "@" + g_pNetworkManager->GetClientIP() +
+			"@" + g_pNetworkManager->GetKeYString() + "@" + g_pNetworkManager->GetClientPosition();
 
-	//	g_pNetworkManager->SendMsg(str.c_str());
-	//	g_pNetworkManager->RecvMsg();
-	//	str = g_pNetworkManager->GetMsg();
+		g_pNetworkManager->SendMsg(str.c_str());
+		g_pNetworkManager->RecvMsg();
+		str = g_pNetworkManager->GetMsg();
 
-	//	char* pchIP = NULL;
-	//	char* pch = NULL;
+		char* pchIP = NULL;
+		char* pch = NULL;
 
-	//	pchIP = strtok((char*)str.c_str(), "@");
-	//	printf("%s\n", pchIP);
-	//	pch = strtok(NULL, "@");
-	//	printf("%s\n", pch);
+		pchIP = strtok((char*)str.c_str(), "@");
+		printf("%s\n", pchIP);
+		pch = strtok(NULL, "@");
+		printf("%s\n", pch);
+		pch = strtok(NULL, "@");
+		printf("%s\n", pch);
 
-	//	if (pchIP && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
-	//	{
-	//		vecCars[1]->SetResetNetworkKey();
-	//		if (pch != NULL)
-	//		{
-	//			vecCars[1]->SetNetworkKey(pch);
+		if (pchIP && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
+		{
+			vecCars[1]->SetResetNetworkKey();
+			if (pch != NULL)
+			{
+				vecCars[1]->SetNetworkKey(pch);
 
-	//			if (IsCarRunTrue(vecCars[1]))
-	//				vecCars[1]->Update();
-	//			else
-	//			{
-	//				vecCars[1]->RunEnd();
-	//				return;
-	//			}
-	//		}
-	//	}
+				if (IsCarRunTrue(vecCars[1]))
+					vecCars[1]->Update();
+				else
+				{
+					vecCars[1]->RunEnd();
+					return;
+				}
+			}
+		}
+	}
 
-	//else
-	//{
-	//	for (int i = 0; i < vecCars.size(); i++)
-	//	{
-	//		if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
+	else
+	{
+		for (int i = 0; i < vecCars.size(); i++)
+		{
+			if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
 
-	//		else vecCars[i]->RunEnd();
-	//	}
-	//}
+			else vecCars[i]->RunEnd();
+		}
+	}
 
 	if (m_pInGameUI)
 	{
