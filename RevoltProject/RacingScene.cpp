@@ -37,19 +37,8 @@ void RacingScene::Setup()
 	}
 	m_nLightIDCount = 0;
 
-	//D3DLIGHT9 light;
-	//light.Type = D3DLIGHT_DIRECTIONAL;
-	//light.Ambient = D3DXCOLOR(0.6, 0.6, 0.6, 1);
-	//light.Diffuse = D3DXCOLOR(0.6, 0.6, 0.6, 1);
-	//light.Specular = D3DXCOLOR(0.6, 0.6, 0.6, 1);
-	//D3DXVECTOR3 dir = { 0,-1,0 };
-	//D3DXVec3Normalize(&dir, &dir);
-	//light.Direction = dir;
-	//g_pD3DDevice->SetLight(0, &light);
-	//g_pD3DDevice->LightEnable(0, true);
-
 	m_pLightSun = new cLight;
-	m_pLightSun->SetupDirectional(0, C_WHITE, { 0,-1,0 });
+	m_pLightSun->SetupDirectional(0, D3DCOLOR_XRGB(192,192,192), { 0,-1,0 });
 	m_pLightSun->Switch(true);
 
 	g_pCamManager->SetCamPos(m_camPos);

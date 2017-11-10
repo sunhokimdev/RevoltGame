@@ -46,11 +46,6 @@ private:
 	int m_vecIndex[4];
 	eITEM_LIST m_eItemList;
 
-	NxActor* box1;
-	NxActor* box2;
-	NxActor* box3;
-	NxActor* box4;
-
 public:
 	SINGLETONE(ItemManager);
 
