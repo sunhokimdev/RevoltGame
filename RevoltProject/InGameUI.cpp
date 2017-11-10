@@ -401,7 +401,6 @@ void InGameUI::Setup()
 	pLastLabFont->AddChild(pRaceFont);
 	pImageView6->AddChild(m_pItemImage);
 
-	pImageView7->AddChild(pIV_arrowDir);
 	pImageView7->AddChild(pITV_Rank);
 	pImageView7->AddChild(pITV_Rank2);
 
