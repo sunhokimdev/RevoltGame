@@ -496,5 +496,5 @@ void NxWheel2::drawWheel(NxReal approx, bool debug) const
 
 NxReal NxWheel2::getRpm() const
 {
-	return NxMath::abs(wheelShape->getAxleSpeed())/NxTwoPi * 60.0f;
+	return ((wheelShape->getAxleSpeed())/NxTwoPi * 60.0f);
 }

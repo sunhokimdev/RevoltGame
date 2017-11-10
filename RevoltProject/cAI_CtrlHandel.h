@@ -8,7 +8,6 @@ public:
 	//LPD3DXMESH* pMesh;
 	
 
-
 	//Ray
 	NxRaycastHit* F__Hit;
 	NxRaycastHit* LF_Hit;
@@ -31,20 +30,20 @@ public:
 	float R__Dist;
 
 	//distRange;
-	const float F___DistRange = 40.f;
-	const float LRF_DistRange = 40.f;
-	const float LR__DistRange = 40.f;
+	float F___DistRange;
+	float LRF_DistRange;
+	float LR__DistRange;
 
 	//회전값에 적용시킬 비율
-//	const float F___DistValue = 1.0f;
-	const float LRF_DistValue = 1.0f;
-	const float LR__DistValue = 1.0f;
+//	float F___DistValue;
+	float LRF_DistValue;
+	float LR__DistValue;
 
 
 	// -1 ~ 0 ~ 1
 	float HandleValue;
 	//핸들 체크의 세밀도
-	const float HandleDistance = 0.0f;
+	const float HandleDistance = 0.1f;
 
 	AIHandleState aiState;
 

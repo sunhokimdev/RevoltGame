@@ -54,10 +54,7 @@ void cAI::SetCar(cCar * pAICar)
 }
 void cAI::Destory()
 {
-	for each(cAI* p in chiledAI)
-	{
-		p->Destory();
-	}
+	if(pMesh) pMesh->Release();
 }
 void cAI::AddAICtrl(cAI * pAI)
 {

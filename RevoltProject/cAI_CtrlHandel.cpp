@@ -25,7 +25,16 @@ cAI_CtrlHandel::cAI_CtrlHandel()
 	HandleValue = 0.0f;
 
 
-	FindDirNum = 3;
+	FindDirNum = 2;
+
+
+	F___DistRange = 50.f;
+	LRF_DistRange = 50.f;
+	LR__DistRange = 50.f;
+
+	//F___DistValue = 1.0f;
+	LRF_DistValue = 1.0f;
+	LR__DistValue = 1.0f;
 }
 
 
@@ -37,24 +46,32 @@ void cAI_CtrlHandel::Update()
 {
 	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.3, 0);
 
-	float back = 0.0f;
+	cCheckBox* box = (cCheckBox*)(*m_pAICar->m_pTrack->GetCheckBoxsPt())[m_pAICar->GetAICheckBoxID()];
+	D3DXVECTOR3 nextPos = box->GetNextCheckBox()->GetPosition() - D3DXVECTOR3(0, 0.1, 0);
+	D3DXVECTOR3 carpos = m_pAICar->GetPhysXData()->GetPositionToD3DXVec3();
+	D3DXVECTOR3 dirCheck;
+	D3DXVec3Normalize(&dirCheck, &(nextPos - carpos));
+	float dirY = dirCheck.y;
+
 	cAI_CtrlSpeed* pAiSpeed = (cAI_CtrlSpeed*)FindMaster()->FindAITag(AI_TAG::AI_TAG_SPEED);
-	if (pAiSpeed->aiState == AISpeedState::E_SpeedStateBack) back = 180.f;
+	float back = 0.0f;
+	if (0 > m_pAICar->GetRpm()) back = 180.f;
 
-
-	NxVec3 dirF_ = m_pAICar->WheelArrow(back + 0);						//dirF_.y = 0;
+	//정면체크
+	NxVec3 dirF_ = m_pAICar->WheelArrow(back + 0);	dirF_.y = dirY;
 	F__Hit = &RAYCAST(raypos, dirF_);
 	RayHitPos(F__Hit, &F__Pos);
 	RayHitDist(F__Hit, &F__Dist);
 
+	//정면 거리에 따른 측면 측정각 조절
 	float frontValue = 0;
-	if (F__Dist < F___DistRange)
-		frontValue = ((F___DistRange - F__Dist) / F___DistRange);
+	if (F__Dist < F___DistRange) frontValue = ((F___DistRange - F__Dist) / F___DistRange);
 
-	NxVec3 dirLF = m_pAICar->WheelArrow((back - 30) * frontValue);		//dirLF.y = 0;
-	NxVec3 dirRF = m_pAICar->WheelArrow((back + 30) * frontValue);		//dirRF.y = 0;
-	NxVec3 dirL_ = m_pAICar->WheelArrow((back - 45) * 1.f);				//dirL_.y = 0;
-	NxVec3 dirR_ = m_pAICar->WheelArrow((back + 45) * 1.f);				//dirR_.y = 0;
+	//측면 측정
+	NxVec3 dirLF = m_pAICar->WheelArrow((back - 30) * frontValue);		dirLF.y = dirY;
+	NxVec3 dirRF = m_pAICar->WheelArrow((back + 30) * frontValue);		dirRF.y = dirY;
+	NxVec3 dirL_ = m_pAICar->WheelArrow((back - 30) * 1.f);				dirL_.y = dirY;
+	NxVec3 dirR_ = m_pAICar->WheelArrow((back + 30) * 1.f);				dirR_.y = dirY;
 
 	LF_Hit = &RAYCAST(raypos, dirLF);
 	RF_Hit = &RAYCAST(raypos, dirRF);
@@ -66,14 +83,13 @@ void cAI_CtrlHandel::Update()
 	RayHitPos(L__Hit, &L__Pos);
 	RayHitPos(R__Hit, &R__Pos);
 
-
 	RayHitDist(LF_Hit, &LF_Dist);
 	RayHitDist(RF_Hit, &RF_Dist);
 	RayHitDist(L__Hit, &L__Dist);
 	RayHitDist(R__Hit, &R__Dist);
 
 	float LRFScale = LF_Dist + RF_Dist;
-	if (LF_Dist < LRF_DistRange)
+	if (LF_Dist < LRF_DistRange * (frontValue + 1.414))
 	{
 		float add = CheckBoxPoint(dirLF) + ScaleValue(LF_Dist, LRFScale) * LRF_DistValue;
 		HandleValue += add;
@@ -82,7 +98,7 @@ void cAI_CtrlHandel::Update()
 	{
 		HandleValue += CheckBoxPoint(dirLF);
 	}
-	if (RF_Dist < LRF_DistRange)
+	if (RF_Dist < LRF_DistRange * (frontValue + 1.414))
 	{
 		float add = CheckBoxPoint(dirRF) + ScaleValue(RF_Dist, LRFScale) * LRF_DistValue;
 		HandleValue -= add;
@@ -113,6 +129,7 @@ void cAI_CtrlHandel::Update()
 	}
 
 
+	std::cout << HandleValue << std::endl;
 
 	if (abs(HandleValue) < HandleDistance)
 	{
@@ -120,7 +137,7 @@ void cAI_CtrlHandel::Update()
 		add += CheckBoxPoint(dirL_) + ScaleValue(L__Dist, LRScale);
 		add -= CheckBoxPoint(dirR_) + ScaleValue(R__Dist, LRScale);
 		HandleValue += add;
-		std::cout << add << std::endl;
+		//	std::cout << add << std::endl;
 	}
 
 	aiState = E_AIHandle_F;
@@ -196,7 +213,7 @@ float cAI_CtrlHandel::CheckBoxPoint(D3DXVECTOR3 dir)
 	}
 
 	return 0;
-//	return -D3DXVec3Dot(&dir1, &dir) * 0.5f + 0.5f;
+	//	return -D3DXVec3Dot(&dir1, &dir) * 0.5f + 0.5f;
 }
 
 float cAI_CtrlHandel::CheckBoxPoint(NxVec3 dir)

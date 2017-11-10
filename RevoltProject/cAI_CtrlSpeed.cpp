@@ -20,13 +20,14 @@ cAI_CtrlSpeed::cAI_CtrlSpeed()
 
 
 
-	AI_distanceFront = 5;		//인지범위 
-	AI_distanceBack = 3;		//인지범위 
+	AI_distanceFront = 10;		//인지범위 
+	AI_distanceBack = 5;		//인지범위 
 	AI_value = 0.2f;		//delta 의 인지범위
-	AI_distanceMin = 2.f;	//무조건 유지하려는 거리
+	AI_distanceMin = 3.f;	//무조건 유지하려는 거리
 
 
 	AITag = AI_TAG_SPEED;
+	isMoveFront = true;
 }
 
 

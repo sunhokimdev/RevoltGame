@@ -13,6 +13,8 @@ public:
 	D3DXVECTOR3 FrontPos;
 	D3DXVECTOR3 BackPos;
 
+	bool isMoveFront;
+
 	float frontDistPrev;
 	float frontDistCurr;
 	float frontDelta;
