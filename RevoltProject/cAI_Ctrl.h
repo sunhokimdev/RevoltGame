@@ -8,7 +8,7 @@ public:
 	cAI_Ctrl(AI_DATA pData);
 	~cAI_Ctrl();
 
-	const int vecSize = 10;
+	const int vecSize = 1;
 	int handleIndex;
 	std::vector<float> vecHandleValue;
 

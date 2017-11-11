@@ -15,7 +15,7 @@ public:
 
 	bool isBack;
 
-	float BackTime;
+	float ReposTimeCount;
 	float ReposTime;
 
 	bool isRepos;

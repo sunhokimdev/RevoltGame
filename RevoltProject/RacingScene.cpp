@@ -88,12 +88,12 @@ void RacingScene::Setup()
 //	}
 	if (i == 0)
 	{
-		CreateCar(m_pTrack->GetStartPositions()[i+0], i+0, "tc1", true);
-	//	CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
-		//CreateCar(m_pTrack->GetStartPositions()[i+2], i+2, "tc3", true);
-		//CreateCar(m_pTrack->GetStartPositions()[i+3], i+3, "tc4", true);
-		//CreateCar(m_pTrack->GetStartPositions()[i+4], i+4, "tc5", true);
-		//CreateCar(m_pTrack->GetStartPositions()[i+5], i+5, "tc6", true);
+		CreateCar(m_pTrack->GetStartPositions()[i+0], i+0, "tc1", false);
+		CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
+		CreateCar(m_pTrack->GetStartPositions()[i+2], i+2, "tc3", true);
+		CreateCar(m_pTrack->GetStartPositions()[i+3], i+3, "tc4", true);
+		CreateCar(m_pTrack->GetStartPositions()[i+4], i+4, "tc5", true);
+		CreateCar(m_pTrack->GetStartPositions()[i+5], i+5, "tc6", true);
 	}
 	vecCars[i]->SetIsUser(false);
 

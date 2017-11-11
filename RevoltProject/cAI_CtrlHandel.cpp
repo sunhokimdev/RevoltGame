@@ -10,14 +10,14 @@ cAI_CtrlHandel::cAI_CtrlHandel(AI_DATA pData)
 	cAI::AI_Data = pData;
 	familyAI = NULL;
 
-	LRF_F_RateValue = 1.5f;
+	LRF_F_RateValue = 1.0f;
 	LRF_D_RateVAlue = 2.0f;
 	LR__F_RateValue = 1.0f;
-	LR__D_RateVAlue = 1.5f;
+	LR__D_RateVAlue = 2.0f;
 
-	FindDirNum = 3;
+	FindDirNum = 2;
 
-	HandleDistance = 1.f;
+	HandleDistance = 0.2f;
 
 
 	RealDir = D3DXVECTOR3(1, 0, 0);
@@ -31,46 +31,6 @@ cAI_CtrlHandel::~cAI_CtrlHandel()
 
 void cAI_CtrlHandel::Update()
 {
-	//	NxVec3 raypos = m_pCar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.3, 0);
-	//
-	//	float dirY = RayDirY();
-	//
-	//	cAI_CtrlSpeed* pAiSpeed = (cAI_CtrlSpeed*)FindMaster()->FindAITag(AI_TAG::AI_TAG_SPEED);
-	//	float back = 0.0f;
-	//	if (0 > m_pCar->GetRpm()) back = 180.f;
-	//
-	//	//정면체크
-	//	NxVec3 dirF_ = m_pCar->WheelArrow(back + 0);	dirF_.y = dirY;
-	//	F__Hit = &RAYCAST(raypos, dirF_);
-	//	RayHitPos(F__Hit, &F__Pos);
-	//	RayHitDist(F__Hit, &F__Dist);
-	//
-	//	//정면 거리에 따른 측면 측정각 조절
-	//	float frontValue = 0;
-	//	frontValue = 1.0f - ((F__Dist / F___DistRange) > 1.0f ? 1.f : F__Dist / F___DistRange);
-	//
-	//	//측면 측정
-	//	NxVec3 dirLF = m_pCar->WheelArrow((back -  5) - 30 * frontValue);		dirLF.y = dirY;
-	//	NxVec3 dirRF = m_pCar->WheelArrow((back +  5) + 30 * frontValue);		dirRF.y = dirY;
-	//	NxVec3 dirL_ = m_pCar->WheelArrow((back - 35) - 50 * frontValue);				dirL_.y = dirY;
-	//	NxVec3 dirR_ = m_pCar->WheelArrow((back + 35) + 50 * frontValue);				dirR_.y = dirY;
-	//
-	//	LF_Hit = &RAYCAST(raypos, dirLF);
-	//	RF_Hit = &RAYCAST(raypos, dirRF);
-	//	L__Hit = &RAYCAST(raypos, dirL_);
-	//	R__Hit = &RAYCAST(raypos, dirR_);
-	//
-	//	RayHitPos(LF_Hit, &LF_Pos);
-	//	RayHitPos(RF_Hit, &RF_Pos);
-	//	RayHitPos(L__Hit, &L__Pos);
-	//	RayHitPos(R__Hit, &R__Pos);
-	//
-	//	RayHitDist(LF_Hit, &LF_Dist);
-	//	RayHitDist(RF_Hit, &RF_Dist);
-	//	RayHitDist(L__Hit, &L__Dist);
-	//	RayHitDist(R__Hit, &R__Dist);
-	//
-
 
 	HandleValue = 0.0f;
 
@@ -95,15 +55,15 @@ void cAI_CtrlHandel::Update()
 	{
 		//해당 조건 만족 후 추적 변경
 		//일정 방향과 일정 속도 도달시
-		if (CheckBoxPoint(F__Dir) > 0.75f)
+	//	if (CheckBoxPoint(F__Dir) > 0.75f)
+	//	{
+		if (AI_Data.pCar->GetRpm() / AI_Data.pCar->m_maxRpm > 0.4f)
 		{
-			if (AI_Data.pCar->GetRpm() / AI_Data.pCar->m_maxRpm > 0.4f)
-			{
-				isPoint = false;
-			}
+			isPoint = false;
 		}
+		//	}
 	}
-	else 
+	else
 		isPoint = ((cAI_CtrlSpeed*)(*familyAI)[AI_TAG_SPEED])->isBack;
 
 	//isPoint = true;
@@ -116,7 +76,7 @@ void cAI_CtrlHandel::Update()
 			* CheckBoxPoint(L__Dir) * LR__D_RateVAlue
 			;
 		HandleValue -= add;
-//		std::cout << -add << " + ";
+		//		std::cout << -add << " + ";
 	}
 	{
 		float add = 1.0
@@ -125,7 +85,7 @@ void cAI_CtrlHandel::Update()
 			* CheckBoxPoint(LF_Dir) * LRF_D_RateVAlue
 			;
 		HandleValue -= add;
-//		std::cout << -add << " + ";
+		//		std::cout << -add << " + ";
 	}
 	{
 		float add = 1.0
@@ -134,7 +94,7 @@ void cAI_CtrlHandel::Update()
 			* CheckBoxPoint(RF_Dir) * LRF_D_RateVAlue
 			;
 		HandleValue += add;
-//		std::cout << add << " + ";
+		//		std::cout << add << " + ";
 	}
 	{
 		float add = 1.0
@@ -143,8 +103,10 @@ void cAI_CtrlHandel::Update()
 			* CheckBoxPoint(R__Dir) * LR__D_RateVAlue
 			;
 		HandleValue += add;
-//				std::cout << add << " = ";
+		//				std::cout << add << " = ";
 	}
+	//	std::cout << HandleValue << std::endl;
+
 
 }
 
@@ -193,7 +155,7 @@ float cAI_CtrlHandel::CheckBoxPoint(D3DXVECTOR3 dir)
 	D3DXVECTOR3 dir3 = box->GetNextCheckBox()->GetNextCheckBox()->ToNextCheckBoxDir();
 	if (FindDirNum == 3)
 	{
-		D3DXVec3Normalize(&dir3, &(dir1 + (dir2*0.5f) + (dir3*0.25f)));
+		D3DXVec3Normalize(&dir3, &(dir1 + (dir2*0.7f) + (dir3*0.5f)));
 		return (D3DXVec3Dot(&dir3, &dir));
 	}
 

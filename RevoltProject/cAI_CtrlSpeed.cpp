@@ -13,7 +13,8 @@ cAI_CtrlSpeed::cAI_CtrlSpeed(AI_DATA pData)
 	Min_LRDistRange = 1.5f;
 
 	isBack = false;
-	BackTime = 0.0f;
+	isRepos = false;
+	ReposTimeCount = 0.0f;
 	ReposTime = 5.0f;
 }
 
@@ -63,7 +64,7 @@ void cAI_CtrlSpeed::Update()
 	//강제 후진
 	if (isBack)
 	{
-		BackTime += g_pTimeManager->GetElapsedTime();
+		ReposTimeCount += g_pTimeManager->GetElapsedTime();
 		SpeedValue = -1.0f;
 		if (F__Dist > F___DistRange * 2.0f)
 		{
@@ -74,10 +75,20 @@ void cAI_CtrlSpeed::Update()
 			isBack = false;
 		}
 
-		if (BackTime > ReposTime)
-		{
-			isRepos = true;
-			BackTime = 0.0f;
-		}
+	}
+	else if (abs(rpmRate) < 0.1f)
+	{
+		ReposTimeCount+= g_pTimeManager->GetElapsedTime();
+	}
+	else
+	{
+		ReposTimeCount = 0.0f;
+	}
+
+
+	if (ReposTimeCount > ReposTime)
+	{
+		isRepos = true;
+		ReposTimeCount = 0.0f;
 	}
 }

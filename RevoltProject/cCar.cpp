@@ -307,23 +307,22 @@ void cCar::Update()
 {
 	//차가 땅에 박히는 걸 망지
 	m_carNxVehicle->getActor()->addForce(NxVec3(0, 0.001, 0));
-	INPUT_KEY.reset();
 
 
 	//	if (!m_isAI) CtrlPlayer();
 	//	if (g_pKeyManager->isStayKeyDown(VK_TAB))
 	//	{
-	//CtrlAI();
+	//		CtrlAI();
 	//	}
 	if (m_isAI) CtrlAI();
 	else CtrlPlayer();
-	if (g_pKeyManager->isStayKeyDown(VK_TAB))
-	{
-		CtrlPlayer();
-	}
-		//이하 AI, PLAYER 의 동일 사용 함수
+	//if (g_pKeyManager->isStayKeyDown(VK_TAB))
+	//{
+	//	CtrlPlayer();
+	//}
+	//이하 AI, PLAYER 의 동일 사용 함수
 
-		//자동차 움직임
+	//자동차 움직임
 	CarMove();
 
 	//자동차 리포지션
@@ -423,6 +422,7 @@ void cCar::CtrlPlayer()
 	{
 		if (!m_isUser)
 		{
+			INPUT_KEY.reset();
 			INPUT_KEY[E_BIT_UP___] = g_pKeyManager->isStayKeyDown(KEY_ACCELERATOR);
 			INPUT_KEY[E_BIT_DOWN_] = g_pKeyManager->isStayKeyDown(KEY_REVERSE);
 			INPUT_KEY[E_BIT_LEFT_] = g_pKeyManager->isStayKeyDown(KEY_MOVE_LEFT);

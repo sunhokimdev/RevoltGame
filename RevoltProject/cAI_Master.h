@@ -11,8 +11,11 @@
 class cAI_Master
 {
 public:
+	AI_DATA AIData;
+	float updateTime;
+	float fpsTime;
+
 	std::vector<cAI*> familyAI;
-	bool isUpdate;
 	cAI_Master();
 	~cAI_Master();
 

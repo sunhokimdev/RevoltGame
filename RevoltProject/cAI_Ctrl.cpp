@@ -53,7 +53,9 @@ void cAI_Ctrl::Handle()
 	float handleValue = VecHandleValue();
 
 	float speedValue = VecSpeedValue();
-	speedValue = fmin(0.1f, abs(speedValue));
+	speedValue = fmin(0.f, abs(speedValue));
+
+	//std::cout << handleValue << std::endl;
 
 	if (handleValue < -pHandle->HandleDistance * speedValue) AI_Data.pCar->INPUT_KEY[eBIT_KEY::E_BIT_LEFT_] = true;
 	if (handleValue > +pHandle->HandleDistance * speedValue) AI_Data.pCar->INPUT_KEY[eBIT_KEY::E_BIT_RIGHT] = true;

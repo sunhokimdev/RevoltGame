@@ -10,7 +10,7 @@ cAI_Ray::cAI_Ray(AI_DATA pData)
 	cAI::AI_Data = pData;
 	familyAI = NULL;
 
-	RayDist = 50.f;
+	RayDist = 100.f;
 }
 
 
@@ -51,13 +51,13 @@ void cAI_Ray::Update()
 	//
 
 	float F_Value = 0;	//front value : 최대(RayDist) 측정거리와현재 거리의 비율 
-	F_Value = 1.0f - ((Ray_F__.DistanceRate(RayDist)) > 1.0f ? 1.f : Ray_F__.DistanceRate(RayDist));
-
+	F_Value = 1.0f - fmin(Ray_F__.DistanceRate(RayDist), 1.0f);
+	//F_Value *= F_Value;
 	//측면 측정  (F_Value 에 따라 측정각도 조절(거리가 가까울 수록 각도를 늘려준다.))
-	NxVec3 dirLF = AI_Data.pCar->WheelArrow((0 - 0) - 30 * F_Value);			dirLF.y = dirY;
-	NxVec3 dirRF = AI_Data.pCar->WheelArrow((0 + 0) + 30 * F_Value);			dirRF.y = dirY;
-	NxVec3 dirL_ = AI_Data.pCar->WheelArrow((0 - 45) - 30 * F_Value);		dirL_.y = dirY;
-	NxVec3 dirR_ = AI_Data.pCar->WheelArrow((0 + 45) + 30 * F_Value);		dirR_.y = dirY;
+	NxVec3 dirLF = AI_Data.pCar->WheelArrow((0 - 0) - 30 * F_Value);		dirLF.y = dirY;
+	NxVec3 dirRF = AI_Data.pCar->WheelArrow((0 + 0) + 30 * F_Value);		dirRF.y = dirY;
+	NxVec3 dirL_ = AI_Data.pCar->WheelArrow((0 - 30) - 30 * F_Value);		dirL_.y = dirY;
+	NxVec3 dirR_ = AI_Data.pCar->WheelArrow((0 + 30) + 30 * F_Value);		dirR_.y = dirY;
 
 	Ray_LF_.RayShot(raypos, dirLF, RayDist);
 	Ray_RF_.RayShot(raypos, dirRF, RayDist);
