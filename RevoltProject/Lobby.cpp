@@ -50,7 +50,6 @@ Lobby::~Lobby()
 	SAFE_RELEASE(m_pSprite);
 	SAFE_RELEASE(m_pObjMesh);
 	SAFE_DELETE(m_pSelectMap);
-	//SAFE_DELETE(m_pInGameUI);
 	SAFE_DELETE(m_multiLobby);
 	SAFE_DELETE(m_pCreateProfileLobby);
 	SAFE_DELETE(m_pSelectCarLobbby);
@@ -307,22 +306,7 @@ void Lobby::KeyUpdate()
 			if (m_pViewCarLobby->GetIsNetwork())
 			{
 				m_mapLobby[m_stateLobby]->m_pNextLob[m_select] = NETWORK_LOBBY;
-				m_multiLobby->SetUserName(m_pCreateProfileLobby->GetName());
-				m_multiLobby->SetCarName(m_pSelectCarLobbby->GetCarName());
 			}
-		}
-
-		else if (m_stateLobby == NETWORK_SELECT_LOBBY)
-		{
-			m_pInRoom->SetUserName(m_multiLobby->GetName());
-			g_pNetworkManager->SetServerIP(m_pSelectServer->GetTextIP());
-			g_pNetworkManager->Start();
-		}
-
-		else if (m_stateLobby == NETWORK_CREATE_LOBBY)
-		{
-			m_pInRoom->SetMap(m_pCreateRoom->GetImageName());
-			m_pInRoom->SetUserName(m_multiLobby->GetName());
 		}
 
 		else if (m_stateLobby == NETWORK_IN_LOBBY)
@@ -333,15 +317,25 @@ void Lobby::KeyUpdate()
 			return;
 		}
 
+		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
+		{
+			// 프로필 파일생성 없이 사용한 메서드
+			g_pNetworkManager->SetName(m_pCreateProfileLobby->GetName());
+			m_pInRoom->SetUserName(m_pCreateProfileLobby->GetName());
+		}
+
+		else if (m_stateLobby == NETWORK_LOBBY)
+		{
+			g_pNetworkManager->SetServerIP(m_multiLobby->GetServerIP());
+			g_pNetworkManager->Start();
+		}
+
 		m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
 
 		if (m_stateLobby > INTRO3)
 		{
 			g_pSoundManager->Play("menuNext.wav", 1.0f);
 			
-			//g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
-			//g_pCamManager->SetCamPos(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
-			//g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			m_time = 0.0f;
 			m_select = 0;
 
@@ -366,19 +360,16 @@ void Lobby::KeyUpdate()
 			g_pSoundManager->Play("menuPrev.wav", 1.0f);
 		}
 	}
-
 	if (g_pKeyManager->isOnceKeyDown(VK_F5))
 	{
-		if (m_stateLobby == NETWORK_LOBBY)
+		if (m_stateLobby == NETWORK_IN_LOBBY)
 		{
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[0];
-			g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);		 // 카메라 변경
-
-			m_time = 0.0f;
-			m_select = 0;
-			m_leftAndrightSelect = 0;
+			g_pNetworkManager->SetIsInGameNetwork(true);
+			g_SceneManager->ChangeScene("Race");
+			return;
 		}
 	}
+
 
 	D3DXVec3Lerp(&m_vCamPos, &m_vCamPos, &m_mapLobby[m_stateLobby]->m_target, m_CamLerpSpd);
 	D3DXVec3Lerp(&m_vLookAt, &m_vLookAt, &m_mapLobby[m_stateLobby]->m_camLookAt, m_CamLerpSpd);
@@ -776,7 +767,7 @@ void Lobby::SetUpUI()
 	m_mapLobby[NETWORK_LOBBY]->m_time = 50.0f;
 	m_mapLobby[NETWORK_LOBBY]->m_pObject = m_multiLobby->GetUIRoot();
 	m_mapLobby[NETWORK_LOBBY]->m_camLookAt = D3DXVECTOR3(14, 4, 8);
-	m_mapLobby[NETWORK_LOBBY]->m_pNextLob[0] = NETWORK_CREATE_LOBBY;
+	m_mapLobby[NETWORK_LOBBY]->m_pNextLob[0] = NETWORK_IN_LOBBY;
 	m_mapLobby[NETWORK_LOBBY]->m_prevLob = MAIN_LOBBY3;
 
 	m_mapLobby[NETWORK_CREATE_LOBBY] = new ST_Object;

@@ -117,10 +117,14 @@ public:
 	void CarFlip();
 
 	/*   �輱ȣ   */
+	///////////////////////////////////////
+public:
 	void SetResetNetworkKey();
 	void SetNetworkKey(std::string);
 
+	SYNTHESIZE(NxVec3, m_carPos, CarSunPos);
 	SYNTHESIZE(bool, m_isUser, IsUser);
+	////////////////////////////////////////
 	//e
 	NxVec3 CarArrow(float radianAngle = 0);
 	NxVec3 WheelArrow(float degAngle = 0 , bool back = false);

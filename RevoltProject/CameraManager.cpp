@@ -64,7 +64,6 @@ void CameraManager::Update()
 	}
 	else m_vEye = D3DXVECTOR3(0, 0, 0);
 
-	printf("asf\n");
 //	m_vEye = D3DXVECTOR3(0, 9, 0);
 //	m_vLookAt = D3DXVECTOR3(1, -1, 0) + m_vEye;
 
