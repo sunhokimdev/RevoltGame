@@ -11,8 +11,7 @@
 
 cAI::cAI()
 {
-	AITag = AI_TAG_MASTER;
-	pParent = NULL;
+	AI_Mesh = NULL;
 }
 
 
@@ -20,142 +19,34 @@ cAI::~cAI()
 {
 }
 
-void cAI::SetCar(cCar * pAICar)
+void cAI::Setup()
 {
-	//pMesh = new ID3DXMesh;
-	D3DXCreateSphere(g_pD3DDevice, 0.5, 8, 8, &pMesh, NULL);
-
-	m_pAICar = pAICar;
-	m_pAICarActor = m_pAICar->GetPhysXData()->m_pActor;
-
-	{
-		cAI_CtrlSpeed* p = new cAI_CtrlSpeed;
-		this->AddAICtrl(p);
-	}
-	{
-		cAI_CtrlHandel* p = new cAI_CtrlHandel;
-		this->AddAICtrl(p);
-	}
-	{
-		cAI_CtrlFlip* p = new cAI_CtrlFlip;
-		this->AddAICtrl(p);
-	}
-//	{
-//		cAI_CtrlHandel* p = new cAI_CtrlHandel;
-//		this->AddAICtrl(p);
-//	}
-//	{
-//		cAI_CtrlHandel* p = new cAI_CtrlHandel;
-//		this->AddAICtrl(p);
-//	}
-//	{
-//		cAI_CtrlHandel* p = new cAI_CtrlHandel;
-//		this->AddAICtrl(p);
-//	}
-
-
 }
+
 void cAI::Destory()
 {
-	for each(cAI* p in chiledAI)
-	{
-		p->pMesh = NULL;
-		p->Destory();
-	}
-	chiledAI.clear();
-
-	if(pMesh) pMesh->Release();
+	if (AI_Mesh) AI_Mesh->Release();
+	AI_Data.Destory();
+	familyAI = NULL;
 }
-void cAI::AddAICtrl(cAI * pAI)
-{
-	pAI->m_pAICar = this->m_pAICar;
-	pAI->m_pAICarActor = this->m_pAICarActor;
-	pAI->pMesh = this->pMesh;
-	pAI->pParent = this;
-	chiledAI.push_back(pAI);
-}
-
-void cAI::SetBitKey(eBIT_KEY keySet, bool onoff)
-{
-	m_pAICar->INPUT_KEY[keySet] = onoff;
-}
-
-bool cAI::GetBytKey(eBIT_KEY keyGet)
-{
-	return m_pAICar->INPUT_KEY[keyGet];
-}
-
-void cAI::RayHitPos(NxRaycastHit* Ray, D3DXVECTOR3* pos)
-{
-	if (Ray->shape)
-	{
-		NxVec3 Nx = Ray->worldImpact;
-		*pos = D3DXVECTOR3(Nx.x, Nx.y, Nx.z);
-	}
-	else
-	{
-	//	*pos = D3DXVECTOR3(0, 0, 0);
-	}
-}
-
-void cAI::RayHitDist(NxRaycastHit * Ray, float * dist)
-{
-	if (Ray->shape)
-	{
-		*dist = Ray->distance;
-	}
-	else
-	{
-		//	*pos = D3DXVECTOR3(0, 0, 0);
-	}
-}
-
-cAI * cAI::FindMaster()
-{
-	if (this->pParent == NULL)
-	{
-		return this;
-	}
-	else
-	{
-		return this->pParent->FindMaster();
-	}
-}
-
-cAI * cAI::FindAITag(AI_TAG tag)
-{
-	for each(cAI* p in chiledAI)
-	{
-		if (p->AITag == tag)
-			return p;
-	}
-	return nullptr;
-}
-
-float cAI::RayDirY()
-{
-	cCheckBox* box = (cCheckBox*)(*m_pAICar->m_pTrack->GetCheckBoxsPt())[m_pAICar->GetAICheckBoxID()];
-	D3DXVECTOR3 nextPos = box->GetNextCheckBox()->GetPosition() - D3DXVECTOR3(0, 0.1, 0);
-	D3DXVECTOR3 carpos = m_pAICar->GetPhysXData()->GetPositionToD3DXVec3();
-	D3DXVECTOR3 dirCheck(0,0,0);
-	D3DXVec3Normalize(&dirCheck, &(nextPos - carpos));
-	return dirCheck.y;
-}
-
-
 
 void cAI::Update()
 {
-	for each(cAI* p in chiledAI)
-	{
-		p->Update();
-	}
 }
 
 void cAI::Render()
 {
-	for each(cAI* p in chiledAI)
-	{
-		p->Render();
-	}
+}
+
+cCheckBox * cAI::CurrentCheckBox()
+{
+	return (cCheckBox*)(*(AI_Data.pCar)->m_pTrack->GetCheckBoxsPt())[AI_Data.pCar->GetAICheckBoxID()];
+}
+
+float cAI::ScaleValue(float value, float Total, float multiValue)
+{
+	float rate = (value * multiValue / Total);
+//	rate = fmin(rate, 1.0f);
+//	rate = fmax(rate, -1.0f);
+	return rate;
 }

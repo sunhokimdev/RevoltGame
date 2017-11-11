@@ -1,6 +1,10 @@
 #pragma once
 class GameNode
 {
+protected:
+	
+	std::string strName;
+
 public:
 	GameNode();
 	virtual	~GameNode();
@@ -10,5 +14,8 @@ public:
 	virtual void Update() {}
 	virtual void LastUpdate() {}
 	virtual void Render() {}
+
+	std::string GetSceneName() { return strName; }
+	void SetSceneName(std::string name) { strName = name; }
 };
 

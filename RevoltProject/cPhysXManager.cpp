@@ -171,29 +171,29 @@ void cPhysXManager::PhysXReportSeting()
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_FIREWORK);
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_WHATEBOMB);
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_METALBALL);
-	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(F, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_GRIVATEBALL);
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_TRACK);
 
 	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_PICKUP);
 	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_FIREWORK);
 	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_WHATEBOMB);
 	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_METALBALL);
-	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(F, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_GRIVATEBALL);
 	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_TRACK);
 
 	CollisionEnable(T, T, E_PHYSX_TAG_FIREWORK, E_PHYSX_TAG_FIREWORK);
 	CollisionEnable(T, T, E_PHYSX_TAG_FIREWORK, E_PHYSX_TAG_WHATEBOMB);
 	CollisionEnable(T, T, E_PHYSX_TAG_FIREWORK, E_PHYSX_TAG_METALBALL);
-	CollisionEnable(T, T, E_PHYSX_TAG_FIREWORK, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(F, T, E_PHYSX_TAG_FIREWORK, E_PHYSX_TAG_GRIVATEBALL);
 	CollisionEnable(T, T, E_PHYSX_TAG_FIREWORK, E_PHYSX_TAG_TRACK);
 
 	CollisionEnable(T, T, E_PHYSX_TAG_WHATEBOMB, E_PHYSX_TAG_WHATEBOMB);
 	CollisionEnable(T, T, E_PHYSX_TAG_WHATEBOMB, E_PHYSX_TAG_METALBALL);
-	CollisionEnable(T, T, E_PHYSX_TAG_WHATEBOMB, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(F, T, E_PHYSX_TAG_WHATEBOMB, E_PHYSX_TAG_GRIVATEBALL);
 	CollisionEnable(T, T, E_PHYSX_TAG_WHATEBOMB, E_PHYSX_TAG_TRACK);
 
 	CollisionEnable(T, T, E_PHYSX_TAG_METALBALL, E_PHYSX_TAG_METALBALL);
-	CollisionEnable(T, T, E_PHYSX_TAG_METALBALL, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(F, T, E_PHYSX_TAG_METALBALL, E_PHYSX_TAG_GRIVATEBALL);
 	CollisionEnable(T, T, E_PHYSX_TAG_METALBALL, E_PHYSX_TAG_TRACK);
 
 	CollisionEnable(T, T, E_PHYSX_TAG_GRIVATEBALL, E_PHYSX_TAG_GRIVATEBALL);
@@ -347,8 +347,6 @@ NxBoxShapeDesc cPhysXManager::CreateBoxShape(int materialIndex, NxVec3 boxSize)
 	boxDesc.materialIndex = materialIndex;
 	boxDesc.dimensions = boxSize * 0.5f;
 
-
-
 	return boxDesc;
 }
 
@@ -387,7 +385,7 @@ void cPhysXManager::RaycastClosestShape(D3DXVECTOR3 start, D3DXVECTOR3 dir)
 
 	NxRaycastHit raycastHit;
 	MgrPhysXScene->raycastClosestShape(worldRay, NX_ALL_SHAPES, raycastHit);// , 0xffffffff, NX_MAX_F32, 0xffffffff, NULL, NULL);
-
+	
 	if (raycastHit.shape)
 	{
 
@@ -430,6 +428,20 @@ NxRaycastHit cPhysXManager::RaycastClosestShape(NxVec3 start, NxVec3 dir, NxReal
 	MgrPhysXScene->raycastClosestShape(worldRay, NX_ALL_SHAPES, raycastHit, group, maxDist);// , 0xffffffff, NX_MAX_F32, 0xffffffff, NULL, NULL);
 
 	return raycastHit;
+}
+
+void cPhysXManager::RaycastClosestShapePt(NxRaycastHit * raycasthit, NxVec3 start, NxVec3 dir, NxReal maxDist, NxU32 group)
+{
+	NxRay worldRay;
+
+	
+	worldRay.orig = start;
+	dir.normalize();
+	worldRay.dir = dir;
+
+	//NxRaycastHit raycastHit;
+	//raycastHit.shape = NULL;
+	MgrPhysXScene->raycastClosestShape(worldRay, NX_ALL_SHAPES, *raycasthit, group, maxDist);// , 0xffffffff, NX_MAX_F32, 0xffffffff, NULL, NULL);
 }
 
 NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * mat, NxVec3 sizeValue, eMaterialTag materialTag, USERDATA * pUserData, bool IsTrigger, bool isStatic, bool isGravaty)
@@ -586,7 +598,6 @@ NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * 
 	ActorDesc.globalPose.M.setColumnMajor(mat);
 
 	if (pUserData != NULL) ActorDesc.userData = (pUserData);
-
 	NxActor* actor = m_pNxScene->createActor(ActorDesc);
 	if (actor == NULL)
 	{
@@ -695,6 +706,19 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 				std::cout << "GetItem" << std::endl;
 			}
 		}
+
+		if (pUserData1->USER_TAG == E_PHYSX_TAG_CAR && pUserData0->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
+		{
+			otherShape.getActor().addLocalForce(NxVec3(0, 10000, 0));
+			otherShape.getActor().addTorque(NxVec3(1.5f, 0, 0));
+			printf("데이터 충돌\n");
+		}
+		else if (pUserData0->USER_TAG == E_PHYSX_TAG_CAR && pUserData1->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
+		{
+			triggerShape.getActor().addLocalForce(NxVec3(0, 10000, 0));
+			triggerShape.getActor().addTorque(NxVec3(1.5f, 0, 0));
+			printf("데이터 충돌\n");
+		}
 	}
 	else if (status & NX_TRIGGER_ON_STAY)
 	{
@@ -706,13 +730,13 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 	{
 		//	std::cout << "NX_TRIGGER_ON_ENTER";
 		// 2가 중력자탄
-		if (pUserData0->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
+		if (pUserData1->USER_TAG == E_PHYSX_TAG_CAR && pUserData0->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
-
+			
 		}
-		else if (pUserData1->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
+		else if (pUserData0->USER_TAG == E_PHYSX_TAG_CAR &&pUserData1->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
-
+			
 		}
 
 		else

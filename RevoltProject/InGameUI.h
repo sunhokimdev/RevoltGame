@@ -32,6 +32,7 @@ private:
 	//Lab
 	UITextImageView* m_pLab;
 	UITextImageView* m_pCurrentLab;
+	UITextImageView* m_pMaxLab;
 
 	//Last Time
 	UITextImageView* m_pLastDotOneTh;
@@ -71,9 +72,10 @@ private:
 	UITextImageView* m_pMinTenth;
 
 	// 속도계
-	UITextImageView* pSpeed;
-	UITextImageView* pSpeed2;
-	UIImageView* pSpeedometerImage;
+	UITextImageView* m_pSpeedOne;
+	UITextImageView* m_pSpeedTen;
+	UITextImageView* m_pSpeedHun;
+	UIImageView* m_pSpeedometerImage;
 
 	// 등수, 방향 화살표
 	UITextImageView* pITV_Rank;
@@ -98,9 +100,6 @@ public:
 	virtual void Render(LPD3DXSPRITE pSprite);
 	UIObject* GetUIObject() { return m_pRootUI; }
 	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
-	
-	void SetupTimer();
-	void ControllLab();
 
 	void UpdateSpeed();
 	void UpdateLabCount();									// UpdateCurrentLab
@@ -109,9 +108,7 @@ public:
 	void UpdateLabTime();									// UpdateLabTimer
 	void UpdateRaceTime();									// UpdateRaceTimer
 	void UpdateArrowDir();									// 화살표 방향
-
-
-
+	void RaceResults();
 
 	/*          SYNTHESIZE          */
 
@@ -160,5 +157,6 @@ public:
 	}
 	void LinkTrack(cTrack* track) { m_pTrack = track; }
 	void LinkRacingScene(RacingScene* rc) { m_pRacingScene = rc; }
+	c321GO* Get321goPt() { return m_p321go; }
 };
 

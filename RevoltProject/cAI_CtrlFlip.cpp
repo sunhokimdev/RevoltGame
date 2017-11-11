@@ -2,10 +2,16 @@
 #include "cAI_CtrlFlip.h"
 #include "cCar.h"
 
-cAI_CtrlFlip::cAI_CtrlFlip()
+cAI_CtrlFlip::cAI_CtrlFlip(AI_DATA pData)
 {
+	cAI::AI_Data = pData;
+	familyAI = NULL;
+
 	flipTime = 0.0f;
 	flipTrueTime = 1.5f;
+	isFlip = false;
+
+
 }
 
 
@@ -15,7 +21,7 @@ cAI_CtrlFlip::~cAI_CtrlFlip()
 
 void cAI_CtrlFlip::Update()
 {
-	NxQuat quat = m_pAICarActor->getGlobalOrientationQuat();
+	NxQuat quat = AI_Data.pCar->GetPhysXData()->m_pActor->getGlobalOrientationQuat();
 	NxVec3 carUp = quat.transform(NxVec3(0, 1, 0), NxVec3(0, 0, 0));
 	if (carUp.y < -0.5f)
 	{
@@ -28,11 +34,12 @@ void cAI_CtrlFlip::Update()
 
 	if (flipTime > flipTrueTime)
 	{
-		SetBitKey(eBIT_KEY::E_BIT_FLIP, true);
+		isFlip = true;
+		flipTime = 0.f;
 	}
 	else
 	{
-		SetBitKey(eBIT_KEY::E_BIT_FLIP, false);
+		isFlip = false;
 	}
 }
 

@@ -62,6 +62,20 @@ void cTrack::Render()
 	}
 }
 
+void cTrack::Destory()
+{
+	for each(auto p in m_vecCheckBox)
+	{
+		p->Destroy();
+		SAFE_DELETE(p);
+	}
+	for each(auto p in m_vecObject)
+	{
+		p->Destroy();
+		SAFE_DELETE(p);
+	}
+}
+
 void cTrack::SetData()
 {
 
@@ -271,6 +285,7 @@ void cTrack::LoadTrack(std::string FileName)
 							if (pActor)
 							{
 								g_pPhysX->SetActorGroup(pActor, E_PHYSX_TAG_PICKUP);
+								
 								physx->m_pActor = pActor;
 								physx->m_pUserData = pUserData;
 								Obj->SetPhysXData(physx);
@@ -299,6 +314,7 @@ void cTrack::LoadTrack(std::string FileName)
 							if (pActor)
 							{
 								g_pPhysX->SetActorGroup(pActor, E_PHYSX_TAG_CHECKBOX);
+								
 								physx->m_pActor = pActor;
 								physx->m_pUserData = pUserData;
 								Obj->SetPhysXData(physx);

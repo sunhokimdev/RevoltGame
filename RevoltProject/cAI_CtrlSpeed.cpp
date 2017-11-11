@@ -1,33 +1,20 @@
 #include "stdafx.h"
 #include "cAI_CtrlSpeed.h"
-#include "cPhysXManager.h"
+#include "cAI_Master.h"
 #include "cCar.h"
 
-cAI_CtrlSpeed::cAI_CtrlSpeed()
+cAI_CtrlSpeed::cAI_CtrlSpeed(AI_DATA pData)
 {
-	rayHitFront = NULL;
-	rayHitBack = NULL;
+	cAI::AI_Data = pData;
 
-	aiState = E_SpeedStateFront;
+	F___DistRange = 10;		//인지범위 
+	B___DistRange = 5;		//인지범위 
+	Min_DistRange = 3.f;	//무조건 유지하려는 거리
+	Min_LRDistRange = 1.5f;
 
-	frontDistPrev = 0;
-	frontDistCurr = 0;
-	frontDelta = 0;
-
-	backDistPrev = 0;
-	backDistCurr = 0;
-	backDelta = 0;
-
-
-
-	AI_distanceFront = 10;		//인지범위 
-	AI_distanceBack = 5;		//인지범위 
-	AI_value = 0.2f;		//delta 의 인지범위
-	AI_distanceMin = 3.f;	//무조건 유지하려는 거리
-
-
-	AITag = AI_TAG_SPEED;
-	isMoveFront = true;
+	isBack = false;
+	BackTime = 0.0f;
+	ReposTime = 5.0f;
 }
 
 
@@ -38,73 +25,59 @@ cAI_CtrlSpeed::~cAI_CtrlSpeed()
 
 void cAI_CtrlSpeed::Update()
 {
-	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.3, 0);
-	NxVec3 dirFront = m_pAICar->WheelArrow(0, false); dirFront.y = RayDirY();
-	NxVec3 dirBack = m_pAICar->WheelArrow(180, true); dirBack.y = -RayDirY();
-	float rpmValue = abs(m_pAICar->GetRpm() / m_pAICar->m_maxRpm);
+	float F__Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_F__.Distance();
+	float B__Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_B__.Distance();
+	float LF_Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_LF_.Distance();
+	float RF_Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_RF_.Distance();
 
-	dirFront.normalize();
-	dirBack.normalize();
+	float rpmRate = AI_Data.pCar->GetRpm() / AI_Data.pCar->m_maxRpm;
+	//	rpmRate = fmax(rpmRate, 0.1f);
 
-	rayHitFront = &RAYCAST(raypos, dirFront);
-	rayHitBack = &RAYCAST(raypos, dirBack);
 
-	if (rayHitBack->shape)
+	if (1.0f > ScaleValue(F__Dist, F___DistRange * fmax(abs(rpmRate), 0.5f)))
 	{
-		backDistCurr = rayHitBack->distance;
-		backDelta = backDistCurr - backDistPrev;
-
-		NxVec3 pos = rayHitBack->worldImpact;
-		BackPos = D3DXVECTOR3(pos.x, pos.y, pos.z);
+		//감속, 후진
+		SpeedValue = -1.0f;
+		if (abs(rpmRate) < 0.05)
+		{
+			isBack = true;
+		}
 	}
-	if (rayHitFront->shape)
+	else if (1.0f > ScaleValue(B__Dist, B___DistRange * fmax(abs(rpmRate), 0.5f)))
 	{
-		frontDistCurr = rayHitFront->distance;
-		frontDelta = frontDistCurr - frontDistPrev;
-
-		NxVec3 pos = rayHitFront->worldImpact;
-		FrontPos = D3DXVECTOR3(pos.x, pos.y, pos.z);
+		SpeedValue = 1.0f;
 	}
-
-	//
-	aiState = E_SpeedStateFront;
-
-
-	if (frontDistCurr < (AI_distanceFront * rpmValue) + AI_distanceMin)
+	else
 	{
-		aiState = E_SpeedStateBack;
-	}
-	else if (backDistCurr < (AI_distanceBack * rpmValue) + AI_distanceMin)
-	{
-		aiState = E_SpeedStateFront;
+		SpeedValue = 1.f;
 	}
 
-	frontDistPrev = frontDistCurr;
-	backDistPrev = backDistCurr;
+	//std::cout << SpeedValue << std::endl;
+	if (LF_Dist < Min_LRDistRange || RF_Dist < Min_LRDistRange)
+	{
+		if (rpmRate > 0) SpeedValue = -1.f;
+		if (rpmRate < 0) SpeedValue = 1.f;
+	}
 
 
-	SetBitKey(eBIT_KEY::E_BIT_UP, aiState == E_SpeedStateFront);
-	SetBitKey(eBIT_KEY::E_BIT_DOWN, aiState == E_SpeedStateBack);
-}
+	//강제 후진
+	if (isBack)
+	{
+		BackTime += g_pTimeManager->GetElapsedTime();
+		SpeedValue = -1.0f;
+		if (F__Dist > F___DistRange * 2.0f)
+		{
+			isBack = false;
+		}
+		else if (((B___DistRange * 0.5f / F___DistRange * 2.0f) > (B__Dist / F__Dist)))
+		{
+			isBack = false;
+		}
 
-void cAI_CtrlSpeed::Render()
-{
-	//	g_pD3DDevice->SetTransform(D3DTS_WORLD);
-	D3DMATERIAL9 material;
-	material.Ambient = CX_YELLOW;
-	material.Diffuse = CX_YELLOW;
-	material.Specular = CX_YELLOW;
-	material.Emissive = CX_YELLOW;
-	g_pD3DDevice->SetMaterial(&material);
-
-
-	//	D3DXCreateSphere(g_pD3DDevice, 0.5, 8, 8, pMesh, NULL);
-	D3DXMATRIXA16 mat16;
-	D3DXMatrixTranslation(&mat16, FrontPos.x, FrontPos.y, FrontPos.z);
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
-	(pMesh)->DrawSubset(0);
-
-	D3DXMatrixTranslation(&mat16, BackPos.x, BackPos.y, BackPos.z);
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
-	(pMesh)->DrawSubset(0);
+		if (BackTime > ReposTime)
+		{
+			isRepos = true;
+			BackTime = 0.0f;
+		}
+	}
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "Object.h"
 
-class cAI;
+class cAI_Master;
 class TriggerCallback;
 class cTrack;
 class cSkidMark;
@@ -15,6 +15,7 @@ struct stCARSPEC
 
 class cCar : public Object
 {
+	ST_KEYSET m_keySet;
 public:
 	std::bitset<BITESET_8_SIZE> INPUT_KEY;
 private:
@@ -47,7 +48,7 @@ private:
 	bool isFliping;
 
 	//AI
-	std::vector<cAI*> m_vecAI;
+	cAI_Master* familyAI;
 	bool m_isAI = false;
 
 	//Track Á¤º¸
@@ -112,14 +113,17 @@ public:
 	void SpeedMath();
 	void CreateSkidMark();
 	void CollidePickUp();
-	void SettingCarPos();
 
 	void CarMove();
 	void UsedItem();
 	void RePosition();
 	void CarFlip();
 
+	/*   ±è¼±È£   */
+	void SetResetNetworkKey();
+	void SetNetworkKey(std::string);
 
+	SYNTHESIZE(bool, m_isUser, IsUser);
 	//e
 	NxVec3 CarArrow(float radianAngle = 0);
 	NxVec3 WheelArrow(float degAngle = 0 , bool back = false);

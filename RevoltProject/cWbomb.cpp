@@ -4,8 +4,7 @@
 #include "cWaterBombImpact.h"
 
 cWbomb::cWbomb()
-	: m_pPhysX(NULL)
-	, m_pImapt(NULL)
+	: m_pImapt(NULL)
 	, m_isSleep(false)
 {
 }
@@ -19,16 +18,11 @@ void cWbomb::Setup()
 {
 	cItem::Setup();
 
-	m_pPhysX = new ST_PHYSX;
-
-	m_pPhysX->pPhysX = new cPhysX;
-	m_pPhysX->pTrigger = new cPhysX;
-	m_pPhysX->pMesh = new cMesh;
-
 	ObjectLoader::LoadMesh(m_pPhysX->pMesh, "Objects/wbomb", "wbomb.obj");
 
 	m_pImapt = new cWaterBombImpact;
 	m_pImapt->Setup();
+	m_pImapt->SetIsUse(false);
 
 	m_pUser->USER_TAG = E_PHYSX_TAG_WHATEBOMB;
 }
@@ -45,7 +39,8 @@ void cWbomb::Update()
 		m_pPhysX->pTrigger->m_pActor->wakeUp();
 		m_pPhysX->pTrigger->m_pActor->clearActorFlag(NX_AF_DISABLE_COLLISION);
 
-		NxVec3 n = m_pPhysX->pPhysX->m_pActor->getGlobalPose().t;
+		NxVec3 n = m_pPhysX->pPhysX->m_pActor->getGlobalPosition();
+
 		m_pImapt->SetIsUse(true);
 		m_pImapt->SetPosition(D3DXVECTOR3(n.x,n.y,n.z));
 		m_isUse = false;
@@ -60,9 +55,11 @@ void cWbomb::Update()
 	}
 
 	if (!m_isUse && m_pImapt->GetIsUse())
+	{
 		m_pImapt->Update();
+	}
 
-	m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pPhysX->m_pActor->getGlobalPose().t);
+	m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pPhysX->m_pActor->getGlobalPosition());
 }
 
 void cWbomb::Render()
@@ -73,7 +70,9 @@ void cWbomb::Render()
 		m_pPhysX->pMesh->Render();
 
 	if (!m_isUse && m_pImapt->GetIsUse())
+	{
 		m_pImapt->Render();
+	}
 }
 
 void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
@@ -103,10 +102,12 @@ void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	{
 		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
 		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(3.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
+		
+		NxVec3 v = m_pPhysX->pPhysX->m_pActor->getGlobalPosition();
 
 		m_pPhysX->pTrigger->m_pActor->putToSleep();
 		m_pPhysX->pTrigger->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
-		SetActorGroup(m_pPhysX->pPhysX->m_pActor, 1);
+		SetActorGroup(m_pPhysX->pPhysX->m_pActor, E_PHYSX_TAG_WHATEBOMB);
 		this->SetPhysXData(m_pPhysX->pPhysX);
 		m_isInit = false;
 	}

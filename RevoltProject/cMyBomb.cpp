@@ -75,10 +75,10 @@ void cMyBomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 
 	if (m_isInit)
 	{
-		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(3.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
+		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(1.5f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
 		m_pPhysX->pPhysX->m_pActor->putToSleep();
 		m_pPhysX->pPhysX->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
-		SetActorGroup(m_pPhysX->pPhysX->m_pActor, 2);
+		SetActorGroup(m_pPhysX->pPhysX->m_pActor, E_PHYSX_TAG_MYBOMB);
 		this->SetPhysXData(m_pPhysX->pPhysX);
 		m_isInit = false;
 		m_pCar->GetPhysXData()->m_pUserData->isMyBomb = true;

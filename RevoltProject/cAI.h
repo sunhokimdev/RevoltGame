@@ -3,58 +3,58 @@
 #include "cPlayerData.h"
 
 class cCar;
-
-enum AISpeedState { E_SpeedStateFront, E_SpeedStateBack };
-enum AIHandleState { E_AIHandle_L, E_AIHandle_F, E_AIHandle_R };
+class cCheckBox;
 
 enum AI_TAG
 {
-	AI_TAG_MASTER = 0,
+	AI_TAG_NONE = -1,
+	AI_TAG_RAY = 0,
 	AI_TAG_SPEED,
 	AI_TAG_HANDLE,
-	AI_TAG_03,
-	AI_TAG_04,
+	AI_TAG_FLIP,
+	AI_TAG_CTRL,
+	AI_TAG_END___,
 	AI_TAG_05,
+};
+
+struct AI_DATA
+{
+	cCar* pCar;
+	AI_DATA()
+	{
+		pCar = NULL;
+	}
+	AI_DATA(cCar* pCar)
+	{
+		if (pCar) this->pCar = pCar;
+	}
+
+	void Destory()
+	{
+		pCar = NULL;
+	}
 };
 
 class cAI
 {
-public:
-	AI_TAG AITag;
+protected:
+	ID3DXMesh* AI_Mesh;
 
-	cCar* m_pAICar;
-	NxActor* m_pAICarActor;
-
-	cAI* pParent;
-	std::vector<cAI*> chiledAI;
-
-	ID3DXMesh* pMesh;
-
+	AI_DATA AI_Data;
 	cAI();
 	~cAI();
+	
+public:
 
-	virtual void SetCar(cCar* m_pAICar);
+	std::vector<cAI*>* familyAI;
+
+	virtual void Setup();
 	virtual void Destory();
 	virtual void Update();
 	virtual void Render();
-	virtual void AddAICtrl(cAI* pAI);
 
-	void TEST()
-	{
+	cCheckBox* CurrentCheckBox();
+	float ScaleValue(float value, float Total, float multiValue = 1.0f);
 
-	}
-
-	void SetBitKey(eBIT_KEY keySet, bool onoff);
-	bool GetBytKey(eBIT_KEY keyGet);
-
-
-	void RayHitPos(NxRaycastHit* Ray, D3DXVECTOR3* pos);
-	void RayHitDist(NxRaycastHit* Ray, float* dist);
-
-	cAI* FindMaster();
-	cAI* FindAITag(AI_TAG tag);
-
-
-	float RayDirY();
 };
 

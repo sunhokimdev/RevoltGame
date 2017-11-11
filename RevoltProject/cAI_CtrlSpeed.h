@@ -5,39 +5,25 @@ class cAI_CtrlSpeed :
 {
 public:
 
-	//	cPhysX* pCollider;
+	float F___DistRange;		//인지범위 
+	float B___DistRange;		//인지범위 
 
-	NxRaycastHit* rayHitFront;
-	NxRaycastHit* rayHitBack;
+	float Min_DistRange;		//무조건 유지하려는 거리
+	float Min_LRDistRange;		
+	//AISpeedState aiState;
+	float SpeedValue;
 
-	D3DXVECTOR3 FrontPos;
-	D3DXVECTOR3 BackPos;
+	bool isBack;
 
-	bool isMoveFront;
+	float BackTime;
+	float ReposTime;
 
-	float frontDistPrev;
-	float frontDistCurr;
-	float frontDelta;
-
-	float backDistPrev;
-	float backDistCurr;
-	float backDelta;
-
-
-	AISpeedState aiState;
-
-
-	float AI_distanceFront;// = 5;		//인지범위 
-	float AI_distanceBack;// = 3;		//인지범위 
-	float AI_value;// = 0.2f;		//delta 의 인지범위
-	float AI_distanceMin;// = 2.f;	//무조건 유지하려는 거리
-
+	bool isRepos;
 
 public:
-	cAI_CtrlSpeed();
+	cAI_CtrlSpeed(AI_DATA pData);
 	~cAI_CtrlSpeed();
 
 	void Update();
-	void Render();
 };
 

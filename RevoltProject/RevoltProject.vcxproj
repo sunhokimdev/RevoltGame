@@ -91,10 +91,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>Debug</GenerateDebugInformation>
       <AdditionalDependencies>NxCooking.lib;PhysXLoader.lib;NxCharacter.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -114,14 +116,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>Debug</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>NxCooking.lib;PhysXLoader.lib;NxCharacter.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -150,10 +153,12 @@
   <ItemGroup>
     <ClInclude Include="c321GO.h" />
     <ClInclude Include="cAI.h" />
-    <ClInclude Include="cAI_Collider.h" />
+    <ClInclude Include="cAI_Ctrl.h" />
     <ClInclude Include="cAI_CtrlHandel.h" />
     <ClInclude Include="cAI_CtrlSpeed.h" />
     <ClInclude Include="cAI_CtrlFlip.h" />
+    <ClInclude Include="cAI_Master.h" />
+    <ClInclude Include="cAI_Ray.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Car.h" />
@@ -188,6 +193,7 @@
     <ClInclude Include="cPlasmaImpact.h" />
     <ClInclude Include="cPlayerData.h" />
     <ClInclude Include="cSelectCarLob.h" />
+    <ClInclude Include="cSelectNetworkLob.h" />
     <ClInclude Include="cSkidMark.h" />
     <ClInclude Include="cSkyBox.h" />
     <ClInclude Include="cStringUtil.h" />
@@ -221,6 +227,7 @@
     <ClInclude Include="ObjectLoader.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="ObjectMap.h" />
+    <ClInclude Include="PFirework.h" />
     <ClInclude Include="PhysX\cooking.h" />
     <ClInclude Include="PhysX\NxAllVehicles.h" />
     <ClInclude Include="PhysX\NxLinearInterpolate3Values.h">
@@ -241,6 +248,7 @@
     <ClInclude Include="PhysX\NxWheelDesc.h" />
     <ClInclude Include="PickUpObject.h" />
     <ClInclude Include="ProfileList.h" />
+    <ClInclude Include="PSystem.h" />
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="RacingScene.h" />
     <ClInclude Include="Resource.h" />
@@ -269,10 +277,12 @@
   <ItemGroup>
     <ClCompile Include="c321GO.cpp" />
     <ClCompile Include="cAI.cpp" />
-    <ClCompile Include="cAI_Collider.cpp" />
+    <ClCompile Include="cAI_Ctrl.cpp" />
     <ClCompile Include="cAI_CtrlHandel.cpp" />
     <ClCompile Include="cAI_CtrlSpeed.cpp" />
     <ClCompile Include="cAI_CtrlFlip.cpp" />
+    <ClCompile Include="cAI_Master.cpp" />
+    <ClCompile Include="cAI_Ray.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Car.cpp" />
@@ -307,6 +317,7 @@
     <ClCompile Include="cPlasmaImpact.cpp" />
     <ClCompile Include="cPlayerData.cpp" />
     <ClCompile Include="cSelectCarLob.cpp" />
+    <ClCompile Include="cSelectNetworkLob.cpp" />
     <ClCompile Include="cSkidMark.cpp" />
     <ClCompile Include="cSkyBox.cpp" />
     <ClCompile Include="cStringUtil.cpp" />
@@ -338,12 +349,14 @@
     <ClCompile Include="ObjectLoader.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="ObjectMap.cpp" />
+    <ClCompile Include="PFirework.cpp" />
     <ClCompile Include="PhysX\cooking.cpp" />
     <ClCompile Include="PhysX\NxAllVehicles.cpp" />
     <ClCompile Include="PhysX\NxVehicle.cpp" />
     <ClCompile Include="PhysX\NxWheel.cpp" />
     <ClCompile Include="PickUpObject.cpp" />
     <ClCompile Include="ProfileList.cpp" />
+    <ClCompile Include="PSystem.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="RacingScene.cpp" />
     <ClCompile Include="RevoltProject.cpp" />

@@ -47,7 +47,7 @@ void SceneManager::Destroy()
 GameNode * SceneManager::AddScene(std::string sceneName, GameNode * scene)
 {
 	if (!scene) return NULL;
-
+	scene->SetSceneName(sceneName);
 	_mSceneList.insert(make_pair(sceneName, scene));
 
 	return scene;

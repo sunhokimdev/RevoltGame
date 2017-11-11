@@ -17,6 +17,7 @@ class cSelectCarLob;			// 자동차 선택UI클래스
 class cViewCarLob;				// 자동차 보여주는 
 class cNetworkCreateRoom;		// 방 생성 클래스
 class cNetworkInRoom;			// 방 클래스
+class cSelectNetworkLob;
 //===================================================================
 // - written by 김선호
 // - 로비 창 구현
@@ -64,6 +65,10 @@ protected:
 	int		m_select;							// 현재 위아래 커서의 위치
 	int		m_leftAndrightSelect;				// 현재 오른쪽 왼쪽 커서의 위치;
 
+	float m_CamLerpSpd;
+	D3DXVECTOR3 m_vCamPos;
+	D3DXVECTOR3 m_vLookAt;
+
 	//===================================================================
 	// - written by 윤동훈
 	// - 맵 선택
@@ -80,9 +85,6 @@ protected:
 	//===================================================================
 	std::vector<std::string> m_vProfileList;	// 프로필 목록
 	std::string				 m_PlayerName;		// 선택된 이름
-	bool					 m_isCreate;		// 프로필 생성할지 확인
-	bool					 m_isEnterName;		// 이름 입력 확인
-	bool					 m_isflag;			// 이름 불러오기
 
 	ProfileList*		 	 m_pfileList;		// 프로필 리스트
 	Map*					 m_pMap;
@@ -100,6 +102,7 @@ protected:
 	cViewCarLob*		m_pViewCarLobby;			// 자동차 뷰어 로비 클래스
 	cNetworkCreateRoom* m_pCreateRoom;				// 멀티 방 생성 클래스
 	cNetworkInRoom*		m_pInRoom;					// 멀티 방 클래스
+	cSelectNetworkLob* m_pSelectServer;
 public:
 	Lobby();
 	~Lobby();

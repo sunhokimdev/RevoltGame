@@ -74,17 +74,22 @@ void UIImageView::Update()
 	else if (m_isItem)
 	{
 		/*   update타입이 100이하면 선택된 m_item이 된다   */
+		if (g_pItemManager->GetItemID() == INT_MAX)
+			m_updateTIme = 500;
+
 		if (m_updateTIme < 100)
 		{
 			m_alpha = 255;
+
+			m_itemID = g_pItemManager->GetItemID();
 		}
-		else
+		else if(g_pItemManager->GetItemID() != INT_MAX)
 		{
 			srand(time(NULL));
 			if (m_itemID > MAX_ID)
 			{
-				//m_itemID = rand() % 12;
-				m_itemID = m_pCar->GetHoldItem();
+				m_itemID = rand() % 12;
+				//m_itemID = m_pCar->GetHoldItem();
 			}
 				
 			if (m_itemPrevID > MAX_ID)
@@ -224,6 +229,9 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 
 	else if (m_isItem)
 	{
+		if (g_pItemManager->GetItemID() == INT_MAX)
+			return;
+
 		RECT rc;
 
 		pSprite->SetTransform(&tMat);
