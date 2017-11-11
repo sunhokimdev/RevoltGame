@@ -8,11 +8,7 @@ class cCar;
 class UIImageView : public UIObject
 {
 protected:
-	/*   맵 노이즈 선택   */
-	float LeftNoiseX;
-	float RightNoiseX;
-	float UpNoiseY;
-	float DownNoiseY;
+
 
 	/*   아이템 창 뜨게 하기 위한 작업   */
 	int m_itemPrevID;	// 아이템의 이전 아이디
@@ -46,9 +42,7 @@ public:
 	void LinkItemIDPt(int* item) { m_pitemID = item; }
 	void LinkCarPt(cCar* car) { m_pCar = car; }
 
-	SYNTHESIZE(bool, m_isMove, IsMove);
 	SYNTHESIZE(bool, m_isBoard, IsBoard);		
-	SYNTHESIZE(bool, m_isNoise, IsNoise);
 	SYNTHESIZE(bool, m_isItem, IsItem);
 	SYNTHESIZE(bool, m_isSpeedFrame, IsSpeedFrame);
 	SYNTHESIZE(bool, m_isSpeed, IsSpeed);

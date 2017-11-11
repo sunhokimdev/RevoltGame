@@ -102,7 +102,7 @@ protected:
 	cViewCarLob*		m_pViewCarLobby;			// 자동차 뷰어 로비 클래스
 	cNetworkCreateRoom* m_pCreateRoom;				// 멀티 방 생성 클래스
 	cNetworkInRoom*		m_pInRoom;					// 멀티 방 클래스
-	cSelectNetworkLob* m_pSelectServer;
+	cSelectNetworkLob*  m_pSelectServer;
 public:
 	Lobby();
 	~Lobby();

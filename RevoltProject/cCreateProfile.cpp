@@ -84,6 +84,13 @@ void cCreateProfile::Render(LPD3DXSPRITE pSprite)
 	iLobby::Render(pSprite);
 }
 
+void cCreateProfile::Destroy()
+{
+	SAFE_DELETE(m_pNameText);
+
+	iLobby::Destroy();
+}
+
 std::string cCreateProfile::GetName()
 {
 	return m_pNameText->GetChatName();
