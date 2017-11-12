@@ -53,7 +53,7 @@ void cPickUp::Render()
 		D3DXMatrixRotationY(&mat, m_fAngle);
 		
 		cTransform::SetQuaternion(mat);
-		//g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat);
-		//Object::Render();
+		g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat);
+		Object::Render();
 	}
 }
