@@ -7,6 +7,7 @@
 #include "Object.h"
 #include "cCheckBox.h"
 #include "c321GO.h"
+#include "RacingScene.h"
 
 #define TIMEMAX 60
 
@@ -486,8 +487,9 @@ void InGameUI::Update()
 	}
 
 
-	if (m_LabCnt > -1 && m_LabCnt < 3)	UpdateLabTime();
-	if (m_LabCnt >= 3)
+	int nTrackCount = m_pRacingScene->GettrackEndCount();
+	if (m_LabCnt > -1 && m_LabCnt < nTrackCount)	UpdateLabTime();
+	if (m_LabCnt >= nTrackCount)
 	{
 		RaceResults();
 		if (g_pKeyManager->isOnceKeyDown(VK_RETURN))

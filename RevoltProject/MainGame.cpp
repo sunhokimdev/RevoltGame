@@ -89,19 +89,15 @@ void MainGame::Render()
 	if (IsUpdate == false) return;
 	IsUpdate = false;
 
-	SAFE_RENDER(g_pTimeManager);
-
 	g_pD3DDevice->Clear(NULL, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(47, 121, 112), 1.0F, 0);
 		// 그리기 시작
 	g_pD3DDevice->BeginScene();
 
-	SAFE_RENDER(g_SceneManager);
+	g_SceneManager->Render();
 
 	g_pItemManager->Render();
 
 	g_pPhysX->Render();
-
-	// 타임 매니저 랜더 해야함
 
 	g_pTimeManager->Render();
 

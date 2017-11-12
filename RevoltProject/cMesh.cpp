@@ -43,7 +43,7 @@ void cMesh::Destroy()
 	//m_mapMtlTex.clear();
 	for each (auto pMtlTex in m_vecMtlTex)
 	{
-		pMtlTex->~MtlTex();
+		//pMtlTex->Release();
 		SAFE_DELETE(pMtlTex);
 	}
 	m_vecMtlTex.clear();

@@ -77,7 +77,7 @@ void LobbyScene::Render()
 
 void LobbyScene::Destroy()
 {
-	if (m_pMap)
+	/*if (m_pMap)
 	{
 		m_pMap->Destroy();
 		SAFE_DELETE(m_pMap);
@@ -87,7 +87,7 @@ void LobbyScene::Destroy()
 		m_pLobby->Destroy();
 	}
 	
-	SAFE_DELETE(m_pLobby);
+	SAFE_DELETE(m_pLobby);*/
 }
 
 void LobbyScene::SetupLight()

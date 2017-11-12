@@ -20,6 +20,9 @@ void RacingScene::Setup()
 	playerIndex = 0;
 	m_eRaceProg = RACE_PROG_READY;
 
+	//TrackEndCount 돌아야 되는 바퀴 수	
+	m_trackEndCount = 1;
+
 	//카메라 초기값
 	m_camPos = new D3DXVECTOR3(70, 5, 0);
 	m_camLookTarget = new D3DXVECTOR3(0, 0, 0);

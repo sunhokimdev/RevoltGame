@@ -1,8 +1,8 @@
 #pragma once
 #include "GameNode.h"
 
-//TrackEndCount 돌아야 되는 바퀴 수
-#define m_trackEndCount 3
+
+
 
 class cTrack;
 class cLight;
@@ -37,7 +37,8 @@ private:
 	D3DXVECTOR3* m_camPos;
 	D3DXVECTOR3* m_camLookTarget;
 
-	
+	//TrackEndCount 돌아야 되는 바퀴 수	
+	SYNTHESIZE(int, m_trackEndCount, trackEndCount);
 	
 	//빌보드??이펙트??
 	LPD3DXSPRITE m_Sprite;
