@@ -1115,7 +1115,7 @@ void cCar::SetNetworkKey(std::string str)
 		m_keySet.ctrl = true;
 	if (str[5] == '1')
 		m_keySet.r_key = true;
-	if (str[5] == '1')
+	if (str[6] == '1')
 		m_keySet.f_key = true;
 }
 

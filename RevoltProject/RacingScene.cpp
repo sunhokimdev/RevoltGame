@@ -89,7 +89,7 @@ void RacingScene::Setup()
 	if (i == 0)
 	{
 		CreateCar(m_pTrack->GetStartPositions()[i], i,"tc1", false);
-		CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
+		CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", false);
 	}
 	vecCars[i]->SetIsUser(false);
 	vecCars[i + 1]->SetIsUser(true);
@@ -118,9 +118,6 @@ void RacingScene::Destroy()
 
 void RacingScene::Update()
 {
-	GameNode::Update();
-	SAFE_UPDATE(m_pTrack);
-
 	char* pchIP = NULL;
 	char* pchKEY = NULL;
 	char* pchPOS = NULL;
@@ -128,45 +125,41 @@ void RacingScene::Update()
 	char* pchY = NULL;
 	char* pchZ = NULL;
 
+	std::string str = "";
+
+	m_loop = false;
+
 	/*   네트워크 부분   */
 	if (g_pNetworkManager->GetIsInGameNetwork())
 	{
-		std::string str;
-
-		g_pNetworkManager->SetResetKeyEvent();
-
 		g_pNetworkManager->SetClientPosition(vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition());
 
 		str = "@" + g_pNetworkManager->GetClientIP() +
 			"@" + g_pNetworkManager->GetKeYString() + "@" + g_pNetworkManager->GetClientPosition();
 	
 		g_pNetworkManager->SendMsg(str.c_str());
-		g_pNetworkManager->RecvMsg();
-		str = g_pNetworkManager->GetMsg();
+
+		if(g_pNetworkManager->RecvMsg())
+			str = g_pNetworkManager->GetMsg();
 
 		pchIP = strtok((char*)str.c_str(), "@");
+		pchKEY = strtok(NULL, "@");
+		pchPOS = strtok(NULL, "@");
 
-		if (g_pNetworkManager->GetClientIP().find(pchIP) == -1)
+		if (pchIP != NULL && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
 		{
-			//printf("%s\n", pchIP);
-			//pchKEY = strtok(NULL, "@");
-			//printf("%s\n", pchKEY);
-			//pchPOS = strtok(NULL, "@");
-			//
-			//pchX = strtok(pchPOS, "/");
-			////printf("%s ", pchX);
-			//pchY = strtok(NULL, "/");
-			////printf("%s ", pchY);
-			//pchZ = strtok(NULL, "/");
-			////printf("%s\n", pchZ);
-			//
-			//printf("%s ", pchX);
-			//printf("%s ", pchY);
-			//printf("%s\n", pchZ);
-		}
+			pchX = strtok(pchPOS, "/");
+			pchY = strtok(NULL, "/");
+			pchZ = strtok(NULL, "/");
 
-		//printf("%f %f %f\n", x, y, z);
+			printf("%s\n", pchIP);
+
+			m_loop = true;
+		}
 	}
+
+	GameNode::Update();
+	SAFE_UPDATE(m_pTrack);
 
 	switch (m_eRaceProg)
 	{
@@ -184,27 +177,33 @@ void RacingScene::Update()
 	{
 		if (g_pNetworkManager->GetIsInGameNetwork())
 		{
+			g_pNetworkManager->SetResetKeyEvent();
+
 			if (IsCarRunTrue(vecCars[0])) vecCars[0]->Update();
 			if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
-			/*
+
 			if (m_loop)
 			{
 				vecCars[1]->SetResetNetworkKey();
-				vecCars[1]->SetNetworkKey(pchKEY);
+				if(pchKEY != NULL)
+					vecCars[1]->SetNetworkKey(pchKEY);
 
 				if (IsCarRunTrue(vecCars[1])) vecCars[1]->Update();
 				if (!IsCarRunTrue(vecCars[1])) m_eRaceProg = RACE_PROG_FINISH;
 
-				//printf("%f %f %f\n", vecCars[1]->GetCarSunPos().x, vecCars[1]->GetCarSunPos().y, vecCars[1]->GetCarSunPos().z);
+				float mx = 0;
+				float my = 0;
+				float mz = 0;
 
-				//vecCars[1]->GetPhysXData()->m_pActor->setGlobalPosition(vecCars[1]->GetCarSunPos());
+				if(pchX!=NULL)
+					mx = atof(pchX);
+				if(pchY != NULL)
+					my = atof(pchY);
+				if(pchZ != NULL)
+					mz = atof(pchZ);
+
+				vecCars[1]->GetPhysXData()->m_pActor->setGlobalPosition(NxVec3(mx,my,mz));
 			}
-			*/
-			//float x, y, z;
-			//
-			//x = atof(pchX);
-			//y = atof(pchY);
-			//z = atof(pchZ);
 		}
 		else
 		{
@@ -227,16 +226,6 @@ void RacingScene::Update()
 	break;
 	default: break;
 	}
-
-	//else
-	//{
-	//	for (int i = 0; i < vecCars.size(); i++)
-	//	{
-	//		if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
-
-	//		else vecCars[i]->RunEnd();
-	//	}
-	//}
 
 	if (m_pInGameUI)
 	{
