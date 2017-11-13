@@ -111,6 +111,7 @@ void RacingScene::Destroy()
 	m_pLightSun->Destroy();
 	SAFE_DELETE(m_pLightSun);
 
+	m_pInGameUI->Destroy();
 	SAFE_DELETE(m_pInGameUI);
 	SAFE_DESTROY(m_pSkyBox);
 	SAFE_DELETE(m_pSkyBox);
@@ -139,7 +140,16 @@ void RacingScene::Update()
 	{
 		for (int i = 0; i < vecCars.size(); i++)
 		{
-			if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
+			if (IsCarRunTrue(vecCars[i]))
+			{
+				vecCars[i]->Update();
+				vecCars[i]->UpdateFrustum();
+
+				if (vecCars[0]->IsIn(&D3DXVECTOR3(-10,0,-10)))
+				{
+					int a = 1;
+				}
+			}
 
 			if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
 		}
@@ -405,6 +415,7 @@ void RacingScene::LinkUI(int playerID)
 {
 	m_pInGameUI->LinkCarPt(vecCars[playerID]);
 	vecCars[playerID]->LinkUI(m_pInGameUI);
+	vecCars[playerID]->SetFrustum();
 	m_pInGameUI->LinkTrack(m_pTrack);
 	m_pInGameUI->LinkRacingScene(this);
 	for (int i = 0; i < vecCars.size(); i++)

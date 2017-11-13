@@ -13,11 +13,18 @@ private:
 	UITextImageView*	m_pMapName;		// 방에 보여줄 맵 이름
 	UITextImageView*	m_pChating;		// 채팅 구현
 	UITextImageView*	m_pText;		// 화면에 보여줄 채팅 내용
+	UIImageView*		pImageView1;
+	UIImageView*		pImageView3;
+	UITextImageView*	pImageView4;
+	UIImageView*		pImageView5;
+	UIImageView*		pImageView6;
+	UIImageView*		pImageView7;
+
+
 
 	std::string m_userName;
 
 	std::vector<UITextImageView*>	m_vecText;
-	UIImageView* pImageView5;
 	int m_index;
 	int m_sizeY;
 public:

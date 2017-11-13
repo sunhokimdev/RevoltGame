@@ -141,6 +141,7 @@ void ItemManager::InitCollisionGroup()
 	//
 	//MgrPhysXScene->setActorGroupPairFlags(3, 3, NX_NOTIFY_ON_END_TOUCH);
 
+	
 }
 
 void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인터*/)

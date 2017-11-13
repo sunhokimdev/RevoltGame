@@ -70,6 +70,11 @@ private:
 	//InGame UI
 	InGameUI* m_pInGameUI;
 
+	/*          Ray Cast          */
+	std::vector<D3DXVECTOR3>	m_vecProjVertex;
+	std::vector<D3DXVECTOR3>	m_vecWorldVertex;
+	std::vector<D3DXPLANE>		m_vecPlane;
+
 public:
 	cCar();
 	~cCar();
@@ -115,6 +120,12 @@ public:
 	void UsedItem();
 	void RePosition();
 	void CarFlip();
+
+	/*          Ray Cast          */
+	void SetFrustum();
+	void UpdateFrustum();
+	bool IsIn(D3DXVECTOR3* pv);
+
 
 	/*   �輱ȣ   */
 	void SetResetNetworkKey();

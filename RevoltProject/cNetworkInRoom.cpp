@@ -48,27 +48,21 @@ void cNetworkInRoom::Setup()
 
 	m_vecText.push_back(m_pText);
 
-	UIImageView* pImageView1 = new UIImageView;
+	pImageView1 = new UIImageView;
 	pImageView1->SetPosition(80, 50);
 	pImageView1->SetXSize(4.0f);
 	pImageView1->SetYSize(4.0f);
 	pImageView1->SetIsBoard(true);
 	pImageView1->SetTexture("UIImage/blueRing.png");
 
-	UIImageView* pImageView2 = new UIImageView;
-	pImageView2->SetXSize(1.2f);
-	pImageView2->SetYSize(1.2f);
-	pImageView2->SetPosition(17, 17);
-	pImageView2->SetTexture("UIImage/bluemulti.png");
-
-	UIImageView* pImageView3 = new UIImageView;
+	pImageView3 = new UIImageView;
 	pImageView3->SetPosition(120, 25);
 	pImageView3->SetIsBoard(true);
 	pImageView3->SetXSize(30.0f);
 	pImageView3->SetYSize(1.0f);
 	pImageView3->SetTexture("UIImage/ring.png");
 
-	UITextImageView* pImageView4 = new UITextImageView;
+	pImageView4 = new UITextImageView;
 	pImageView4->SetTexture("UIImage/font1.png");
 	pImageView4->SetText("MULTIPLAYER ROOM");
 	pImageView4->SetIndex(INT_MAX);
@@ -83,14 +77,14 @@ void cNetworkInRoom::Setup()
 	pImageView5->SetYSize(21.0f);
 	pImageView5->SetTexture("UIImage/ring.png");
 
-	UIImageView* pImageView6 = new UIImageView;
+	pImageView6 = new UIImageView;
 	pImageView6->SetPosition(520, 0);
 	pImageView6->SetIsBoard(true);
 	pImageView6->SetXSize(11.0f);
 	pImageView6->SetYSize(27.0f);
 	pImageView6->SetTexture("UIImage/ring.png");
 
-	UIImageView* pImageView7 = new UIImageView;
+	pImageView7 = new UIImageView;
 	pImageView7->SetPosition(70, 540);
 	pImageView7->SetIsBoard(true);
 	pImageView7->SetXSize(30.0f);
@@ -99,7 +93,6 @@ void cNetworkInRoom::Setup()
 
 	m_pRootUI->AddChild(pImageView1);
 	m_pRootUI->AddChild(pImageView5);
-	pImageView1->AddChild(pImageView2);
 	pImageView1->AddChild(pImageView3);
 	pImageView1->AddChild(pImageView4);
 	pImageView1->AddChild(pImageView7);
@@ -137,6 +130,13 @@ void cNetworkInRoom::Destroy()
 	SAFE_DELETE(m_pChating);
 	SAFE_DELETE(m_pText);
 	SAFE_DELETE(pImageView5);
+	SAFE_DELETE(pImageView1);
+	SAFE_DELETE(pImageView3);
+	SAFE_DELETE(pImageView4);
+	SAFE_DELETE(pImageView5);
+	SAFE_DELETE(pImageView6);
+	SAFE_DELETE(pImageView7);
+
 
 	for each(UITextImageView* p in m_vecText)
 	{

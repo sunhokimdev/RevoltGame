@@ -4,6 +4,7 @@
 
 class UIObject;
 class UITextImageView;
+class UIImageView;
 class cNetwork;
 
 class cNetworkLobby : public iLobby
@@ -11,6 +12,18 @@ class cNetworkLobby : public iLobby
 private:
 	UITextImageView* m_pUserName;
 	UITextImageView* m_pCarName;
+	UITextImageView* pImageView4;
+	UITextImageView* pImageView8;
+	UITextImageView* pImageView9;
+	UITextImageView* pImageView10;
+	UIImageView*	 pImageView1;
+	UIImageView*	 pImageView2;
+	UIImageView*	 pImageView3;
+	UIImageView*	 pImageView5;
+	UIImageView*	 pImageView6;
+	UIImageView*	 pImageView7;
+
+
 public:
 	cNetworkLobby();
 	virtual ~cNetworkLobby();
