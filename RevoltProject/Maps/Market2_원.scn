@@ -1,6 +1,6 @@
 //Revolt Scene File
 //Market2
-//Date : 2017-11-11
+//Date : 2017-10-31
 
 Map Market2
 
@@ -8,7 +8,7 @@ Object
 Tag 0
 Name Check_Box_00
 ID 0
-Position 4 0 -3
+Position 3.70944 0.499036 -2.68269
 Scale 1 20 40
 Rotation 0 0 1
 X_Actor 0
@@ -23,7 +23,7 @@ Object
 Tag 0
 Name Check_Box_01
 ID 0
-Position 50 0 -3
+Position 49.5253 0.499877 -2.83736
 Scale 1 20 40
 Rotation 0 0 1
 X_Actor 0
@@ -38,7 +38,7 @@ Object
 Tag 0
 Name Check_Box_02
 ID 0
-Position 94 0 -2.62052
+Position 93.6706 0.498028 -2.93737
 Scale 1 20 40
 Rotation 0 0 1
 X_Actor 0
@@ -53,14 +53,14 @@ Object
 Tag 0
 Name Check_Box_03
 ID 0
-Position 144 0 -40
-Scale 1 20 15
+Position 146.248 0.5 -36.9541
+Scale 1 20 30
 Rotation 0 0 1
 X_Actor 0
 X_Type 2
 X_Option 1 1 0
 X_Pos 0 0 0
-X_Size 1 20 15
+X_Size 1 20 30
 X_FXU32_[9] 1 0 0 0 1 0 0 0 1
 #
 
@@ -68,9 +68,9 @@ Object
 Tag 0
 Name Check_Box_04
 ID 0
-Position 170 0 -45
+Position 146.749 0.5 -98.8817
 Scale 1 20 40
-Rotation 0 0 1.80278
+Rotation 0 0 1
 X_Actor 0
 X_Type 2
 X_Option 1 1 0
@@ -83,14 +83,14 @@ Object
 Tag 0
 Name Check_Box_05
 ID 0
-Position 185 0 -70
-Scale 35 20 1
+Position 118.262 10 -128.622
+Scale 20 20 1
 Rotation 0 0 1
 X_Actor 0
 X_Type 2
 X_Option 1 1 0
 X_Pos 0 0 0
-X_Size 35 20 1
+X_Size 20 20 1
 X_FXU32_[9] 1 0 0 0 1 0 0 0 1
 #
 
@@ -98,7 +98,7 @@ Object
 Tag 0
 Name Check_Box_06
 ID 0
-Position 170 0 -95
+Position 75.7776 0.5 -147.486
 Scale 1 20 40
 Rotation 0 0 1
 X_Actor 0
@@ -113,52 +113,7 @@ Object
 Tag 0
 Name Check_Box_07
 ID 0
-Position 140.053 0 -100
-Scale 1 20 20
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 1 1 0
-X_Pos 0 0 0
-X_Size 1 20 20
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 0
-Name Check_Box_08
-ID 0
-Position 117 0 -144
-Scale 20 20 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 1 1 0
-X_Pos 0 0 0
-X_Size 20 20 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 0
-Name Check_Box_09
-ID 0
-Position 95 0 -155
-Scale 1 20 50
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 1 1 0
-X_Pos 0 0 0
-X_Size 1 20 50
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 0
-Name Check_Box_10
-ID 0
-Position 35 0 -137
+Position 4.34207 0.5 -139.461
 Scale 1 20 40
 Rotation 0 0 1
 X_Actor 0
@@ -171,54 +126,39 @@ X_FXU32_[9] 1 0 0 0 1 0 0 0 1
 
 Object
 Tag 0
-Name Check_Box_11
+Name Check_Box_08
 ID 0
-Position -26 0 -117.5
-Scale 1 20 15
+Position -24.8762 0.5 -118.097
+Scale 1 20 20
 Rotation 0 0 1
 X_Actor 0
 X_Type 2
 X_Option 1 1 0
 X_Pos 0 0 0
-X_Size 1 20 15
+X_Size 1 20 20
 X_FXU32_[9] 1 0 0 0 1 0 0 0 1
 #
 
 Object
 Tag 0
-Name Check_Box_12
+Name Check_Box_09
 ID 0
-Position -30.5 0 -108
-Scale 10 40 1
-Rotation 0 0 0.999845
-X_Actor 0
-X_Type 2
-X_Option 1 1 0
-X_Pos 0 0 0
-X_Size 10 40 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 0
-Name Check_Box_13
-ID 0
-Position -30.5 0 -45
-Scale 10 40 1
+Position -29.8311 5.02594 -67.3703
+Scale 20 40 1
 Rotation 0 0 1
 X_Actor 0
 X_Type 2
 X_Option 1 1 0
 X_Pos 0 0 0
-X_Size 10 40 1
+X_Size 20 40 1
 X_FXU32_[9] 1 0 0 0 1 0 0 0 1
 #
 
 Object
 Tag 0
-Name Check_Box_14
+Name Check_Box_10
 ID 0
-Position -24.5 0 -31
+Position -24.7544 0.5 -33.5759
 Scale 1 20 20
 Rotation 0 0 1
 X_Actor 0
@@ -233,7 +173,7 @@ Object
 Tag 7
 Name pickup
 ID 6
-Position 25 0.5 12
+Position 24.9357 0.5 12.2457
 Scale 1 1 1
 Rotation 0 0 1
 X_Actor 0
@@ -248,7 +188,7 @@ Object
 Tag 7
 Name pickup
 ID 6
-Position 25 0.5 2.5
+Position 24.9234 0.5 2.51856
 Scale 1 1 1
 Rotation 0 0 1
 X_Actor 0
@@ -518,7 +458,7 @@ Object
 Tag 5
 Name fabric
 ID 4
-Position 33.2263 0.5 2.22212
+Position 9.86643 0.4987 3.44728
 Scale 1 1 1
 Rotation 0 0 1
 X_Actor 0
@@ -533,7 +473,7 @@ Object
 Tag 5
 Name cheese
 ID 2
-Position 19.8923 0.5 -7.07977
+Position 10.213 0.498755 -6.98744
 Scale 1 1 1
 Rotation 0 0 1
 X_Actor 0
@@ -548,7 +488,7 @@ Object
 Tag 5
 Name kidride
 ID 5
-Position 117.169 1.5 -16.6365
+Position 6.21856 1.4987 -16.3023
 Scale 0.5 0.5 0.5
 Rotation 0 0 1
 X_Actor 0

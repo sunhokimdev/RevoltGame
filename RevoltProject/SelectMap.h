@@ -19,6 +19,16 @@ private:
 	/*     UpdateTextureName     */
 	char* m_FileName;
 
+
+	/*          Ui image          */
+	UITextImageView* m_pTitleFont;
+	UITextImageView* m_pLength;
+	UITextImageView* m_pDifficulty;
+
+	UIImageView* m_pMapInfoRing;
+	UIImageView* m_pFlag;
+	UIImageView* m_pTitleRing;
+
 public:
 	SelectMap();
 	~SelectMap();

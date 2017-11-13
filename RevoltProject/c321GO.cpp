@@ -45,11 +45,6 @@ void c321GO::Update()
 {
 	//매쉬 방향은 Y가 PI일때 정면
 
-	if (g_pKeyManager->isOnceKeyDown('S'))
-	{
-		StartCount();
-	}
-
 	Count();
 }
 
@@ -101,71 +96,6 @@ void c321GO::Count()
 	if (m_isStart)
 	{
 		m_fTime += g_pTimeManager->GetElapsedTime();
-
-		//if (m_fTime > 3)
-		//{
-		//	m_nCount = 0;
-		//	if (m_fTime > 3.875)
-		//	{
-		//		m_isStart = false;
-		//	}
-		//	else if (m_fTime > 3.125)
-		//	{
-		//		m_fAngle = D3DX_PI;
-		//	}
-		//	else
-		//	{
-		//		m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
-		//	}
-		//}
-		//else if (m_fTime > 2)
-		//{
-		//	m_nCount = 1;
-		//	if (m_fTime > 2.875)
-		//	{
-		//		m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
-		//	}
-		//	else if (m_fTime > 2.125)
-		//	{
-		//		m_fAngle = D3DX_PI;
-		//	}
-		//	else
-		//	{
-		//		m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
-		//	}
-		//}
-		//else if (m_fTime > 1)
-		//{
-		//	m_nCount = 2;
-		//	if (m_fTime > 1.875)
-		//	{
-		//		m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
-		//	}
-		//	else if (m_fTime > 1.125)
-		//	{
-		//		m_fAngle = D3DX_PI;
-		//	}
-		//	else
-		//	{
-		//		m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
-		//	}
-		//}
-		//else if (m_fTime > 0)
-		//{
-		//	m_nCount = 3;
-		//	if (m_fTime > 0.875)
-		//	{
-		//		m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
-		//	}
-		//	else if (m_fTime > 0.125)
-		//	{
-		//		m_fAngle = D3DX_PI;
-		//	}
-		//	else
-		//	{
-		//		//Lerp = m_fTime * 8;
-		//	}
-		//}
 
 		float min = -1;
 

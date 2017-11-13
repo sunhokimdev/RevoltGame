@@ -7,6 +7,7 @@
 #include "UITextImageView.h"
 #include "cSkyBox.h"
 #include "c321GO.h"
+#include "cAI_Master.h"
 
 RacingScene::RacingScene()
 	: m_select(99)
@@ -54,37 +55,13 @@ void RacingScene::Setup()
 	m_pSkyBox = new cSkyBox;
 	m_pSkyBox->Setup("Maps/SkyBox", "SkyBox.obj");
 
-
-	//CreateCar(0, "tc1");
-	//vecCars[0]->SetIsUser(false);
-	//CreateCar(1, "tc2");
-	//CreateCar(2, "tc3");
-	//CreateCar(3, "tc4");
-	//CreateCar(4, "tc5");
-	//CreateCar(5, "tc6");
-	//
-	//vecCars[0]->SetIsUser(true);
-	//vecCars[1]->SetIsUser(false);
-	//vecCars[2]->SetIsUser(true);
-	//vecCars[3]->SetIsUser(true);
-	//vecCars[4]->SetIsUser(true);
-	//vecCars[5]->SetIsUser(true);
-
-
 	int i = 0;
-//	for each(cPlayerData* p in g_pDataManager->vecPlayerData)
-//	{
-//		if (i + 1 == m_pTrack->GetStartPositions().size()) break;
-//		CreateCar(m_pTrack->GetStartPositions()[i], i, p->CAR_NAME, p->IsAI);
-//		i++;
-//	}
-	if (i == 0)
+	for each(cPlayerData* p in g_pDataManager->vecPlayerData)
 	{
-		CreateCar(m_pTrack->GetStartPositions()[i], i,"tc1", false);
-		CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", false);
+		if (i  == m_pTrack->GetStartPositions().size()) break;
+		CreateCar(m_pTrack->GetStartPositions()[i], i, p->CAR_NAME, p->IsAI, p->isUser);
+		i++;
 	}
-	vecCars[i]->SetIsUser(false);
-	vecCars[i + 1]->SetIsUser(true);
 
 	m_pInGameUI = new InGameUI;
 	LinkUI(0); // 인게임 InGameUI::Setup(); 전에 위치해야함, new InGameUI 가 선언되어 있어야 함.
@@ -103,6 +80,7 @@ void RacingScene::Destroy()
 	m_pLightSun->Destroy();
 	SAFE_DELETE(m_pLightSun);
 
+	m_pInGameUI->Destroy();
 	SAFE_DELETE(m_pInGameUI);
 	SAFE_DESTROY(m_pSkyBox);
 	SAFE_DELETE(m_pSkyBox);
@@ -186,6 +164,10 @@ void RacingScene::Update()
 		if (g_pNetworkManager->GetIsInGameNetwork())
 		{
 			g_pNetworkManager->SetResetKeyEvent();
+			if (IsCarRunTrue(vecCars[0]))
+			{
+				vecCars[0]->Update();
+			}
 
 			if (IsCarRunTrue(vecCars[0])) vecCars[0]->Update();
 			if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
@@ -206,7 +188,7 @@ void RacingScene::Update()
 			{
 				if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
 
-				if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
+				if (!IsCarRunTrue(vecCars[i])) m_eRaceProg = RACE_PROG_FINISH;
 			}
 		}
 
@@ -388,21 +370,13 @@ bool RacingScene::IsCarRunTrue(cCar* pCar)
 	return m_trackEndCount > pCar->GetCountRapNum();
 }
 
-void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carName, bool isAI)
+void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carName, bool isAI, bool isUser)
 {
 	cCar* pCar = new cCar;
+	AI_DATA aiData(pCar, m_pTrack, &vecCars);
 	pCar->LoadCar(carName);
-	pCar->SetAI(isAI);
-
-	vecCars.push_back(pCar);
-
-	pCar->GetPhysXData()->SetPosition(m_pTrack->GetStartPositions()[playerID]);
-}
-
-void RacingScene::CreateCar(int playerID, std::string carName)
-{
-	cCar* pCar = new cCar;
-	pCar->LoadCar(carName);
+	pCar->SetAI(isAI, aiData);
+	pCar->SetIsUser(isUser);
 	vecCars.push_back(pCar);
 
 	pCar->GetPhysXData()->SetPosition(m_pTrack->GetStartPositions()[playerID]);

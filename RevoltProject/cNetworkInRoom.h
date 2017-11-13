@@ -11,6 +11,12 @@ class cNetworkInRoom : public iLobby
 private:
 	UITextImageView*	m_pChating;		// 채팅 구현
 	UITextImageView*	m_pText;		// 화면에 보여줄 채팅 내용
+	UIImageView*		pImageView1;
+	UIImageView*		pImageView3;
+	UITextImageView*	pImageView4;
+	UIImageView*		pImageView5;
+	UIImageView*		pImageView6;
+	UIImageView*		pImageView7;
 
 	std::vector<UITextImageView*>	m_vecText;		// 화면에 보여줄 채팅 내용
 	std::vector<UITextImageView*>	m_vecUser;		// 화면에 보여줄 유저들

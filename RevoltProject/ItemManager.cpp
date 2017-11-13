@@ -122,6 +122,7 @@ void ItemManager::InitCollisionGroup()
 {
 	//임시 박스
 
+	
 }
 
 void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인터*/)

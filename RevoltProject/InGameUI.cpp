@@ -516,7 +516,7 @@ void InGameUI::Destroy()
 {
 	SAFE_DELETE(m_pItemImage);
 	SAFE_DELETE(m_pLobby);
-	SAFE_DELETE(m_pLab);
+	//SAFE_DELETE(m_pLab);
 	SAFE_DELETE(m_pCurrentLab);
 	SAFE_DELETE(m_pMaxLab);
 	SAFE_DELETE(m_pLastDotOneTh);
@@ -555,11 +555,11 @@ void InGameUI::Destroy()
 	SAFE_DELETE(pITV_Rank2);
 	SAFE_DELETE(pIV_arrowDir);
 	SAFE_DELETE(m_p321go);
-	SAFE_DELETE(m_pTrack);
-	SAFE_DELETE(m_pCar);
+	m_pTrack = NULL;
+	m_pCar = NULL;
 	m_pRacingScene = NULL;
 
-	iLobby::Destroy();
+	//iLobby::Destroy();
 }
 
 void InGameUI::UpdateSpeed()
