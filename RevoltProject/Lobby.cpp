@@ -47,21 +47,7 @@ Lobby::Lobby()
 
 Lobby::~Lobby()
 {
-	SAFE_RELEASE(m_pSprite);
-	SAFE_RELEASE(m_pObjMesh);
-	SAFE_DELETE(m_pSelectMap);
-	//SAFE_DELETE(m_pInGameUI);
-	SAFE_DELETE(m_multiLobby);
-	SAFE_DELETE(m_pCreateProfileLobby);
-	SAFE_DELETE(m_pSelectCarLobbby);
 
-	for each(auto a in m_mapLobby)
-	{
-		delete[] a.second->m_pNextLob;
-		SAFE_DELETE(a.second->m_pObject);
-	}
-
-	Destroy();
 }
 
 void Lobby::Setup()
@@ -77,9 +63,6 @@ void Lobby::Setup()
 
 	m_pSelectMap = new SelectMap;
 	m_pSelectMap->Setup();
-
-	//m_pInGameUI = new InGameUI;
-	//m_pInGameUI->Setup();
 
 	m_multiLobby = new cNetworkLobby;
 	m_multiLobby->Setup();
@@ -134,11 +117,14 @@ void Lobby::Update()
 	}
 
 	TimeUpdate();   // 시간 갱신 메서드
-	KeyUpdate();   // 키 이벤트 갱신 메서드
-
-
+	
 	if (m_mapLobby[m_stateLobby]->m_pObject)
+	{
 		m_mapLobby[m_stateLobby]->m_pObject->Update();
+	}
+
+	KeyUpdate();   // 키 이벤트 갱신 메서드
+		
 }
 
 void Lobby::Render()
@@ -154,22 +140,75 @@ void Lobby::Destroy()
 {
 	SAFE_RELEASE(m_pSprite);
 	SAFE_RELEASE(m_pObjMesh);
-	SAFE_DELETE(m_pSelectMap);
 
-	SAFE_DELETE(m_multiLobby);
-	SAFE_DELETE(m_pCreateProfileLobby);
-	SAFE_DELETE(m_pSelectCarLobbby);
-	SAFE_DELETE(m_pViewCarLobby);
-	SAFE_DELETE(m_pCreateRoom);
-	SAFE_DELETE(m_pInRoom);
-	SAFE_DELETE(m_pSelectServer);
-
-
-	for each(auto a in m_mapLobby)
+	if(m_pSelectMap)
 	{
-		delete[] a.second->m_pNextLob;
-		SAFE_DELETE(a.second->m_pObject);
+		m_pSelectMap->Destroy();
+		SAFE_DELETE(m_pSelectMap);
 	}
+	
+	if (m_multiLobby)
+	{
+		//m_multiLobby->Destroy();
+		//2(3(0(),0(),0()),2(2(4(0(),0(),0(),0(여기서 터짐)
+		SAFE_DELETE(m_multiLobby);
+	}
+
+	if (m_pCreateProfileLobby)
+	{
+		//m_pCreateProfileLobby->Destroy();
+		SAFE_DELETE(m_pCreateProfileLobby);
+	}
+
+	if (m_pSelectCarLobbby)
+	{
+		//m_pSelectCarLobbby->Destroy();
+		SAFE_DELETE(m_pSelectCarLobbby);
+	}
+	
+	if (m_pViewCarLobby)
+	{
+		//m_pViewCarLobby->Destroy();
+		SAFE_DELETE(m_pViewCarLobby);
+	}
+	
+	if (m_pCreateRoom)
+	{
+		//m_pCreateRoom->Destroy();
+		SAFE_DELETE(m_pCreateRoom);
+	}
+
+	if (m_pInRoom)
+	{
+		//m_pInRoom->Destroy();
+		SAFE_DELETE(m_pInRoom);
+	}
+	
+	if (m_pSelectServer)
+	{
+		//m_pInRoom->Destroy();
+		SAFE_DELETE(m_pSelectServer);
+	}
+	
+	if (m_pfileList)
+	{
+		//m_pfileList->Destroy();
+		SAFE_DELETE(m_pfileList);
+	}
+
+	//if (m_pMap)
+	//{
+	//	//m_pMap->Destroy();
+	//	SAFE_DELETE(m_pMap);
+	//}
+
+	//for each(auto a in m_mapLobby)
+	//{
+	//	delete[] a.second->m_pNextLob;
+	//	SAFE_DELETE(a.second->m_pObject);
+	//}
+	//m_mapLobby.clear();
+
 }
 
 void Lobby::KeyUpdate()

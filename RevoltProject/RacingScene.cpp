@@ -21,6 +21,9 @@ void RacingScene::Setup()
 	playerIndex = 0;
 	m_eRaceProg = RACE_PROG_READY;
 
+	//TrackEndCount 돌아야 되는 바퀴 수	
+	m_trackEndCount = 1;
+
 	//카메라 초기값
 	m_camPos = new D3DXVECTOR3(70, 5, 0);
 	m_camLookTarget = new D3DXVECTOR3(0, 0, 0);
@@ -38,9 +41,8 @@ void RacingScene::Setup()
 	}
 	m_nLightIDCount = 0;
 
-
 	m_pLightSun = new cLight;
-	m_pLightSun->SetupDirectional(0, C_WHITE, { 0,-1,0 });
+	m_pLightSun->SetupDirectional(0, D3DCOLOR_XRGB(192,192,192), { 0,-1,0 });
 	m_pLightSun->Switch(true);
 
 	g_pCamManager->SetCamPos(m_camPos);
@@ -57,6 +59,7 @@ void RacingScene::Setup()
 	int i = 0;
 	for each(cPlayerData* p in g_pDataManager->vecPlayerData)
 	{
+		if (i == 2) break;
 		if (i + 1 == m_pTrack->GetStartPositions().size()) break;
 		CreateCar(m_pTrack->GetStartPositions()[i], i, p->CAR_NAME, p->IsAI);
 		i++;
@@ -95,10 +98,23 @@ void RacingScene::Destroy()
 	SAFE_DELETE(m_pSkyBox);
 	SAFE_DELETE(m_camPos);
 	SAFE_DELETE(m_camLookTarget);
+
+	for each(cCar* p in vecCars)
+	{
+		p->Destroy();
+		SAFE_DELETE(p);
+	}
+	vecCars.clear();
 }
 
 void RacingScene::Update()
 {
+	if (g_pKeyManager->isOnceKeyDown(VK_ESCAPE))
+	{
+		m_eRaceProg = RACE_PROG_FINISH;
+		g_SceneManager->ChangeScene("Lobby");
+	}
+
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
 

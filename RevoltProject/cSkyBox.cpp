@@ -12,7 +12,7 @@ cSkyBox::~cSkyBox()
 
 void cSkyBox::Setup(std::string folder, std::string fileName)
 {
-	Object::Setup();
+	m_pMeshData = new cMesh;
 	m_pMeshData->LoadMesh(folder, fileName);
 }
 
@@ -23,7 +23,9 @@ void cSkyBox::Update()
 
 void cSkyBox::Destroy()
 {
-	m_pMeshData->m_pMesh->Release();
+	Object::Destroy();
+	//m_pMeshData->m_pMesh->Release();
+	
 }
 
 void cSkyBox::Render()

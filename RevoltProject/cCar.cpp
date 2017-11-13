@@ -274,6 +274,7 @@ void cCar::CreatePhsyX(stCARSPEC carspec)
 
 void cCar::LoadMesh(std::string carName)
 {
+	SetMeshData(new cMesh);
 	GetMeshData()->LoadCarMesh("Cars/" + carName, carName + ".obj");
 }
 
@@ -290,7 +291,7 @@ void cCar::LoadWheel(std::string carName)
 	{
 		for each(cMesh* p in vecWheels)
 		{
-			p->Destory();
+			p->Destroy();
 		}
 		vecWheels.clear();
 	}
@@ -407,11 +408,25 @@ void cCar::Render()
 	}
 }
 
-void cCar::Destory()
+void cCar::Destroy()
 {
-	if (m_pSkidMark) m_pSkidMark->Destory();
+	if (m_pSkidMark) m_pSkidMark->Destroy();
 	SAFE_DELETE(m_pSkidMark);
+	SAFE_DELETE(m_carNxVehicle);
+
+	for each(cMesh* p in vecWheels)
+	{
+		p->Destroy();
+		SAFE_DELETE(p);
+	}
+	vecWheels.clear();
+
+	familyAI->Destory();
+	SAFE_DELETE(familyAI);
+
 	Object::Destroy();
+	m_pInGameUI = NULL;
+	m_pTrack = NULL;
 }
 
 void cCar::CtrlPlayer()
@@ -808,13 +823,13 @@ void cCar::SetResetNetworkKey()
 
 void cCar::SetNetworkKey(std::string str)
 {
-	INPUT_KEY[E_BIT_UP___] = (str[0] == '1');//	m_keySet.up = true;
-	INPUT_KEY[E_BIT_DOWN_] = (str[1] == '1');//	m_keySet.down = true;
-	INPUT_KEY[E_BIT_LEFT_] = (str[2] == '1');//	m_keySet.left = true;
-	INPUT_KEY[E_BIT_RIGHT] = (str[3] == '1');//	m_keySet.right = true;
-	INPUT_KEY[E_BIT_ITEM_] = (str[4] == '1');//	m_keySet.ctrl = true;
-	INPUT_KEY[E_BIT_REPOS] = (str[5] == '1');//	m_keySet.r_key = true;
-	INPUT_KEY[E_BIT_FLIP_] = (str[5] == '1');//	m_keySet.f_key = true;
+	INPUT_KEY[E_BIT_UP___] = (str[0] == '1');	m_keySet.up		= INPUT_KEY[E_BIT_UP___];
+	INPUT_KEY[E_BIT_DOWN_] = (str[1] == '1');	m_keySet.down	= INPUT_KEY[E_BIT_DOWN_];
+	INPUT_KEY[E_BIT_LEFT_] = (str[2] == '1');	m_keySet.left	= INPUT_KEY[E_BIT_LEFT_];
+	INPUT_KEY[E_BIT_RIGHT] = (str[3] == '1');	m_keySet.right	= INPUT_KEY[E_BIT_RIGHT];
+	INPUT_KEY[E_BIT_ITEM_] = (str[4] == '1');	m_keySet.ctrl	= INPUT_KEY[E_BIT_ITEM_];
+	INPUT_KEY[E_BIT_REPOS] = (str[5] == '1');	m_keySet.r_key	= INPUT_KEY[E_BIT_REPOS];
+	INPUT_KEY[E_BIT_FLIP_] = (str[5] == '1');	m_keySet.f_key	= INPUT_KEY[E_BIT_FLIP_];
 }
 
 NxVec3 cCar::WheelArrow(float angle, bool back)

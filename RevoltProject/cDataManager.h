@@ -16,7 +16,7 @@ public:
 
 	}
 
-	void Destory()
+	void Destroy()
 	{
 
 	}

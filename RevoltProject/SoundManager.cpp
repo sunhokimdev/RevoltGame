@@ -56,7 +56,7 @@ SoundManager::~SoundManager()
 //	m_pChannel->setVolume(volume);
 //}
 //
-//void cSoundManager::Destory()
+//void cSoundManager::Destroy()
 //{
 //	if (m_pSound) { m_pSound->release(); m_pSound = NULL; }
 //	if (m_pSystem) { m_pSystem->release(); m_pSystem = NULL; }
@@ -100,7 +100,7 @@ void SoundManager::Setup()
 	m_channels.push_back(m_pBgmChnnel);
 }
 
-void SoundManager::Destory()
+void SoundManager::Destroy()
 {
 	m_pSystem->release();
 	m_pSystem->close();

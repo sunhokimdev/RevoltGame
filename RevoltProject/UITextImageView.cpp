@@ -28,9 +28,9 @@ UITextImageView::UITextImageView()
 
 UITextImageView::~UITextImageView()
 {
-	SAFE_RELEASE(m_pTexture);
-	SAFE_DELETE(m_Select);
-	SAFE_DELETE(m_LeftAndRightSelect);
+	//SAFE_RELEASE(m_pTexture);
+	//SAFE_DELETE(m_Select); // 삭제해햐함
+	//SAFE_DELETE(m_LeftAndRightSelect); // 삭제해야함
 }
 
 void UITextImageView::SetTexture(char * szFullPath)
@@ -58,6 +58,13 @@ void UITextImageView::SetTexture(char * szFullPath)
 		m_textPos.y = 16;
 	}
 
+}
+
+void UITextImageView::Destroy()
+{
+	SAFE_RELEASE(m_pTexture);
+	//SAFE_DELETE(m_Select); // 삭제해햐함
+	//SAFE_DELETE(m_LeftAndRightSelect); // 삭제해야함
 }
 
 std::string UITextImageView::GetCarName()

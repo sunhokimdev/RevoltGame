@@ -18,7 +18,7 @@ public:
 	void Setup();
 	void Update();
 	void Render();
+	void Destroy();
 	void SetupLight();
-
 };
 

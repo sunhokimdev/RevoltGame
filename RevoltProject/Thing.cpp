@@ -26,13 +26,7 @@ Thing::Thing()
 
 Thing::~Thing()
 {
-	SAFE_RELEASE(m_pObjMesh);
 
-	for each(auto c in m_vecObjMtlTex)
-		SAFE_RELEASE(c);
-
-	SAFE_DELETE(g_LobbyState);
-	SAFE_DELETE(m_pParentWorldTM);
 }
 
 void Thing::SetPosition(float x, float y, float z)
@@ -127,7 +121,15 @@ void Thing::Render()
 
 void Thing::Destroy()
 {
+	SAFE_RELEASE(m_pObjMesh);
 
+	for each(auto c in m_vecObjMtlTex)
+		SAFE_RELEASE(c);
+
+	//SAFE_DELETE(g_LobbyState);
+	//삭제해야함
+
+	SAFE_DELETE(m_pParentWorldTM);
 }
 
 
