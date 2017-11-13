@@ -81,6 +81,7 @@ bool cNetworkManager::RecvMsg()
 	std::string sReady;
 	std::string sSend;
 
+	/*   서버로 부터 받는 메시지   */
 	if (m_msg.find("&") != -1)
 	{
 		sIP = strtok((char*)m_msg.c_str(), "&#!");
@@ -88,62 +89,38 @@ bool cNetworkManager::RecvMsg()
 
 		printf("%s %s\n", sIP.c_str(),sIndex.c_str());
 
-		if (sIP.c_str() != NULL && sIndex.c_str() != NULL)
-		{
+		if(sIP.c_str() != NULL && sIndex.c_str() != NULL)
 			m_vecUserIP[atoi(sIndex.c_str())].userIP = sIP;
-			m_vecUserIP[atoi(sIndex.c_str())].IsUse = true;
-		}
 
 		if (m_user.userIP == sIP)
 			m_user.index = atoi(sIndex.c_str());
 
-		sSend = "!" + m_user.userIP + "!" + m_user.userID + "!" + m_user.carName;
-		SendMsg(sSend.c_str());
+		SendClientData();
 
 		return false;
 	}
 
-	else if (m_msg.find("!") != -1)
+	else if (m_msg.find("@") != -1)
 	{
-		sIP = strtok((char*)m_msg.c_str(), "&#!");
-		sUserID = strtok(NULL, "&#!");
-		sCarName = strtok(NULL, "&#!");
+		ST_NETUSER netUser;
 
-		printf("%s %s %s\n", sIP.c_str(), sUserID.c_str(), sCarName.c_str());
+		printf("%s\n", m_msg.c_str());
 
-		if (sIP.c_str() != NULL && sIndex.c_str() != NULL)
-		{
-			for (int i = 0; i < USER_SIZE; i++)
-			{
-				if (m_vecUserIP[i].userIP == sIP)
-				{
-					m_vecUserIP[i].userID = sUserID;
-					m_vecUserIP[i].carName = sCarName;
-					m_vecUserIP[i].IsUse = true;
-					break;
-				}
-			}
-		}
+		sIP = strtok((char*)m_msg.c_str(), "@#");
+		sIndex = strtok(NULL, "@");
+		sUserID = strtok(NULL, "@");
+		sCarName = strtok(NULL, "@");
+		sReady = strtok(NULL, "@#");
 
-		return false;
-	}
-	else if (m_msg.find("$") != -1)
-	{
-		sIndex = strtok((char*)m_msg.c_str(), "$");
-		sReady = strtok(NULL, "$");
+		netUser.userIP = sIP;
+		netUser.index = atoi(sIndex.c_str());
+		netUser.userID = sUserID;
+		netUser.carName = sCarName;
+		netUser.IsReady = atoi(sReady.c_str());
+		netUser.IsUse = true;
+		//
+		m_vecUserIP[netUser.index] = netUser;
 
-		printf("%s\n", sReady.c_str());
-
-		if (sReady.find("1"))
-			m_vecUserIP[atoi(sIndex.c_str())].IsReady = true;
-		else
-			m_vecUserIP[atoi(sIndex.c_str())].IsReady = false;
-
-		return false;
-	}
-	else if (m_msg.find("@!") != -1)
-	{
-		g_pNetworkManager->SetIsNextStage(true);
 		return false;
 	}
 
@@ -174,6 +151,18 @@ void cNetworkManager::SetResetKeyEvent()
 	m_keyEvent.right = false;
 	m_keyEvent.r_key = false;
 	m_keyEvent.up = false;
+}
+
+void cNetworkManager::SendClientData()
+{
+	std::string str;
+
+	str = "@" + m_user.userIP + 
+		"@" + std::to_string(m_user.index) +
+		"@" + m_user.userID + 
+		"@" + m_user.carName +
+		"@" + std::to_string(m_user.IsReady);
+	SendMsg(str.c_str());
 }
 
 std::string cNetworkManager::GetKeYString()

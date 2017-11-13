@@ -92,6 +92,7 @@ public:
 	void SetCtrlKey(bool b) { m_keyEvent.ctrl = b; };
 
 	void SetResetKeyEvent();
+	void SendClientData();
 	sockaddr_in GetDefaultMyIP();
 };
 

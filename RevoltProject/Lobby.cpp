@@ -117,8 +117,10 @@ void Lobby::Update()
 	
 		g_pNetworkManager->SendMsg("#");
 
-		if(g_pNetworkManager->RecvMsg())
+		if (g_pNetworkManager->RecvMsg())
+		{
 			m_pInRoom->SetText(g_pNetworkManager->GetMsg().c_str());
+		}
 		else
 		{
 			int index = 0;
@@ -172,6 +174,8 @@ void Lobby::Destroy()
 
 void Lobby::KeyUpdate()
 {
+	std::string str;
+
 	if (g_pKeyManager->isOnceKeyDown(VK_DOWN))
 	{
 		m_select++;
@@ -326,6 +330,10 @@ void Lobby::KeyUpdate()
 			}
 			else
 			{
+				if (g_pNetworkManager->GetIsNetwork())
+				{
+					g_pNetworkManager->Release();			// 소켓 해제
+				}
 				g_pNetworkManager->SetIsNetwork(false);
 			}
 		}
@@ -415,39 +423,8 @@ void Lobby::KeyUpdate()
 	{
 		if (m_stateLobby == NETWORK_IN_LOBBY)
 		{
-			std::string str;
-			bool isNext = true;
-
-			if (g_pNetworkManager->GetIsReady())
-			{
-				str = "$" + std::to_string(g_pNetworkManager->GetUserIndex()) + "$0";
-			}
-			else
-			{
-				str = "$" + std::to_string(g_pNetworkManager->GetUserIndex()) + "$1";
-
-				for (int i = 0;i < USER_SIZE;i++)
-				{
-					if (g_pNetworkManager->GetIsUse(i))
-					{
-						if (!g_pNetworkManager->GetReady(i))
-						{
-							isNext = false;
-							break;
-						}
-					}
-				}
-			}
-			if (!isNext)
-			{
-				g_pNetworkManager->SetUserReady();
-				g_pNetworkManager->SendMsg(str.c_str());
-			}
-			else
-			{
-				str = "@!";		// 다음 맵으로 넘어가기 위한 단계 메시지 설정
-				g_pNetworkManager->SendMsg(str.c_str());
-			}
+			g_pNetworkManager->SetUserReady();
+			g_pNetworkManager->SendClientData();
 		}
 	}
 
