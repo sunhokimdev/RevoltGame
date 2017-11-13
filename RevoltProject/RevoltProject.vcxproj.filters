@@ -493,6 +493,9 @@
     <ClInclude Include="cAI_Ray.h">
       <Filter>AI</Filter>
     </ClInclude>
+    <ClInclude Include="cAI_CtrlCompete.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -802,6 +805,9 @@
       <Filter>AI</Filter>
     </ClCompile>
     <ClCompile Include="cAI_Master.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_CtrlCompete.cpp">
       <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>

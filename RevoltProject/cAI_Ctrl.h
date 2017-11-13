@@ -5,7 +5,7 @@ class cAI_Ctrl :
 	public cAI
 {
 public:
-	cAI_Ctrl(AI_DATA pData);
+	cAI_Ctrl();
 	~cAI_Ctrl();
 
 	const int vecSize = 1;

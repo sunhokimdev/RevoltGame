@@ -4,7 +4,7 @@ class cAI_CtrlFlip :
 	public cAI
 {
 public:
-	cAI_CtrlFlip(AI_DATA pData);
+	cAI_CtrlFlip();
 	~cAI_CtrlFlip();
 	
 	float flipTime;

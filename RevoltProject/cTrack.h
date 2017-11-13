@@ -18,7 +18,7 @@ public:
 	std::string trackName;
 	int m_nLightIdx;
 	//인게임 에 들어갈 장애물 등등
-	SYNTHESIZE(std::vector<Object*>, m_vecObject, Object);
+	SYNTHESIZE(std::vector<Object*>, m_vecObject, VecObject);
 	//std::vector<Object*>	m_vecObject;
 	//멥에 있는 체크박스
 	//std::map<std::string, Object*>	m_mapCheckBox;

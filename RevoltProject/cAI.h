@@ -3,6 +3,7 @@
 #include "cPlayerData.h"
 
 class cCar;
+class cTrack;
 class cCheckBox;
 
 enum AI_TAG
@@ -13,6 +14,7 @@ enum AI_TAG
 	AI_TAG_HANDLE,
 	AI_TAG_FLIP,
 	AI_TAG_CTRL,
+	AI_TAG_COMPET,
 	AI_TAG_END___,
 	AI_TAG_05,
 };
@@ -20,34 +22,35 @@ enum AI_TAG
 struct AI_DATA
 {
 	cCar* pCar;
+	cTrack* pTrack;
+	std::vector<cCar*>* pCars;
+
 	AI_DATA()
 	{
 		pCar = NULL;
+		pTrack = NULL;
+		pCars = NULL;
 	}
-	AI_DATA(cCar* pCar)
-	{
-		if (pCar) this->pCar = pCar;
-	}
-
+	AI_DATA(cCar* pCar, cTrack* pTrack, std::vector<cCar*>* pCars);
 	void Destory()
 	{
 		pCar = NULL;
+		pTrack = NULL;
+		pCars = NULL;
 	}
 };
 
 class cAI
 {
-protected:
-	ID3DXMesh* AI_Mesh;
-
-	AI_DATA AI_Data;
-	cAI();
-	~cAI();
-	
 public:
-
+	ID3DXMesh* AI_Mesh;
+	AI_DATA* AI_Data;
 	std::vector<cAI*>* familyAI;
 
+	cAI();
+	~cAI();
+
+public:
 	virtual void Setup();
 	virtual void Destory();
 	virtual void Update();
@@ -55,6 +58,6 @@ public:
 
 	cCheckBox* CurrentCheckBox();
 	float ScaleValue(float value, float Total, float multiValue = 1.0f);
-
+	float GetRpmRate();
 };
 

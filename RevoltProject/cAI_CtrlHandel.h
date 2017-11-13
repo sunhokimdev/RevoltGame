@@ -27,7 +27,7 @@ public:
 	bool isPoint;
 
 
-	cAI_CtrlHandel(AI_DATA pData);
+	cAI_CtrlHandel();
 	~cAI_CtrlHandel();
 
 	void Update();

@@ -6,14 +6,14 @@
 #include "cAI_CtrlHandel.h"
 #include "cAI_CtrlFlip.h"
 #include "cAI_Ctrl.h"
-
+#include "cAI_CtrlCompete.h"
 
 class cAI_Master
 {
 public:
 	AI_DATA AIData;
-	float updateTime;
-	float fpsTime;
+//	float updateTime;
+//	float fpsTime;
 
 	std::vector<cAI*> familyAI;
 	cAI_Master();

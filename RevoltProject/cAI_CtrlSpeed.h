@@ -21,9 +21,10 @@ public:
 	bool isRepos;
 
 public:
-	cAI_CtrlSpeed(AI_DATA pData);
+	cAI_CtrlSpeed();
 	~cAI_CtrlSpeed();
 
 	void Update();
+
 };
 

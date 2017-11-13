@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+#include "cAI.h"
 
 class cAI_Master;
 class TriggerCallback;
@@ -83,7 +84,7 @@ public:
 
 	void LoadCar(std::string carName);
 	void SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc, bool isAI = false);
-	void SetAI(bool isAI);
+	void SetAI(bool isAI , AI_DATA aiData);
 	void CreateItem();
 
 	void CreatePhsyX(stCARSPEC carspec);
@@ -100,6 +101,7 @@ public:
 	void CtrlAI();
 
 	float GetRpm();
+	float GetRpmRate();
 
 	void TrackCheck();
 	void RunEnd();

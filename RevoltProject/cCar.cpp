@@ -220,14 +220,12 @@ void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float bre
 
 }
 
-void cCar::SetAI(bool isAI)
+void cCar::SetAI(bool isAI, AI_DATA aidata)
 {
 	m_isAI = isAI;
 
 	if (isAI)
 	{
-		AI_DATA data;
-		data.pCar = this;
 
 		if (familyAI)
 		{
@@ -236,7 +234,7 @@ void cCar::SetAI(bool isAI)
 		}
 
 		familyAI = new cAI_Master;
-		familyAI->Setup(data);
+		familyAI->Setup(aidata);
 	}
 }
 
@@ -450,6 +448,11 @@ float cCar::GetRpm()
 
 	float pValue = p1 + p2 + p3 + p4;
 	return pValue * 0.25;
+}
+
+float cCar::GetRpmRate()
+{
+	return GetRpm() / m_maxRpm;
 }
 
 void cCar::TrackCheck()

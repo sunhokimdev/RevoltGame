@@ -7,6 +7,7 @@
 #include "UITextImageView.h"
 #include "cSkyBox.h"
 #include "c321GO.h"
+#include "cAI_Master.h"
 
 RacingScene::RacingScene()
 	: m_select(99)
@@ -37,16 +38,6 @@ void RacingScene::Setup()
 	}
 	m_nLightIDCount = 0;
 
-	//D3DLIGHT9 light;
-	//light.Type = D3DLIGHT_DIRECTIONAL;
-	//light.Ambient = D3DXCOLOR(0.6, 0.6, 0.6, 1);
-	//light.Diffuse = D3DXCOLOR(0.6, 0.6, 0.6, 1);
-	//light.Specular = D3DXCOLOR(0.6, 0.6, 0.6, 1);
-	//D3DXVECTOR3 dir = { 0,-1,0 };
-	//D3DXVec3Normalize(&dir, &dir);
-	//light.Direction = dir;
-	//g_pD3DDevice->SetLight(0, &light);
-	//g_pD3DDevice->LightEnable(0, true);
 
 	m_pLightSun = new cLight;
 	m_pLightSun->SetupDirectional(0, C_WHITE, { 0,-1,0 });
@@ -63,22 +54,6 @@ void RacingScene::Setup()
 	m_pSkyBox->Setup("Maps/SkyBox", "SkyBox.obj");
 
 
-	//CreateCar(0, "tc1");
-	//vecCars[0]->SetIsUser(false);
-	//CreateCar(1, "tc2");
-	//CreateCar(2, "tc3");
-	//CreateCar(3, "tc4");
-	//CreateCar(4, "tc5");
-	//CreateCar(5, "tc6");
-	//
-	//vecCars[0]->SetIsUser(true);
-	//vecCars[1]->SetIsUser(false);
-	//vecCars[2]->SetIsUser(true);
-	//vecCars[3]->SetIsUser(true);
-	//vecCars[4]->SetIsUser(true);
-	//vecCars[5]->SetIsUser(true);
-
-
 	int i = 0;
 //	for each(cPlayerData* p in g_pDataManager->vecPlayerData)
 //	{
@@ -86,16 +61,16 @@ void RacingScene::Setup()
 //		CreateCar(m_pTrack->GetStartPositions()[i], i, p->CAR_NAME, p->IsAI);
 //		i++;
 //	}
-	if (i == 0)
-	{
+//	if (i == 0)
+//	{
 		CreateCar(m_pTrack->GetStartPositions()[i+0], i+0, "tc1", false);
 		CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
-		CreateCar(m_pTrack->GetStartPositions()[i+2], i+2, "tc3", true);
-		CreateCar(m_pTrack->GetStartPositions()[i+3], i+3, "tc4", true);
-		CreateCar(m_pTrack->GetStartPositions()[i+4], i+4, "tc5", true);
-		CreateCar(m_pTrack->GetStartPositions()[i+5], i+5, "tc6", true);
-	}
-	vecCars[i]->SetIsUser(false);
+//		CreateCar(m_pTrack->GetStartPositions()[i+2], i+2, "tc3", true);
+//		CreateCar(m_pTrack->GetStartPositions()[i+3], i+3, "tc4", true);
+//		CreateCar(m_pTrack->GetStartPositions()[i+4], i+4, "tc5", true);
+//		CreateCar(m_pTrack->GetStartPositions()[i+5], i+5, "tc6", true);
+//	}
+	vecCars[0]->SetIsUser(false);
 
 	m_pInGameUI = new InGameUI;
 	LinkUI(0); // 인게임 InGameUI::Setup(); 전에 위치해야함, new InGameUI 가 선언되어 있어야 함.
@@ -388,8 +363,9 @@ bool RacingScene::IsCarRunTrue(cCar* pCar)
 void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carName, bool isAI)
 {
 	cCar* pCar = new cCar;
+	AI_DATA aiData(pCar, m_pTrack, &vecCars);
 	pCar->LoadCar(carName);
-	pCar->SetAI(isAI);
+	pCar->SetAI(isAI, aiData);
 	vecCars.push_back(pCar);
 
 	pCar->GetPhysXData()->SetPosition(m_pTrack->GetStartPositions()[playerID]);

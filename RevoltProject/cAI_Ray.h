@@ -78,13 +78,14 @@ public:
 	AIRayCastData Ray_RF_;
 	AIRayCastData Ray_L__;
 	AIRayCastData Ray_R__;
-	//	AIRayCastData Ray_6__;
-	//	AIRayCastData Ray_7__;
+
+//	AIRayCastData Ray_Pik;
+//	AIRayCastData Ray_Car;
 	//	AIRayCastData Ray_8__;
 	//	AIRayCastData Ray_9__;
 
 public:
-	cAI_Ray(AI_DATA pData);
+	cAI_Ray();
 	~cAI_Ray();
 	void Update();
 	void Render();

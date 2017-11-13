@@ -5,9 +5,9 @@
 #include "cAI_Master.h"
 
 
-cAI_CtrlHandel::cAI_CtrlHandel(AI_DATA pData)
+cAI_CtrlHandel::cAI_CtrlHandel()
 {
-	cAI::AI_Data = pData;
+	AI_Data = NULL;
 	familyAI = NULL;
 
 	LRF_F_RateValue = 1.0f;
@@ -57,7 +57,7 @@ void cAI_CtrlHandel::Update()
 		//일정 방향과 일정 속도 도달시
 	//	if (CheckBoxPoint(F__Dir) > 0.75f)
 	//	{
-		if (AI_Data.pCar->GetRpm() / AI_Data.pCar->m_maxRpm > 0.4f)
+		if (GetRpmRate() > 0.4f)
 		{
 			isPoint = false;
 		}
@@ -127,7 +127,7 @@ float cAI_CtrlHandel::CheckBoxPoint(D3DXVECTOR3 dir)
 	if (isPoint)
 	{
 		D3DXVECTOR3 posBox = box->GetNextCheckBox()->GetPhysXData()->GetPositionToD3DXVec3();
-		D3DXVECTOR3 poscar = AI_Data.pCar->GetPhysXData()->GetPositionToD3DXVec3();
+		D3DXVECTOR3 poscar = AI_Data->pCar->GetPhysXData()->GetPositionToD3DXVec3();
 		D3DXVECTOR3 dir0 = posBox - poscar;
 		D3DXVec3Normalize(&dir0, &dir0);
 

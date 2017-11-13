@@ -5,11 +5,8 @@
 #include "cCheckBox.h"
 #include "cTrack.h"
 
-cAI_Ray::cAI_Ray(AI_DATA pData)
+cAI_Ray::cAI_Ray()
 {
-	cAI::AI_Data = pData;
-	familyAI = NULL;
-
 	RayDist = 100.f;
 }
 
@@ -21,7 +18,7 @@ cAI_Ray::~cAI_Ray()
 void cAI_Ray::Update()
 {
 	//레이 시작 지점
-	NxVec3 raypos = AI_Data.pCar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.3, 0);
+	NxVec3 raypos = AI_Data->pCar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.3, 0);
 
 	//체크박스의 방향
 	float dirY = RayDirY();
@@ -30,19 +27,19 @@ void cAI_Ray::Update()
 	float back = 0.0f;
 	NxVec3 dirF_ = NxVec3(0, 0, 0);
 	NxVec3 dirB_ = NxVec3(0, 0, 0);
-	if (0 > AI_Data.pCar->GetRpm())
+	if (0 > AI_Data->pCar->GetRpm())
 	{
 		//후진
 		back = 180.f;
-		dirF_ = AI_Data.pCar->CarArrow(0);				dirF_.y = dirY;
-		dirB_ = AI_Data.pCar->WheelArrow(180, true);	dirB_.y = -dirY;
+		dirF_ = AI_Data->pCar->CarArrow(0);				dirF_.y = dirY;
+		dirB_ = AI_Data->pCar->WheelArrow(180, true);	dirB_.y = -dirY;
 	}
 	else
 	{
 		//전진
 		back = 0.0;
-		dirF_ = AI_Data.pCar->WheelArrow(0);			dirF_.y = dirY;
-		dirB_ = AI_Data.pCar->CarArrow(180);			dirB_.y = -dirY;
+		dirF_ = AI_Data->pCar->WheelArrow(0);			dirF_.y = dirY;
+		dirB_ = AI_Data->pCar->CarArrow(180);			dirB_.y = -dirY;
 	}
 
 	//정면/후면 레이 발사
@@ -54,10 +51,10 @@ void cAI_Ray::Update()
 	F_Value = 1.0f - fmin(Ray_F__.DistanceRate(RayDist), 1.0f);
 	//F_Value *= F_Value;
 	//측면 측정  (F_Value 에 따라 측정각도 조절(거리가 가까울 수록 각도를 늘려준다.))
-	NxVec3 dirLF = AI_Data.pCar->WheelArrow((0 - 0) - 30 * F_Value);		dirLF.y = dirY;
-	NxVec3 dirRF = AI_Data.pCar->WheelArrow((0 + 0) + 30 * F_Value);		dirRF.y = dirY;
-	NxVec3 dirL_ = AI_Data.pCar->WheelArrow((0 - 30) - 30 * F_Value);		dirL_.y = dirY;
-	NxVec3 dirR_ = AI_Data.pCar->WheelArrow((0 + 30) + 30 * F_Value);		dirR_.y = dirY;
+	NxVec3 dirLF = AI_Data->pCar->WheelArrow((0 - 0) - 30 * F_Value);		dirLF.y = dirY;
+	NxVec3 dirRF = AI_Data->pCar->WheelArrow((0 + 0) + 30 * F_Value);		dirRF.y = dirY;
+	NxVec3 dirL_ = AI_Data->pCar->WheelArrow((0 - 30) - 30 * F_Value);		dirL_.y = dirY;
+	NxVec3 dirR_ = AI_Data->pCar->WheelArrow((0 + 30) + 30 * F_Value);		dirR_.y = dirY;
 
 	Ray_LF_.RayShot(raypos, dirLF, RayDist);
 	Ray_RF_.RayShot(raypos, dirRF, RayDist);
@@ -153,9 +150,9 @@ void cAI_Ray::Render()
 
 float cAI_Ray::RayDirY()
 {
-	cCheckBox* box = (cCheckBox*)(*(AI_Data.pCar)->m_pTrack->GetCheckBoxsPt())[AI_Data.pCar->GetAICheckBoxID()];
+	cCheckBox* box = (cCheckBox*)(*(AI_Data->pCar)->m_pTrack->GetCheckBoxsPt())[AI_Data->pCar->GetAICheckBoxID()];
 	D3DXVECTOR3 nextPos = box->GetNextCheckBox()->GetPosition() - D3DXVECTOR3(0, 0.1, 0);
-	D3DXVECTOR3 carpos = AI_Data.pCar->GetPhysXData()->GetPositionToD3DXVec3();
+	D3DXVECTOR3 carpos = AI_Data->pCar->GetPhysXData()->GetPositionToD3DXVec3();
 	D3DXVECTOR3 dirCheck(0, 0, 0);
 	D3DXVec3Normalize(&dirCheck, &(nextPos - carpos));
 	return dirCheck.y;

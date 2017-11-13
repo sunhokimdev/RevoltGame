@@ -5,10 +5,8 @@
 #include "cCar.h"
 
 
-cAI_Ctrl::cAI_Ctrl(AI_DATA pData)
+cAI_Ctrl::cAI_Ctrl()
 {
-	cAI::AI_Data = pData;
-	cAI::familyAI = NULL;
 	vecHandleValue.resize(vecSize);
 	vecSpeedValue.resize(vecSize);
 	handleIndex = 0;
@@ -38,40 +36,45 @@ void cAI_Ctrl::Speed()
 
 //	std::cout << value << std::endl;
 
-	AI_Data.pCar->INPUT_KEY[eBIT_KEY::E_BIT_UP___] = (value >= 0.0f);
-	AI_Data.pCar->INPUT_KEY[eBIT_KEY::E_BIT_DOWN_] = !(value >= 0.0f);
+	AI_Data->pCar->INPUT_KEY[eBIT_KEY::E_BIT_UP___] = (value >= 0.0f);
+	AI_Data->pCar->INPUT_KEY[eBIT_KEY::E_BIT_DOWN_] = !(value >= 0.0f);
 }
 
 void cAI_Ctrl::Handle()
 {
 	cAI_CtrlHandel* pHandle = ((cAI_CtrlHandel*)(*familyAI)[AI_TAG_HANDLE]);
+	cAI_CtrlCompete* pCompete = ((cAI_CtrlCompete*)(*familyAI)[AI_TAG_COMPET]);
+	float HandleValue = 0.0f;
 
-	if (AI_Data.pCar->GetRpm() < 0) pHandle->HandleValue *= -1;
+	if (AI_Data->pCar->GetRpm() < 0) pHandle->HandleValue *= -1;
 
 	vecHandleValue[handleIndex++] = pHandle->HandleValue;
 	if (handleIndex == vecSize) handleIndex = 0;
-	float handleValue = VecHandleValue();
+
+	HandleValue = VecHandleValue();
+	HandleValue += pCompete->HandleValue;
+
+	
 
 	float speedValue = VecSpeedValue();
 	speedValue = fmin(0.f, abs(speedValue));
 
-	//std::cout << handleValue << std::endl;
 
-	if (handleValue < -pHandle->HandleDistance * speedValue) AI_Data.pCar->INPUT_KEY[eBIT_KEY::E_BIT_LEFT_] = true;
-	if (handleValue > +pHandle->HandleDistance * speedValue) AI_Data.pCar->INPUT_KEY[eBIT_KEY::E_BIT_RIGHT] = true;
+	if (HandleValue < -pHandle->HandleDistance * speedValue) AI_Data->pCar->INPUT_KEY[eBIT_KEY::E_BIT_LEFT_] = true;
+	if (HandleValue > +pHandle->HandleDistance * speedValue) AI_Data->pCar->INPUT_KEY[eBIT_KEY::E_BIT_RIGHT] = true;
 }
 
 
 void cAI_Ctrl::Flip()
 {
-	AI_Data.pCar->INPUT_KEY[eBIT_KEY::E_BIT_FLIP_] = ((cAI_CtrlFlip*)(*familyAI)[AI_TAG_FLIP])->isFlip;
+	AI_Data->pCar->INPUT_KEY[eBIT_KEY::E_BIT_FLIP_] = ((cAI_CtrlFlip*)(*familyAI)[AI_TAG_FLIP])->isFlip;
 }
 
 void cAI_Ctrl::Repos()
 {
 	if(((cAI_CtrlSpeed*)(*familyAI)[AI_TAG_SPEED])->isRepos)
 	{
-		AI_Data.pCar->INPUT_KEY[eBIT_KEY::E_BIT_REPOS] = true;
+		AI_Data->pCar->INPUT_KEY[eBIT_KEY::E_BIT_REPOS] = true;
 		((cAI_CtrlSpeed*)(*familyAI)[AI_TAG_SPEED])->isBack = false;
 		((cAI_CtrlSpeed*)(*familyAI)[AI_TAG_SPEED])->isRepos = false;
 		((cAI_CtrlHandel*)(*familyAI)[AI_TAG_HANDLE])->isPoint = false;

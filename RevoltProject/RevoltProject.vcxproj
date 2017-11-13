@@ -157,6 +157,7 @@
     <ClInclude Include="cAI_CtrlHandel.h" />
     <ClInclude Include="cAI_CtrlSpeed.h" />
     <ClInclude Include="cAI_CtrlFlip.h" />
+    <ClInclude Include="cAI_CtrlCompete.h" />
     <ClInclude Include="cAI_Master.h" />
     <ClInclude Include="cAI_Ray.h" />
     <ClInclude Include="Camera.h" />
@@ -281,6 +282,7 @@
     <ClCompile Include="cAI_CtrlHandel.cpp" />
     <ClCompile Include="cAI_CtrlSpeed.cpp" />
     <ClCompile Include="cAI_CtrlFlip.cpp" />
+    <ClCompile Include="cAI_CtrlCompete.cpp" />
     <ClCompile Include="cAI_Master.cpp" />
     <ClCompile Include="cAI_Ray.cpp" />
     <ClCompile Include="Camera.cpp" />

@@ -3,10 +3,8 @@
 #include "cAI_Master.h"
 #include "cCar.h"
 
-cAI_CtrlSpeed::cAI_CtrlSpeed(AI_DATA pData)
+cAI_CtrlSpeed::cAI_CtrlSpeed()
 {
-	cAI::AI_Data = pData;
-
 	F___DistRange = 10;		//인지범위 
 	B___DistRange = 5;		//인지범위 
 	Min_DistRange = 3.f;	//무조건 유지하려는 거리
@@ -31,7 +29,7 @@ void cAI_CtrlSpeed::Update()
 	float LF_Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_LF_.Distance();
 	float RF_Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_RF_.Distance();
 
-	float rpmRate = AI_Data.pCar->GetRpm() / AI_Data.pCar->m_maxRpm;
+	float rpmRate = GetRpmRate();
 	//	rpmRate = fmax(rpmRate, 0.1f);
 
 
@@ -92,3 +90,4 @@ void cAI_CtrlSpeed::Update()
 		ReposTimeCount = 0.0f;
 	}
 }
+
