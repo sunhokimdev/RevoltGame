@@ -122,16 +122,23 @@ void Lobby::Update()
 		else
 		{
 			int index = 0;
-			for (int i = 0; i < USER_SIZE; i++)
+			if (g_pNetworkManager->GetIsNextStage())
 			{
-				if (g_pNetworkManager->GetIsUse(i))
+				m_stateLobby = SELECT_MAP_LOBBY;
+			}
+			else
+			{
+				for (int i = 0; i < USER_SIZE; i++)
 				{
-					if (g_pNetworkManager->GetUserReady(i))
-						m_pInRoom->SetUserText(g_pNetworkManager->GetClientList(i), index, D3DCOLOR_ARGB(255, 255, 0, 0));
-					else
-						m_pInRoom->SetUserText(g_pNetworkManager->GetClientList(i), index, D3DCOLOR_ARGB(255, 255, 255, 255));
+					if (g_pNetworkManager->GetIsUse(i))
+					{
+						if (g_pNetworkManager->GetUserReady(i))
+							m_pInRoom->SetUserText(g_pNetworkManager->GetClientList(i), index, D3DCOLOR_ARGB(255, 255, 0, 0));
+						else
+							m_pInRoom->SetUserText(g_pNetworkManager->GetClientList(i), index, D3DCOLOR_ARGB(255, 255, 255, 255));
 
-					index++;
+						index++;
+					}
 				}
 			}
 		}
@@ -139,7 +146,6 @@ void Lobby::Update()
 
 	TimeUpdate();   // 시간 갱신 메서드
 	KeyUpdate();   // 키 이벤트 갱신 메서드
-
 
 	if (m_mapLobby[m_stateLobby]->m_pObject)
 		m_mapLobby[m_stateLobby]->m_pObject->Update();
@@ -261,32 +267,39 @@ void Lobby::KeyUpdate()
 	{
 		if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
-			std::map<int, cTrack*> trackName = m_pMap->GetMapName();
-			int index = m_leftAndrightSelect + 1;
-			if (index > m_mapLobby[m_stateLobby]->m_selectCnt)
-				index = 1;
-			else if (index < 0)
-				index = m_mapLobby[m_stateLobby]->m_selectCnt;
+			if (g_pNetworkManager->GetIsNetwork())
+			{
 
-			m_pfileList->SetMapName(trackName[index]->trackName);
+			}
+			else
+			{
+				std::map<int, cTrack*> trackName = m_pMap->GetMapName();
+				int index = m_leftAndrightSelect + 1;
+				if (index > m_mapLobby[m_stateLobby]->m_selectCnt)
+					index = 1;
+				else if (index < 0)
+					index = m_mapLobby[m_stateLobby]->m_selectCnt;
 
-			m_time = 0.0f;
-			m_select = 0;
-			m_leftAndrightSelect = 0;
+				m_pfileList->SetMapName(trackName[index]->trackName);
 
-			//유저데이터에 자동차 선택한거 넘겨주고
-			//씬변경
+				m_time = 0.0f;
+				m_select = 0;
+				m_leftAndrightSelect = 0;
 
-			g_pDataManager->mapName = m_pfileList->GetMapName();
+				//유저데이터에 자동차 선택한거 넘겨주고
+				//씬변경
 
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", m_pfileList->GetCarName(), false));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc1", true));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
-		
-			g_SceneManager->ChangeScene("Race");
+				g_pDataManager->mapName = m_pfileList->GetMapName();
+
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", m_pfileList->GetCarName(), false));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc1", true));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
+
+				g_SceneManager->ChangeScene("Race");
+			}
 			return;
 		}
 		else if (m_stateLobby == SELECT_CAR_LOBBY)
@@ -377,16 +390,24 @@ void Lobby::KeyUpdate()
 					g_pNetworkManager->Release();
 				}
 			}
+			else if (m_stateLobby == SELECT_MAP_LOBBY)
+			{
+				if (g_pNetworkManager->GetIsNetwork())
+				{
+					m_stateLobby = NETWORK_IN_LOBBY;
+					m_time = 0.0f;
+					m_select = 0;
+					m_leftAndrightSelect = 0;
+
+					return;
+				}
+			}
 
 			m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
-
-			if (m_stateLobby != MAIN_LOBBY2)
-				//g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);
 
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
-			//g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			g_pSoundManager->Play("menuPrev.wav", 1.0f);
 		}
 	}
@@ -395,6 +416,7 @@ void Lobby::KeyUpdate()
 		if (m_stateLobby == NETWORK_IN_LOBBY)
 		{
 			std::string str;
+			bool isNext = true;
 
 			if (g_pNetworkManager->GetIsReady())
 			{
@@ -403,9 +425,29 @@ void Lobby::KeyUpdate()
 			else
 			{
 				str = "$" + std::to_string(g_pNetworkManager->GetUserIndex()) + "$1";
+
+				for (int i = 0;i < USER_SIZE;i++)
+				{
+					if (g_pNetworkManager->GetIsUse(i))
+					{
+						if (!g_pNetworkManager->GetReady(i))
+						{
+							isNext = false;
+							break;
+						}
+					}
+				}
 			}
-			g_pNetworkManager->SetUserReady();
-			g_pNetworkManager->SendMsg(str.c_str());
+			if (!isNext)
+			{
+				g_pNetworkManager->SetUserReady();
+				g_pNetworkManager->SendMsg(str.c_str());
+			}
+			else
+			{
+				str = "@!";		// 다음 맵으로 넘어가기 위한 단계 메시지 설정
+				g_pNetworkManager->SendMsg(str.c_str());
+			}
 		}
 	}
 

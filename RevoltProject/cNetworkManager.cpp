@@ -3,6 +3,7 @@
 #include "MainGame.h"
 
 cNetworkManager::cNetworkManager()
+	: m_isNextStage(false)
 {
 	memset(m_vecUserIP, 0, sizeof(ST_NETUSER) * USER_SIZE);
 	for (int i = 0; i < USER_SIZE; i++)
@@ -87,11 +88,14 @@ bool cNetworkManager::RecvMsg()
 
 		printf("%s %s\n", sIP.c_str(),sIndex.c_str());
 
-		if(sIP.c_str() != NULL && sIndex.c_str() != NULL)
-			m_vecUserIP[atoi(sIndex.c_str()) - 1].userIP = sIP;
+		if (sIP.c_str() != NULL && sIndex.c_str() != NULL)
+		{
+			m_vecUserIP[atoi(sIndex.c_str())].userIP = sIP;
+			m_vecUserIP[atoi(sIndex.c_str())].IsUse = true;
+		}
 
 		if (m_user.userIP == sIP)
-			m_user.index = atoi(sIndex.c_str()) - 1;
+			m_user.index = atoi(sIndex.c_str());
 
 		sSend = "!" + m_user.userIP + "!" + m_user.userID + "!" + m_user.carName;
 		SendMsg(sSend.c_str());
@@ -105,7 +109,7 @@ bool cNetworkManager::RecvMsg()
 		sUserID = strtok(NULL, "&#!");
 		sCarName = strtok(NULL, "&#!");
 
-		printf("%s %s\n", sIP.c_str(), sUserID.c_str());
+		printf("%s %s %s\n", sIP.c_str(), sUserID.c_str(), sCarName.c_str());
 
 		if (sIP.c_str() != NULL && sIndex.c_str() != NULL)
 		{
@@ -127,11 +131,19 @@ bool cNetworkManager::RecvMsg()
 	{
 		sIndex = strtok((char*)m_msg.c_str(), "$");
 		sReady = strtok(NULL, "$");
+
+		printf("%s\n", sReady.c_str());
+
 		if (sReady.find("1"))
 			m_vecUserIP[atoi(sIndex.c_str())].IsReady = true;
 		else
 			m_vecUserIP[atoi(sIndex.c_str())].IsReady = false;
 
+		return false;
+	}
+	else if (m_msg.find("@!") != -1)
+	{
+		g_pNetworkManager->SetIsNextStage(true);
 		return false;
 	}
 

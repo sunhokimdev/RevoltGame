@@ -54,6 +54,7 @@ public:
 
 	SYNTHESIZE(bool, m_isNetwork, IsNetwork);
 	SYNTHESIZE(bool, m_isInNetwork, IsInGameNetwork);
+	SYNTHESIZE(bool, m_isNextStage, IsNextStage);
 
 	std::string GetMsg() { return m_msg; }
 
