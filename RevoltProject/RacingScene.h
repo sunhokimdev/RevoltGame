@@ -60,6 +60,7 @@ public:
 	void Render();
 	void LastUpdate();
 	void UpdateCamera();
+	void UpdateSound();
 
 	//자동차가 계속 달려야하는지를 체크
 	bool IsCarRunTrue(cCar* pCar);

@@ -21,6 +21,7 @@ cCar::cCar()
 	isFliping = false;
 	m_nextCheckBoxID = 0;
 	m_eHoldItem = ITEM_NONE;
+	m_isCtl = false;
 }
 
 cCar::~cCar()
@@ -199,6 +200,8 @@ void cCar::LoadCar(std::string carName)
 	m_pSkidMark = new cSkidMark;
 	m_pSkidMark->LinkCar(this);
 
+	g_pSoundManager->Play("moto.wav", 0.0f, GetPosition());
+
 }
 
 void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc, bool isAI)
@@ -292,6 +295,7 @@ void cCar::LoadWheel(std::string carName)
 	vecWheels[1]->LoadMesh("Cars/" + carName, carName + "fr.obj");
 	vecWheels[2]->LoadMesh("Cars/" + carName, carName + "bl.obj");
 	vecWheels[3]->LoadMesh("Cars/" + carName, carName + "br.obj");
+
 }
 
 void cCar::Update()
@@ -313,19 +317,23 @@ void cCar::Update()
 	//이하 AI, PLAYER 의 동일 사용 함수
 
 	//자동차 움직임
-	CarMove();
+	if (m_isCtl)
+	{
+		CarMove();
+		
+		//자동차 리포지션
+		if (INPUT_KEY[E_BIT_REPOS]) RePosition();
 
-	//자동차 리포지션
-	if (INPUT_KEY[E_BIT_REPOS]) RePosition();
+		// PickUp 충돌
+		//if (INPUT_KEY[E_BIT_FLIP]) CollidePickUp();
+		CollidePickUp();
+		//아이템 사용
+		if (INPUT_KEY[E_BIT_ITEM]) UsedItem();
 
-	// PickUp 충돌
-	//if (INPUT_KEY[E_BIT_FLIP]) CollidePickUp();
-	CollidePickUp();
-	//아이템 사용
-	if (INPUT_KEY[E_BIT_ITEM]) UsedItem();
+		//차 뒤집기
+		if (INPUT_KEY[E_BIT_FLIP]) CarFlip();
+	}
 
-	//차 뒤집기
-	if (INPUT_KEY[E_BIT_FLIP]) CarFlip();
 
 	m_szPrevPos[0] = GetPhysXData()->GetPositionToD3DXVec3();
 
@@ -337,6 +345,8 @@ void cCar::Update()
 
 	//바퀴 자국
 	CreateSkidMark();
+
+	UpdateSound();
 }
 
 void cCar::LastUpdate()
@@ -422,6 +432,7 @@ void cCar::Destroy()
 	Object::Destroy();
 	m_pInGameUI = NULL;
 	m_pTrack = NULL;
+	g_pSoundManager->AllSoundIsStop();
 }
 
 void cCar::CtrlPlayer()
@@ -809,6 +820,7 @@ void cCar::RunEnd()
 		NxWheel* wheel = m_carNxVehicle->getWheel(i);
 		if (wheel->getRpm() < m_maxRpm)	wheel->tick(false, 0, m_maxMoterPower, 1.f / 60.f);
 	}
+	UpdateSound();
 }
 
 void cCar::CarRunStop()
@@ -850,17 +862,17 @@ void cCar::DrawSkidMark()
 	}
 
 	//	테스트용
-	if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
-	{
-		if (RayCarHit.distance < 0.2f)
-		{
-			m_pSkidMark->DrawSkidMark();
-		}
-	}
-	if (g_pKeyManager->isStayKeyDown(VK_SPACE))
-	{
-		m_pSkidMark->Destroy();
-	}
+	//if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
+	//{
+	//	if (RayCarHit.distance < 0.2f)
+	//	{
+	//		m_pSkidMark->DrawSkidMark();
+	//	}
+	//}
+	//if (g_pKeyManager->isStayKeyDown(VK_SPACE))
+	//{
+	//	m_pSkidMark->Destroy();
+	//}
 }
 
 void cCar::SpeedMath()
@@ -1072,6 +1084,29 @@ void cCar::CarFlip()
 
 	NxVec3 carPos = p->getGlobalPose().t;
 	p->getGlobalPose().t.add(carPos, NxVec3(0, 3, 0));
+}
+
+void cCar::UpdateSound()
+{
+	//g_pSoundManager->SetSoundPosition("moto.wav", GetPhysXData()->GetPositionToD3DXVec3());
+
+	NxWheel* wheel = m_carNxVehicle->getWheel(0);
+	float rpmRatio = wheel->getRpm() / m_maxRpm;
+
+	float frq = 10000 + (rpmRatio * 20000);
+	//std::cout << rpmRatio << std::endl;
+	
+	//if (!g_pSoundManager->isPlay("moto.wav"))
+	//{
+	//	g_pSoundManager->Play("moto.wav", 0.3f + rpmRatio * 0.5f);
+	//}
+	g_pSoundManager->SetSoundPosition("moto.wav", GetPosition());
+	//g_pSoundManager->SetSoundPosition("moto.wav", {0,0,0});
+	g_pSoundManager->SetVolum("moto.wav", 0.3f + rpmRatio * 0.5f);
+	g_pSoundManager->SetPitch("moto.wav", frq);
+	
+	
+	//g_pSoundManager->Play_Loop("moto.wav", 0.8f);
 }
 
 NxVec3 cCar::CarArrow(float angle)

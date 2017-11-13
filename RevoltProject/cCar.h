@@ -51,6 +51,8 @@ private:
 	std::vector<cAI*> m_vecAI;
 	bool m_isAI = false;
 
+	bool m_isCtl;
+
 	//Track 정보
 	cTrack* m_pTrack;
 	SYNTHESIZE(int, m_currCheckBoxID, CurrCheckBoxID);			//최근에 체크된 박스
@@ -115,6 +117,8 @@ public:
 	void UsedItem();
 	void RePosition();
 	void CarFlip();
+
+	void UpdateSound();
 
 	/*   김선호   */
 	void SetResetNetworkKey();

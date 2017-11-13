@@ -100,72 +100,21 @@ void c321GO::Count()
 
 	if (m_isStart)
 	{
-		m_fTime += g_pTimeManager->GetElapsedTime();
+		if (m_fTime == 0)
+		{
+			if (m_nCount != 0)
+			{
+				g_pSoundManager->Play("countdown.wav", 0.8f);
+			}
+			else
+			{
+				g_pSoundManager->Play("countdown_0.wav", 0.8f);
+				g_pSoundManager->Play("countdown_1.wav", 0.8f);
+			}
+			
+		}
 
-		//if (m_fTime > 3)
-		//{
-		//	m_nCount = 0;
-		//	if (m_fTime > 3.875)
-		//	{
-		//		m_isStart = false;
-		//	}
-		//	else if (m_fTime > 3.125)
-		//	{
-		//		m_fAngle = D3DX_PI;
-		//	}
-		//	else
-		//	{
-		//		m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
-		//	}
-		//}
-		//else if (m_fTime > 2)
-		//{
-		//	m_nCount = 1;
-		//	if (m_fTime > 2.875)
-		//	{
-		//		m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
-		//	}
-		//	else if (m_fTime > 2.125)
-		//	{
-		//		m_fAngle = D3DX_PI;
-		//	}
-		//	else
-		//	{
-		//		m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
-		//	}
-		//}
-		//else if (m_fTime > 1)
-		//{
-		//	m_nCount = 2;
-		//	if (m_fTime > 1.875)
-		//	{
-		//		m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
-		//	}
-		//	else if (m_fTime > 1.125)
-		//	{
-		//		m_fAngle = D3DX_PI;
-		//	}
-		//	else
-		//	{
-		//		m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
-		//	}
-		//}
-		//else if (m_fTime > 0)
-		//{
-		//	m_nCount = 3;
-		//	if (m_fTime > 0.875)
-		//	{
-		//		m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
-		//	}
-		//	else if (m_fTime > 0.125)
-		//	{
-		//		m_fAngle = D3DX_PI;
-		//	}
-		//	else
-		//	{
-		//		//Lerp = m_fTime * 8;
-		//	}
-		//}
+		m_fTime += g_pTimeManager->GetElapsedTime();
 
 		float min = -1;
 
@@ -207,6 +156,7 @@ void c321GO::Count()
 			}
 			
 			m_fTime = 0;
+
 		}
 	}
 
