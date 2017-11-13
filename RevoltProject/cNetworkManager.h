@@ -50,8 +50,6 @@ public:
 	bool RecvMsg();		// 데이서 서버에 받기
 	void ErrorHandling(char* msg);
 
-	void SetRoomName(std::string str);
-
 	SYNTHESIZE(bool, m_isNetwork, IsNetwork);
 	SYNTHESIZE(bool, m_isInNetwork, IsInGameNetwork);
 	SYNTHESIZE(bool, m_isNextStage, IsNextStage);
@@ -76,6 +74,7 @@ public:
 
 	std::string GetClientList(int index) { return m_vecUserIP[index].userID; };
 	bool GetIsUse(int index) { return m_vecUserIP[index].IsUse; };
+	void SetIsUse(bool b) { m_user.IsUse = b; };
 
 	int GetUserIndex() { return m_user.index; };
 	bool GetIsReady() { return m_user.IsReady; };

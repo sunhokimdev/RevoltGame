@@ -82,7 +82,8 @@ bool cNetworkManager::RecvMsg()
 	std::string sSend;
 
 	/*   서버로 부터 받는 메시지   */
-	if (m_msg.find("&") != -1)
+
+	if (m_msg.find("&") != -1 && !GetIsInGameNetwork())
 	{
 		sIP = strtok((char*)m_msg.c_str(), "&#!");
 		sIndex = strtok(NULL, "&#!");
@@ -100,7 +101,7 @@ bool cNetworkManager::RecvMsg()
 		return false;
 	}
 
-	else if (m_msg.find("@") != -1)
+	else if (m_msg.find("@") != -1 && !GetIsInGameNetwork())
 	{
 		ST_NETUSER netUser;
 
@@ -120,6 +121,13 @@ bool cNetworkManager::RecvMsg()
 		netUser.IsUse = true;
 		//
 		m_vecUserIP[netUser.index] = netUser;
+
+		return false;
+	}
+
+	else if (m_msg.find("@Start!") != -1)
+	{
+		SetIsInGameNetwork(true);
 
 		return false;
 	}

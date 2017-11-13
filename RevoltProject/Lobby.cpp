@@ -115,6 +115,8 @@ void Lobby::Update()
 	{
 		/*    서버에서 recv가 무한대기에 빠지지 않도록 메시지를 계속해서 보낸다    */
 	
+		bool isNext = true;
+
 		g_pNetworkManager->SendMsg("#");
 
 		if (g_pNetworkManager->RecvMsg())
@@ -126,7 +128,8 @@ void Lobby::Update()
 			int index = 0;
 			if (g_pNetworkManager->GetIsNextStage())
 			{
-				m_stateLobby = SELECT_MAP_LOBBY;
+				if(m_stateLobby == NETWORK_IN_LOBBY)
+					m_stateLobby = SELECT_MAP_LOBBY;
 			}
 			else
 			{
@@ -137,13 +140,24 @@ void Lobby::Update()
 						if (g_pNetworkManager->GetUserReady(i))
 							m_pInRoom->SetUserText(g_pNetworkManager->GetClientList(i), index, D3DCOLOR_ARGB(255, 255, 0, 0));
 						else
+						{
 							m_pInRoom->SetUserText(g_pNetworkManager->GetClientList(i), index, D3DCOLOR_ARGB(255, 255, 255, 255));
+							isNext = false;
+						}
 
 						index++;
 					}
 				}
 			}
+			if(!isNext)
+				g_pNetworkManager->SetIsNextStage(true);
 		}
+	}
+
+	if (g_pNetworkManager->GetIsInGameNetwork())
+	{
+		g_SceneManager->ChangeScene("Race");
+		return;
 	}
 
 	TimeUpdate();   // 시간 갱신 메서드
@@ -273,37 +287,38 @@ void Lobby::KeyUpdate()
 		{
 			if (g_pNetworkManager->GetIsNetwork())
 			{
-
+				g_pNetworkManager->SendMsg("@Start!");
+				g_pNetworkManager->SetIsInGameNetwork(true);
+				g_pNetworkManager->SetIsNextStage(true);
 			}
-			else
-			{
-				std::map<int, cTrack*> trackName = m_pMap->GetMapName();
-				int index = m_leftAndrightSelect + 1;
-				if (index > m_mapLobby[m_stateLobby]->m_selectCnt)
-					index = 1;
-				else if (index < 0)
-					index = m_mapLobby[m_stateLobby]->m_selectCnt;
 
-				m_pfileList->SetMapName(trackName[index]->trackName);
+			std::map<int, cTrack*> trackName = m_pMap->GetMapName();
+			int index = m_leftAndrightSelect + 1;
+			if (index > m_mapLobby[m_stateLobby]->m_selectCnt)
+				index = 1;
+			else if (index < 0)
+				index = m_mapLobby[m_stateLobby]->m_selectCnt;
 
-				m_time = 0.0f;
-				m_select = 0;
-				m_leftAndrightSelect = 0;
+			m_pfileList->SetMapName(trackName[index]->trackName);
 
-				//유저데이터에 자동차 선택한거 넘겨주고
-				//씬변경
+			m_time = 0.0f;
+			m_select = 0;
+			m_leftAndrightSelect = 0;
 
-				g_pDataManager->mapName = m_pfileList->GetMapName();
+			//유저데이터에 자동차 선택한거 넘겨주고
+			//씬변경
 
-				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", m_pfileList->GetCarName(), false));
-				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc1", true));
-				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
-				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
-				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
-				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
+			g_pDataManager->mapName = m_pfileList->GetMapName();
 
-				g_SceneManager->ChangeScene("Race");
-			}
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", m_pfileList->GetCarName(), false));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc1", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
+
+			g_SceneManager->ChangeScene("Race");
+
 			return;
 		}
 		else if (m_stateLobby == SELECT_CAR_LOBBY)
@@ -394,6 +409,7 @@ void Lobby::KeyUpdate()
 				if (m_pViewCarLobby->GetIsNetwork())
 				{
 					g_pNetworkManager->SetIsNetwork(false);
+					g_pNetworkManager->SetIsUse(false);
 					m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob[m_select] = SELECT_MAP_LOBBY;
 					g_pNetworkManager->Release();
 				}
@@ -425,6 +441,7 @@ void Lobby::KeyUpdate()
 		{
 			g_pNetworkManager->SetUserReady();
 			g_pNetworkManager->SendClientData();
+
 		}
 	}
 

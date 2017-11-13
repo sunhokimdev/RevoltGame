@@ -98,6 +98,8 @@ void RacingScene::Setup()
 	LinkUI(0); // 인게임 InGameUI::Setup(); 전에 위치해야함, new InGameUI 가 선언되어 있어야 함.
 	m_pInGameUI->Setup();
 	
+	g_pNetworkManager->SetResetKeyEvent();
+
 	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 }
 
@@ -137,26 +139,31 @@ void RacingScene::Update()
 	{
 		g_pNetworkManager->SetClientPosition(vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition());
 
-		str = "@" + g_pNetworkManager->GetClientIP() +
-			"@" + g_pNetworkManager->GetKeYString();// +"@" + g_pNetworkManager->GetClientPosition();
-	
+		str = "$" + g_pNetworkManager->GetClientIP() +"$" + g_pNetworkManager->GetKeYString();
+		// +"@" + g_pNetworkManager->GetClientPosition();
+		//
 		g_pNetworkManager->SendMsg(str.c_str());
+		//
+		if (g_pNetworkManager->RecvMsg())
+		{
+			str = g_pNetworkManager->GetMsg();
+		}
 
-		g_pNetworkManager->RecvMsg();
-		str = g_pNetworkManager->GetMsg();
+		pchIP = strtok((char*)str.c_str(), "$");
+		pchKEY = strtok(NULL, "$");
 
-		pchIP = strtok((char*)str.c_str(), "@");
-		pchKEY = strtok(NULL, "@");
-		//pchPOS = strtok(NULL, "@");
+		printf("%s %s\n", pchIP, pchKEY);
 
+		////pchPOS = strtok(NULL, "@");
+		//
 		if (pchIP != NULL && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
 		{
-			//pchX = strtok(pchPOS, "/");
-			//pchY = strtok(NULL, "/");
-			//pchZ = strtok(NULL, "/");
-
-			printf("%s\n", pchKEY);
-
+		//	//pchX = strtok(pchPOS, "/");
+		//	//pchY = strtok(NULL, "/");
+		//	//pchZ = strtok(NULL, "/");
+		//
+		//	printf("%s\n", pchKEY);
+		//
 			m_loop = true;
 		}
 	}
