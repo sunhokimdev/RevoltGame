@@ -779,6 +779,8 @@ void cCar::SetFrustum()
 
 	m_vecPlane.resize(6);
 	m_vecWorldVertex.resize(8);
+
+	int a = 1;
 }
 
 
