@@ -118,6 +118,9 @@ void RacingScene::Destroy()
 
 void RacingScene::Update()
 {
+	GameNode::Update();
+	SAFE_UPDATE(m_pTrack);
+
 	char* pchIP = NULL;
 	char* pchKEY = NULL;
 	char* pchPOS = NULL;
@@ -135,31 +138,28 @@ void RacingScene::Update()
 		g_pNetworkManager->SetClientPosition(vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition());
 
 		str = "@" + g_pNetworkManager->GetClientIP() +
-			"@" + g_pNetworkManager->GetKeYString() + "@" + g_pNetworkManager->GetClientPosition();
+			"@" + g_pNetworkManager->GetKeYString();// +"@" + g_pNetworkManager->GetClientPosition();
 	
 		g_pNetworkManager->SendMsg(str.c_str());
 
-		if(g_pNetworkManager->RecvMsg())
-			str = g_pNetworkManager->GetMsg();
+		g_pNetworkManager->RecvMsg();
+		str = g_pNetworkManager->GetMsg();
 
 		pchIP = strtok((char*)str.c_str(), "@");
 		pchKEY = strtok(NULL, "@");
-		pchPOS = strtok(NULL, "@");
+		//pchPOS = strtok(NULL, "@");
 
 		if (pchIP != NULL && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
 		{
-			pchX = strtok(pchPOS, "/");
-			pchY = strtok(NULL, "/");
-			pchZ = strtok(NULL, "/");
+			//pchX = strtok(pchPOS, "/");
+			//pchY = strtok(NULL, "/");
+			//pchZ = strtok(NULL, "/");
 
-			printf("%s\n", pchIP);
+			printf("%s\n", pchKEY);
 
 			m_loop = true;
 		}
 	}
-
-	GameNode::Update();
-	SAFE_UPDATE(m_pTrack);
 
 	switch (m_eRaceProg)
 	{
@@ -190,19 +190,6 @@ void RacingScene::Update()
 
 				if (IsCarRunTrue(vecCars[1])) vecCars[1]->Update();
 				if (!IsCarRunTrue(vecCars[1])) m_eRaceProg = RACE_PROG_FINISH;
-
-				float mx = 0;
-				float my = 0;
-				float mz = 0;
-
-				if(pchX!=NULL)
-					mx = atof(pchX);
-				if(pchY != NULL)
-					my = atof(pchY);
-				if(pchZ != NULL)
-					mz = atof(pchZ);
-
-				vecCars[1]->GetPhysXData()->m_pActor->setGlobalPosition(NxVec3(mx,my,mz));
 			}
 		}
 		else

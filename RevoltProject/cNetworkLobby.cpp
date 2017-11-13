@@ -11,6 +11,7 @@ cNetworkLobby::cNetworkLobby()
 
 cNetworkLobby::~cNetworkLobby()
 {
+	SAFE_DELETE(m_pRootUI);
 }
 
 void cNetworkLobby::Setup()

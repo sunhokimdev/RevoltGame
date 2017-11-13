@@ -13,8 +13,6 @@ cNetworkInRoom::cNetworkInRoom()
 
 cNetworkInRoom::~cNetworkInRoom()
 {
-	SAFE_DELETE(m_pMap);
-	SAFE_DELETE(m_pMapName);
 	SAFE_DELETE(m_pChating);
 	SAFE_DELETE(m_pText);
 }
@@ -22,18 +20,6 @@ cNetworkInRoom::~cNetworkInRoom()
 void cNetworkInRoom::Setup()
 {
 	iLobby::Setup();
-
-	m_pMap = new UIImageView;
-	m_pMap->SetPosition(30, 30);
-	m_pMap->SetXSize(0.6f);
-	m_pMap->SetYSize(0.5f);
-
-	m_pMapName = new UITextImageView;
-	m_pMapName->SetPosition(30, 170);
-	m_pMapName->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
-	m_pMapName->SetXSize(1.5f);
-	m_pMapName->SetYSize(1.5f);
-	m_pMapName->SetTexture("UIImage/font2.png");
 
 	m_pChating = new UITextImageView;
 	m_pChating->SetIsChatingText(true);
@@ -71,11 +57,12 @@ void cNetworkInRoom::Setup()
 	UITextImageView* pImageView4 = new UITextImageView;
 	pImageView4->SetTexture("UIImage/font1.png");
 	pImageView4->SetText("MULTIPLAYER ROOM");
+	pImageView4->SetIndex(INT_MAX);
 	pImageView4->SetXSize(1.5f);
 	pImageView4->SetYSize(1.5f);
 	pImageView4->SetPosition(180, 45);
 
-	pImageView5 = new UIImageView;
+	UIImageView* pImageView5 = new UIImageView;
 	pImageView5->SetPosition(150, 200);
 	pImageView5->SetIsBoard(true);
 	pImageView5->SetXSize(30.0f);
@@ -104,17 +91,26 @@ void cNetworkInRoom::Setup()
 	pImageView1->AddChild(pImageView7);
 	pImageView5->AddChild(pImageView6);
 	pImageView5->AddChild(m_vecText[m_index]);
-	pImageView6->AddChild(m_pMap);
-	pImageView6->AddChild(m_pMapName);
 	pImageView7->AddChild(m_pChating);
 
-	for (int i = 0; i < 1000; i++)
+	for (int i = 0; i < 500; i++)
 	{
 		UITextImageView *pText = new UITextImageView;
 		pText->SetTexture("UIImage/font2.png");
 		m_vecText.push_back(pText);
+		m_vecText[i]->SetIndex(INT_MAX);
 
 		pImageView5->AddChild(m_vecText[i]);
+	}
+
+	for (int i = 0; i < USER_SIZE; i++)
+	{
+		UITextImageView *pText = new UITextImageView;
+		pText->SetTexture("UIImage/font2.png");
+		m_vecUser.push_back(pText);
+		m_vecUser[i]->SetIndex(INT_MAX);
+
+		pImageView6->AddChild(m_vecUser[i]);
 	}
 }
 
@@ -128,18 +124,9 @@ void cNetworkInRoom::Render(LPD3DXSPRITE pSprite)
 	iLobby::Render(pSprite);
 }
 
-void cNetworkInRoom::SetMap(std::string mapName)
-{
-	if (mapName.find("Market") != -1)
-	{
-		m_pMap->SetTexture("Maps/Front/Image/market.bmp");
-		m_pMapName->SetText("Market");
-	}
-}
-
 std::string cNetworkInRoom::GetMsg()
 {
-	std::string str = std::string("[") + m_userName + std::string("] : ") + m_pChating->GetChatName();
+	std::string str = std::string("[") + g_pNetworkManager->GetClientName() + std::string("] : ") + m_pChating->GetChatName();
 
 	return str;
 }
@@ -175,7 +162,30 @@ void cNetworkInRoom::SetText(std::string str)
 		m_vecText[m_index]->SetText(pch);
 
 		m_index++;
-
-		printf("%d\n", str.size());
 	}
 }
+
+void cNetworkInRoom::SetUserText(std::string str, int index, D3DXCOLOR color)
+{
+	bool isEqual = false;
+	int sum = 0;
+
+	for (int i = 0; i < str.size() - 1; ++i)
+	{
+		sum += str[i];
+
+		if (sum % 35 != 0)
+		{
+			isEqual = true;
+			break;
+		}
+	}
+
+	m_vecUser[index]->SetPosition(30, 20 * (index + 1));
+	m_vecUser[index]->SetColor(color);
+
+	const char* pch = strtok((char*)str.c_str(), "#");
+
+	m_vecUser[index]->SetText(pch);
+}
+
