@@ -11,6 +11,7 @@ cNetworkLobby::cNetworkLobby()
 
 cNetworkLobby::~cNetworkLobby()
 {
+	SAFE_DELETE(m_pRootUI);
 }
 
 void cNetworkLobby::Setup()
@@ -44,12 +45,13 @@ void cNetworkLobby::Setup()
 	pImageView4->SetXSize(1.5f);
 	pImageView4->SetYSize(1.5f);
 	pImageView4->SetPosition(180, 45);
+	pImageView4->SetIndex(INT_MAX);
 
 	UIImageView* pImageView5 = new UIImageView;
-	pImageView5->SetPosition(150, 200);
+	pImageView5->SetPosition(240, 280);
 	pImageView5->SetIsBoard(true);
 	pImageView5->SetXSize(30.0f);
-	pImageView5->SetYSize(27.0f);
+	pImageView5->SetYSize(1.0f);
 	pImageView5->SetTexture("UIImage/ring.png");
 
 	UIImageView* pImageView6 = new UIImageView;
@@ -93,34 +95,17 @@ void cNetworkLobby::Setup()
 	pImageView10->SetYSize(1.5f);
 	pImageView10->SetPosition(25, 150);
 
-	m_pUserName = new UITextImageView;
-	m_pUserName->SetTexture("UIImage/font2.png");
-	m_pUserName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
-	m_pUserName->SetIndex(INT_MAX);
-	m_pUserName->SetXSize(1.5f);
-	m_pUserName->SetYSize(1.5f);
-	m_pUserName->SetPosition(25, 100);
-
-	m_pCarName = new UITextImageView;
-	m_pCarName->SetTexture("UIImage/font2.png");
-	m_pCarName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
-	m_pCarName->SetIndex(INT_MAX);
-	m_pCarName->SetXSize(1.5f);
-	m_pCarName->SetYSize(1.5f);
-	m_pCarName->SetPosition(25, 190);
+	m_pServerIP = new UITextImageView;
+	m_pServerIP->SetPosition(50, 25);
+	m_pServerIP->SetIsChatingText(true);
+	m_pServerIP->SetTexture("UIImage/font2.png");
 
 	m_pRootUI->AddChild(pImageView1);
 	m_pRootUI->AddChild(pImageView5);
 	pImageView1->AddChild(pImageView2);
 	pImageView1->AddChild(pImageView3);
 	pImageView1->AddChild(pImageView4);
-	pImageView5->AddChild(pImageView6);
-	pImageView5->AddChild(pImageView7);
-	pImageView6->AddChild(pImageView9);
-	pImageView6->AddChild(pImageView10);
-	pImageView6->AddChild(m_pUserName);
-	pImageView6->AddChild(m_pCarName);
-	pImageView7->AddChild(pImageView8);
+	pImageView5->AddChild(m_pServerIP);
 }
 
 void cNetworkLobby::Update()
@@ -133,25 +118,14 @@ void cNetworkLobby::Render(LPD3DXSPRITE pSprite)
 	iLobby::Render(pSprite);
 }
 
+
 void cNetworkLobby::Destroy()
 {
-	SAFE_DELETE(m_pUserName);
-	SAFE_DELETE(m_pCarName);
 
 	iLobby::Destroy();
 }
 
-void cNetworkLobby::SetUserName(std::string pName)
+std::string cNetworkLobby::GetServerIP()
 {
-	m_pUserName->SetText(pName);
-}
-
-void cNetworkLobby::SetCarName(std::string pName)
-{
-	m_pCarName->SetText(pName);
-}
-
-std::string cNetworkLobby::GetName()
-{
-	return m_pUserName->GetText();
+	return m_pServerIP->GetChatName();
 }

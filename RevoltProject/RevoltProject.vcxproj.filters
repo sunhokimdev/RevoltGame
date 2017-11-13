@@ -343,9 +343,6 @@
     <ClInclude Include="cIntroLob.h">
       <Filter>Lobby\GameUI</Filter>
     </ClInclude>
-    <ClInclude Include="cNetworkCreateRoom.h">
-      <Filter>Lobby\GameUI</Filter>
-    </ClInclude>
     <ClInclude Include="cNetworkInRoom.h">
       <Filter>Lobby\GameUI</Filter>
     </ClInclude>
@@ -473,9 +470,6 @@
       <Filter>Item\FakeBomb</Filter>
     </ClInclude>
     <ClInclude Include="c321GO.h">
-      <Filter>Lobby\GameUI</Filter>
-    </ClInclude>
-    <ClInclude Include="cSelectNetworkLob.h">
       <Filter>Lobby\GameUI</Filter>
     </ClInclude>
     <ClInclude Include="cAI_Flip.h">
@@ -672,9 +666,6 @@
     <ClCompile Include="cIntroLob.cpp">
       <Filter>Lobby\GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="cNetworkCreateRoom.cpp">
-      <Filter>Lobby\GameUI</Filter>
-    </ClCompile>
     <ClCompile Include="cNetworkInRoom.cpp">
       <Filter>Lobby\GameUI</Filter>
     </ClCompile>
@@ -778,9 +769,6 @@
       <Filter>Item\FakeBomb</Filter>
     </ClCompile>
     <ClCompile Include="c321GO.cpp">
-      <Filter>Lobby\GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="cSelectNetworkLob.cpp">
       <Filter>Lobby\GameUI</Filter>
     </ClCompile>
     <ClCompile Include="cAI_Flip.cpp">

@@ -12,6 +12,8 @@ cMybombImapct::cMybombImapct()
 
 cMybombImapct::~cMybombImapct()
 {
+	SAFE_RELEASE(m_pTexture);
+	SAFE_RELEASE(m_pSprite);
 }
 
 void cMybombImapct::Setup()
@@ -19,7 +21,6 @@ void cMybombImapct::Setup()
 	cImpact::Setup();
 
 	D3DXCreateSprite(g_pD3DDevice, &m_pSprite);
-
 
 	D3DXIMAGE_INFO stImageInfo;
 

@@ -16,6 +16,8 @@ cFirework::cFirework()
 cFirework::~cFirework()
 {
 	SAFE_DELETE(m_pEffect);
+	SAFE_DELETE(m_pPhysX);
+	SAFE_DELETE(m_pTail);
 }
 
 void cFirework::Setup()
@@ -31,7 +33,6 @@ void cFirework::Setup()
 	ObjectLoader::LoadMesh(m_pPhysX->pMesh, "Objects/firework", "firework.obj");
 
 	m_pUser->USER_TAG = ePhysXTag::E_PHYSX_TAG_FIREWORK;
-
 
 	m_pEffect = new PFirework(100, 3.0f);
 	m_pEffect->Init(g_pD3DDevice, "Objects/firework/particle_flare.bmp");

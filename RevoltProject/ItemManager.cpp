@@ -194,3 +194,14 @@ int ItemManager::GetItemID()
 	else
 		return INT_MAX;
 }
+
+void ItemManager::Destroy()
+{
+	for each(auto p in m_vecItem)
+	{
+		SAFE_DELETE(p);
+	}
+
+	for (int i = 0;i < 4;i++)
+		m_vecIndex[i] = 0;
+}

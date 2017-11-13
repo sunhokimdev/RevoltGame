@@ -29,9 +29,7 @@
 
 /*   멀티 플레이어 작업   */
 #include "cNetworkLobby.h"
-#include "cNetworkCreateRoom.h"
 #include "cNetworkInRoom.h"
-#include "cSelectNetworkLob.h"
 
 Lobby::Lobby()
 	: m_pSprite(NULL)
@@ -47,7 +45,18 @@ Lobby::Lobby()
 
 Lobby::~Lobby()
 {
-
+	//SAFE_RELEASE(m_pSprite);
+	//SAFE_RELEASE(m_pObjMesh);
+	//SAFE_DELETE(m_pSelectMap);
+	//SAFE_DELETE(m_multiLobby);
+	//SAFE_DELETE(m_pCreateProfileLobby);
+	//SAFE_DELETE(m_pSelectCarLobbby);
+	//
+	//for each(auto a in m_mapLobby)
+	//{
+	//	delete[] a.second->m_pNextLob;
+	//	SAFE_DELETE(a.second->m_pObject);
+	//}
 }
 
 void Lobby::Setup()
@@ -76,14 +85,9 @@ void Lobby::Setup()
 	m_pViewCarLobby = new cViewCarLob;
 	m_pViewCarLobby->Setup();
 
-	m_pCreateRoom = new cNetworkCreateRoom;
-	m_pCreateRoom->Setup();
 
 	m_pInRoom = new cNetworkInRoom;
 	m_pInRoom->Setup();
-
-	m_pSelectServer = new cSelectNetworkLob;
-	m_pSelectServer->Setup();
 
 	m_pfileList = new ProfileList;
 	m_pMap = new Map;
@@ -97,6 +101,7 @@ void Lobby::Setup()
 
 void Lobby::Update()
 {
+	std::string str;
 
 	// Set Map Type Update
 	if (m_stateLobby == SELECT_MAP_LOBBY)
@@ -108,16 +113,55 @@ void Lobby::Update()
 	else if (m_stateLobby == NETWORK_IN_LOBBY)
 	{
 		/*    서버에서 recv가 무한대기에 빠지지 않도록 메시지를 계속해서 보낸다    */
+	
+		bool isNext = true;
+
 		g_pNetworkManager->SendMsg("#");
 
-		if(g_pNetworkManager->RecvMsg())
+		if (g_pNetworkManager->RecvMsg())
+		{
 			m_pInRoom->SetText(g_pNetworkManager->GetMsg().c_str());
+		}
+		else
+		{
+			int index = 0;
+			if (g_pNetworkManager->GetIsNextStage())
+			{
+				if(m_stateLobby == NETWORK_IN_LOBBY)
+					m_stateLobby = SELECT_MAP_LOBBY;
+			}
+			else
+			{
+				for (int i = 0; i < USER_SIZE; i++)
+				{
+					if (g_pNetworkManager->GetIsUse(i))
+					{
+						if (g_pNetworkManager->GetUserReady(i))
+							m_pInRoom->SetUserText(g_pNetworkManager->GetClientList(i), index, D3DCOLOR_ARGB(255, 255, 0, 0));
+						else
+						{
+							m_pInRoom->SetUserText(g_pNetworkManager->GetClientList(i), index, D3DCOLOR_ARGB(255, 255, 255, 255));
+							isNext = false;
+						}
 
-		printf("%s\n", g_pNetworkManager->GetMsg().c_str());
+						index++;
+					}
+				}
+			}
+			if(!isNext)
+				g_pNetworkManager->SetIsNextStage(true);
+		}
+	}
+
+	if (g_pNetworkManager->GetIsInGameNetwork())
+	{
+		g_SceneManager->ChangeScene("Race");
+		return;
 	}
 
 	TimeUpdate();   // 시간 갱신 메서드
-	
+	KeyUpdate();   // 키 이벤트 갱신 메서드
+
 	if (m_mapLobby[m_stateLobby]->m_pObject)
 	{
 		m_mapLobby[m_stateLobby]->m_pObject->Update();
@@ -172,22 +216,10 @@ void Lobby::Destroy()
 		SAFE_DELETE(m_pViewCarLobby);
 	}
 	
-	if (m_pCreateRoom)
-	{
-		//m_pCreateRoom->Destroy();
-		SAFE_DELETE(m_pCreateRoom);
-	}
-
 	if (m_pInRoom)
 	{
 		//m_pInRoom->Destroy();
 		SAFE_DELETE(m_pInRoom);
-	}
-	
-	if (m_pSelectServer)
-	{
-		//m_pInRoom->Destroy();
-		SAFE_DELETE(m_pSelectServer);
 	}
 	
 	if (m_pfileList)
@@ -213,6 +245,8 @@ void Lobby::Destroy()
 
 void Lobby::KeyUpdate()
 {
+	std::string str;
+
 	if (g_pKeyManager->isOnceKeyDown(VK_DOWN))
 	{
 		m_select++;
@@ -310,6 +344,13 @@ void Lobby::KeyUpdate()
 	{
 		if (m_stateLobby == SELECT_MAP_LOBBY)
 		{
+			if (g_pNetworkManager->GetIsNetwork())
+			{
+				g_pNetworkManager->SendMsg("@Start!");
+				g_pNetworkManager->SetIsInGameNetwork(true);
+				g_pNetworkManager->SetIsNextStage(true);
+			}
+
 			std::map<int, cTrack*> trackName = m_pMap->GetMapName();
 			int index = m_leftAndrightSelect + 1;
 			if (index > m_mapLobby[m_stateLobby]->m_selectCnt)
@@ -334,12 +375,17 @@ void Lobby::KeyUpdate()
 			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
 			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
 			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
-		
+
 			g_SceneManager->ChangeScene("Race");
+
 			return;
 		}
 		else if (m_stateLobby == SELECT_CAR_LOBBY)
 		{
+			if (g_pNetworkManager->GetIsNetwork())
+			{
+				g_pNetworkManager->SetCarName(m_pSelectCarLobbby->GetCarName());
+			}
 			switch (m_leftAndrightSelect)
 			{
 			case 0:	m_pfileList->SetCarName("tc1"); break;
@@ -353,30 +399,25 @@ void Lobby::KeyUpdate()
 		else if (m_stateLobby == MAIN_LOBBY2)
 		{
 			if (m_select == 2)
-				m_pViewCarLobby->SetIsNetwork(true);
+			{
+				g_pNetworkManager->SetIsNetwork(true);
+			}
+			else
+			{
+				if (g_pNetworkManager->GetIsNetwork())
+				{
+					g_pNetworkManager->Release();			// 소켓 해제
+				}
+				g_pNetworkManager->SetIsNetwork(false);
+			}
 		}
 
 		else if (m_stateLobby == VIEW_CAR_LOBBY)
 		{
-			if (m_pViewCarLobby->GetIsNetwork())
+			if (g_pNetworkManager->GetIsNetwork())
 			{
 				m_mapLobby[m_stateLobby]->m_pNextLob[m_select] = NETWORK_LOBBY;
-				m_multiLobby->SetUserName(m_pCreateProfileLobby->GetName());
-				m_multiLobby->SetCarName(m_pSelectCarLobbby->GetCarName());
 			}
-		}
-
-		else if (m_stateLobby == NETWORK_SELECT_LOBBY)
-		{
-			m_pInRoom->SetUserName(m_multiLobby->GetName());
-			g_pNetworkManager->SetServerIP(m_pSelectServer->GetTextIP());
-			g_pNetworkManager->Start();
-		}
-
-		else if (m_stateLobby == NETWORK_CREATE_LOBBY)
-		{
-			m_pInRoom->SetMap(m_pCreateRoom->GetImageName());
-			m_pInRoom->SetUserName(m_multiLobby->GetName());
 		}
 
 		else if (m_stateLobby == NETWORK_IN_LOBBY)
@@ -387,15 +428,28 @@ void Lobby::KeyUpdate()
 			return;
 		}
 
+		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
+		{
+			// 프로필 파일생성 없이 사용한 메서드
+			if (g_pNetworkManager->GetIsNetwork())
+			{
+				g_pNetworkManager->SetClientName(m_pCreateProfileLobby->GetName());
+			}
+		}
+
+		else if (m_stateLobby == NETWORK_LOBBY)
+		{
+			g_pNetworkManager->SetServerIP(m_multiLobby->GetServerIP());
+			g_pNetworkManager->Start();
+			//g_pNetworkManager->SendMsg(g_pNetworkManager->GetClientIP().c_str());
+		}
+
 		m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[m_select];
 
 		if (m_stateLobby > INTRO3)
 		{
 			g_pSoundManager->Play("menuNext.wav", 1.0f);
 			
-			//g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
-			//g_pCamManager->SetCamPos(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
-			//g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			m_time = 0.0f;
 			m_select = 0;
 
@@ -408,29 +462,45 @@ void Lobby::KeyUpdate()
 	{
 		if (m_mapLobby[m_stateLobby]->m_prevLob != LOBBY_NONE)
 		{
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
+			if (m_stateLobby == VIEW_CAR_LOBBY ||
+				m_stateLobby == NETWORK_LOBBY)
+			{
+				if (m_pViewCarLobby->GetIsNetwork())
+				{
+					g_pNetworkManager->SetIsNetwork(false);
+					g_pNetworkManager->SetIsUse(false);
+					m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob[m_select] = SELECT_MAP_LOBBY;
+					g_pNetworkManager->Release();
+				}
+			}
+			else if (m_stateLobby == SELECT_MAP_LOBBY)
+			{
+				if (g_pNetworkManager->GetIsNetwork())
+				{
+					m_stateLobby = NETWORK_IN_LOBBY;
+					m_time = 0.0f;
+					m_select = 0;
+					m_leftAndrightSelect = 0;
 
-			if (m_stateLobby != MAIN_LOBBY2)
-				//g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);
+					return;
+				}
+			}
+
+			m_stateLobby = m_mapLobby[m_stateLobby]->m_prevLob;
 
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
-			//g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			g_pSoundManager->Play("menuPrev.wav", 1.0f);
 		}
 	}
-
 	if (g_pKeyManager->isOnceKeyDown(VK_F5))
 	{
-		if (m_stateLobby == NETWORK_LOBBY)
+		if (m_stateLobby == NETWORK_IN_LOBBY)
 		{
-			m_stateLobby = m_mapLobby[m_stateLobby]->m_pNextLob[0];
-			g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);		 // 카메라 변경
+			g_pNetworkManager->SetUserReady();
+			g_pNetworkManager->SendClientData();
 
-			m_time = 0.0f;
-			m_select = 0;
-			m_leftAndrightSelect = 0;
 		}
 	}
 
@@ -830,24 +900,14 @@ void Lobby::SetUpUI()
 	m_mapLobby[NETWORK_LOBBY]->m_time = 50.0f;
 	m_mapLobby[NETWORK_LOBBY]->m_pObject = m_multiLobby->GetUIRoot();
 	m_mapLobby[NETWORK_LOBBY]->m_camLookAt = D3DXVECTOR3(14, 4, 8);
-	m_mapLobby[NETWORK_LOBBY]->m_pNextLob[0] = NETWORK_CREATE_LOBBY;
-	m_mapLobby[NETWORK_LOBBY]->m_prevLob = MAIN_LOBBY3;
-
-	m_mapLobby[NETWORK_CREATE_LOBBY] = new ST_Object;
-	m_mapLobby[NETWORK_CREATE_LOBBY]->m_target = D3DXVECTOR3(12, 3, -18);
-	m_mapLobby[NETWORK_CREATE_LOBBY]->m_count = 1;
-	m_mapLobby[NETWORK_CREATE_LOBBY]->m_pNextLob = new LOBBY[1];
-	m_mapLobby[NETWORK_CREATE_LOBBY]->m_time = 50.0f;
-	m_mapLobby[NETWORK_CREATE_LOBBY]->m_pObject = m_pCreateRoom->GetUIRoot();
-	m_mapLobby[NETWORK_CREATE_LOBBY]->m_camLookAt = D3DXVECTOR3(23, 5, -12);
-	m_mapLobby[NETWORK_CREATE_LOBBY]->m_pNextLob[0] = NETWORK_IN_LOBBY;
-	m_mapLobby[NETWORK_CREATE_LOBBY]->m_prevLob = NETWORK_LOBBY;
+	m_mapLobby[NETWORK_LOBBY]->m_pNextLob[0] = NETWORK_IN_LOBBY;
+	m_mapLobby[NETWORK_LOBBY]->m_prevLob = VIEW_CAR_LOBBY;
 
 	m_mapLobby[NETWORK_IN_LOBBY] = new ST_Object;
 	m_mapLobby[NETWORK_IN_LOBBY]->m_target = D3DXVECTOR3(4, 8, -5);
 	m_mapLobby[NETWORK_IN_LOBBY]->m_count = 1;
 	m_mapLobby[NETWORK_IN_LOBBY]->m_pNextLob = new LOBBY[1];
-	m_mapLobby[NETWORK_IN_LOBBY]->m_time = 50.0f;
+	m_mapLobby[NETWORK_IN_LOBBY]->m_time = 500.0f;
 	m_mapLobby[NETWORK_IN_LOBBY]->m_pObject = m_pInRoom->GetUIRoot();
 	m_mapLobby[NETWORK_IN_LOBBY]->m_camLookAt = D3DXVECTOR3(14, 4, 8);
 	m_mapLobby[NETWORK_IN_LOBBY]->m_pNextLob[0] = IN_GAME_MAP;
