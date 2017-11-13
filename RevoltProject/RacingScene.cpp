@@ -137,13 +137,11 @@ void RacingScene::Update()
 	/*   네트워크 부분   */
 	if (g_pNetworkManager->GetIsInGameNetwork())
 	{
-		g_pNetworkManager->SetClientPosition(vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition());
+		//g_pNetworkManager->SetClientPosition(vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition());
 
 		str = "$" + g_pNetworkManager->GetClientIP() +"$" + g_pNetworkManager->GetKeYString();
-		// +"@" + g_pNetworkManager->GetClientPosition();
-		//
 		g_pNetworkManager->SendMsg(str.c_str());
-		//
+
 		if (g_pNetworkManager->RecvMsg())
 		{
 			str = g_pNetworkManager->GetMsg();
@@ -151,8 +149,6 @@ void RacingScene::Update()
 
 		pchIP = strtok((char*)str.c_str(), "$");
 		pchKEY = strtok(NULL, "$");
-
-		printf("%s %s\n", pchIP, pchKEY);
 
 		////pchPOS = strtok(NULL, "@");
 		//
@@ -162,7 +158,7 @@ void RacingScene::Update()
 		//	//pchY = strtok(NULL, "/");
 		//	//pchZ = strtok(NULL, "/");
 		//
-		//	printf("%s\n", pchKEY);
+			printf("%s\n", pchKEY);
 		//
 			m_loop = true;
 		}
