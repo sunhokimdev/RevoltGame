@@ -53,7 +53,6 @@ void PFirework::Update(float timeDelta)
 		// 생존한 파티클만 갱신
 		if (i->_isAlive)
 		{
-			//i->_position += i->_velocity * timeDelta;
 			i->_position += i->_velocity * timeDelta;
 			i->_age += timeDelta;
 

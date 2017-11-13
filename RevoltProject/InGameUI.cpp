@@ -401,7 +401,6 @@ void InGameUI::Setup()
 	pLastLabFont->AddChild(pRaceFont);
 	pImageView6->AddChild(m_pItemImage);
 
-	pImageView7->AddChild(pIV_arrowDir);
 	pImageView7->AddChild(pITV_Rank);
 	pImageView7->AddChild(pITV_Rank2);
 
@@ -514,13 +513,17 @@ void InGameUI::UpdateSpeed()
 	if (fTemp >= 999)
 		fTemp = 999;
 
-	int nOne = FONT2_NUM0;
-	int nTen = FONT2_NUM0;
-	int nHun = FONT2_NUM0;
+	int nOne;
+	int nTen;
+	int nHun;
 
 	nOne = (int)(fTemp % 10) + FONT2_NUM0;
 	nTen = (int)((fTemp / 10)%10) + FONT2_NUM0;
 	nHun = (int)(fTemp / 100) + FONT2_NUM0;
+
+	if (nOne <= FONT2_NUM0) nOne = FONT2_NUM0;
+	if (nTen <= FONT2_NUM0) nTen = FONT2_NUM0;
+	if (nHun <= FONT2_NUM0) nHun = FONT2_NUM0;
 
 	std::string strHun;
 	std::string strTen;

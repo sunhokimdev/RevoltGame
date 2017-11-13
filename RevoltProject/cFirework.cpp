@@ -33,12 +33,11 @@ void cFirework::Setup()
 
 	m_pUser->USER_TAG = ePhysXTag::E_PHYSX_TAG_FIREWORK;
 
-
 	m_pEffect = new PFirework(100, 3.0f);
 	m_pEffect->Init(g_pD3DDevice, "Objects/firework/particle_flare.bmp");
 
-	m_pTail = new PFirework(5, 1.0f);
-	m_pTail->Init(g_pD3DDevice, "Objects/firework/particle_flare.bmp");
+	m_pTail = new PFirework(2, 0.7f);
+	m_pTail->Init(g_pD3DDevice, "Objects/firework/particle_flare2.bmp");
 }
 
 void cFirework::Update()
@@ -48,6 +47,15 @@ void cFirework::Update()
 	fwPos.x = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().x;
 	fwPos.y = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().y;
 	fwPos.z = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().z;
+		
+	m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pPhysX->m_pActor->getGlobalPose().t);
+	
+	if (!m_isUse)
+	{
+		m_pPhysX->pos.y = -50.0f;
+		m_pPhysX->pPhysX->m_pActor->setGlobalPosition(m_pPhysX->pos);
+		m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pos);
+	}
 
 	if (m_isUse && !m_pEffect->GetIsUse())
 	{
@@ -66,14 +74,14 @@ void cFirework::Update()
 		}
 		else
 		{
-			dir.y = 0.0f;
+			dir.y = 1.0f - fwPos.y;
 			D3DXVec3Normalize(&dir, &dir);
 
-			force.x = dir.x * 300;
-			force.y = -dir.y * 1000;
-			force.z = dir.z * 300;
+			force.x = dir.x * 500;
+			force.y = dir.y * 500;
+			force.z = dir.z * 500;
 		}
-		
+
 		m_pPhysX->pPhysX->m_pActor->addForce(force);
 	}
 
@@ -106,8 +114,6 @@ void cFirework::Update()
 
 	if (!m_isUse && m_pEffect->GetIsUse())
 		m_pEffect->Update(0.3f);
-
-	m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pPhysX->m_pActor->getGlobalPose().t);
 }
 
 void cFirework::Render()
@@ -136,11 +142,8 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	
 	NxVec3 force;
 
-
-	D3DXVec3Normalize(&angle,&angle);
-
 	force.x = angle.x * 50;
-	force.y = 1500;
+	force.y = 2000;
 	force.z = angle.z * 50;
 	
 	if (m_isSleep)
@@ -160,7 +163,7 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 
 		m_pPhysX->pTrigger->m_pActor->putToSleep();
 		m_pPhysX->pTrigger->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
-		SetActorGroup(m_pPhysX->pPhysX->m_pActor, 1	);
+		SetActorGroup(m_pPhysX->pPhysX->m_pActor, E_PHYSX_TAG_FIREWORK);
 		this->SetPhysXData(m_pPhysX->pPhysX);
 		m_isInit = false;
 	}

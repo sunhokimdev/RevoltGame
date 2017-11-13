@@ -14,10 +14,6 @@ cGravityball::cGravityball()
 
 cGravityball::~cGravityball()
 {
-	for each(auto a in m_vecImpact)
-		SAFE_DELETE(a);
-
-	SAFE_DELETE(m_pPlasma);
 }
 
 void cGravityball::Setup()
@@ -59,6 +55,15 @@ void cGravityball::Update()
 		}
 		m_pPlasma->Update();
 	}
+
+	if (!m_isUse)
+	{
+		m_pPhysX->pos.y = -50.0f;
+		m_pPhysX->pPhysX->m_pActor->setGlobalPosition(m_pPhysX->pos);
+		m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pos);
+	}
+
+
 
 	if (m_fTime % UPDATETIME == 0)
 	{
@@ -118,6 +123,14 @@ void cGravityball::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	}
 
 	m_pPhysX->pPhysX->m_pActor->addForce(force);
+}
+
+void cGravityball::Destroy()
+{
+	for each(auto a in m_vecImpact)
+		SAFE_DELETE(a);
+
+	SAFE_DELETE(m_pPlasma);
 }
 
 void cGravityball::MoveActorOnPath()

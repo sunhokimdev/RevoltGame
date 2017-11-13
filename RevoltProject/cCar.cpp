@@ -299,7 +299,7 @@ void cCar::Update()
 	m_carNxVehicle->getActor()->addForce(NxVec3(0, 0.001, 0));
 	INPUT_KEY.reset();
 
-	SettingCarPos();
+	//SettingCarPos();
 
 	CtrlPlayer();
 
@@ -732,7 +732,7 @@ void cCar::TrackCheck()
 			std::cout << "START" << std::endl;
 			m_nextCheckBoxID = 1;
 			m_currCheckBoxID = 0;	//체크 시작
-			m_countRapNum = 2;
+			m_countRapNum = 0;
 			m_rapTimeCount = 0.f;
 
 			if (!m_isAI) m_pInGameUI->SetLabCnt(m_countRapNum);

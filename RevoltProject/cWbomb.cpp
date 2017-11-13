@@ -11,7 +11,6 @@ cWbomb::cWbomb()
 
 cWbomb::~cWbomb()
 {
-	SAFE_DELETE(m_pImapt);
 }
 
 void cWbomb::Setup()
@@ -30,6 +29,13 @@ void cWbomb::Setup()
 void cWbomb::Update()
 {
 	cItem::Update();
+
+	if (!m_isUse)
+	{
+		m_pPhysX->pos.y = -50.0f;
+		m_pPhysX->pPhysX->m_pActor->setGlobalPosition(m_pPhysX->pos);
+		m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pos);
+	}
 
 	if (m_isUse && m_fTime > WATERIMPACT)
 	{
@@ -101,7 +107,7 @@ void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	if (m_isInit)
 	{
 		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
-		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(3.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
+		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(4.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
 		
 		NxVec3 v = m_pPhysX->pPhysX->m_pActor->getGlobalPosition();
 
@@ -117,4 +123,9 @@ void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 
 	m_pPhysX->pPhysX->m_pActor->addForce(force);
 	m_pPhysX->pPhysX->m_pActor->addTorque(NxVec3(angle.x, angle.y, angle.z));
+}
+
+void cWbomb::Destroy()
+{
+	SAFE_DELETE(m_pImapt);
 }
