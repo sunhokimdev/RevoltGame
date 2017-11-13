@@ -13,9 +13,9 @@ cAI_CtrlCompete::cAI_CtrlCompete()
 
 	PickupAngle = 0.5f;
 
-	PickupValue = 10.0f;
-	CarsValue = 1.0f;
-	Competitive = 1.0f;
+	PickupValue = 100.0f;
+	CarsValue = 100.0f;
+	Competitive = 0.5f;
 }
 
 
@@ -26,89 +26,97 @@ cAI_CtrlCompete::~cAI_CtrlCompete()
 
 void cAI_CtrlCompete::Update()
 {
-	float minDistance = maxDistance * 20;
+	float minDistance = maxDistance * 100;
+
+	NxRaycastHit hit;
+
 	HandleValue = 0.0f;
 	{
-		D3DXVECTOR3 thisPos = AI_Data->pCar->GetPhysXData()->GetPositionToD3DXVec3();
-		D3DXVECTOR3 F__Dir = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_F__.GetDir_Dx();
-
-		D3DXVECTOR3 objPos(0, 0, 0);
-		D3DXVECTOR3 objDir(0, 0, 0);
-
-		float angleValue = 0.f;
-
-		closePickup = NULL;
-		for each(Object* p in AI_Data->pTrack->GetVecObject())
+		if (AI_Data->pCar->GetHoldItem() == (eITEM_LIST)0)
 		{
-			if (p->GetTag() == eOBJECT_TAG::E_OBJECT_PICKUP)
+			D3DXVECTOR3 thisPos = AI_Data->pCar->GetPhysXData()->GetPositionToD3DXVec3();
+			D3DXVECTOR3 F__Dir = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_F__.GetDir_Dx();
+
+			D3DXVECTOR3 objPos(0, 0, 0);
+			D3DXVECTOR3 objDir(0, 0, 0);
+
+			float angleValue = 0.f;
+
+			closePickup = NULL;
+			for each(Object* p in AI_Data->pTrack->GetVecObject())
 			{
-				if (!((cPickUp*)p)->IsShow()) continue;
-
-				objPos = p->GetPhysXData()->GetPositionToD3DXVec3();
-
-				objDir = ((cPickUp*)p)->GetPosition() - thisPos; objDir.y = 0;
-				float distance = D3DXVec3Length(&(objDir));
-				D3DXVec3Normalize(&objDir, &objDir);
-
-				angleValue = D3DXVec3Dot(&F__Dir, &objDir);
-
-
-				//각도
-				if (angleValue > PickupAngle)
+				if (p->GetTag() == eOBJECT_TAG::E_OBJECT_PICKUP)
 				{
-					D3DXVECTOR3 rayPos = D3DXVECTOR3(thisPos.x, thisPos.x + 0.3f, thisPos.z);
-					//장에물
-					if (RAYCAST(rayPos, objDir, minDistance).distance < distance)
+					if (!((cPickUp*)p)->IsShow()) continue;
+
+					objPos = p->GetPhysXData()->GetPositionToD3DXVec3();
+
+					objDir = ((cPickUp*)p)->GetPosition() - thisPos;
+					objDir.y = 0;
+					float distance = D3DXVec3Length(&(objDir));
+					D3DXVec3Normalize(&objDir, &objDir);
+
+					angleValue = D3DXVec3Dot(&F__Dir, &objDir);
+
+
+					//각도
+					if (angleValue > PickupAngle)
 					{
-						D3DXVECTOR3 rayPos = D3DXVECTOR3(objPos.x, objPos.x + 0.3f, objPos.z);
-						if (RAYCAST(rayPos, -objDir, minDistance).shape == NULL)
+						D3DXVECTOR3 rayPos = D3DXVECTOR3(thisPos.x, thisPos.y + 0.3f, thisPos.z);
+						hit = RAYCAST(rayPos, objDir, 10000);
+						//장에물
+						if (hit.shape != NULL && hit.distance > distance - 0.01f)
 						{
-							//가장 가까운 거리
-							if (minDistance > distance)
+							D3DXVECTOR3 rayPos = D3DXVECTOR3(objPos.x, objPos.y + 0.3f, objPos.z);
+							hit = RAYCAST(rayPos, -objDir, minDistance);
+
+							if (hit.shape != NULL && hit.distance > distance - 0.01f)
 							{
-								closePickup = (cPickUp*)p;
-								minDistance = distance;
+								//가장 가까운 거리
+								if (minDistance > distance)
+								{
+									closePickup = (cPickUp*)p;
+									minDistance = distance;
+								}
 							}
 						}
 					}
 				}
 			}
-		}
-		//행동
-		if (closePickup)
-		{
-			objDir = closePickup->GetPosition() - thisPos;
-			objDir.y = 0.f;
-			D3DXVec3Normalize(&objDir, &objDir);
-			D3DXVECTOR3 dir(0, 0, 0);
-			
-			D3DXVec3Cross(&dir, &objDir, &F__Dir);
-			D3DXVec3Normalize(&dir, &dir);
+			//행동
+			if (closePickup)
+			{
+				objDir = closePickup->GetPosition() - thisPos;
+				objDir.y = 0.f;
+				D3DXVec3Normalize(&objDir, &objDir);
+				D3DXVECTOR3 dir(0, 0, 0);
 
-			POS_ITEMPOS = closePickup->GetPosition();
+				D3DXVec3Cross(&dir, &objDir, &F__Dir);
+				D3DXVec3Normalize(&dir, &dir);
 
-			bool isRight = (dir.y <= 0);
-			angleValue = 1 - angleValue;
-			angleValue = isRight ? angleValue : -angleValue;
+				POS_ITEMPOS = closePickup->GetPosition();
 
-			HandleValue += angleValue * PickupValue * Competitive;
+				bool isRight = (dir.y <= 0);
+				angleValue = 1 - angleValue;
+				angleValue = isRight ? angleValue : -angleValue;
 
-			std::cout << isRight << std::endl;
-
+				HandleValue += angleValue * PickupValue * Competitive;
+			}
 		}
 	}
 
 	{
 		float thisRpmRate = GetRpmRate();
-		thisRpmRate = 1.0f;
+//		thisRpmRate = 1.0f;
+		thisRpmRate = fmax(thisRpmRate, 0.1f);
 
 		NxVec3 thisPos = AI_Data->pCar->GetPhysXData()->GetPositionToNxVec3();
 		NxVec3 thisDir = AI_Data->pCar->WheelArrow(); // +AI_Data->pCar->CarArrow();
-		thisDir.y = 0.f; thisDir.normalize();
+		thisDir.normalize();
 		NxVec3 thisDir_(0, 0, 0); thisDir_.multiply(maxDistance * thisRpmRate, thisDir);
 		NxVec3 thisDirPos = thisPos + thisDir_;
 
-		thisDirPos.y = 0.3f;
+		// thisDirPos.y = 0.3f;
 		POS_THISPOSDIR = D3DXVECTOR3(thisDirPos.x, thisDirPos.y, thisDirPos.z);
 
 		for each(cCar* p in (*AI_Data->pCars))
@@ -117,11 +125,12 @@ void cAI_CtrlCompete::Update()
 
 			NxVec3 carPos = p->GetPhysXData()->GetPositionToNxVec3();
 			NxVec3 carDir = p->CarArrow() + p->WheelArrow();
-			carDir.y = 0.f; carDir.normalize();
+			//carDir.y = 0.f;
+			carDir.normalize();
 			NxVec3 carDir_(0, 0, 0); carDir_.multiply(maxDistance * thisRpmRate, carDir);
 			NxVec3 carDirPos = carPos + carDir_;
 
-			carDirPos.y = 0.3f;
+		//	carDirPos.y = 0.3f;
 			POS_CARPOSDIR = D3DXVECTOR3(carDirPos.x, carDirPos.y, carDirPos.z);
 
 
@@ -146,10 +155,12 @@ void cAI_CtrlCompete::Update()
 				bool isThisDirRight = CarToThisDir.cross(carDir).y < 0;
 
 				NxVec3 rayPos = thisPos; rayPos.y += 0.3f;
-				if (RAYCAST(rayPos, thisToCarPos, minDistance).shape == NULL)
+				hit = RAYCAST(rayPos, thisToCarPos, minDistance);
+				if (hit.shape != NULL && hit.distance > dist - 0.01f)
 				{
 					NxVec3 rayPos = carPos; rayPos.y += 0.3f;
-					if (RAYCAST(rayPos, CarToThisPos, minDistance).shape == NULL)
+					hit = RAYCAST(rayPos, thisToCarPos, minDistance);
+					if (hit.shape != NULL && hit.distance > dist - 0.01f)
 					{
 
 						if (isCarPosRight != isCarDirRight && isThisPosRight != isThisDirRight)
@@ -166,6 +177,7 @@ void cAI_CtrlCompete::Update()
 							{
 								//자동차 앞으로 회피
 								targetDir = carDirPos - thisPos;
+								isRight = isCarDirRight;
 							}
 
 							targetDir.normalize();
@@ -175,10 +187,9 @@ void cAI_CtrlCompete::Update()
 							value = isRight ? value : -value;
 
 							if (closePickup)
-								HandleValue += value * CarsValue * (1.0f - Competitive*0.5f);
+								HandleValue += value * CarsValue * (1.0f - Competitive * 0.5f);
 							else
 								HandleValue += value * CarsValue * (1.0f - Competitive);
-
 						}
 					}
 				}

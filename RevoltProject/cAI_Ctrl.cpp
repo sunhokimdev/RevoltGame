@@ -54,7 +54,7 @@ void cAI_Ctrl::Handle()
 	HandleValue = VecHandleValue();
 	HandleValue += pCompete->HandleValue;
 
-	
+	std::cout << HandleValue << std::endl;
 
 	float speedValue = VecSpeedValue();
 	speedValue = fmin(0.f, abs(speedValue));

@@ -55,16 +55,16 @@ void RacingScene::Setup()
 
 
 	int i = 0;
-//	for each(cPlayerData* p in g_pDataManager->vecPlayerData)
-//	{
-//		if (i + 1 == m_pTrack->GetStartPositions().size()) break;
-//		CreateCar(m_pTrack->GetStartPositions()[i], i, p->CAR_NAME, p->IsAI);
-//		i++;
-//	}
+	for each(cPlayerData* p in g_pDataManager->vecPlayerData)
+	{
+		if (i + 1 == m_pTrack->GetStartPositions().size()) break;
+		CreateCar(m_pTrack->GetStartPositions()[i], i, p->CAR_NAME, p->IsAI);
+		i++;
+	}
 //	if (i == 0)
 //	{
-		CreateCar(m_pTrack->GetStartPositions()[i+0], i+0, "tc1", false);
-		CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
+//		CreateCar(m_pTrack->GetStartPositions()[i+0], i+0, "tc1", false);
+//		CreateCar(m_pTrack->GetStartPositions()[i+1], i+1, "tc2", true);
 //		CreateCar(m_pTrack->GetStartPositions()[i+2], i+2, "tc3", true);
 //		CreateCar(m_pTrack->GetStartPositions()[i+3], i+3, "tc4", true);
 //		CreateCar(m_pTrack->GetStartPositions()[i+4], i+4, "tc5", true);
