@@ -427,9 +427,6 @@
     <ClInclude Include="cAI.h">
       <Filter>AI</Filter>
     </ClInclude>
-    <ClInclude Include="cAI_Collider.h">
-      <Filter>AI</Filter>
-    </ClInclude>
     <ClInclude Include="cWbomb.h">
       <Filter>Item\WaterBomb</Filter>
     </ClInclude>
@@ -478,7 +475,7 @@
     <ClInclude Include="cSelectNetworkLob.h">
       <Filter>Lobby\GameUI</Filter>
     </ClInclude>
-    <ClInclude Include="cAI_Flip.h">
+    <ClInclude Include="cAI_CtrlFlip.h">
       <Filter>AI</Filter>
     </ClInclude>
     <ClInclude Include="PSystem.h">
@@ -486,6 +483,18 @@
     </ClInclude>
     <ClInclude Include="PFirework.h">
       <Filter>Item\Firework</Filter>
+    </ClInclude>
+    <ClInclude Include="cAI_Ctrl.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="cAI_Master.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="cAI_Ray.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="cAI_CtrlCompete.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -732,9 +741,6 @@
     <ClCompile Include="cAI.cpp">
       <Filter>AI</Filter>
     </ClCompile>
-    <ClCompile Include="cAI_Collider.cpp">
-      <Filter>AI</Filter>
-    </ClCompile>
     <ClCompile Include="cWbomb.cpp">
       <Filter>Item\WaterBomb</Filter>
     </ClCompile>
@@ -783,7 +789,7 @@
     <ClCompile Include="cSelectNetworkLob.cpp">
       <Filter>Lobby\GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="cAI_Flip.cpp">
+    <ClCompile Include="cAI_CtrlFlip.cpp">
       <Filter>AI</Filter>
     </ClCompile>
     <ClCompile Include="PFirework.cpp">
@@ -791,6 +797,18 @@
     </ClCompile>
     <ClCompile Include="PSystem.cpp">
       <Filter>Item\Firework</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_Ray.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_Ctrl.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_Master.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_CtrlCompete.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

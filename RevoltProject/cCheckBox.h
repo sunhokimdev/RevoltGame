@@ -8,6 +8,7 @@ public:
 	cCheckBox();
 	~cCheckBox();
 
+	D3DXVECTOR3 ToNextCheckBoxDir();
 //	void Update();
 };
 

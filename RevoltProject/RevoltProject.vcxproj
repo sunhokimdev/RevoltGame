@@ -153,10 +153,13 @@
   <ItemGroup>
     <ClInclude Include="c321GO.h" />
     <ClInclude Include="cAI.h" />
-    <ClInclude Include="cAI_Collider.h" />
+    <ClInclude Include="cAI_Ctrl.h" />
     <ClInclude Include="cAI_CtrlHandel.h" />
     <ClInclude Include="cAI_CtrlSpeed.h" />
-    <ClInclude Include="cAI_Flip.h" />
+    <ClInclude Include="cAI_CtrlFlip.h" />
+    <ClInclude Include="cAI_CtrlCompete.h" />
+    <ClInclude Include="cAI_Master.h" />
+    <ClInclude Include="cAI_Ray.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Car.h" />
@@ -275,10 +278,13 @@
   <ItemGroup>
     <ClCompile Include="c321GO.cpp" />
     <ClCompile Include="cAI.cpp" />
-    <ClCompile Include="cAI_Collider.cpp" />
+    <ClCompile Include="cAI_Ctrl.cpp" />
     <ClCompile Include="cAI_CtrlHandel.cpp" />
     <ClCompile Include="cAI_CtrlSpeed.cpp" />
-    <ClCompile Include="cAI_Flip.cpp" />
+    <ClCompile Include="cAI_CtrlFlip.cpp" />
+    <ClCompile Include="cAI_CtrlCompete.cpp" />
+    <ClCompile Include="cAI_Master.cpp" />
+    <ClCompile Include="cAI_Ray.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Car.cpp" />

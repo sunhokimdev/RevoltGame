@@ -1,13 +1,31 @@
 #include "stdafx.h"
 #include "cAI.h"
 #include "cCar.h"
+#include "cCheckBox.h"
+#include "cTrack.h"
+
 
 #include "cAI_CtrlHandel.h"
-#include "cAI_CtrlSpeed.h"[]
+#include "cAI_CtrlSpeed.h"
+#include "cAI_CtrlFlip.h"
+
+AI_DATA::AI_DATA(cCar* pCar, cTrack* pTrack, std::vector<cCar*>* pCars)
+{
+	if (pCar)
+			this->pCar = pCar;
+	if (pTrack)
+		this->pTrack = pTrack;
+	if (pCars)
+		this->pCars = pCars;
+}
+
+//
 
 cAI::cAI()
 {
-	AITag = AI_TAG_MASTER;
+	AI_Data = NULL;
+	familyAI = NULL;
+	AI_Mesh = NULL;
 }
 
 
@@ -15,74 +33,45 @@ cAI::~cAI()
 {
 }
 
-void cAI::SetCar(cCar * pAICar)
+void cAI::Setup()
 {
-	m_pAICar = pAICar;
-	m_pAICarActor = m_pAICar->GetPhysXData()->m_pActor;
-
-	//{
-	//	cAI_CtrlSpeed* p = new cAI_CtrlSpeed;
-	//	this->AddAICtrl(p);
-	//}
-	{
-		cAI_CtrlHandel* p = new cAI_CtrlHandel;
-		this->AddAICtrl(p);
-	}
-//	{
-//		cAI_CtrlHandel* p = new cAI_CtrlHandel;
-//		this->AddAICtrl(p);
-//	}
-//	{
-//		cAI_CtrlHandel* p = new cAI_CtrlHandel;
-//		this->AddAICtrl(p);
-//	}
-//	{
-//		cAI_CtrlHandel* p = new cAI_CtrlHandel;
-//		this->AddAICtrl(p);
-//	}
-//	{
-//		cAI_CtrlHandel* p = new cAI_CtrlHandel;
-//		this->AddAICtrl(p);
-//	}
-
-
 }
+
 void cAI::Destory()
 {
-	for each(cAI* p in chiledAI)
-	{
-		p->Destory();
-	}
-}
-void cAI::AddAICtrl(cAI * pAI)
-{
-	pAI->m_pAICar = this->m_pAICar;
-	pAI->m_pAICarActor = this->m_pAICarActor;
-	chiledAI.push_back(pAI);
-}
+	if (AI_Mesh) AI_Mesh->Release();
+	if(AI_Data) AI_Data->Destory();
 
-void cAI::SetBitKey(eBIT_KEY keySet, bool onoff)
-{
-	m_pAICar->INPUT_KEY[keySet] = onoff;
-}
-
-bool cAI::GetBytKey(eBIT_KEY keyGet)
-{
-	return m_pAICar->INPUT_KEY[keyGet];
+	AI_Mesh = NULL;
+	
+	//아래 두가지는 외부 에서 받아오는 포인터 Delete는 필요 옶다.
+	// 값만 비워두자(NULL)
+	AI_Data = NULL;
+	familyAI = NULL;
 }
 
 void cAI::Update()
 {
-	for each(cAI* p in chiledAI)
-	{
-		p->Update();
-	}
 }
 
 void cAI::Render()
 {
-	for each(cAI* p in chiledAI)
-	{
-		p->Render();
-	}
+}
+
+cCheckBox * cAI::CurrentCheckBox()
+{
+	return (cCheckBox*)(*(AI_Data->pTrack)->GetCheckBoxsPt())[AI_Data->pCar->GetAICheckBoxID()];
+}
+
+float cAI::ScaleValue(float value, float Total, float multiValue)
+{
+	float rate = (value * multiValue / Total);
+//	rate = fmin(rate, 1.0f);
+//	rate = fmax(rate, -1.0f);
+	return rate;
+}
+
+float cAI::GetRpmRate()
+{
+	return AI_Data->pCar->GetRpmRate();
 }

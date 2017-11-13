@@ -1,33 +1,19 @@
 #include "stdafx.h"
 #include "cAI_CtrlSpeed.h"
-#include "cPhysXManager.h"
+#include "cAI_Master.h"
 #include "cCar.h"
 
 cAI_CtrlSpeed::cAI_CtrlSpeed()
 {
-	rayHitFront = NULL;
+	F___DistRange = 10;		//인지범위 
+	B___DistRange = 5;		//인지범위 
+	Min_DistRange = 3.f;	//무조건 유지하려는 거리
+	Min_LRDistRange = 1.5f;
 
-	pMesh = new LPD3DXMESH;
-
-	aiState = E_SpeedStateFront;
-
-
-	frontDistPrev = 0;
-	frontDistCurr = 0;
-	frontDelta = 0;
-
-	backDistPrev = 0;
-	backDistCurr = 0;
-	backDelta = 0;
-	
-
-	AI_distanceFront = 5;		//인지범위 
-	AI_distanceBack = 3;		//인지범위 
-	AI_value = 0.2f;		//delta 의 인지범위
-	AI_distanceMin = 2.f;	//무조건 유지하려는 거리
-
-
-	AITag = AI_TAG_SPEED;
+	isBack = false;
+	isRepos = false;
+	ReposTimeCount = 0.0f;
+	ReposTime = 5.0f;
 }
 
 
@@ -38,72 +24,70 @@ cAI_CtrlSpeed::~cAI_CtrlSpeed()
 
 void cAI_CtrlSpeed::Update()
 {
-	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 0.3, 0);
-	NxVec3 dirFront = m_pAICar->WheelArrow(0, false); dirFront.y = 0;
-	NxVec3 dirBack = m_pAICar->WheelArrow(180, true); dirBack.y = 0;
-	std::cout << dirBack.x << std::endl;
+	float F__Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_F__.Distance();
+	float B__Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_B__.Distance();
+	float LF_Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_LF_.Distance();
+	float RF_Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_RF_.Distance();
 
-	dirFront.normalize();
-	dirBack.normalize();
+	float rpmRate = GetRpmRate();
+	//	rpmRate = fmax(rpmRate, 0.1f);
 
-	rayHitFront = &RAYCAST(raypos, dirFront, 100);//,ePhysXTag::E_PHYSX_TAG_RAYCAST_TO_AI);
-	rayHitBack = &RAYCAST(raypos, dirBack, 100);
 
-	if (rayHitBack->shape)
+	if (1.0f > ScaleValue(F__Dist, F___DistRange * fmax(abs(rpmRate), 0.5f)))
 	{
-		backDistCurr = rayHitBack->distance;
-		backDelta = backDistCurr - backDistPrev;
-
-		NxVec3 pos = rayHitBack->worldImpact;
-		BackPos = D3DXVECTOR3(pos.x, pos.y, pos.z);
-	}
-	if (rayHitFront->shape)
-	{
-		frontDistCurr = rayHitFront->distance;
-		frontDelta = frontDistCurr - frontDistPrev;
-
-		NxVec3 pos = rayHitFront->worldImpact;
-		FrontPos = D3DXVECTOR3(pos.x, pos.y, pos.z);
-	}
-
-	//
-	aiState = E_SpeedStateFront;
-
-	if ((frontDelta < AI_value) || (frontDistCurr < AI_distanceMin))
-	{
-		if (frontDistCurr < AI_distanceFront)
+		//감속, 후진
+		SpeedValue = -1.0f;
+		if (abs(rpmRate) < 0.05)
 		{
-			aiState = E_SpeedStateBack;
-			//			std::cout << "Back" << std::endl;
+			isBack = true;
 		}
 	}
-
-	if ((backDelta < AI_value) || (backDistCurr < AI_distanceMin))
+	else if (1.0f > ScaleValue(B__Dist, B___DistRange * fmax(abs(rpmRate), 0.5f)))
 	{
-		if (backDistCurr < AI_distanceBack)
-		{
-			aiState = E_SpeedStateFront;
-		}
+		SpeedValue = 1.0f;
 	}
-	//	std::cout << aiState << std::endl;
+	else
+	{
+		SpeedValue = 1.f;
+	}
 
-	frontDistPrev = frontDistCurr;
-	backDistPrev = backDistCurr;
+	//std::cout << SpeedValue << std::endl;
+	if (LF_Dist < Min_LRDistRange || RF_Dist < Min_LRDistRange)
+	{
+		if (rpmRate > 0) SpeedValue = -1.f;
+		if (rpmRate < 0) SpeedValue = 1.f;
+	}
 
 
-	SetBitKey(eBIT_KEY::E_BIT_UP, aiState == E_SpeedStateFront);
-	SetBitKey(eBIT_KEY::E_BIT_DOWN, aiState == E_SpeedStateBack);
+	//강제 후진
+	if (isBack)
+	{
+		ReposTimeCount += g_pTimeManager->GetElapsedTime();
+		SpeedValue = -1.0f;
+		if (F__Dist > F___DistRange * 2.0f)
+		{
+			isBack = false;
+		}
+		else if (((B___DistRange * 0.5f / F___DistRange * 2.0f) > (B__Dist / F__Dist)))
+		{
+			isBack = false;
+		}
+
+	}
+	else if (abs(rpmRate) < 0.1f)
+	{
+		ReposTimeCount+= g_pTimeManager->GetElapsedTime();
+	}
+	else
+	{
+		ReposTimeCount = 0.0f;
+	}
+
+
+	if (ReposTimeCount > ReposTime)
+	{
+		isRepos = true;
+		ReposTimeCount = 0.0f;
+	}
 }
 
-void cAI_CtrlSpeed::Render()
-{
-	D3DXCreateSphere(g_pD3DDevice, 0.5, 8, 8, pMesh, NULL);
-	D3DXMATRIXA16 mat16;
-	D3DXMatrixTranslation(&mat16, FrontPos.x, FrontPos.y, FrontPos.z);
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
-	(*pMesh)->DrawSubset(0);
-
-	D3DXMatrixTranslation(&mat16, BackPos.x, BackPos.y, BackPos.z);
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
-	(*pMesh)->DrawSubset(0);
-}

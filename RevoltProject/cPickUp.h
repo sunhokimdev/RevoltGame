@@ -15,5 +15,7 @@ public:
 
 	void Update();
 	void Render();
+
+	bool IsShow() { return m_isExist; }
 };
 
