@@ -59,8 +59,7 @@ void RacingScene::Setup()
 	int i = 0;
 	for each(cPlayerData* p in g_pDataManager->vecPlayerData)
 	{
-		if (i == 2) break;
-		if (i + 1 == m_pTrack->GetStartPositions().size()) break;
+		if (i == m_pTrack->GetStartPositions().size()) break;
 		CreateCar(m_pTrack->GetStartPositions()[i], i, p->CAR_NAME, p->IsAI);
 		i++;
 	}

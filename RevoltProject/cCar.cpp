@@ -488,8 +488,11 @@ void cCar::TrackCheck()
 			m_countRapNum = 0;
 			m_rapTimeCount = 0.f;
 
-			if (!m_isAI) m_pInGameUI->SetLabCnt(m_countRapNum);
-
+			if (!m_isAI)
+			{
+				std::cout << m_isAI << std::endl;
+				m_pInGameUI->SetLabCnt(m_countRapNum);
+			}
 			cCheckBox* nextCheckBox = (cCheckBox*)m_pTrack->GetCheckBoxs()[GetCurrCheckBoxID()];
 
 		}
@@ -511,13 +514,17 @@ void cCar::TrackCheck()
 
 		if (m_currCheckBoxID == 0)
 		{
-			// m_countRapNum++;
-			if (!m_isAI) m_pInGameUI->SetLabCnt(m_countRapNum);
-			if (!m_isAI) m_pInGameUI->UpdateLastTime();
-			if (!m_isAI) m_pInGameUI->CompareBestTime();
-			if (!m_isAI) m_pInGameUI->SetLabElapseTime(0);
-			if (!m_isAI) m_pInGameUI->SetLabMinOneth(FONT2_NUM0);
-			if (!m_isAI) m_pInGameUI->SetLabMinTenth(FONT2_NUM0);
+			m_countRapNum++;
+			if (!m_isAI)
+			{
+				std::cout << m_countRapNum << std::endl;
+				m_pInGameUI->SetLabCnt(m_countRapNum);
+				m_pInGameUI->UpdateLastTime();
+				m_pInGameUI->CompareBestTime();
+				m_pInGameUI->SetLabElapseTime(0);
+				m_pInGameUI->SetLabMinOneth(FONT2_NUM0);
+				m_pInGameUI->SetLabMinTenth(FONT2_NUM0);
+			}
 
 			if (m_bastRapTimeCount > m_rapTimeCount || m_bastRapTimeCount < 0.0f)
 			{
@@ -823,13 +830,13 @@ void cCar::SetResetNetworkKey()
 
 void cCar::SetNetworkKey(std::string str)
 {
-	INPUT_KEY[E_BIT_UP___] = (str[0] == '1');	m_keySet.up		= INPUT_KEY[E_BIT_UP___];
-	INPUT_KEY[E_BIT_DOWN_] = (str[1] == '1');	m_keySet.down	= INPUT_KEY[E_BIT_DOWN_];
-	INPUT_KEY[E_BIT_LEFT_] = (str[2] == '1');	m_keySet.left	= INPUT_KEY[E_BIT_LEFT_];
-	INPUT_KEY[E_BIT_RIGHT] = (str[3] == '1');	m_keySet.right	= INPUT_KEY[E_BIT_RIGHT];
-	INPUT_KEY[E_BIT_ITEM_] = (str[4] == '1');	m_keySet.ctrl	= INPUT_KEY[E_BIT_ITEM_];
-	INPUT_KEY[E_BIT_REPOS] = (str[5] == '1');	m_keySet.r_key	= INPUT_KEY[E_BIT_REPOS];
-	INPUT_KEY[E_BIT_FLIP_] = (str[5] == '1');	m_keySet.f_key	= INPUT_KEY[E_BIT_FLIP_];
+	INPUT_KEY[E_BIT_UP___] = (str[0] == '1');	m_keySet.up = INPUT_KEY[E_BIT_UP___];
+	INPUT_KEY[E_BIT_DOWN_] = (str[1] == '1');	m_keySet.down = INPUT_KEY[E_BIT_DOWN_];
+	INPUT_KEY[E_BIT_LEFT_] = (str[2] == '1');	m_keySet.left = INPUT_KEY[E_BIT_LEFT_];
+	INPUT_KEY[E_BIT_RIGHT] = (str[3] == '1');	m_keySet.right = INPUT_KEY[E_BIT_RIGHT];
+	INPUT_KEY[E_BIT_ITEM_] = (str[4] == '1');	m_keySet.ctrl = INPUT_KEY[E_BIT_ITEM_];
+	INPUT_KEY[E_BIT_REPOS] = (str[5] == '1');	m_keySet.r_key = INPUT_KEY[E_BIT_REPOS];
+	INPUT_KEY[E_BIT_FLIP_] = (str[5] == '1');	m_keySet.f_key = INPUT_KEY[E_BIT_FLIP_];
 }
 
 NxVec3 cCar::WheelArrow(float angle, bool back)

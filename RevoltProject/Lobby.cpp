@@ -335,6 +335,8 @@ void Lobby::KeyUpdate()
 			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
 			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
 		
+			std::cout << g_pDataManager->vecPlayerData.size() << std::endl;
+
 			g_SceneManager->ChangeScene("Race");
 			return;
 		}
