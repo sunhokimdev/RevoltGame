@@ -59,7 +59,7 @@ void RacingScene::Setup()
 	for each(cPlayerData* p in g_pDataManager->vecPlayerData)
 	{
 		if (i  == m_pTrack->GetStartPositions().size()) break;
-		CreateCar(m_pTrack->GetStartPositions()[i], i, p->CAR_NAME, p->IsAI, p->isUser);
+		CreateCar(m_pTrack->GetStartPositions()[i], i,p->ID, p->CAR_NAME, p->IsAI, p->isUser);
 		i++;
 	}
 
@@ -317,13 +317,14 @@ bool RacingScene::IsCarRunTrue(cCar* pCar)
 	return m_trackEndCount > pCar->GetCountRapNum();
 }
 
-void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carName, bool isAI, bool isUser)
+void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userName, std::string carName, bool isAI, bool isUser)
 {
 	cCar* pCar = new cCar;
 	AI_DATA aiData(pCar, m_pTrack, &vecCars);
 	pCar->LoadCar(carName);
 	pCar->SetAI(isAI, aiData);
 	pCar->SetIsUser(isUser);
+	pCar->SetUserName(userName);
 	vecCars.push_back(pCar);
 
 	pCar->GetPhysXData()->SetPosition(m_pTrack->GetStartPositions()[playerID]);
@@ -352,7 +353,7 @@ void RacingScene::NetworkLoop()
 	char* pchY = NULL;
 	char* pchZ = NULL;
 
-	str = "$" + g_pNetworkManager->GetClientIP() + "$" + g_pNetworkManager->GetKeYString();
+	str = "$" + g_pNetworkManager->GetUserIP() + "$" + g_pNetworkManager->GetKeYString();
 	g_pNetworkManager->SendMsg(str.c_str());
 
 	if (g_pNetworkManager->RecvMsg())
@@ -365,7 +366,7 @@ void RacingScene::NetworkLoop()
 
 	////pchPOS = strtok(NULL, "@");
 	//
-	if (pchIP != NULL && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
+	if (pchIP != NULL && g_pNetworkManager->GetUserIP().find(pchIP) == -1)
 	{
 		//	//pchX = strtok(pchPOS, "/");
 		//	//pchY = strtok(NULL, "/");

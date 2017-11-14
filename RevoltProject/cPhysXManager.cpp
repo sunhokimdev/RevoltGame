@@ -237,9 +237,6 @@ void cPhysXManager::CollisionEnable(bool collied, bool report, NxCollisionGroup 
 		//	g_pPhysXScene->setDominanceGroupPair
 
 	//	g_pPhysXScene->setShapePairFlags()
-
-
-
 }
 
 
@@ -715,15 +712,21 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 
 		if (pUserData1->USER_TAG == E_PHYSX_TAG_CAR && pUserData0->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
-			otherShape.getActor().addLocalForce(NxVec3(0, 10000, 0));
-			otherShape.getActor().addTorque(NxVec3(1.5f, 0, 0));
-			printf("데이터 충돌\n");
+			if (!pUserData1->isFireGravity)
+			{
+				otherShape.getActor().addForce(NxVec3(0, 800000, 0));
+				otherShape.getActor().addTorque(NxVec3(5.0f, 1.0f, 1.5f));
+				printf("데이터 충돌\n");
+			}
 		}
 		else if (pUserData0->USER_TAG == E_PHYSX_TAG_CAR && pUserData1->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
-			triggerShape.getActor().addLocalForce(NxVec3(0, 10000, 0));
-			triggerShape.getActor().addTorque(NxVec3(1.5f, 0, 0));
-			printf("데이터 충돌\n");
+			if (!pUserData0->isFireGravity)
+			{
+				triggerShape.getActor().addForce(NxVec3(0, 800000, 0));
+				triggerShape.getActor().addTorque(NxVec3(5.0f, 1.0f, 1.5f));
+				printf("데이터 충돌\n");
+			}
 		}
 	}
 	else if (status & NX_TRIGGER_ON_STAY)
@@ -738,11 +741,17 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 		// 2가 중력자탄
 		if (pUserData1->USER_TAG == E_PHYSX_TAG_CAR && pUserData0->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
-			
+			if (pUserData1->isFireGravity)
+			{
+				pUserData1->isFireGravity = false;
+			}
 		}
 		else if (pUserData0->USER_TAG == E_PHYSX_TAG_CAR &&pUserData1->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
-			
+			if (pUserData0->isFireGravity)
+			{
+				pUserData0->isFireGravity = false;
+			}
 		}
 
 		else

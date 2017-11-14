@@ -57,7 +57,8 @@ public:
 	std::string GetMsg() { return m_msg; }
 
 	std::string GetKeYString();
-	std::string GetClientIP() { return m_user.userIP; };
+	std::string GetUserIP() { return m_user.userIP; };
+	std::string GetClientIP(int index) { return m_vecUserIP[index].userIP; };
 
 	void SetClientPosition(NxVec3 v);
 	std::string GetClientPosition();
@@ -71,15 +72,18 @@ public:
 	std::string GetCarName() { return m_user.carName; };
 
 	bool GetReady(int index) { return m_vecUserIP[index].IsReady; };
+	void SetClientReadyReset();
 
 	std::string GetClientList(int index) { return m_vecUserIP[index].userID; };
 	bool GetIsClientUse(int index) { return m_vecUserIP[index].IsUse; };
 
 	// 클라이언트가 사용하는지
 	void SetIsUse(bool b) { m_user.IsUse = b; };
+	bool GetIsUse() { return m_user.IsUse; };
 
 	int GetUserIndex() { return m_user.index; };
 	bool GetIsReady() { return m_user.IsReady; };
+	void SetIsReady(bool b) { m_user.IsReady = b; };
 
 	bool GetClientReady(int index) { return m_vecUserIP[index].IsReady; };
 	void SetUserReady();

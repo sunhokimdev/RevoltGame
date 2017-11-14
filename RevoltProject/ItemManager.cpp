@@ -206,6 +206,7 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 			cItem* pItem = new cGravityball;
 			pItem->Setup();
 			pItem->SetItemTag(ITEM_GRAVITY);
+			pItem->SetCar(car);
 			m_vecItem.push_back(pItem);
 			m_vecItem[m_vecItem.size() - 1]->Create(carDir, carPos);
 			m_vecItem[m_vecItem.size() - 1]->SetIsUse(true);

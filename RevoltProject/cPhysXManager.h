@@ -93,6 +93,7 @@ struct USERDATA
 
 	/*   김선호 작업   */
 	bool isMyBomb;
+	bool isFireGravity;
 	NxVec3* m_pCarPosion;
 
 	USERDATA(ePhysXTag tag)

@@ -88,7 +88,6 @@ void Car::SetMeshWheel(char * szFolder, char * szName)
 //		tWheel->SetMesh(szFolder, const_cast<char*>(tStr.c_str()));
 //		AddChild(tWheel);
 //	}
-
 }
 
 void Car::WheelRender()

@@ -30,6 +30,8 @@ cCar::cCar()
 
 	m_isCtl = false;
 	m_isDrift = false;
+
+	D3DXCreateSprite(g_pD3DDevice, &m_pSprite);
 }
 
 cCar::~cCar()
@@ -375,6 +377,8 @@ void cCar::LastUpdate()
 void cCar::Render()
 {
 	Object::Render();
+
+	RenderBillboardID();
 
 	//물리데이터와 바퀴 동기화
 	for (int i = 0; i < vecWheels.size(); i++)
@@ -981,6 +985,60 @@ void cCar::SetNetworkKey(std::string str)
 	INPUT_KEY[E_BIT_ITEM_] = (str[4] == '1');	m_keySet.ctrl = INPUT_KEY[E_BIT_ITEM_];
 	INPUT_KEY[E_BIT_REPOS] = (str[5] == '1');	m_keySet.r_key = INPUT_KEY[E_BIT_REPOS];
 	INPUT_KEY[E_BIT_FLIP_] = (str[5] == '1');	m_keySet.f_key = INPUT_KEY[E_BIT_FLIP_];
+}
+
+void cCar::RenderBillboardID()
+{
+	D3DXMATRIXA16 matWorld;
+	D3DXMATRIXA16 matView;
+	D3DXMATRIXA16 matS;
+	D3DXMATRIXA16 matR;
+	D3DXMATRIXA16 matT;
+
+	D3DXVECTOR3 pos = this->GetPosition();
+
+	LPDIRECT3DTEXTURE9 mPtexture = g_pTextureManager->GetTexture("UIImage/font2.png");
+
+	int tTempValue;
+	int textPosX = 8;
+	int textPosY = 16;
+
+	tTempValue = 32;
+
+	D3DXMatrixTranslation(&matT, pos.x, pos.y + 1.5f, pos.z);
+	D3DXMatrixIdentity(&matWorld);
+	D3DXMatrixRotationZ(&matR, D3DX_PI);
+	
+	if (m_pSprite == NULL)
+		printf("asf\n");
+
+	matWorld = matR * matT;
+	g_pD3DDevice->GetTransform(D3DTS_VIEW, &matView);
+	m_pSprite->SetWorldViewLH(NULL, &matView);
+
+	m_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE | D3DXSPRITE_BILLBOARD);
+
+	for (int i = 0;i < m_userName.size();i++)
+	{
+		RECT rc;
+		char tChar = m_userName[i];
+		int tPos;
+
+		tPos = tChar - 33;
+
+		SetRect(&rc,
+			(tPos % tTempValue) * textPosX,
+			(tPos / tTempValue) * textPosY,
+			((tPos % tTempValue) * textPosX) + textPosX,
+			((tPos / tTempValue) * textPosY) + textPosY);
+
+		matWorld._41 = matWorld._41 + 1.0f;
+
+		m_pSprite->SetTransform(&matWorld);
+		m_pSprite->Draw(mPtexture, &rc, &D3DXVECTOR3(8, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(255, 255, 0, 0));
+	}
+
+	m_pSprite->End();
 }
 
 NxVec3 cCar::WheelArrow(float angle, bool back)

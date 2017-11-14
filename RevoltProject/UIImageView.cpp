@@ -30,7 +30,7 @@ UIImageView::UIImageView()
 
 UIImageView::~UIImageView()
 {
-	SAFE_RELEASE(m_pTexture);
+	//SAFE_RELEASE(m_pTexture);
 }
 
 void UIImageView::SetTexture(char * szFullPath)
