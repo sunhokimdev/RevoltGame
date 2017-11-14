@@ -130,6 +130,9 @@ void MainGame::SetAddSound()
 	g_pSoundManager->LoadSound("Sound", "countdown.wav", false);
 	g_pSoundManager->LoadSound("Sound", "countdown_0.wav", false);
 	g_pSoundManager->LoadSound("Sound", "countdown_1.wav", false);
+	g_pSoundManager->LoadSound("Sound", "tvstatic.wav", false);
+	g_pSoundManager->LoadSound("Sound", "pickup.wav", false);
+	g_pSoundManager->LoadSound("Sound", "pickgen.wav", false);
 	g_pSoundManager->LoadSound("Sound", "moto.wav", true);
-
+	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", true);	
 }

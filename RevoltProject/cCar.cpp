@@ -22,6 +22,7 @@ cCar::cCar()
 	m_nextCheckBoxID = 0;
 	m_eHoldItem = ITEM_NONE;
 	m_isCtl = false;
+	m_isDrift = false;
 }
 
 cCar::~cCar()
@@ -201,7 +202,6 @@ void cCar::LoadCar(std::string carName)
 	m_pSkidMark->LinkCar(this);
 
 	g_pSoundManager->Play("moto.wav", 0.0f, GetPosition());
-
 }
 
 void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc, bool isAI)
@@ -680,38 +680,6 @@ void cCar::CtrlPlayer()
 			}
 		}
 
-		//SkidTest
-
-		//레이초기화
-		NxRay RayCar;
-		RayCar.orig = NxVec3(m_position);
-		RayCar.orig.y += 0.2f;
-		RayCar.dir = NxVec3(0,-1,0);
-
-		NxRaycastHit RayCarHit;
-		RayCarHit.shape = NULL;
-		g_pPhysXScene->raycastClosestShape(RayCar, NxShapesType::NX_ALL_SHAPES, RayCarHit);
-
-		float rpm = GetNxVehicle()->getWheel(0)->getRpm() / m_maxRpm;
-		if (fabsf(rpm) > 0.8f && fabs(m_wheelAngle) > 0.9f)
-		{
-			if (RayCarHit.distance < 0.2f)
-			{
-				m_pSkidMark->DrawSkidMark();
-			}
-		}
-
-		if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
-		{
-			if (RayCarHit.distance < 0.2f)
-			{
-				m_pSkidMark->DrawSkidMark();
-			}
-		}
-		if (g_pKeyManager->isStayKeyDown(VK_SPACE))
-		{
-			m_pSkidMark->Destroy();
-		}
 
 		INPUT_KEY[E_BIT_UP] = g_pKeyManager->isStayKeyDown(KEY_ACCELERATOR);
 		INPUT_KEY[E_BIT_DOWN] = g_pKeyManager->isStayKeyDown(KEY_REVERSE);
@@ -857,9 +825,20 @@ void cCar::DrawSkidMark()
 			if (RayCarHit.distance < 0.2f && str == "map")
 			{
 				m_pSkidMark->DrawSkidMark();
+				if (!m_isDrift)
+				{
+					g_pSoundManager->Play("skid_normal.wav",0.5f,GetPosition());
+					m_isDrift = true;
+				}
 			}
+
 		}
 	}
+	else
+	{
+		m_isDrift = false;
+	}
+
 
 	//	테스트용
 	//if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
@@ -1095,15 +1074,20 @@ void cCar::UpdateSound()
 
 	float frq = 10000 + (rpmRatio * 20000);
 	//std::cout << rpmRatio << std::endl;
-	
-	//if (!g_pSoundManager->isPlay("moto.wav"))
-	//{
-	//	g_pSoundManager->Play("moto.wav", 0.3f + rpmRatio * 0.5f);
-	//}
+
 	g_pSoundManager->SetSoundPosition("moto.wav", GetPosition());
-	//g_pSoundManager->SetSoundPosition("moto.wav", {0,0,0});
-	g_pSoundManager->SetVolum("moto.wav", 0.3f + rpmRatio * 0.5f);
+	g_pSoundManager->SetVolum("moto.wav", 0.5f + rpmRatio * 0.5f);
 	g_pSoundManager->SetPitch("moto.wav", frq);
+
+	if (m_isDrift)
+	{
+		g_pSoundManager->SetSoundPosition("skid_normal.wav", GetPosition());
+		//g_pSoundManager->Play("skid_normal.wav", 0.8f, GetPosition());
+	}
+	else
+	{
+		g_pSoundManager->Stop("skid_normal.wav");
+	}
 	
 	
 	//g_pSoundManager->Play_Loop("moto.wav", 0.8f);

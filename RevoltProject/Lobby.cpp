@@ -255,22 +255,26 @@ void Lobby::KeyUpdate()
 			if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
 				m_leftAndrightSelect = 0;
 
-			g_pSoundManager->Play("menuLeftRight.wav", 0.8f);
+			g_pSoundManager->Play("boxslide.wav", 0.8f);
 		}
 		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
 		{
 			WheelTire::g_xRotAngle += D3DX_PI / 15.0f;
 			g_pSoundManager->Play("menuLeftRight.wav", 0.8f);
 		}
-
-		if (m_stateLobby == SELECT_MAP_LOBBY)
+		else if (m_stateLobby == SELECT_MAP_LOBBY)
+		{
 			m_leftAndrightSelect++;
 
-		//m_pSelectMap->GetmagImage()->SetIsMove(true);
-		m_pSelectMap->SetMove(true);
+			//m_pSelectMap->GetmagImage()->SetIsMove(true);
+			m_pSelectMap->SetMove(true);
 
-		if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
-			m_leftAndrightSelect = 0;
+			if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
+				m_leftAndrightSelect = 0;
+
+			g_pSoundManager->Play("tvstatic.wav", 0.8f);
+		}
+
 	}
 
 	if (g_pKeyManager->isOnceKeyDown(VK_LEFT))
@@ -283,7 +287,7 @@ void Lobby::KeyUpdate()
 			if (m_leftAndrightSelect < 0)
 				m_leftAndrightSelect = m_mapLobby[m_stateLobby]->m_selectCnt - 1;
 
-			g_pSoundManager->Play("menuLeftRight.wav", 0.8f);
+			g_pSoundManager->Play("boxslide.wav", 0.8f);
 		}
 		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
 		{
@@ -301,7 +305,7 @@ void Lobby::KeyUpdate()
 			if (m_leftAndrightSelect < 0)
 				m_leftAndrightSelect = m_mapLobby[m_stateLobby]->m_selectCnt - 1;
 
-			g_pSoundManager->Play("boxslide.wav", 0.8f);
+			g_pSoundManager->Play("tvstatic.wav", 0.8f);
 		}
 	}
 
@@ -392,7 +396,7 @@ void Lobby::KeyUpdate()
 		if (m_stateLobby > INTRO3)
 		{
 			//g_pSoundManager->Play("menuNext.wav", 1.0f);
-			g_pSoundManager->Play("menuNext.wav", 0.8f);
+			g_pSoundManager->Play("menuPrev.wav", 0.6f);
 			
 			//g_pCamManager->Setup(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
 			//g_pCamManager->SetCamPos(&m_mapLobby[m_stateLobby]->m_target);      // 카메라 변경
@@ -418,7 +422,7 @@ void Lobby::KeyUpdate()
 			m_select = 0;
 			m_leftAndrightSelect = 0;
 			//g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
-			g_pSoundManager->Play("menuPrev.wav", 0.8f);
+			g_pSoundManager->Play("menuLeftRight.wav", 0.8f);
 		}
 	}
 

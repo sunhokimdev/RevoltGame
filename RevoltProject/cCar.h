@@ -52,6 +52,7 @@ private:
 	bool m_isAI = false;
 
 	bool m_isCtl;
+	bool m_isDrift;
 
 	//Track Á¤º¸
 	cTrack* m_pTrack;
@@ -71,6 +72,7 @@ private:
 
 	//InGame UI
 	InGameUI* m_pInGameUI;
+
 
 public:
 	cCar();

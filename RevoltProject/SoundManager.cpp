@@ -96,7 +96,7 @@ void SoundManager::Setup()
 
 	m_pSystem->setSoftwareChannels(SOUND_MAX_CHANNEL);
 	float doppler = 1.0f;
-	float scale = 1.0f;
+	float scale = 2.0f;
 	float rolloff = 1.0f;
 	m_pSystem->set3DSettings(doppler, scale, rolloff);
 	//m_pSystem->setHardwareChannels(10);
@@ -229,6 +229,7 @@ void SoundManager::Play(std::string fileName, float volume, D3DXVECTOR3 soundPos
 		std::cout << "채널 불러오기 실패! : " << fileName << std::endl;
 		return;
 	}
+	SetSoundPosition(pChannel, soundPos);
 	pChannel->setVolume(volume);
 	m_channels.push_back(pChannel);
 
