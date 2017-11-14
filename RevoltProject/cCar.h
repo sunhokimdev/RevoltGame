@@ -75,6 +75,11 @@ private:
 	//InGame UI
 	InGameUI* m_pInGameUI;
 
+	/*          Ray Cast          */
+	std::vector<D3DXVECTOR3>	m_vecProjVertex;
+	std::vector<D3DXVECTOR3>	m_vecWorldVertex;
+	std::vector<D3DXPLANE>		m_vecPlane;
+
 public:
 	cCar();
 	~cCar();
@@ -121,11 +126,21 @@ public:
 	void RePosition();
 	void CarFlip();
 
+	/*          Ray Cast          */
+	void SetFrustum();
+	void UpdateFrustum();
+	bool IsIn(D3DXVECTOR3* pv);
+
+
 	/*   �輱ȣ   */
+	///////////////////////////////////////
+public:
 	void SetResetNetworkKey();
 	void SetNetworkKey(std::string);
 
+	SYNTHESIZE(NxVec3, m_carPos, CarSunPos);
 	SYNTHESIZE(bool, m_isUser, IsUser);
+	////////////////////////////////////////
 	//e
 	NxVec3 CarArrow(float radianAngle = 0);
 	NxVec3 WheelArrow(float degAngle = 0 , bool back = false);

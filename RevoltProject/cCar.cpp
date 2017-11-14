@@ -10,6 +10,9 @@
 
 #include <fstream>
 
+/// 프러스텀에 정확하게 포함되지 않더라도, 약간의 여분을 주어서 프러스텀에 포함시키기 위한 값
+#define PLANE_EPSILON	5.0f
+
 cCar::cCar()
 	:m_pSkidMark(NULL)
 {
@@ -420,9 +423,12 @@ void cCar::Destroy()
 		SAFE_DELETE(p);
 	}
 	vecWheels.clear();
-
-	familyAI->Destory();
-	SAFE_DELETE(familyAI);
+	
+	if (familyAI)
+	{
+		familyAI->Destory();
+		SAFE_DELETE(familyAI);
+	}
 
 	Object::Destroy();
 	m_pInGameUI = NULL;
@@ -517,7 +523,6 @@ void cCar::TrackCheck()
 			m_countRapNum++;
 			if (!m_isAI)
 			{
-				std::cout << m_countRapNum << std::endl;
 				m_pInGameUI->SetLabCnt(m_countRapNum);
 				m_pInGameUI->UpdateLastTime();
 				m_pInGameUI->CompareBestTime();
@@ -591,19 +596,6 @@ void cCar::DrawSkidMark()
 			}
 		}
 	}
-
-	//	테스트용
-	//if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
-	//{
-	//	if (RayCarHit.distance < 0.2f)
-	//	{
-	//		m_pSkidMark->DrawSkidMark();
-	//	}
-	//}
-	//if (g_pKeyManager->isStayKeyDown(VK_SPACE))
-	//{
-	//	m_pSkidMark->Destory();
-	//}
 }
 
 void cCar::SpeedMath()
@@ -719,8 +711,6 @@ void cCar::CarMove()
 
 void cCar::UsedItem()
 {
-	g_pItemManager->FireItem(ITEM_MYBOMB, this);
-
 	if (m_eHoldItem != ITEM_NONE)
 	{
 		//아이템 사용 함수 호츨
@@ -731,6 +721,7 @@ void cCar::UsedItem()
 			g_pItemManager->FireItem(m_eHoldItem, this);
 			m_eHoldItem = ITEM_NONE;
 			GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
+			g_pItemManager->SetItemID(m_eHoldItem);
 		}
 		std::cout << "FIRE!" << std::endl;
 	}
@@ -781,6 +772,113 @@ void cCar::CarFlip()
 
 	NxVec3 carPos = p->getGlobalPose().t;
 	p->getGlobalPose().t.add(carPos, NxVec3(0, 3, 0));
+}
+
+void cCar::SetFrustum()
+{
+	// : near 
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(1, 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(1, -1, 0)); //
+	// : far
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(1, 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(1, -1, 1)); //
+
+	m_vecPlane.resize(6);
+	m_vecWorldVertex.resize(8);
+
+	int a = 1;
+}
+
+
+void cCar::UpdateFrustum()
+{
+	D3DXMATRIXA16	matView, matProj;
+	g_pD3DDevice->GetTransform(D3DTS_PROJECTION,
+		&matProj);
+	g_pD3DDevice->GetTransform(D3DTS_VIEW,
+		&matView);
+
+	for (size_t i = 0; i < m_vecProjVertex.size(); i++)
+	{
+		D3DXVec3Unproject(&m_vecWorldVertex[i],
+			&m_vecProjVertex[i],
+			NULL,
+			&matProj,
+			&matView,
+			NULL
+		);
+	}
+
+	// Front
+	D3DXPlaneFromPoints(&m_vecPlane[0],
+		&m_vecWorldVertex[0],
+		&m_vecWorldVertex[1],
+		&m_vecWorldVertex[2]
+	);
+
+	// Back
+	D3DXPlaneFromPoints(&m_vecPlane[1],
+		&m_vecWorldVertex[6],
+		&m_vecWorldVertex[5],
+		&m_vecWorldVertex[4]
+	);
+
+	// Top
+	D3DXPlaneFromPoints(&m_vecPlane[2],
+		&m_vecWorldVertex[1],
+		&m_vecWorldVertex[5],
+		&m_vecWorldVertex[6]
+	);
+
+	// Bottom
+	D3DXPlaneFromPoints(&m_vecPlane[3],
+		&m_vecWorldVertex[0],
+		&m_vecWorldVertex[3],
+		&m_vecWorldVertex[7]
+	);
+
+	// Left
+	D3DXPlaneFromPoints(&m_vecPlane[4],
+		&m_vecWorldVertex[1],
+		&m_vecWorldVertex[0],
+		&m_vecWorldVertex[4]
+	);
+
+	// Rihgt
+	D3DXPlaneFromPoints(&m_vecPlane[5],
+		&m_vecWorldVertex[2],
+		&m_vecWorldVertex[6],
+		&m_vecWorldVertex[7]
+	);
+}
+
+bool cCar::IsIn(D3DXVECTOR3* pv)
+{
+	float fDist;
+
+	fDist = D3DXPlaneDotCoord(&m_vecPlane[0], pv);
+	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 Front로 향하고 있으므로 양수이면 프러스텀의 바깥쪽
+
+	fDist = D3DXPlaneDotCoord(&m_vecPlane[1], pv);
+	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 Back로 향하고 있으므로 양수이면 프러스텀의 오른쪽
+
+	fDist = D3DXPlaneDotCoord(&m_vecPlane[2], pv);
+	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 Up로 향하고 있으므로 양수이면 프러스텀의 오른쪽
+
+	fDist = D3DXPlaneDotCoord(&m_vecPlane[3], pv);
+	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 Down로 향하고 있으므로 양수이면 프러스텀의 오른쪽
+
+	fDist = D3DXPlaneDotCoord(&m_vecPlane[4], pv);
+	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 left로 향하고 있으므로 양수이면 프러스텀의 왼쪽
+
+	fDist = D3DXPlaneDotCoord(&m_vecPlane[5], pv);
+	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 right로 향하고 있으므로 양수이면 프러스텀의 오른쪽
+
+	return true;
 }
 
 NxVec3 cCar::CarArrow(float angle)

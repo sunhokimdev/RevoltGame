@@ -343,9 +343,6 @@
     <ClInclude Include="cIntroLob.h">
       <Filter>Lobby\GameUI</Filter>
     </ClInclude>
-    <ClInclude Include="cNetworkCreateRoom.h">
-      <Filter>Lobby\GameUI</Filter>
-    </ClInclude>
     <ClInclude Include="cNetworkInRoom.h">
       <Filter>Lobby\GameUI</Filter>
     </ClInclude>
@@ -451,12 +448,6 @@
     <ClInclude Include="cSkyBox.h">
       <Filter>Basic</Filter>
     </ClInclude>
-    <ClInclude Include="cDataManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="cPlayerData.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="cMyBomb.h">
       <Filter>Item\MyBomb</Filter>
     </ClInclude>
@@ -470,9 +461,6 @@
       <Filter>Item\FakeBomb</Filter>
     </ClInclude>
     <ClInclude Include="c321GO.h">
-      <Filter>Lobby\GameUI</Filter>
-    </ClInclude>
-    <ClInclude Include="cSelectNetworkLob.h">
       <Filter>Lobby\GameUI</Filter>
     </ClInclude>
     <ClInclude Include="cAI_CtrlFlip.h">
@@ -495,6 +483,12 @@
     </ClInclude>
     <ClInclude Include="cAI_CtrlCompete.h">
       <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="cDataManager.h">
+      <Filter>NewClass</Filter>
+    </ClInclude>
+    <ClInclude Include="cPlayerData.h">
+      <Filter>NewClass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -681,9 +675,6 @@
     <ClCompile Include="cIntroLob.cpp">
       <Filter>Lobby\GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="cNetworkCreateRoom.cpp">
-      <Filter>Lobby\GameUI</Filter>
-    </ClCompile>
     <ClCompile Include="cNetworkInRoom.cpp">
       <Filter>Lobby\GameUI</Filter>
     </ClCompile>
@@ -765,12 +756,6 @@
     <ClCompile Include="cSkyBox.cpp">
       <Filter>Basic</Filter>
     </ClCompile>
-    <ClCompile Include="cDataManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="cPlayerData.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="cMyBomb.cpp">
       <Filter>Item\MyBomb</Filter>
     </ClCompile>
@@ -784,9 +769,6 @@
       <Filter>Item\FakeBomb</Filter>
     </ClCompile>
     <ClCompile Include="c321GO.cpp">
-      <Filter>Lobby\GameUI</Filter>
-    </ClCompile>
-    <ClCompile Include="cSelectNetworkLob.cpp">
       <Filter>Lobby\GameUI</Filter>
     </ClCompile>
     <ClCompile Include="cAI_CtrlFlip.cpp">
@@ -809,6 +791,12 @@
     </ClCompile>
     <ClCompile Include="cAI_CtrlCompete.cpp">
       <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="cDataManager.cpp">
+      <Filter>NewClass</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlayerData.cpp">
+      <Filter>NewClass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

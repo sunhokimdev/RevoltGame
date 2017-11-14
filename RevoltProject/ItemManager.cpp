@@ -122,6 +122,7 @@ void ItemManager::InitCollisionGroup()
 {
 	//임시 박스
 
+	
 }
 
 void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인터*/)
@@ -193,4 +194,15 @@ int ItemManager::GetItemID()
 		return 4;
 	else
 		return INT_MAX;
+}
+
+void ItemManager::Destroy()
+{
+	for each(auto p in m_vecItem)
+	{
+		SAFE_DELETE(p);
+	}
+
+	for (int i = 0;i < 4;i++)
+		m_vecIndex[i] = 0;
 }

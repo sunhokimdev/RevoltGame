@@ -15,19 +15,19 @@ void cCreateProfile::Setup()
 {
 	iLobby::Setup();
 
-	UIImageView* pIV_CP_BodyRing = new UIImageView;
-	pIV_CP_BodyRing->SetPosition(300, 180);
-	pIV_CP_BodyRing->SetIsBoard(true);
-	pIV_CP_BodyRing->SetXSize(25.0f);
-	pIV_CP_BodyRing->SetYSize(3.0f);
-	pIV_CP_BodyRing->SetTexture("UIImage/ring.png");
+	m_pIV_CP_BodyRing = new UIImageView;
+	m_pIV_CP_BodyRing->SetPosition(300, 180);
+	m_pIV_CP_BodyRing->SetIsBoard(true);
+	m_pIV_CP_BodyRing->SetXSize(25.0f);
+	m_pIV_CP_BodyRing->SetYSize(3.0f);
+	m_pIV_CP_BodyRing->SetTexture("UIImage/ring.png");
 
-	UITextImageView* pTIV_CP_BodyFont = new UITextImageView;
-	pTIV_CP_BodyFont->SetIndex(INT_MAX);
-	pTIV_CP_BodyFont->SetColor(D3DCOLOR_ARGB(255, 242, 150, 97));
-	pTIV_CP_BodyFont->SetPosition(30, 40);
-	pTIV_CP_BodyFont->SetText("Player Name : ");
-	pTIV_CP_BodyFont->SetTexture("UIImage/font2.png");
+	m_pTIV_CP_BodyFont = new UITextImageView;
+	m_pTIV_CP_BodyFont->SetIndex(INT_MAX);
+	m_pTIV_CP_BodyFont->SetColor(D3DCOLOR_ARGB(255, 242, 150, 97));
+	m_pTIV_CP_BodyFont->SetPosition(30, 40);
+	m_pTIV_CP_BodyFont->SetText("Player Name : ");
+	m_pTIV_CP_BodyFont->SetTexture("UIImage/font2.png");
 
 	m_pNameText = new UITextImageView;
 	m_pNameText->SetIndex(INT_MAX);
@@ -36,42 +36,42 @@ void cCreateProfile::Setup()
 	m_pNameText->SetTexture("UIImage/font2.png");
 	m_pNameText->SetColor(D3DCOLOR_ARGB(255, 250, 237, 125));
 
-	UIImageView* pIV_CP_BlueRing = new UIImageView;
-	pIV_CP_BlueRing->SetPosition(-220, -130);
-	pIV_CP_BlueRing->SetXSize(4.0f);
-	pIV_CP_BlueRing->SetYSize(4.0f);
-	pIV_CP_BlueRing->SetIsBoard(true);
-	pIV_CP_BlueRing->SetTexture("UIImage/blueRing.png");
+	m_pIV_CP_BlueRing = new UIImageView;
+	m_pIV_CP_BlueRing->SetPosition(-220, -130);
+	m_pIV_CP_BlueRing->SetXSize(4.0f);
+	m_pIV_CP_BlueRing->SetYSize(4.0f);
+	m_pIV_CP_BlueRing->SetIsBoard(true);
+	m_pIV_CP_BlueRing->SetTexture("UIImage/blueRing.png");
 
-	UIImageView* pIV_CP_HeadRing = new UIImageView;
-	pIV_CP_HeadRing->SetPosition(120, 25);
-	pIV_CP_HeadRing->SetIsBoard(true);
-	pIV_CP_HeadRing->SetXSize(23.0f);
-	pIV_CP_HeadRing->SetYSize(1.0f);
-	pIV_CP_HeadRing->SetTexture("UIImage/ring.png");
+	m_pIV_CP_HeadRing = new UIImageView;
+	m_pIV_CP_HeadRing->SetPosition(120, 25);
+	m_pIV_CP_HeadRing->SetIsBoard(true);
+	m_pIV_CP_HeadRing->SetXSize(23.0f);
+	m_pIV_CP_HeadRing->SetYSize(1.0f);
+	m_pIV_CP_HeadRing->SetTexture("UIImage/ring.png");
 
-	UITextImageView* pTIV_CP_HeadFont = new UITextImageView;
-	pTIV_CP_HeadFont->SetIndex(INT_MAX);
-	pTIV_CP_HeadFont->SetTexture("UIImage/font1.png");
-	pTIV_CP_HeadFont->SetText("CREATE PROFILE");
-	pTIV_CP_HeadFont->SetXSize(1.5f);
-	pTIV_CP_HeadFont->SetYSize(1.5f);
-	pTIV_CP_HeadFont->SetPosition(150, 45);
+	m_pTIV_CP_HeadFont = new UITextImageView;
+	m_pTIV_CP_HeadFont->SetIndex(INT_MAX);
+	m_pTIV_CP_HeadFont->SetTexture("UIImage/font1.png");
+	m_pTIV_CP_HeadFont->SetText("CREATE PROFILE");
+	m_pTIV_CP_HeadFont->SetXSize(1.5f);
+	m_pTIV_CP_HeadFont->SetYSize(1.5f);
+	m_pTIV_CP_HeadFont->SetPosition(150, 45);
 
-	UIImageView* pIV_CP_BlueToy = new UIImageView;
-	pIV_CP_BlueToy->SetXSize(1.2f);
-	pIV_CP_BlueToy->SetYSize(1.2f);
-	pIV_CP_BlueToy->SetPosition(17, 17);
-	pIV_CP_BlueToy->SetTexture("UIImage/bluetoy.png");
+	m_pIV_CP_BlueToy = new UIImageView;
+	m_pIV_CP_BlueToy->SetXSize(1.2f);
+	m_pIV_CP_BlueToy->SetYSize(1.2f);
+	m_pIV_CP_BlueToy->SetPosition(17, 17);
+	m_pIV_CP_BlueToy->SetTexture("UIImage/bluetoy.png");
 
-	m_pRootUI->AddChild(pIV_CP_BodyRing);
-	pIV_CP_BodyRing->AddChild(pTIV_CP_BodyFont);
-	pIV_CP_BodyRing->AddChild(pIV_CP_BlueRing);
-	pIV_CP_BodyRing->AddChild(m_pNameText);
+	m_pRootUI->AddChild(m_pIV_CP_BodyRing);
+	m_pIV_CP_BodyRing->AddChild(m_pTIV_CP_BodyFont);
+	m_pIV_CP_BodyRing->AddChild(m_pIV_CP_BlueRing);
+	m_pIV_CP_BodyRing->AddChild(m_pNameText);
 
-	pIV_CP_BlueRing->AddChild(pIV_CP_HeadRing);
-	pIV_CP_BlueRing->AddChild(pTIV_CP_HeadFont);
-	pIV_CP_BlueRing->AddChild(pIV_CP_BlueToy);
+	m_pIV_CP_BlueRing->AddChild(m_pIV_CP_HeadRing);
+	m_pIV_CP_BlueRing->AddChild(m_pTIV_CP_HeadFont);
+	m_pIV_CP_BlueRing->AddChild(m_pIV_CP_BlueToy);
 }
 
 void cCreateProfile::Update()
@@ -87,7 +87,13 @@ void cCreateProfile::Render(LPD3DXSPRITE pSprite)
 void cCreateProfile::Destroy()
 {
 	SAFE_DELETE(m_pNameText);
-
+	SAFE_DELETE(m_pNameText);
+	SAFE_DELETE(m_pTIV_CP_BodyFont);
+	SAFE_DELETE(m_pTIV_CP_HeadFont);
+	SAFE_DELETE(m_pIV_CP_BodyRing);
+	SAFE_DELETE(m_pIV_CP_BlueRing);
+	SAFE_DELETE(m_pIV_CP_HeadRing);
+	SAFE_DELETE(m_pIV_CP_BlueToy);
 	iLobby::Destroy();
 }
 
