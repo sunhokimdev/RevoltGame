@@ -53,6 +53,7 @@ void cMyBomb::Update()
 	if (m_fTimer < -0.35f)
 		m_fTimer = -0.35f;
 
+	//m_pPhysX->pPhysX->m_pActor->getGlobalPose()
 	if (m_pCar->GetPhysXData()->m_pUserData->isMyBomb && m_isUse)
 	{
 		if (m_fTime > UPDATETIME)
