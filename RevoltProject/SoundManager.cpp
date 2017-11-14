@@ -3,30 +3,31 @@
 
 SoundManager::SoundManager()
 {
-	System_Create(&m_pSystem);
+	//System_Create(&m_pSystem);
 
-	//	m_pSystem->init(SOUND_MAX_CHANNEL, FMOD_INIT_NORMAL, 0);
-	Setup3DCamera(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 1));
+	////	m_pSystem->init(SOUND_MAX_CHANNEL, FMOD_INIT_NORMAL, 0);
+	//Setup3DCamera(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(0, 0, 1));
 
-	unsigned int uiFMODVersion;
-	m_pSystem->getVersion(&uiFMODVersion);
-	if (uiFMODVersion < FMOD_VERSION)
-	{
-		std::cout << "버전 오류" << std::endl;
-		return;
-	}
+	//unsigned int uiFMODVersion;
+	//m_pSystem->getVersion(&uiFMODVersion);
+	//if (uiFMODVersion < FMOD_VERSION)
+	//{
+	//	std::cout << "버전 오류" << std::endl;
+	//	return;
+	//}
 
-	FMOD_SPEAKERMODE speakerMode;
-	FMOD_CAPS	caps;
+	//FMOD_SPEAKERMODE speakerMode;
+	//FMOD_CAPS	caps;
 
-	m_pSystem->getDriverCaps(0, &caps, 0, &speakerMode);
-	m_pSystem->setSpeakerMode(speakerMode);
+	//m_pSystem->getDriverCaps(0, &caps, 0, &speakerMode);
+	//m_pSystem->setSpeakerMode(speakerMode);
+	//
+	//m_pSystem->setSoftwareChannels(SOUND_MAX_CHANNEL);
 
-	m_pSystem->setSoftwareChannels(SOUND_MAX_CHANNEL);
+	////m_pSystem->init(SOUND_MAX_CHANNEL, FMOD_INIT_NORMAL, 0);
+	//m_pSystem->init(SOUND_MAX_CHANNEL, FMOD_INIT_3D_RIGHTHANDED, 0);
 
-	m_pSystem->init(SOUND_MAX_CHANNEL, FMOD_INIT_NORMAL, 0);
-
-	m_channels.push_back(m_pBgmChnnel);
+	//m_channels.push_back(m_pBgmChnnel);
 }
 
 
@@ -56,7 +57,7 @@ SoundManager::~SoundManager()
 //	m_pChannel->setVolume(volume);
 //}
 //
-//void cSoundManager::Destory()
+//void cSoundManager::Destroy()
 //{
 //	if (m_pSound) { m_pSound->release(); m_pSound = NULL; }
 //	if (m_pSystem) { m_pSystem->release(); m_pSystem = NULL; }
@@ -94,13 +95,18 @@ void SoundManager::Setup()
 	m_pSystem->setSpeakerMode(speakerMode);
 
 	m_pSystem->setSoftwareChannels(SOUND_MAX_CHANNEL);
-
-	m_pSystem->init(SOUND_MAX_CHANNEL, FMOD_INIT_NORMAL, 0);
+	float doppler = 1.0f;
+	float scale = 2.0f;
+	float rolloff = 1.0f;
+	m_pSystem->set3DSettings(doppler, scale, rolloff);
+	//m_pSystem->setHardwareChannels(10);
+	//m_pSystem->init(SOUND_MAX_CHANNEL, FMOD_INIT_NORMAL, 0);
+	m_pSystem->init(SOUND_MAX_CHANNEL, FMOD_INIT_3D_RIGHTHANDED, 0);
 
 	m_channels.push_back(m_pBgmChnnel);
 }
 
-void SoundManager::Destory()
+void SoundManager::Destroy()
 {
 	m_pSystem->release();
 	m_pSystem->close();
@@ -173,7 +179,8 @@ void SoundManager::LoadSound(std::string folderName, std::string fileName, bool 
 
 	if (loop)
 	{
-		m_pSystem->createStream(fullName.c_str(), FMOD_LOOP_NORMAL, NULL, &pSound);
+		m_pSystem->createStream(fullName.c_str(), FMOD_3D | FMOD_LOOP_NORMAL, NULL, &pSound);
+		//m_pSystem->createStream(fullName.c_str(), FMOD_LOOP_NORMAL, NULL, &pSound);
 		if (pSound == NULL)
 		{
 			std::cout << "해당 파일의 경로를 찾을 수 없습니다 : " << fullName << std::endl;
@@ -214,23 +221,32 @@ void SoundManager::Play(std::string fileName, float volume, D3DXVECTOR3 soundPos
 		return;
 	}
 
-
 	Channel* pChannel;
+
 	m_pSystem->playSound(FMOD_CHANNEL_FREE, pSound, false, &pChannel);
 	if (pChannel == NULL)
 	{
 		std::cout << "채널 불러오기 실패! : " << fileName << std::endl;
 		return;
-
 	}
-	pChannel->set3DMinMaxDistance(20, 100);
-	//pChannel->set3DSpread(1);
-	//pChannel->set3DPanLevel(0.5);
-	pChannel->set3DDistanceFilter(false, 0, 1500);
 	SetSoundPosition(pChannel, soundPos);
-
 	pChannel->setVolume(volume);
 	m_channels.push_back(pChannel);
+
+
+	//Channel* pChannel;
+	//m_pSystem->playSound(FMOD_CHANNEL_FREE, pSound, false, &pChannel);
+	//if (pChannel == NULL)
+	//{
+	//	std::cout << "채널 불러오기 실패! : " << fileName << std::endl;
+	//	return;
+	//}
+	////pChannel->set3DMinMaxDistance(20, 100);
+	////pChannel->set3DSpread(1);
+	////pChannel->set3DPanLevel(0.5);
+	////pChannel->set3DDistanceFilter(false, 0, 1500);
+	////SetSoundPosition(pChannel, soundPos);
+
 }
 
 void SoundManager::Play_BGM(std::string fileName, float volume)
@@ -265,6 +281,24 @@ void SoundManager::Play_BGM(std::string fileName, float volume)
 
 }
 
+void SoundManager::Play_Loop(std::string fileName, float volume)
+{
+	
+}
+
+bool SoundManager::isPlay(std::string fileName)
+{
+	Channel* pChannel = FindChannel(fileName);
+	if (pChannel != NULL)
+	{
+		bool isPlay;
+		pChannel->isPlaying(&isPlay);
+		return isPlay;
+	}
+
+	return false;
+}
+
 
 void SoundManager::SetVolum(std::string fileName, float volume)
 {
@@ -296,7 +330,6 @@ void SoundManager::SetSoundPosition(Channel * pChannel, FMOD_VECTOR position)
 	pChannel->set3DAttributes(&position, NULL);
 }
 
-
 //Contorl
 void SoundManager::Stop(std::string fileName)
 {
@@ -315,6 +348,16 @@ void SoundManager::Resume(std::string fileName)
 	if (pChannel != NULL) { pChannel->setPaused(false); }//wcout << "SOUND-> " << key << " ->다시재생" << endl; }
 }
 
+void SoundManager::SetPitch(std::string fileName, float frequency)
+{
+	Channel* pChannel = FindChannel(fileName);
+	if(pChannel != NULL) pChannel->setFrequency(frequency);
+	
+	//pChannel->setPan(-100.0f);
+	//pChannel->setVolume(frequency);
+	
+	
+}
 
 void SoundManager::AllSoundIsStop()
 {

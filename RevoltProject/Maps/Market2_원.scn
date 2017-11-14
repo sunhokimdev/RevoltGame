@@ -1,0 +1,501 @@
+//Revolt Scene File
+//Market2
+//Date : 2017-10-31
+
+Map Market2
+
+Object
+Tag 0
+Name Check_Box_00
+ID 0
+Position 3.70944 0.499036 -2.68269
+Scale 1 20 40
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 20 40
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 0
+Name Check_Box_01
+ID 0
+Position 49.5253 0.499877 -2.83736
+Scale 1 20 40
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 20 40
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 0
+Name Check_Box_02
+ID 0
+Position 93.6706 0.498028 -2.93737
+Scale 1 20 40
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 20 40
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 0
+Name Check_Box_03
+ID 0
+Position 146.248 0.5 -36.9541
+Scale 1 20 30
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 20 30
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 0
+Name Check_Box_04
+ID 0
+Position 146.749 0.5 -98.8817
+Scale 1 20 40
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 20 40
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 0
+Name Check_Box_05
+ID 0
+Position 118.262 10 -128.622
+Scale 20 20 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 20 20 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 0
+Name Check_Box_06
+ID 0
+Position 75.7776 0.5 -147.486
+Scale 1 20 40
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 20 40
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 0
+Name Check_Box_07
+ID 0
+Position 4.34207 0.5 -139.461
+Scale 1 20 40
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 20 40
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 0
+Name Check_Box_08
+ID 0
+Position -24.8762 0.5 -118.097
+Scale 1 20 20
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 20 20
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 0
+Name Check_Box_09
+ID 0
+Position -29.8311 5.02594 -67.3703
+Scale 20 40 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 20 40 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 0
+Name Check_Box_10
+ID 0
+Position -24.7544 0.5 -33.5759
+Scale 1 20 20
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 20 20
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name pickup
+ID 6
+Position 24.9357 0.5 12.2457
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name pickup
+ID 6
+Position 24.9234 0.5 2.51856
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name pickup
+ID 6
+Position 24.9148 0.5 -7.50308
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name pickup
+ID 6
+Position 24.8056 0.5 -17.3614
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name pickup
+ID 6
+Position 74.8768 0.5 -17.1097
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name pickup
+ID 6
+Position 74.7332 0.5 -7.67002
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name pickup
+ID 6
+Position 75.1372 0.5 2.52232
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name pickup
+ID 6
+Position 74.8011 0.5 12.4355
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name pickup
+ID 6
+Position 187.836 0.5 -59.7824
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name pickup
+ID 6
+Position 189.666 0.5 -68.4919
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name pickup
+ID 6
+Position 189.342 0.5 -76.9463
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name pickup
+ID 6
+Position 24.8011 0.4987 -147.494
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name pickup
+ID 6
+Position 24.9307 0.4987 -137.513
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name pickup
+ID 6
+Position 24.8582 2.9987 -151.207
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 7
+Name star
+ID 7
+Position -30.2474 0.5 -127.853
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 4
+Name cone
+ID 8
+Position 109.936 5 -165.873
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 4
+Name cone
+ID 8
+Position 99.6154 5 -163.527
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 4
+Name cone
+ID 8
+Position 90.4319 5 -166.77
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 4
+Name cone
+ID 8
+Position -30.0173 5 -24.344
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 1
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 5
+Name fabric
+ID 4
+Position 9.86643 0.4987 3.44728
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 0 0 1
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 5
+Name cheese
+ID 2
+Position 10.213 0.498755 -6.98744
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 0 0 1
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 5
+Name kidride
+ID 5
+Position 6.21856 1.4987 -16.3023
+Scale 0.5 0.5 0.5
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 0 0 1
+X_Pos 0 0 0.2
+X_Size 3 3 4.5
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+

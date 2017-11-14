@@ -3,42 +3,61 @@
 #include "cPlayerData.h"
 
 class cCar;
+class cTrack;
+class cCheckBox;
 
 enum AI_TAG
 {
-	AI_TAG_MASTER = 0,
+	AI_TAG_NONE = -1,
+	AI_TAG_RAY = 0,
 	AI_TAG_SPEED,
 	AI_TAG_HANDLE,
-	AI_TAG_03,
-	AI_TAG_04,
+	AI_TAG_FLIP,
+	AI_TAG_CTRL,
+	AI_TAG_COMPET,
+	AI_TAG_END___,
 	AI_TAG_05,
+};
+
+struct AI_DATA
+{
+	cCar* pCar;
+	cTrack* pTrack;
+	std::vector<cCar*>* pCars;
+
+	AI_DATA()
+	{
+		pCar = NULL;
+		pTrack = NULL;
+		pCars = NULL;
+	}
+	AI_DATA(cCar* pCar, cTrack* pTrack, std::vector<cCar*>* pCars);
+	void Destory()
+	{
+		pCar = NULL;
+		pTrack = NULL;
+		pCars = NULL;
+	}
 };
 
 class cAI
 {
 public:
-	AI_TAG AITag;
-
-	cCar* m_pAICar;
-	NxActor* m_pAICarActor;
-
-	std::vector<cAI*> chiledAI;
+	ID3DXMesh* AI_Mesh;
+	AI_DATA* AI_Data;
+	std::vector<cAI*>* familyAI;
 
 	cAI();
 	~cAI();
 
-	virtual void SetCar(cCar* m_pAICar);
+public:
+	virtual void Setup();
 	virtual void Destory();
 	virtual void Update();
 	virtual void Render();
-	virtual void AddAICtrl(cAI* pAI);
 
-	void TEST()
-	{
-
-	}
-
-	void SetBitKey(eBIT_KEY keySet, bool onoff);
-	bool GetBytKey(eBIT_KEY keyGet);
+	cCheckBox* CurrentCheckBox();
+	float ScaleValue(float value, float Total, float multiValue = 1.0f);
+	float GetRpmRate();
 };
 

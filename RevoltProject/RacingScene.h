@@ -1,8 +1,8 @@
 #pragma once
 #include "GameNode.h"
 
-//TrackEndCount 돌아야 되는 바퀴 수
-#define m_trackEndCount 3
+
+
 
 class cTrack;
 class cLight;
@@ -37,7 +37,8 @@ private:
 	D3DXVECTOR3* m_camPos;
 	D3DXVECTOR3* m_camLookTarget;
 
-	
+	//TrackEndCount 돌아야 되는 바퀴 수	
+	SYNTHESIZE(int, m_trackEndCount, trackEndCount);
 	
 	//빌보드??이펙트??
 	LPD3DXSPRITE m_Sprite;
@@ -59,14 +60,19 @@ public:
 	void Render();
 	void LastUpdate();
 	void UpdateCamera();
+	void UpdateSound();
 
 	//자동차가 계속 달려야하는지를 체크
 	bool IsCarRunTrue(cCar* pCar);
 
 
 //	void CreateCar(int carId) {}
-	void CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carName, bool isAI);
+	void CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carName, bool isAI, bool isUser = false);
 	void CreateCar(int playerID, std::string carName);
 	void LinkUI(int playerID);
+
+	/*   김선호   */
+	void NetworkLoop();			// 네트워크 통신하는 부분
+	void SetNetworkCarData();		// 자동차 데이터 세팅하는 메서드
 };
 

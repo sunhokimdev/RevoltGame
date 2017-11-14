@@ -3,7 +3,15 @@
 #include "MainGame.h"
 
 cNetworkManager::cNetworkManager()
+	: m_isNextStage(false)
 {
+	memset(m_vecUserIP, 0, sizeof(ST_NETUSER) * USER_SIZE);
+	for (int i = 0; i < USER_SIZE; i++)
+	{
+		m_vecUserIP[i].IsUse = false;
+		m_vecUserIP[i].IsReady = false;
+		m_vecUserIP[i].index = 0;
+	}
 }
 
 cNetworkManager::~cNetworkManager()
@@ -15,8 +23,11 @@ void cNetworkManager::Start()
 {
 	WSADATA wsaData;
 	SOCKADDR_IN servAdr;
-
 	char args[NAME_SIZE];
+
+	{
+		m_user.IsReady = false;
+	}
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		ErrorHandling("WSAStartup() error");
@@ -43,6 +54,18 @@ void cNetworkManager::Start()
 
 void cNetworkManager::Release()
 {
+	memset(m_vecUserIP, 0, sizeof(ST_NETUSER) * USER_SIZE);
+	for (int i = 0; i < USER_SIZE; i++)
+	{
+		m_vecUserIP[i].IsUse = false;
+		m_vecUserIP[i].IsReady = false;
+		m_vecUserIP[i].index = 0;
+	}
+
+	m_user.index = 0;
+	m_user.IsReady = false;
+	m_user.IsUse = false;
+
 	closesocket(m_hSock);
 	WSACleanup();
 }
@@ -66,6 +89,63 @@ bool cNetworkManager::RecvMsg()
 	nameMsg[strLen] = 0;
 
 	m_msg = std::string(nameMsg);
+	std::string sIP;
+	std::string sIndex;
+	std::string sUserID;
+	std::string sCarName;
+	std::string sReady;
+	std::string sSend;
+
+	/*   서버로 부터 받는 메시지   */
+
+	if (m_msg.find("&") != -1 && !GetIsInGameNetwork())
+	{
+		sIP = strtok((char*)m_msg.c_str(), "&#!");
+		sIndex = strtok(NULL, "&#!");
+
+		printf("%s %s\n", sIP.c_str(),sIndex.c_str());
+
+		if(sIP.c_str() != NULL && sIndex.c_str() != NULL)
+			m_vecUserIP[atoi(sIndex.c_str())].userIP = sIP;
+
+		if (m_user.userIP == sIP)
+			m_user.index = atoi(sIndex.c_str());
+
+		SendClientData();
+
+		return false;
+	}
+
+	else if (m_msg.find("@") != -1 && !GetIsInGameNetwork())
+	{
+		ST_NETUSER netUser;
+
+		printf("%s\n", m_msg.c_str());
+
+		sIP = strtok((char*)m_msg.c_str(), "@#");
+		sIndex = strtok(NULL, "@");
+		sUserID = strtok(NULL, "@");
+		sCarName = strtok(NULL, "@");
+		sReady = strtok(NULL, "@#");
+
+		netUser.userIP = sIP;
+		netUser.index = atoi(sIndex.c_str());
+		netUser.userID = sUserID;
+		netUser.carName = sCarName;
+		netUser.IsReady = false;
+		netUser.IsUse = true;
+		//
+		m_vecUserIP[netUser.index] = netUser;
+
+		return false;
+	}
+
+	else if (m_msg.find("@Start!") != -1)
+	{
+		SetIsInGameNetwork(true);
+
+		return false;
+	}
 
 	return true;
 }
@@ -77,16 +157,12 @@ void cNetworkManager::ErrorHandling(char * msg)
 	Release();
 }
 
-void cNetworkManager::SetRoomName(std::string str)
+void cNetworkManager::SetUserReady()
 {
-	for (int i = 0; i < str.size(); ++i)
-		roomName[i] = str[i];
-}
-
-void cNetworkManager::SetName(std::string str)
-{
-	for (int i = 0; i < str.size(); ++i)
-		name[i] = str[i];
+	if (m_user.IsReady)
+		m_user.IsReady = false;
+	else
+		m_user.IsReady = true;
 }
 
 void cNetworkManager::SetResetKeyEvent()
@@ -98,6 +174,18 @@ void cNetworkManager::SetResetKeyEvent()
 	m_keyEvent.right = false;
 	m_keyEvent.r_key = false;
 	m_keyEvent.up = false;
+}
+
+void cNetworkManager::SendClientData()
+{
+	std::string str;
+
+	str = "@" + m_user.userIP + 
+		"@" + std::to_string(m_user.index) +
+		"@" + m_user.userID + 
+		"@" + m_user.carName +
+		"@" + std::to_string(m_user.IsReady);
+	SendMsg(str.c_str());
 }
 
 std::string cNetworkManager::GetKeYString()
@@ -175,6 +263,8 @@ sockaddr_in cNetworkManager::GetDefaultMyIP()
 			m_vecMyIP.push_back(inet_ntoa(addr.sin_addr));
 		}
 	}
+
+	m_user.userIP = m_vecMyIP[m_vecMyIP.size() - 1];
 
 	return addr;
 }

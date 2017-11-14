@@ -141,12 +141,13 @@ enum FONTFILE{FONT1=2001, FONT2};
 #define C_GRAY      D3DCOLOR_XRGB(128, 128, 128)
 
 // = D3DXCOLOR
-#define CX_RED      D3DXCOLOR(1,0,0,1)
-#define CX_BLUE      D3DXCOLOR(0,0,1,1)
+#define CX_RED     D3DXCOLOR(1,0,0,1)
+#define CX_BLUE    D3DXCOLOR(0,0,1,1)
 #define CX_GREEN   D3DXCOLOR(0,1,0,1)
+#define CX_YELLOW  D3DXCOLOR(1,1,0,1)
 #define CX_BLACK   D3DXCOLOR(0,0,0,1)
 #define CX_WHITE   D3DXCOLOR(1,1,1,1)
-#define CX_GRAY      D3DXCOLOR(0.5,0.5,0.5,1)
+#define CX_GRAY    D3DXCOLOR(0.5,0.5,0.5,1)
 
 #define WINSIZEX 1024
 #define WINSIZEY 760

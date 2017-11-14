@@ -61,18 +61,21 @@ void Map::Destroy()
 	
 	for each(auto p in m_track)
 	{
-		p.second->Destory();
+		p.second->Destroy();
 		SAFE_DELETE(p.second);
 	}
+	m_track.clear();
 	for each(auto p in m_vecObjMtlTex)
 	{
 		SAFE_DELETE(p);
 	}
+	m_vecObjMtlTex.clear();
 	for each(auto p in m_vecThing)
 	{
 		p->Destroy();
 		SAFE_DELETE(p);
 	}
+	m_vecThing.clear();
 }
 
 void Map::Update()
@@ -163,7 +166,6 @@ void Map::Render()
 		/*   오브젝트를 그리는 작업   */
 		if (*g_LobbyState == VIEW_CAR_LOBBY)
 			for each(Thing* pth in m_vecThing) pth->Render();
-
 	}
 	else
 	{

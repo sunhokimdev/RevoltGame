@@ -10,5 +10,5 @@ MtlTex::MtlTex()
 
 MtlTex::~MtlTex()
 {
-	SAFE_RELEASE(m_pTexture);
+	//if (m_pTexture) m_pTexture->Release();
 }

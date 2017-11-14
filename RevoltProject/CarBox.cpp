@@ -13,12 +13,7 @@ CarBox::CarBox()
 
 CarBox::~CarBox()
 {
-	SAFE_RELEASE(m_carboxTexture);
-	SAFE_RELEASE(VB);
 
-	SAFE_DELETE(m_car);
-	SAFE_DELETE(g_select);
-	g_vecCar.clear();
 }
 
 void CarBox::Setup()
@@ -119,6 +114,18 @@ void CarBox::Render()
 	g_pD3DDevice->SetFVF(ST_PNT_VERTEX::FVF);
 	g_pD3DDevice->SetTexture(0, m_carboxTexture);
 	g_pD3DDevice->DrawPrimitive(D3DPT_TRIANGLELIST, 0, 2);
+}
+
+void CarBox::Destroy()
+{
+	SAFE_RELEASE(m_carboxTexture);
+	SAFE_RELEASE(VB);
+
+	SAFE_DELETE(m_car);
+	//SAFE_DELETE(g_select); //삭제해야함
+	g_vecCar.clear();
+
+	Thing::Destroy();
 }
 
 void CarBox::MirrorRender()

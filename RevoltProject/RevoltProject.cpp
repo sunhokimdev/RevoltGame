@@ -19,6 +19,7 @@ LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		case WM_COMMAND:
 		{
+			
 			int wmId = LOWORD(wParam);
 			switch (wmId)
 			{

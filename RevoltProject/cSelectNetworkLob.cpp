@@ -75,6 +75,13 @@ void cSelectNetworkLob::Render(LPD3DXSPRITE pSprite)
 	iLobby::Render(pSprite);
 }
 
+void cSelectNetworkLob::Destroy()
+{
+	SAFE_DELETE(m_pTextIP);
+
+	iLobby::Destroy();
+}
+
 std::string cSelectNetworkLob::GetTextIP()
 {
 	return m_pTextIP->GetChatName();

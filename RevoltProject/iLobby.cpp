@@ -10,7 +10,7 @@ iLobby::iLobby()
 
 iLobby::~iLobby()
 {
-	SAFE_DELETE(m_pRootUI);
+	
 	//SAFE_RELEASE(m_pRootUI);
 }
 
@@ -30,3 +30,14 @@ void iLobby::Render(LPD3DXSPRITE pSprite)
 	if (m_pRootUI)
 		m_pRootUI->Render(pSprite);
 }
+void iLobby::Destroy()
+{
+	if (m_pRootUI)
+	{
+		m_pRootUI->Destroy();
+		SAFE_DELETE(m_pRootUI);
+	}
+		
+	
+}
+

@@ -1,31 +1,28 @@
 #include "stdafx.h"
-#include "cAI_CtrlHandel.h"
-#include "cPhysXManager.h"
 #include "cCar.h"
+#include "cTrack.h"
+#include "cCheckBox.h"
+#include "cAI_Master.h"
+
 
 cAI_CtrlHandel::cAI_CtrlHandel()
 {
-	//rayHitFront = NULL;
-	rayHitFront.shape = NULL;
-	rayHitBack.shape = NULL;
+	AI_Data = NULL;
+	familyAI = NULL;
 
-	pMesh = new LPD3DXMESH;
+	LRF_F_RateValue = 1.0f;
+	LRF_D_RateVAlue = 2.0f;
+	LR__F_RateValue = 1.0f;
+	LR__D_RateVAlue = 2.0f;
 
-	aiState = E_SpeedStateFront;
+	FindDirNum = 2;
+
+	HandleDistance = 0.2f;
 
 
-	frontDistPrev = 0;
-	frontDistCurr = 0;
-	frontDelta = 0;
+	RealDir = D3DXVECTOR3(1, 0, 0);
 
-	backDistPrev = 0;
-	backDistCurr = 0;
-	backDelta = 0;
-
-	AI_distanceFront = 5;		//인지범위 
-	AI_distanceBack = 3;		//인지범위 
-	AI_value = 0.2f;		//delta 의 인지범위
-	AI_distanceMin = 2.f;	//무조건 유지하려는 거리
+	isPoint = false;
 }
 
 cAI_CtrlHandel::~cAI_CtrlHandel()
@@ -34,130 +31,139 @@ cAI_CtrlHandel::~cAI_CtrlHandel()
 
 void cAI_CtrlHandel::Update()
 {
-	NxVec3 raypos = m_pAICar->GetPhysXData()->GetPositionToNxVec3() + NxVec3(0, 1, 0);
-	//NxVec3 dirFront = m_pAICar->WheelArrow(0, false); dirFront.y = 0;
 
-	D3DXMATRIXA16 matR;
-	matR = m_pAICar->GetMatrix(false, true, false); 
+	HandleValue = 0.0f;
 
-	D3DXVECTOR3 dirFr = { 1,0,0 };
-	D3DXVec3TransformNormal(&dirFr, &dirFr, &matR);
-	
-	NxVec3 dirFront = dirFr;
-	NxVec3 dirBack = -dirFr;
+	float F__Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_F__.Distance();
+	float LF_Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_LF_.Distance();
+	float RF_Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_RF_.Distance();
+	float L__Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_L__.Distance();
+	float R__Dist = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_R__.Distance();
 
-	//rayHitFront = &RAYCAST(raypos, dirFront, 100);
-	//rayHitBack = &RAYCAST(raypos, dirBack, 100);
-	
-	//RAYCAST(rayHitFront, raypos, dirFront, 100);
-	MgrPhysX->RaycastClosestShapePt(&rayHitFront, raypos, dirFront, 100);
-	MgrPhysX->RaycastClosestShapePt(&rayHitBack, raypos, dirBack, 100);
+	D3DXVECTOR3 F__Dir = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_F__.GetDir_Dx();
+	D3DXVECTOR3 LF_Dir = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_LF_.GetDir_Dx();
+	D3DXVECTOR3 RF_Dir = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_RF_.GetDir_Dx();
+	D3DXVECTOR3 L__Dir = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_L__.GetDir_Dx();
+	D3DXVECTOR3 R__Dir = ((cAI_Ray*)(*familyAI)[AI_TAG_RAY])->Ray_R__.GetDir_Dx();
 
-	//g_pPhysXScene->raycastClosestShape(RayCamVertical, NxShapesType::NX_ALL_SHAPES, RayCamVerticalHit, 0xffffffff, Height);
-	
+	float LRFScale = LF_Dist + RF_Dist;
+	float LRScale = L__Dist + R__Dist;
 
-	//if (rayHitFront.shape)
-	//{
-	//	std::string strFkName = rayHitBack.shape->getActor().getName();
-	//	if (strFkName == "map")
-	//	{
-	//		frontDistCurr = rayHitFront.distance;
-	//		frontDelta = frontDistCurr - frontDistPrev;
-
-	//		NxVec3 pos = rayHitFront.worldImpact;
-	//		FrontPos = D3DXVECTOR3(pos.x, pos.y, pos.z);
-	//	}
-	//}
-	//else
-	//{
-	//	FrontPos = { rayHitFront.worldImpact.x,rayHitFront.worldImpact.y,rayHitFront.worldImpact.z };
-	//}
-	//if (rayHitBack.shape)
-	//{
-	//	std::string strBkName = rayHitBack.shape->getActor().getName();
-	//	if (strBkName == "map")
-	//	{
-	//		backDistCurr = rayHitBack.distance;
-	//		backDelta = backDistCurr - backDistPrev;
-
-	//		NxVec3 pos = rayHitFront.worldImpact;
-	//		BackPos = D3DXVECTOR3(pos.x, pos.y, pos.z);
-
-	//	}
-	//}
-	//else
-	//{
-	//	BackPos = { rayHitBack.worldImpact.x,rayHitBack.worldImpact.y,rayHitBack.worldImpact.z };
-	//}
-
-
-	//if (rayHitBack->shape->getActor().getName() == "map")
-	//{
-	//	backDistCurr = rayHitBack->distance;
-	//	backDelta = backDistCurr - backDistPrev;
-
-	//	NxVec3 pos = rayHitFront->worldImpact;
-	//	BackPos = D3DXVECTOR3(pos.x, pos.y, pos.z);
-
-	//}
-	//if (rayHitFront->shape->getActor().getName() == "map")
-	//{
-	//	frontDistCurr = rayHitFront->distance;
-	//	frontDelta = frontDistCurr - frontDistPrev;
-
-	//	NxVec3 pos = rayHitFront->worldImpact;
-	//	FrontPos = D3DXVECTOR3(pos.x, pos.y, pos.z);
-	//}
-
-	//
-	//aiHandleState = E_HanStateFront;
-
-	if ((frontDelta < AI_value) || (frontDistCurr < AI_distanceMin))
+	//isPoint == true	추적 방식을 차와 체크박스로 변경
+	//isPoint == false	추적 방식을 체크박스와 체크박스로 변경 (defalut)
+	if (isPoint)
 	{
-		if (frontDistCurr < AI_distanceFront)
+		//해당 조건 만족 후 추적 변경
+		//일정 방향과 일정 속도 도달시
+	//	if (CheckBoxPoint(F__Dir) > 0.75f)
+	//	{
+		if (GetRpmRate() > 0.4f)
 		{
-			aiState = E_SpeedStateBack;
-			//			std::cout << "Back" << std::endl;
+			isPoint = false;
 		}
-
-		//std::cout << "Up" << std::endl;
+		//	}
 	}
+	else
+		isPoint = ((cAI_CtrlSpeed*)(*familyAI)[AI_TAG_SPEED])->isBack;
 
-	if ((backDelta < AI_value) || (backDistCurr < AI_distanceMin))
+	//isPoint = true;
+	//std::cout << CheckBoxPoint(F__Dir, isPoint) << std::endl;
+
 	{
-		if (backDistCurr < AI_distanceBack)
-		{
-			aiState = E_SpeedStateFront;
-			//			std::cout << "Front" << std::endl;
-		}
-
-		//std::cout << "Down" << std::endl;
-
+		float add = 1.0
+			* ScaleValue(L__Dist, F__Dist, LR__F_RateValue)
+			* ScaleValue(L__Dist, LRScale, LR__F_RateValue)
+			* CheckBoxPoint(L__Dir) * LR__D_RateVAlue
+			;
+		HandleValue -= add;
+		//		std::cout << -add << " + ";
 	}
-	//	std::cout << aiState << std::endl;
+	{
+		float add = 1.0
+			* ScaleValue(LF_Dist, F__Dist, LRF_F_RateValue)
+			* ScaleValue(LF_Dist, LRFScale, LRF_F_RateValue)
+			* CheckBoxPoint(LF_Dir) * LRF_D_RateVAlue
+			;
+		HandleValue -= add;
+		//		std::cout << -add << " + ";
+	}
+	{
+		float add = 1.0
+			* ScaleValue(RF_Dist, F__Dist, LRF_F_RateValue)
+			* ScaleValue(RF_Dist, LRFScale, LRF_F_RateValue)
+			* CheckBoxPoint(RF_Dir) * LRF_D_RateVAlue
+			;
+		HandleValue += add;
+		//		std::cout << add << " + ";
+	}
+	{
+		float add = 1.0
+			* ScaleValue(R__Dist, F__Dist, LR__F_RateValue)
+			* ScaleValue(R__Dist, LRScale, LR__F_RateValue)
+			* CheckBoxPoint(R__Dir) * LR__D_RateVAlue
+			;
+		HandleValue += add;
+		//				std::cout << add << " = ";
+	}
+	//	std::cout << HandleValue << std::endl;
 
-	frontDistPrev = frontDistCurr;
-	backDistPrev = backDistCurr;
 
-	//FrontPos = { rayHitFront->worldImpact.x,rayHitFront->worldImpact.y,rayHitFront->worldImpact.z };
-	//BackPos = { rayHitBack->worldImpact.x,rayHitBack->worldImpact.y,rayHitBack->worldImpact.z };
-
-	FrontPos = { rayHitFront.worldImpact.x,rayHitFront.worldImpact.y,rayHitFront.worldImpact.z };
-	BackPos = { rayHitBack.worldImpact.x,rayHitBack.worldImpact.y,rayHitBack.worldImpact.z };
-
-	//SetBitKey(eBIT_KEY::E_BIT_LEFT, aiHandleState == E_HandleStateLeft);
-	//SetBitKey(eBIT_KEY::E_BIT_RIGHT, aiHandleState == E_HandleStateRight);
 }
 
 void cAI_CtrlHandel::Render()
 {
-	D3DXCreateSphere(g_pD3DDevice, 0.5, 8, 8, pMesh, NULL);
-	D3DXMATRIXA16 mat16;
-	D3DXMatrixTranslation(&mat16, FrontPos.x, FrontPos.y, FrontPos.z);
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
-	(*pMesh)->DrawSubset(0);
 
-	D3DXMatrixTranslation(&mat16, BackPos.x, BackPos.y, BackPos.z);
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat16);
-	(*pMesh)->DrawSubset(0);
+}
+
+
+//0~1 점
+float cAI_CtrlHandel::CheckBoxPoint(D3DXVECTOR3 dir)
+{
+	cCheckBox* box = CurrentCheckBox();
+	if (box == NULL) return 1.0f;
+
+
+	//포인팅 추적
+	if (isPoint)
+	{
+		D3DXVECTOR3 posBox = box->GetNextCheckBox()->GetPhysXData()->GetPositionToD3DXVec3();
+		D3DXVECTOR3 poscar = AI_Data->pCar->GetPhysXData()->GetPositionToD3DXVec3();
+		D3DXVECTOR3 dir0 = posBox - poscar;
+		D3DXVec3Normalize(&dir0, &dir0);
+
+		D3DXVec3Normalize(&dir, &dir);
+
+		return  (D3DXVec3Dot(&dir0, &dir));
+	}
+
+
+	//방향 추적
+	D3DXVECTOR3 dir1 = box->ToNextCheckBoxDir();
+	if (FindDirNum == 1)
+	{
+		D3DXVec3Normalize(&dir, &dir);
+		return (D3DXVec3Dot(&dir1, &dir));
+	}
+
+	D3DXVECTOR3 dir2 = box->GetNextCheckBox()->ToNextCheckBoxDir();
+	if (FindDirNum == 2)
+	{
+		D3DXVec3Normalize(&dir2, &(dir1 + (dir2*0.75)));
+		return (D3DXVec3Dot(&dir2, &dir));
+	}
+
+	D3DXVECTOR3 dir3 = box->GetNextCheckBox()->GetNextCheckBox()->ToNextCheckBoxDir();
+	if (FindDirNum == 3)
+	{
+		D3DXVec3Normalize(&dir3, &(dir1 + (dir2*0.7f) + (dir3*0.5f)));
+		return (D3DXVec3Dot(&dir3, &dir));
+	}
+
+	return 1.0f;
+	//	return -D3DXVec3Dot(&dir1, &dir) * 0.5f + 0.5f;
+}
+
+float cAI_CtrlHandel::CheckBoxPoint(NxVec3 dir)
+{
+	return CheckBoxPoint(D3DXVECTOR3(dir.x, dir.y, dir.z));
 }

@@ -15,6 +15,9 @@ cFirework::cFirework()
 
 cFirework::~cFirework()
 {
+	//SAFE_DELETE(m_pEffect);
+	//SAFE_DELETE(m_pPhysX);
+	//SAFE_DELETE(m_pTail);
 }
 
 void cFirework::Setup()
@@ -41,7 +44,6 @@ void cFirework::Setup()
 void cFirework::Update()
 {
 	cItem::Update();
-
 	fwPos.x = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().x;
 	fwPos.y = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().y;
 	fwPos.z = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().z;

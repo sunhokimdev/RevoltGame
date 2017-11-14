@@ -19,7 +19,7 @@ MainGame::MainGame()
 
 MainGame::~MainGame()
 {
-
+	//Destroy();
 }
 
 void MainGame::Setup()
@@ -44,6 +44,8 @@ void MainGame::Setup()
 	//m_pGrid = new Grid;
 	//m_pGrid->Setup();
 
+
+
 	g_SceneManager->AddScene("Lobby", new LobbyScene);
 	g_SceneManager->AddScene("Race", new RacingScene);
 	g_SceneManager->ChangeScene("Lobby");
@@ -52,7 +54,8 @@ void MainGame::Setup()
 	g_pItemManager->Init();
 	g_pTimeManager->Setup();
 	//
-	//	SetAddSound();
+	g_pSoundManager->Setup();
+	SetAddSound();
 	//	MgrPhysXScene->setUserTriggerReport(new TriggerCallback());
 	IsUpdate = false;
 
@@ -68,7 +71,7 @@ void MainGame::Update()
 	SAFE_UPDATE(g_SceneManager);
 	SAFE_UPDATE(g_pLightManager);
 	SAFE_UPDATE(g_pItemManager);
-
+	
 	//PhysX 시뮬 런
 	//g_pTimeManager->GetElapsedTime());//
 	//	MgrPhysXScene->simulate((1.f/60.f));	//프레임 지정
@@ -77,11 +80,11 @@ void MainGame::Update()
 	MgrPhysXScene->flushStream();
 	MgrPhysXScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
 	//	MgrPhysXScene->checkResults(NX_RIGID_BODY_FINISHED, true);
-
-
+	
 	//PhysX와 정보 동기화
 	if (g_SceneManager) g_SceneManager->LastUpdate();
 	SAFE_UPDATE(g_pCamManager);
+	SAFE_UPDATE(g_pSoundManager);
 }
 
 void MainGame::Render()
@@ -89,24 +92,26 @@ void MainGame::Render()
 	if (IsUpdate == false) return;
 	IsUpdate = false;
 
-	SAFE_RENDER(g_pTimeManager);
-
 	g_pD3DDevice->Clear(NULL, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(47, 121, 112), 1.0F, 0);
 		// 그리기 시작
 	g_pD3DDevice->BeginScene();
 
-	SAFE_RENDER(g_SceneManager);
+	g_SceneManager->Render();
 
 	g_pItemManager->Render();
 
 	g_pPhysX->Render();
 
-	// 타임 매니저 랜더 해야함
-
 	g_pTimeManager->Render();
 
 	g_pD3DDevice->EndScene();
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
+}
+
+void MainGame::Destroy()
+{
+	g_SceneManager->Destroy();
+	g_pSoundManager->Destroy();
 }
 
 void MainGame::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -123,4 +128,11 @@ void MainGame::SetAddSound()
 	g_pSoundManager->LoadSound("Sound", "boxslide.wav", false);
 	g_pSoundManager->LoadSound("Sound", "honkgood.wav", false);
 	g_pSoundManager->LoadSound("Sound", "countdown.wav", false);
+	g_pSoundManager->LoadSound("Sound", "countdown_0.wav", false);
+	g_pSoundManager->LoadSound("Sound", "countdown_1.wav", false);
+	g_pSoundManager->LoadSound("Sound", "tvstatic.wav", false);
+	g_pSoundManager->LoadSound("Sound", "pickup.wav", false);
+	g_pSoundManager->LoadSound("Sound", "pickgen.wav", false);
+	g_pSoundManager->LoadSound("Sound", "moto.wav", true);
+	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", true);	
 }

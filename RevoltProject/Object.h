@@ -56,33 +56,9 @@ protected:
 public:
 
 	cMesh* GetMeshData() { return m_pMeshData; }
-	void SetMeshData(cMesh* pMesh) {
-		if (pMesh)
-		{
-			if (m_pMeshData)
-			{
-				m_pMeshData->Destory();
-			}
-			m_pMeshData = pMesh;
-		}
-	}
+	void SetMeshData(cMesh* pMesh);
 	cPhysX*	GetPhysXData() { return m_PhysXData; }
-	void SetPhysXData(cPhysX* pPhysX)
-	{
-		if (pPhysX)
-		{
-			if (m_PhysXData)
-			{
-				m_PhysXData->Destory();
-			}
-			else
-			{
-				m_PhysXData = new cPhysX;
-			}
-			m_PhysXData->m_pActor = pPhysX->m_pActor;
-			m_PhysXData->m_pUserData = pPhysX->m_pUserData;
-		}
-	}
+	void SetPhysXData(cPhysX* pPhysX);
 
 	virtual void Setup();
 	virtual void Destroy();

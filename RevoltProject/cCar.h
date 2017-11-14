@@ -1,7 +1,8 @@
 #pragma once
 #include "Object.h"
+#include "cAI.h"
 
-class cAI;
+class cAI_Master;
 class TriggerCallback;
 class cTrack;
 class cSkidMark;
@@ -48,11 +49,15 @@ private:
 	bool isFliping;
 
 	//AI
-	std::vector<cAI*> m_vecAI;
+	cAI_Master* familyAI;
 	bool m_isAI = false;
+
+	bool m_isCtl;
+	bool m_isDrift;
 
 	//Track 정보
 	cTrack* m_pTrack;
+	SYNTHESIZE(int, m_aICheckBoxID, AICheckBoxID);				//트랙 순서와 상관없이 항상 체크된 박스의 번호가 올라온다.
 	SYNTHESIZE(int, m_currCheckBoxID, CurrCheckBoxID);			//최근에 체크된 박스
 	SYNTHESIZE(int, m_nextCheckBoxID, NextCheckBoxID);			//드음에 체크할 박스
 	SYNTHESIZE(int, m_countRapNum, CountRapNum);				//돈 바퀴수
@@ -60,6 +65,9 @@ private:
 	SYNTHESIZE(float, m_rapTimeCount, RapTimeCount);			//현제 렙 시간
 	SYNTHESIZE(float, m_bastRapTimeCount, BastRapTimeCount);	//가장 짭은 랩 시간
 	SYNTHESIZE(float, m_totlaTimeCount, TotlaTimeCount);		//총 경과된 랩 시간
+
+	//m_aICheckBoxID에서 다음 체크박스를 가리키는 방향
+//	SYNTHESIZE(D3DXVECTOR3, m_nextDir, NextCheckDir);
 
 	//Item 관련
 	SYNTHESIZE(eITEM_LIST, m_eHoldItem, HoldItem);
@@ -70,6 +78,11 @@ private:
 	//InGame UI
 	InGameUI* m_pInGameUI;
 
+	/*          Ray Cast          */
+	std::vector<D3DXVECTOR3>	m_vecProjVertex;
+	std::vector<D3DXVECTOR3>	m_vecWorldVertex;
+	std::vector<D3DXPLANE>		m_vecPlane;
+
 public:
 	cCar();
 	~cCar();
@@ -79,7 +92,7 @@ public:
 
 	void LoadCar(std::string carName);
 	void SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc, bool isAI = false);
-	void SetAI(bool isAI);
+	void SetAI(bool isAI , AI_DATA aiData);
 	void CreateItem();
 
 	void CreatePhsyX(stCARSPEC carspec);
@@ -89,13 +102,14 @@ public:
 	void Update();
 	void LastUpdate();
 	void Render();
-	void Destory();
+	void Destroy();
 
 
 	void CtrlPlayer();
 	void CtrlAI();
 
 	float GetRpm();
+	float GetRpmRate();
 
 	void TrackCheck();
 	void RunEnd();
@@ -109,18 +123,28 @@ public:
 	void SpeedMath();
 	void CreateSkidMark();
 	void CollidePickUp();
-	void SettingCarPos();
 
 	void CarMove();
 	void UsedItem();
 	void RePosition();
 	void CarFlip();
 
+	/*          Ray Cast          */
+	void SetFrustum();
+	void UpdateFrustum();
+	bool IsIn(D3DXVECTOR3* pv);
+
+	void UpdateSound();
+
 	/*   김선호   */
+	///////////////////////////////////////
+public:
 	void SetResetNetworkKey();
 	void SetNetworkKey(std::string);
 
+	SYNTHESIZE(NxVec3, m_carPos, CarSunPos);
 	SYNTHESIZE(bool, m_isUser, IsUser);
+	////////////////////////////////////////
 	//e
 	NxVec3 CarArrow(float radianAngle = 0);
 	NxVec3 WheelArrow(float degAngle = 0 , bool back = false);

@@ -13,6 +13,16 @@ struct ST_PHYSX
 	cPhysX* pTrigger;
 	cMesh* pMesh;
 	NxVec3 pos;
+
+	~ST_PHYSX()
+	{
+		pPhysX->Destroy();
+		SAFE_DELETE(pPhysX);
+		pTrigger->Destroy();
+		SAFE_DELETE(pTrigger);
+		pMesh->Destroy();
+		SAFE_DELETE(pMesh);
+	}
 };
 
 struct ST_USERDATA
@@ -46,11 +56,6 @@ private:
 	int m_vecIndex[4];
 	eITEM_LIST m_eItemList;
 
-	NxActor* box1;
-	NxActor* box2;
-	NxActor* box3;
-	NxActor* box4;
-
 public:
 	SINGLETONE(ItemManager);
 
@@ -65,5 +70,6 @@ public:
 
 	int GetItemID();
 	void SetItemID(eITEM_LIST e) { m_eItemList = e; };
+	void Destroy();
 };
 

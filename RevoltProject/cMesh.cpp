@@ -38,12 +38,13 @@ void cMesh::LoadBox()
 	D3DXCreateBox(MgrD3DDevice, 1, 1, 1, &m_pMesh, NULL);
 }
 
-void cMesh::Destory()
+void cMesh::Destroy()
 {
 	//m_mapMtlTex.clear();
 	for each (auto pMtlTex in m_vecMtlTex)
 	{
-		pMtlTex->~MtlTex();
+		//pMtlTex->Release();
+		SAFE_DELETE(pMtlTex);
 	}
 	m_vecMtlTex.clear();
 	SAFE_RELEASE(m_pMesh);

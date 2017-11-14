@@ -7,6 +7,7 @@
 #include "Object.h"
 #include "cCheckBox.h"
 #include "c321GO.h"
+#include "RacingScene.h"
 
 #define TIMEMAX 60
 
@@ -49,9 +50,7 @@ InGameUI::InGameUI()
 
 InGameUI::~InGameUI()
 {
-	SAFE_DELETE(m_pRootUI);
-	SAFE_DELETE(m_pItemImage);
-	//SAFE_DELETE(m_pCar);
+
 }
 
 void InGameUI::Setup()
@@ -258,14 +257,17 @@ void InGameUI::Setup()
 	m_pElapseTime = new UITextImageView;
 	m_pElapseTime->SetTexture("UIImage/font2.png");
 	m_pElapseTime->SetPosition(25, 20);
+	m_pElapseTime->SetText("0");
 
 	m_pDotTenth = new UITextImageView;
 	m_pDotTenth->SetTexture("UIImage/font2.png");
 	m_pDotTenth->SetPosition(-10, 0);
+	m_pDotTenth->SetText("0");
 
 	m_pDotMilth = new UITextImageView;
 	m_pDotMilth->SetTexture("UIImage/font2.png");
 	m_pDotMilth->SetPosition(-10, 0);
+	m_pDotMilth->SetText("0");
 
 	UITextImageView* pSecColon = new UITextImageView;
 	pSecColon->SetTexture("UIImage/font2.png");
@@ -275,10 +277,12 @@ void InGameUI::Setup()
 	m_pSecOneth = new UITextImageView;
 	m_pSecOneth->SetTexture("UIImage/font2.png");
 	m_pSecOneth->SetPosition(-10, 0);
+	m_pSecOneth->SetText("0");
 
 	m_pSecTenth = new UITextImageView;
 	m_pSecTenth->SetTexture("UIImage/font2.png");
 	m_pSecTenth->SetPosition(-10, 0);
+	m_pSecTenth->SetText("0");
 
 	UITextImageView* pMinColon = new UITextImageView;
 	pMinColon->SetTexture("UIImage/font2.png");
@@ -288,10 +292,12 @@ void InGameUI::Setup()
 	m_pMinOneth = new UITextImageView;
 	m_pMinOneth->SetTexture("UIImage/font2.png");
 	m_pMinOneth->SetPosition(-10, 0);
+	m_pMinOneth->SetText("0");
 
 	m_pMinTenth = new UITextImageView;
 	m_pMinTenth->SetTexture("UIImage/font2.png");
 	m_pMinTenth->SetPosition(-10, 0);
+	m_pMinTenth->SetText("0");
 	// << :
 
 	UIImageView* pImageView6 = new UIImageView;
@@ -481,9 +487,9 @@ void InGameUI::Update()
 	}
 
 
-	if (m_LabCnt > -1 && m_LabCnt < 3)	UpdateLabTime();
-	if (m_LabCnt < 3)	UpdateRaceTime();
-	if (m_LabCnt >= 3)
+	int nTrackCount = m_pRacingScene->GettrackEndCount();
+	if (m_LabCnt > -1 && m_LabCnt < nTrackCount)	UpdateLabTime();
+	if (m_LabCnt >= nTrackCount)
 	{
 		RaceResults();
 		if (g_pKeyManager->isOnceKeyDown(VK_RETURN))
@@ -504,6 +510,56 @@ void InGameUI::Render(LPD3DXSPRITE pSprite)
 	{
 		m_p321go->Render();
 	}
+}
+
+void InGameUI::Destroy()
+{
+	SAFE_DELETE(m_pItemImage);
+	SAFE_DELETE(m_pLobby);
+	//SAFE_DELETE(m_pLab);
+	SAFE_DELETE(m_pCurrentLab);
+	SAFE_DELETE(m_pMaxLab);
+	SAFE_DELETE(m_pLastDotOneTh);
+	SAFE_DELETE(m_pLastDotTenth);
+	SAFE_DELETE(m_pLastDotMilth);
+	SAFE_DELETE(m_pLastSecOneth);
+	SAFE_DELETE(m_pLastSecTenth);
+	SAFE_DELETE(m_pLastMinOneth);
+	SAFE_DELETE(m_pLastMinTenth);
+	SAFE_DELETE(m_pBestDotOneTh);
+	SAFE_DELETE(m_pBestDotTenth);
+	SAFE_DELETE(m_pBestDotMilth);
+	SAFE_DELETE(m_pBestSecOneth);
+	SAFE_DELETE(m_pBestSecTenth);
+	SAFE_DELETE(m_pBestMinOneth);
+	SAFE_DELETE(m_pBestMinTenth);
+	SAFE_DELETE(m_pLabElapseTime);
+	SAFE_DELETE(m_pLabDotTenth);
+	SAFE_DELETE(m_pLabDotMilth);
+	SAFE_DELETE(m_pLabSecOneth);
+	SAFE_DELETE(m_pLabSecTenth);
+	SAFE_DELETE(m_pLabMinOneth);
+	SAFE_DELETE(m_pLabMinTenth);
+	SAFE_DELETE(m_pElapseTime);
+	SAFE_DELETE(m_pDotTenth);
+	SAFE_DELETE(m_pDotMilth);
+	SAFE_DELETE(m_pSecOneth);
+	SAFE_DELETE(m_pSecTenth);
+	SAFE_DELETE(m_pMinOneth);
+	SAFE_DELETE(m_pMinTenth);
+	SAFE_DELETE(m_pSpeedOne);
+	SAFE_DELETE(m_pSpeedTen);
+	SAFE_DELETE(m_pSpeedHun);
+	SAFE_DELETE(m_pSpeedometerImage);
+	SAFE_DELETE(pITV_Rank);
+	SAFE_DELETE(pITV_Rank2);
+	SAFE_DELETE(pIV_arrowDir);
+	SAFE_DELETE(m_p321go);
+	m_pTrack = NULL;
+	m_pCar = NULL;
+	m_pRacingScene = NULL;
+
+	//iLobby::Destroy();
 }
 
 void InGameUI::UpdateSpeed()

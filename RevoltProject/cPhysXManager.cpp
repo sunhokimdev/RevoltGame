@@ -117,7 +117,7 @@ BOOL cPhysXManager::InitNxPhysX()
 	return S_OK;
 }
 
-void cPhysXManager::Destory()
+void cPhysXManager::Destroy()
 {
 	if (m_pNxPhysicsSDK != NULL)
 	{
@@ -209,9 +209,11 @@ void cPhysXManager::PhysXReportSeting()
 	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_FIREWORK);
 	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_WHATEBOMB);
 	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_METALBALL);
+	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_MYBOMB);
 	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_GRIVATEBALL);
 	CollisionEnable(T, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_TRACK);
 	CollisionEnable(F, F, E_PHYSX_TAG_RAYCAST_TO_AI, E_PHYSX_TAG_RAYCAST_TO_AI);
+
 
 	return;	//END
 	CollisionEnable(F, F, E_PHYSX_TAG_END, E_PHYSX_TAG_NONE);
@@ -251,7 +253,13 @@ void cPhysXManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
 	for (int i = 0; i < actor->getNbShapes(); i++)
 	{
 		shapes[i]->setGroup(group);
-		if (!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_RAYCAST_TO_AI, group))
+		if (!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_RAYCAST_TO_AI, group)
+			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_FIREWORK, group)
+			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_WHATEBOMB, group)
+			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_MYBOMB, group)
+			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_GRIVATEBALL, group)
+			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_RAYCAST_TO_AI, group)
+			)
 			shapes[i]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
 	}
 

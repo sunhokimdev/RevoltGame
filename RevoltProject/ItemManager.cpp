@@ -10,10 +10,7 @@
 #include "cMyBomb.h"
 
 ItemManager::ItemManager()
-	: box1(NULL)
-	, box2(NULL)
-	, box3(NULL)
-	, m_max(50)
+	: m_max(50)
 	, m_index(0)
 	, m_eItemList(ITEM_NONE)
 {
@@ -34,11 +31,31 @@ void ItemManager::Init()
 	USERDATA* user1 = new USERDATA;
 	user1->USER_TAG = E_PHYSX_TAG_NONE;
 
-	box1 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(6, 0, 5), NULL, NxVec3(3.0f, 3.0f, 3.0f), E_PHYSX_MATERIAL_CAR, user1);
-	box2 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(5, 0, 0), NULL, NxVec3(3.0f, 3.0f, 3.0f), E_PHYSX_MATERIAL_CAR, user1);
-	box3 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(4, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
-	box4 = MgrPhysX->CreateActor(NX_SHAPE_BOX, NxVec3(20, 0, 3), NULL, NxVec3(1.0f, 1.0f, 1.0f), E_PHYSX_MATERIAL_CAR, user1);
-
+	//for (int i = 0;i < 10;i++)
+	//{
+	//	cWbomb* pItem = new cWbomb;
+	//	pItem->Setup();
+	//	pItem->SetIsUse(false);
+	//	pItem->SetItemTag(ITEM_WBOMB);
+	//	m_vecItem.push_back(pItem);
+	//}
+	//
+	//for (int i = 0;i < 10;i++)
+	//{
+	//	cGravityball* pItem = new cGravityball;
+	//	pItem->Setup();
+	//	pItem->SetIsUse(false);
+	//	m_vecItem.push_back(pItem);
+	//}
+	//
+	//for (int i = 0;i < 10;i++)
+	//{
+	//	cMyBomb* pItem = new cMyBomb;
+	//	pItem->Setup();
+	//	pItem->SetIsUse(false);
+	//	pItem->SetItemTag(ITEM_MYBOMB);
+	//	m_vecItem.push_back(pItem);
+	//}
 
 
 	/* 아이템 사용할때마다 생성으로 바꿈 */
@@ -151,18 +168,8 @@ void ItemManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
 void ItemManager::InitCollisionGroup()
 {
 	//임시 박스
-	//SetActorGroup(box1, 1);
-	//SetActorGroup(box2, 2);
-	//SetActorGroup(box3, 2);
-	//SetActorGroup(box4, 2);
-	//
-	//box1->setGroup(1);
-	//box2->setGroup(2);
-	//box3->setGroup(2);
-	//box4->setGroup(2);
-	//
-	//MgrPhysXScene->setActorGroupPairFlags(3, 3, NX_NOTIFY_ON_END_TOUCH);
 
+	
 }
 
 void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인터*/)
@@ -264,4 +271,15 @@ int ItemManager::GetItemID()
 		return 4;
 	else
 		return INT_MAX;
+}
+
+void ItemManager::Destroy()
+{
+	for each(auto p in m_vecItem)
+	{
+		SAFE_DELETE(p);
+	}
+
+	for (int i = 0;i < 4;i++)
+		m_vecIndex[i] = 0;
 }
