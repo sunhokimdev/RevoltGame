@@ -254,8 +254,11 @@ void cCar::CreateItem()
 	{
 		while (1)
 		{
+			srand(time(NULL));
 			m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
-			//m_eHoldItem = eITEM_LIST::ITEM_WBOMB;
+
+			/*TEST*///m_eHoldItem = eITEM_LIST::ITEM_GRAVITY;
+
 			if (m_eHoldItem) break;
 		}
 		m_nItemCount = 1;
@@ -735,7 +738,8 @@ void cCar::UsedItem()
 		m_nItemCount--;
 		if (m_nItemCount == 0)
 		{
-			g_pItemManager->FireItem(ITEM_MYBOMB, this);
+			g_pItemManager->FireItem(m_eHoldItem, this);
+
 			m_eHoldItem = ITEM_NONE;
 			GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
 			g_pItemManager->SetItemID(m_eHoldItem);

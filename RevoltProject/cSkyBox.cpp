@@ -30,10 +30,13 @@ void cSkyBox::Destroy()
 
 void cSkyBox::Render()
 {
+	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
+
 	D3DXMATRIXA16 matS;
 	D3DXMatrixIdentity(&matS);
 	D3DXMatrixScaling(&matS, 10, 10, 10);
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matS);
 	m_pMeshData->Render();
 
+	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }

@@ -22,6 +22,7 @@ void cAI_Ctrl::Update()
 {
 	Speed();
 	Handle();
+	UseItem();
 	Flip();
 	Repos();
 }
@@ -76,6 +77,15 @@ void cAI_Ctrl::Repos()
 		((cAI_CtrlSpeed*)(*familyAI)[AI_TAG_SPEED])->isBack = false;
 		((cAI_CtrlSpeed*)(*familyAI)[AI_TAG_SPEED])->isRepos = false;
 		((cAI_CtrlHandel*)(*familyAI)[AI_TAG_HANDLE])->isPoint = false;
+	}
+}
+
+void cAI_Ctrl::UseItem()
+{
+	if (((cAI_CtrlUseItem*)(*familyAI)[AI_TAG_USEITEM])->m_isFire)
+	{
+		AI_Data->pCar->INPUT_KEY[eBIT_KEY::E_BIT_ITEM_] = true;
+		((cAI_CtrlUseItem*)(*familyAI)[AI_TAG_USEITEM])->m_isFire = false;
 	}
 }
 

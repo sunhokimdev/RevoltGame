@@ -490,6 +490,9 @@
     <ClInclude Include="cPlayerData.h">
       <Filter>NewClass</Filter>
     </ClInclude>
+    <ClInclude Include="cAI_CtrlUseItem.h">
+      <Filter>AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RevoltProject.cpp">
@@ -797,6 +800,9 @@
     </ClCompile>
     <ClCompile Include="cPlayerData.cpp">
       <Filter>NewClass</Filter>
+    </ClCompile>
+    <ClCompile Include="cAI_CtrlUseItem.cpp">
+      <Filter>AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

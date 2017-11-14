@@ -8,8 +8,10 @@
 class cPhysX
 {
 public:
-	NxActor*  m_pActor;		//save/load (X)		->월드좌표 + 로컬좌표 저장
+	NxActor*  m_pActor;		//save/load (X)		->월드좌표 저장
 	USERDATA* m_pUserData;	//save/load (X)
+
+	NxVec3 m_localPos;
 
 	cPhysX();
 	~cPhysX();
@@ -26,9 +28,9 @@ public:
 	D3DXMATRIXA16 GetRotationToD3DXMat16();
 	void Destroy();
 
-#define TAB	'\t'
-#define SPACE ' '
-#define POPDATA Data[sI++]
+//#define TAB	'\t'
+//#define SPACE ' '
+//#define POPDATA Data[sI++]
 
 };
 

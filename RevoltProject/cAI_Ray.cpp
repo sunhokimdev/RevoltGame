@@ -60,6 +60,11 @@ void cAI_Ray::Update()
 	Ray_RF_.RayShot(raypos, dirRF, RayDist);
 	Ray_L__.RayShot(raypos, dirL_, RayDist);
 	Ray_R__.RayShot(raypos, dirR_, RayDist);
+
+
+
+
+
 }
 
 void cAI_Ray::Render()

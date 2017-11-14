@@ -151,7 +151,14 @@ void Map::Render()
 
 		/*   오브젝트 거울을 그리는 작업   */
 		if (*g_LobbyState >= MAIN_LOBBY3)
-			for each(Thing* pth in m_vecThing) pth->MirrorRender();
+		{
+			for (int i = 0; i < m_vecThing.size(); i++)
+			{
+				if (i == 2 || i == 3) continue;	// 선반에 있는 박스인경우 안그리고 넘어가기
+
+				m_vecThing[i]->MirrorRender();
+			}
+		}
 		
 		/*   오브젝트를 그리는 작업   */
 		if (*g_LobbyState == VIEW_CAR_LOBBY)
