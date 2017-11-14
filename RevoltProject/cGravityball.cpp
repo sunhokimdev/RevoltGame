@@ -105,6 +105,8 @@ void cGravityball::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	force.y = 0;
 	force.z = angle.z * 30000;
 	
+	g_pSoundManager->Play("shockfire.wav", 0.8f, pos);
+
 	if (m_isSleep)
 	{
 		m_pPhysX->pPhysX->m_pActor->wakeUp();

@@ -17,6 +17,8 @@ private:
 
 	D3DXVECTOR3 fwPos;		// 폭죽 자신의 포지션
 	D3DXVECTOR3 dir;		// 폭죽이 날아가는 방향
+
+	bool m_isSound;
 public:
 	cFirework();
 	virtual ~cFirework();

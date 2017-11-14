@@ -133,6 +133,13 @@ void MainGame::SetAddSound()
 	g_pSoundManager->LoadSound("Sound", "tvstatic.wav","tvstatic.wav",false, false);
 	g_pSoundManager->LoadSound("Sound", "pickup.wav","pickup.wav",false, true);
 	g_pSoundManager->LoadSound("Sound", "pickgen.wav", "pickgen.wav",false, true);
+	//g_pSoundManager->LoadSound("Sound", "shock.wav", "shock.wav", false, true);
+	g_pSoundManager->LoadSound("Sound", "shockfire.wav", "shockfire.wav", false, true);
+	g_pSoundManager->LoadSound("Sound", "firefire.wav", "firefire.wav", false, true);
+	g_pSoundManager->LoadSound("Sound", "firebang.wav", "firebang.wav", false, true);
+	g_pSoundManager->LoadSound("Sound", "wbombfire.wav", "wbombfire.wav", false, true);
+	g_pSoundManager->LoadSound("Sound", "puttbang.wav", "puttbang.wav", false, true);
+	g_pSoundManager->LoadSound("Sound", "fuse.wav", "fuse.wav", true, true);
 
 	g_pSoundManager->LoadSound("Sound", "moto.wav", "moto.0", true, true);
 	g_pSoundManager->LoadSound("Sound", "moto.wav", "moto.1", true, true);

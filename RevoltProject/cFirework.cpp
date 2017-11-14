@@ -9,6 +9,7 @@ cFirework::cFirework()
 	, m_pTail(NULL)
 	, m_isSleep(false)
 	, m_isTarget(false)
+	, m_isSound(false)
 {
 }
 
@@ -114,7 +115,15 @@ void cFirework::Update()
 	}
 
 	if (!m_isUse && m_pEffect->GetIsUse())
+	{
+		if (!m_isSound)
+		{
+			m_isSound = true;
+			g_pSoundManager->Play("firebang.wav", 1.0f, fwPos);
+		}
 		m_pEffect->Update(0.3f);
+	}
+		
 }
 
 void cFirework::Render()
@@ -147,6 +156,8 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	force.y = 2000;
 	force.z = angle.z * 50;
 	
+	g_pSoundManager->Play("firefire.wav", 0.8f, pos);
+
 	if (m_isSleep)
 	{
 		m_pPhysX->pPhysX->m_pActor->wakeUp();

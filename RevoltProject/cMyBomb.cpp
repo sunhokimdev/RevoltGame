@@ -9,6 +9,8 @@ cMyBomb::cMyBomb()
 	, m_BombTime(NULL)
 	, m_isSleep(true)
 	, m_fTimer(0.0f)
+	, m_isSoundBomb(false)
+	, m_isSoundFuse(false)
 {
 	cItem::cItem();
 }
@@ -81,7 +83,15 @@ void cMyBomb::Update()
 	}
 
 	if (!m_isUse && m_pImpact->GetIsUse())
+	{
+		if (!m_isSoundBomb)
+		{
+			g_pSoundManager->Play("puttbang.wav", 0.8f, m_BombPos);
+			m_isSoundBomb = true;
+		}
 		m_pImpact->Update();
+	}
+		
 }
 
 void cMyBomb::Render()

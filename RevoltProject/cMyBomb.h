@@ -18,6 +18,9 @@ private:
 	D3DXVECTOR3 m_BombPos;		// 폭탄 자신의 포지션
 
 	float m_fTimer;
+
+	bool m_isSoundFuse;
+	bool m_isSoundBomb;
 public:
 	cMyBomb();
 	virtual ~cMyBomb();
