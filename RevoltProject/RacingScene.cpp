@@ -69,7 +69,7 @@ void RacingScene::Setup()
 	
 	g_pNetworkManager->SetResetKeyEvent();
 
-	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+//	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 }
 
 void RacingScene::Destroy()

@@ -353,7 +353,6 @@ void cTrack::LoadTrack(std::string FileName)
 							m_vecObject.push_back(Obj);
 						}
 						break;
-
 					}
 				} // << : while Object
 			}

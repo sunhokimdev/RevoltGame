@@ -28,9 +28,9 @@ public:
 	D3DXMATRIXA16 GetRotationToD3DXMat16();
 	void Destroy();
 
-#define TAB	'\t'
-#define SPACE ' '
-#define POPDATA Data[sI++]
+//#define TAB	'\t'
+//#define SPACE ' '
+//#define POPDATA Data[sI++]
 
 };
 
