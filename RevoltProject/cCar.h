@@ -53,6 +53,7 @@ private:
 	bool m_isAI = false;
 
 	bool m_isCtl;
+	bool m_isDrift;
 
 	//Track Á¤º¸
 	cTrack* m_pTrack;

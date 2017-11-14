@@ -28,14 +28,14 @@ void PSystem::Init(IDirect3DDevice9 * device, char* texFileName)
 {
 	_device = device;
 
-	device->CreateVertexBuffer(_vbSize * sizeof(ST_Particle),
+	_device->CreateVertexBuffer(_vbSize * sizeof(ST_Particle),
 									D3DUSAGE_DYNAMIC | D3DUSAGE_POINTS | D3DUSAGE_WRITEONLY,
 									ST_Particle::FVF,
 									D3DPOOL_DEFAULT,
 									&_vb,
 									0);
 
-	D3DXCreateTextureFromFileA(device, texFileName, &_tex);
+	D3DXCreateTextureFromFileA(_device, texFileName, &_tex);
 }
 
 void PSystem::Reset()
@@ -61,6 +61,7 @@ void PSystem::PreRender()
 	_device->SetRenderState(D3DRS_POINTSCALEENABLE, true);
 	_device->SetRenderState(D3DRS_POINTSIZE, FtoDw(_size));
 	_device->SetRenderState(D3DRS_POINTSIZE_MIN, FtoDw(0.0f));
+	_device->SetRenderState(D3DRS_POINTSIZE_MAX, FtoDw(100.0f));
 
 	// 거리에 따른 크기 제어
 	_device->SetRenderState(D3DRS_POINTSCALE_A, FtoDw(0.0f));
@@ -82,7 +83,7 @@ void PSystem::Render()
 	{
 		D3DXMATRIXA16 matWorld;
 		D3DXMatrixIdentity(&matWorld);
-		g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+		_device->SetTransform(D3DTS_WORLD, &matWorld);
 
 		PreRender();
 

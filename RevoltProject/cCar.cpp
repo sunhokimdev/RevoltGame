@@ -29,6 +29,7 @@ cCar::cCar()
 	familyAI = NULL;
 
 	m_isCtl = false;
+	m_isDrift = false;
 }
 
 cCar::~cCar()
@@ -208,7 +209,6 @@ void cCar::LoadCar(std::string carName)
 	m_pSkidMark->LinkCar(this);
 
 	g_pSoundManager->Play("moto.wav", 0.0f, GetPosition());
-
 }
 
 void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc, bool isAI)
@@ -337,7 +337,6 @@ void cCar::Update()
 		//차 뒤집기
 		if (INPUT_KEY[E_BIT_FLIP_]) CarFlip();
 	}
-
 
 	// PickUp 충돌
 	CollidePickUp();
@@ -597,11 +596,20 @@ void cCar::DrawSkidMark()
 				if (RayCarHit.distance < 0.2f && str == "map")
 				{
 					m_pSkidMark->DrawSkidMark();
+					if (!m_isDrift)
+					{
+						g_pSoundManager->Play("skid_normal.wav", 0.5f, GetPosition());
+						m_isDrift = true;
+					}
 				}
 			}
 		}
 	}
 
+	else
+	{
+		m_isDrift = false;
+	}
 }
 
 void cCar::SpeedMath()
@@ -724,7 +732,7 @@ void cCar::UsedItem()
 		m_nItemCount--;
 		if (m_nItemCount == 0)
 		{
-			g_pItemManager->FireItem(m_eHoldItem, this);
+			g_pItemManager->FireItem(ITEM_GRAVITY, this);
 			m_eHoldItem = ITEM_NONE;
 			GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
 			g_pItemManager->SetItemID(m_eHoldItem);
@@ -780,25 +788,24 @@ void cCar::CarFlip()
 	p->getGlobalPose().t.add(carPos, NxVec3(0, 3, 0));
 }
 
-void cCar::SetFrustum()
-{
-	// : near 
-	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(-1, 1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(1, 1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(1, -1, 0)); //
-	// : far
-	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(-1, 1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(1, 1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(1, -1, 1)); //
-
-	m_vecPlane.resize(6);
-	m_vecWorldVertex.resize(8);
-
-	int a = 1;
-}
-
+//void cCar::SetFrustum()
+//{
+//	// : near 
+//	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 0)); //
+//	m_vecProjVertex.push_back(D3DXVECTOR3(-1, 1, 0)); //
+//	m_vecProjVertex.push_back(D3DXVECTOR3(1, 1, 0)); //
+//	m_vecProjVertex.push_back(D3DXVECTOR3(1, -1, 0)); //
+//	// : far
+//	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 1)); //
+//	m_vecProjVertex.push_back(D3DXVECTOR3(-1, 1, 1)); //
+//	m_vecProjVertex.push_back(D3DXVECTOR3(1, 1, 1)); //
+//	m_vecProjVertex.push_back(D3DXVECTOR3(1, -1, 1)); //
+//
+//	m_vecPlane.resize(6);
+//	m_vecWorldVertex.resize(8);
+//
+//	int a = 1;
+//}
 
 void cCar::UpdateFrustum()
 {
@@ -888,14 +895,25 @@ bool cCar::IsIn(D3DXVECTOR3* pv)
 }
 void cCar::UpdateSound()
 {
-	//g_pSoundManager->SetSoundPosition("moto.wav", GetPhysXData()->GetPositionToD3DXVec3());
-
 	NxWheel* wheel = m_carNxVehicle->getWheel(0);
 	float rpmRatio = wheel->getRpm() / m_maxRpm;
 
 	float frq = 10000 + (rpmRatio * 20000);
 	//std::cout << rpmRatio << std::endl;
 
+	g_pSoundManager->SetSoundPosition("moto.wav", GetPosition());
+	g_pSoundManager->SetVolum("moto.wav", 0.5f + rpmRatio * 0.5f);
+	g_pSoundManager->SetPitch("moto.wav", frq);
+
+	if (m_isDrift)
+	{
+		g_pSoundManager->SetSoundPosition("skid_normal.wav", GetPosition());
+		//g_pSoundManager->Play("skid_normal.wav", 0.8f, GetPosition());
+	}
+	else
+	{
+		g_pSoundManager->Stop("skid_normal.wav");
+	}
 	//if (!g_pSoundManager->isPlay("moto.wav"))
 	//{
 	//	g_pSoundManager->Play("moto.wav", 0.3f + rpmRatio * 0.5f);

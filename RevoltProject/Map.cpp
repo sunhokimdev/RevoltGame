@@ -156,7 +156,6 @@ void Map::Render()
 		/*   오브젝트를 그리는 작업   */
 		if (*g_LobbyState == VIEW_CAR_LOBBY)
 			for each(Thing* pth in m_vecThing) pth->Render();
-
 	}
 	else
 	{

@@ -14,8 +14,8 @@ cPlasmaImpact::cPlasmaImpact()
 
 cPlasmaImpact::~cPlasmaImpact()
 {
-	SAFE_RELEASE(m_pTexture);
-	SAFE_RELEASE(m_pSprite);
+	//SAFE_RELEASE(m_pTexture);
+	//SAFE_RELEASE(m_pSprite);
 }
 
 void cPlasmaImpact::Setup()

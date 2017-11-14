@@ -85,7 +85,6 @@ void Lobby::Setup()
 	m_pViewCarLobby = new cViewCarLob;
 	m_pViewCarLobby->Setup();
 
-
 	m_pInRoom = new cNetworkInRoom;
 	m_pInRoom->Setup();
 
@@ -125,31 +124,29 @@ void Lobby::Update()
 		else
 		{
 			int index = 0;
-			if (g_pNetworkManager->GetIsNextStage())
-			{
-				if(m_stateLobby == NETWORK_IN_LOBBY)
-					m_stateLobby = SELECT_MAP_LOBBY;
-			}
-			else
-			{
-				for (int i = 0; i < USER_SIZE; i++)
-				{
-					if (g_pNetworkManager->GetIsUse(i))
-					{
-						if (g_pNetworkManager->GetUserReady(i))
-							m_pInRoom->SetUserText(g_pNetworkManager->GetClientList(i), index, D3DCOLOR_ARGB(255, 255, 0, 0));
-						else
-						{
-							m_pInRoom->SetUserText(g_pNetworkManager->GetClientList(i), index, D3DCOLOR_ARGB(255, 255, 255, 255));
-							isNext = false;
-						}
 
-						index++;
+			for (int i = 0; i < USER_SIZE; i++)
+			{
+				if (g_pNetworkManager->GetIsClientUse(i))
+				{
+					if (g_pNetworkManager->GetClientReady(i))
+						m_pInRoom->SetUserText(g_pNetworkManager->GetClientList(i), index, D3DCOLOR_ARGB(255, 255, 0, 0));
+					else
+					{
+						m_pInRoom->SetUserText(g_pNetworkManager->GetClientList(i), index, D3DCOLOR_ARGB(255, 255, 255, 255));
+						isNext = false;
 					}
+
+					index++;
 				}
 			}
-			if(!isNext)
-				g_pNetworkManager->SetIsNextStage(true);
+			
+			// 만약 다음스테이지로 넘어가기 위한 단계라면
+			if (isNext)
+			{
+				if (m_stateLobby == NETWORK_IN_LOBBY)
+					m_stateLobby = SELECT_MAP_LOBBY;
+			}
 		}
 	}
 
@@ -291,22 +288,26 @@ void Lobby::KeyUpdate()
 			if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
 				m_leftAndrightSelect = 0;
 
-			g_pSoundManager->Play("menuLeftRight.wav", 0.8f);
+			g_pSoundManager->Play("boxslide.wav", 0.8f);
 		}
 		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
 		{
 			WheelTire::g_xRotAngle += D3DX_PI / 15.0f;
 			g_pSoundManager->Play("menuLeftRight.wav", 0.8f);
 		}
-
-		if (m_stateLobby == SELECT_MAP_LOBBY)
+		else if (m_stateLobby == SELECT_MAP_LOBBY)
+		{
 			m_leftAndrightSelect++;
 
-		//m_pSelectMap->GetmagImage()->SetIsMove(true);
-		m_pSelectMap->SetMove(true);
+			//m_pSelectMap->GetmagImage()->SetIsMove(true);
+			m_pSelectMap->SetMove(true);
 
-		if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
-			m_leftAndrightSelect = 0;
+			if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
+				m_leftAndrightSelect = 0;
+
+			g_pSoundManager->Play("tvstatic.wav", 0.8f);
+		}
+
 	}
 
 	if (g_pKeyManager->isOnceKeyDown(VK_LEFT))
@@ -319,7 +320,7 @@ void Lobby::KeyUpdate()
 			if (m_leftAndrightSelect < 0)
 				m_leftAndrightSelect = m_mapLobby[m_stateLobby]->m_selectCnt - 1;
 
-			g_pSoundManager->Play("menuLeftRight.wav", 0.8f);
+			g_pSoundManager->Play("boxslide.wav", 0.8f);
 		}
 		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
 		{
@@ -337,7 +338,7 @@ void Lobby::KeyUpdate()
 			if (m_leftAndrightSelect < 0)
 				m_leftAndrightSelect = m_mapLobby[m_stateLobby]->m_selectCnt - 1;
 
-			g_pSoundManager->Play("boxslide.wav", 0.8f);
+			g_pSoundManager->Play("tvstatic.wav", 0.8f);
 		}
 	}
 
@@ -451,7 +452,7 @@ void Lobby::KeyUpdate()
 		if (m_stateLobby > INTRO3)
 		{
 			//g_pSoundManager->Play("menuNext.wav", 1.0f);
-			g_pSoundManager->Play("menuNext.wav", 0.8f);
+			g_pSoundManager->Play("menuPrev.wav", 0.6f);
 			
 			m_time = 0.0f;
 			m_select = 0;
@@ -465,16 +466,11 @@ void Lobby::KeyUpdate()
 	{
 		if (m_mapLobby[m_stateLobby]->m_prevLob != LOBBY_NONE)
 		{
-			if (m_stateLobby == VIEW_CAR_LOBBY ||
-				m_stateLobby == NETWORK_LOBBY)
+			if (m_stateLobby == NETWORK_IN_LOBBY)
 			{
-				if (m_pViewCarLobby->GetIsNetwork())
-				{
-					g_pNetworkManager->SetIsNetwork(false);
-					g_pNetworkManager->SetIsUse(false);
-					m_mapLobby[VIEW_CAR_LOBBY]->m_pNextLob[m_select] = SELECT_MAP_LOBBY;
-					g_pNetworkManager->Release();
-				}
+				g_pNetworkManager->SetIsUse(false);
+				g_pNetworkManager->Release();
+				m_pInRoom->SetResetData();
 			}
 			else if (m_stateLobby == SELECT_MAP_LOBBY)
 			{
@@ -494,7 +490,6 @@ void Lobby::KeyUpdate()
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
-			//g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
 			g_pSoundManager->Play("menuPrev.wav", 0.8f);
 		}
 	}

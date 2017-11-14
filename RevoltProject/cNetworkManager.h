@@ -73,13 +73,15 @@ public:
 	bool GetReady(int index) { return m_vecUserIP[index].IsReady; };
 
 	std::string GetClientList(int index) { return m_vecUserIP[index].userID; };
-	bool GetIsUse(int index) { return m_vecUserIP[index].IsUse; };
+	bool GetIsClientUse(int index) { return m_vecUserIP[index].IsUse; };
+
+	// 클라이언트가 사용하는지
 	void SetIsUse(bool b) { m_user.IsUse = b; };
 
 	int GetUserIndex() { return m_user.index; };
 	bool GetIsReady() { return m_user.IsReady; };
 
-	bool GetUserReady(int index) { return m_vecUserIP[index].IsReady; };
+	bool GetClientReady(int index) { return m_vecUserIP[index].IsReady; };
 	void SetUserReady();
 
 	void SetUpKey(bool b) { m_keyEvent.up = b; };

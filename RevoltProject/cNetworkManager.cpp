@@ -23,8 +23,11 @@ void cNetworkManager::Start()
 {
 	WSADATA wsaData;
 	SOCKADDR_IN servAdr;
-
 	char args[NAME_SIZE];
+
+	{
+		m_user.IsReady = false;
+	}
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		ErrorHandling("WSAStartup() error");
@@ -51,6 +54,18 @@ void cNetworkManager::Start()
 
 void cNetworkManager::Release()
 {
+	memset(m_vecUserIP, 0, sizeof(ST_NETUSER) * USER_SIZE);
+	for (int i = 0; i < USER_SIZE; i++)
+	{
+		m_vecUserIP[i].IsUse = false;
+		m_vecUserIP[i].IsReady = false;
+		m_vecUserIP[i].index = 0;
+	}
+
+	m_user.index = 0;
+	m_user.IsReady = false;
+	m_user.IsUse = false;
+
 	closesocket(m_hSock);
 	WSACleanup();
 }
@@ -117,7 +132,7 @@ bool cNetworkManager::RecvMsg()
 		netUser.index = atoi(sIndex.c_str());
 		netUser.userID = sUserID;
 		netUser.carName = sCarName;
-		netUser.IsReady = atoi(sReady.c_str());
+		netUser.IsReady = false;
 		netUser.IsUse = true;
 		//
 		m_vecUserIP[netUser.index] = netUser;
