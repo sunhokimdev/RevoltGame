@@ -9,13 +9,12 @@ cItem::cItem()
 	, m_pUser(NULL)
 	, m_pPhysX(NULL)
 	, m_isInit(true)
+	, m_isEnd(false)
 {
 }
 
 cItem::~cItem()
 {
-	SAFE_DELETE(m_pUser);
-	SAFE_DELETE(m_pPhysX);
 }
 
 void cItem::Setup()
@@ -46,6 +45,12 @@ void cItem::Render()
 void cItem::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {
 
+}
+
+void cItem::Destroy()
+{
+	SAFE_DELETE(m_pUser);
+	SAFE_DELETE(m_pPhysX);
 }
 
 void cItem::SetActorGroup(NxActor * actor, NxCollisionGroup group)

@@ -577,6 +577,10 @@ void InGameUI::UpdateSpeed()
 	nTen = (int)((fTemp / 10)%10) + FONT2_NUM0;
 	nHun = (int)(fTemp / 100) + FONT2_NUM0;
 
+	if (nOne <= FONT2_NUM0) nOne = FONT2_NUM0;
+	if (nTen <= FONT2_NUM0) nTen = FONT2_NUM0;
+	if (nHun <= FONT2_NUM0) nHun = FONT2_NUM0;
+
 	std::string strHun;
 	std::string strTen;
 	std::string strOne;

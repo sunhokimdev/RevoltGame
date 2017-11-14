@@ -14,8 +14,6 @@ cWaterBombImpact::cWaterBombImpact()
 
 cWaterBombImpact::~cWaterBombImpact()
 {
-	SAFE_RELEASE(m_pSprite);
-	SAFE_RELEASE(m_pTexture);
 }
 
 void cWaterBombImpact::Setup()
@@ -91,4 +89,10 @@ void cWaterBombImpact::Render()
 	m_pSprite->End();
 
 	cImpact::Render();
+}
+
+void cWaterBombImpact::Destroy()
+{
+	SAFE_RELEASE(m_pSprite);
+	SAFE_RELEASE(m_pTexture);
 }

@@ -6,14 +6,16 @@ cMybombImapct::cMybombImapct()
 	: m_currentX(0)
 	, m_currentY(0)
 	, m_index(0)
+	, m_fTime(0)
 {
+	cImpact::cImpact();
 }
 
 
 cMybombImapct::~cMybombImapct()
 {
-	SAFE_RELEASE(m_pTexture);
-	SAFE_RELEASE(m_pSprite);
+	//SAFE_RELEASE(m_pTexture);
+	//SAFE_RELEASE(m_pSprite);
 }
 
 void cMybombImapct::Setup()
@@ -87,4 +89,10 @@ void cMybombImapct::Render()
 	m_pSprite->End();
 
 	cImpact::Render();
+}
+
+void cMybombImapct::Destroy()
+{
+	SAFE_RELEASE(m_pSprite);
+	SAFE_RELEASE(m_pTexture);
 }
