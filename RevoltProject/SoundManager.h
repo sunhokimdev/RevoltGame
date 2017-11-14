@@ -41,6 +41,10 @@ public:
 
 	void Play(std::string fileName, float volume = 1.0f, D3DXVECTOR3 soundPos = D3DXVECTOR3(0, 0, 0));
 	void Play_BGM(std::string fileName, float volume = 1.0f);
+	void Play_Loop(std::string fileName, float volume = 1.0f);
+	
+	bool isPlay(std::string fileName);
+
 	void SetVolum(std::string key, float volume);
 
 	void SetSoundPosition(std::string fileName, D3DXVECTOR3 position);
@@ -50,6 +54,8 @@ public:
 	void Stop(std::string fileName);
 	void Pause(std::string fileName);
 	void Resume(std::string fileName);
+
+	void SetPitch(std::string fileName, float frequency);
 
 	void AllSoundIsStop();
 	void AllSoundIsPause();

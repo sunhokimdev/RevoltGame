@@ -52,6 +52,9 @@ private:
 	cAI_Master* familyAI;
 	bool m_isAI = false;
 
+	bool m_isCtl;
+	bool m_isDrift;
+
 	//Track 정보
 	cTrack* m_pTrack;
 	SYNTHESIZE(int, m_aICheckBoxID, AICheckBoxID);				//트랙 순서와 상관없이 항상 체크된 박스의 번호가 올라온다.
@@ -130,6 +133,8 @@ public:
 	void SetFrustum();
 	void UpdateFrustum();
 	bool IsIn(D3DXVECTOR3* pv);
+
+	void UpdateSound();
 
 
 	/*   김선호   */

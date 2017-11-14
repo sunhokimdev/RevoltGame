@@ -19,6 +19,10 @@ void cPickUp::Update()
 {
 	if (GetPhysXData()->m_pUserData->IsPickUp == NX_FALSE)
 	{
+		if (m_isExist)
+		{
+			g_pSoundManager->Play("pickup.wav", 0.8f,GetPosition());
+		}
 		m_isExist = false;
 		m_isTimerRoll = true;
 	}
@@ -35,6 +39,7 @@ void cPickUp::Update()
 			GetPhysXData()->m_pUserData->IsPickUp = NX_TRUE;
 			m_isTimerRoll = false;
 			m_fRespawnTime = 0;
+			g_pSoundManager->Play("pickgen.wav",0.8f, GetPosition());
 		}
 	}
 		

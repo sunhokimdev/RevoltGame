@@ -95,6 +95,20 @@ void c321GO::Count()
 
 	if (m_isStart)
 	{
+		if (m_fTime == 0)
+		{
+			if (m_nCount != 0)
+			{
+				g_pSoundManager->Play("countdown.wav", 0.8f);
+			}
+			else
+			{
+				g_pSoundManager->Play("countdown_0.wav", 0.8f);
+				g_pSoundManager->Play("countdown_1.wav", 0.8f);
+			}
+			
+		}
+
 		m_fTime += g_pTimeManager->GetElapsedTime();
 
 		float min = -1;
@@ -137,6 +151,7 @@ void c321GO::Count()
 			}
 			
 			m_fTime = 0;
+
 		}
 	}
 

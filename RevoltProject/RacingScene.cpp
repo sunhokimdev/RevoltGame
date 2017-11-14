@@ -62,7 +62,6 @@ void RacingScene::Setup()
 		CreateCar(m_pTrack->GetStartPositions()[i], i, p->CAR_NAME, p->IsAI, p->isUser);
 		i++;
 	}
-	//vecCars[0]->SetIsUser(false);
 
 	m_pInGameUI = new InGameUI;
 	LinkUI(0); // 인게임 InGameUI::Setup(); 전에 위치해야함, new InGameUI 가 선언되어 있어야 함.
@@ -98,12 +97,6 @@ void RacingScene::Destroy()
 
 void RacingScene::Update()
 {
-	if (g_pKeyManager->isOnceKeyDown(VK_ESCAPE))
-	{
-		m_eRaceProg = RACE_PROG_FINISH;
-		g_SceneManager->ChangeScene("Lobby");
-	}
-
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
 
@@ -151,15 +144,7 @@ void RacingScene::Update()
 	switch (m_eRaceProg)
 	{
 	case RACE_PROG_READY:
-	{
-
-	}
-	break;
 	case RACE_PROG_SET:
-	{
-	
-	}
-	break;
 	case RACE_PROG_GO:
 	{
 		if (g_pNetworkManager->GetIsInGameNetwork())
@@ -211,6 +196,8 @@ void RacingScene::Update()
 	{
 		m_pInGameUI->Update();
 	}
+
+	
 }
 
 void RacingScene::Render()
@@ -243,6 +230,7 @@ void RacingScene::LastUpdate()
 	}
 
 	UpdateCamera();
+	UpdateSound();
 }
 
 void RacingScene::UpdateCamera()
@@ -364,6 +352,12 @@ void RacingScene::UpdateCamera()
 	//CAM_POS = vDest;
 	g_pCamManager->SetCamPos(m_camPos);
 	g_pCamManager->SetLookAt(m_camLookTarget);
+}
+
+void RacingScene::UpdateSound()
+{
+	D3DXVECTOR3 forward = *g_pCamManager->GetLookAt() - *g_pCamManager->GetCamPos();
+	g_pSoundManager->Setup3DCamera(*g_pCamManager->GetCamPos(), forward);
 }
 
 bool RacingScene::IsCarRunTrue(cCar* pCar)
