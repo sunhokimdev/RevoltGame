@@ -71,7 +71,7 @@ void RacingScene::Setup()
 //		CreateCar(m_pTrack->GetStartPositions()[i+5], i+5, "tc6", true);
 //	}
 	vecCars[0]->SetIsUser(false);
-	vecCars[0]->SetFrustum();
+	vecCars[0]->SetFrustum(vecCars[0]->GetPosition());
 	m_pInGameUI = new InGameUI;
 	LinkUI(0); // 인게임 InGameUI::Setup(); 전에 위치해야함, new InGameUI 가 선언되어 있어야 함.
 	m_pInGameUI->Setup();
@@ -122,15 +122,15 @@ void RacingScene::Update()
 			if (IsCarRunTrue(vecCars[i]))
 			{
 				vecCars[i]->Update();
-				vecCars[0]->UpdateFrustum();
-
-				if (vecCars[0]->IsIn(&vecCars[1]->GetPosition()))
-				{
-					int a = 1;
-				}
 			}
 
 			if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
+		}
+		vecCars[0]->UpdateFrustum();
+
+		if (vecCars[0]->IsIn(&vecCars[1]->GetPosition()))
+		{
+			
 		}
 
 		m_pInGameUI->UpdateRaceTime();

@@ -127,7 +127,7 @@ public:
 	void CarFlip();
 
 	/*          Ray Cast          */
-	void SetFrustum();
+	void SetFrustum(D3DXVECTOR3 pv);
 	void UpdateFrustum();
 	bool IsIn(D3DXVECTOR3* pv);
 

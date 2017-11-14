@@ -11,7 +11,7 @@
 #include <fstream>
 
 /// 프러스텀에 정확하게 포함되지 않더라도, 약간의 여분을 주어서 프러스텀에 포함시키기 위한 값
-#define PLANE_EPSILON	5.0f
+#define PLANE_EPSILON	0.0f
 
 cCar::cCar()
 	:m_pSkidMark(NULL)
@@ -476,7 +476,8 @@ void cCar::TrackCheck()
 			m_countRapNum = 0;
 			m_rapTimeCount = 0.f;
 
-			if (!m_isAI) m_pInGameUI->SetLabCnt(m_countRapNum);
+			if (!m_isAI)
+				m_pInGameUI->SetLabCnt(m_countRapNum);
 
 			cCheckBox* nextCheckBox = (cCheckBox*)m_pTrack->GetCheckBoxs()[GetCurrCheckBoxID()];
 
@@ -764,23 +765,22 @@ void cCar::CarFlip()
 	p->getGlobalPose().t.add(carPos, NxVec3(0, 3, 0));
 }
 
-void cCar::SetFrustum()
+void cCar::SetFrustum(D3DXVECTOR3 pv)
 {
 	// : near 
-	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(-1, 1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(1, 1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(1, -1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y - 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y + 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y + 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y - 1, 0)); //
 	// : far
-	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(-1, 1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(1, 1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(1, -1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y - 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y + 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y + 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y - 1, 1)); //
 
 	m_vecPlane.resize(6);
 	m_vecWorldVertex.resize(8);
 
-	int a = 1;
 }
 
 
@@ -851,23 +851,29 @@ bool cCar::IsIn(D3DXVECTOR3* pv)
 	float fDist;
 
 	fDist = D3DXPlaneDotCoord(&m_vecPlane[0], pv);
+	int a = 0;
 	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 Front로 향하고 있으므로 양수이면 프러스텀의 바깥쪽
 
 	fDist = D3DXPlaneDotCoord(&m_vecPlane[1], pv);
+	a = 0;
 	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 Back로 향하고 있으므로 양수이면 프러스텀의 오른쪽
 
 	fDist = D3DXPlaneDotCoord(&m_vecPlane[2], pv);
+	a = 0;
 	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 Up로 향하고 있으므로 양수이면 프러스텀의 오른쪽
 
 	fDist = D3DXPlaneDotCoord(&m_vecPlane[3], pv);
+	a = 0;
 	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 Down로 향하고 있으므로 양수이면 프러스텀의 오른쪽
 
 	fDist = D3DXPlaneDotCoord(&m_vecPlane[4], pv);
+	a = 0;
 	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 left로 향하고 있으므로 양수이면 프러스텀의 왼쪽
 
 	fDist = D3DXPlaneDotCoord(&m_vecPlane[5], pv);
+	a = 0;
 	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 right로 향하고 있으므로 양수이면 프러스텀의 오른쪽
-
+	
 	return true;
 }
 
