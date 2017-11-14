@@ -15,8 +15,6 @@ cFirework::cFirework()
 
 cFirework::~cFirework()
 {
-	SAFE_DELETE(m_pEffect);
-	SAFE_DELETE(m_pTail);
 }
 
 void cFirework::Setup()
@@ -49,12 +47,13 @@ void cFirework::Update()
 	fwPos.z = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().z;
 		
 	m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pPhysX->m_pActor->getGlobalPose().t);
-	
-	if (!m_isUse)
+
+	if (!m_isUse && !m_pEffect->GetIsUse())
 	{
 		m_pPhysX->pos.y = -50.0f;
 		m_pPhysX->pPhysX->m_pActor->setGlobalPosition(m_pPhysX->pos);
 		m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pos);
+		SetIsEnd(true);
 	}
 
 	if (m_isUse && !m_pEffect->GetIsUse())
@@ -172,4 +171,12 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 
 	m_pPhysX->pPhysX->m_pActor->addForce(force);
 	m_pPhysX->pPhysX->m_pActor->addTorque(NxVec3(angle.x, angle.y, angle.z));
+}
+
+void cFirework::Destroy()
+{
+	SAFE_DELETE(m_pEffect);
+	SAFE_DELETE(m_pTail);
+
+	cItem::Destroy();
 }

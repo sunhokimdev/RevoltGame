@@ -42,10 +42,11 @@ void cMyBomb::Update()
 	m_BombPos.y = m_BombPos.y + m_fTimer;
 	m_BombPos.z = m_pCar->GetPhysXData()->GetPositionToNxVec3().z + 0.2f;
 
-	if (!m_isUse)
+	if (!m_isUse && !m_pImpact->GetIsUse())
 	{
 		m_pPhysX->pos.y = -50.0f;
 		m_pPhysX->pPhysX->m_pActor->setGlobalPosition(m_pPhysX->pos);
+		SetIsEnd(true);
 	}
 
 	m_fTimer -= 0.0015f;
@@ -120,6 +121,8 @@ void cMyBomb::Destroy()
 {
 	SAFE_DELETE(m_pImpact);
 	SAFE_DELETE(m_BombTime);
+
+	cItem::Destroy();
 }
 
 void cMyBomb::MoveActorOnPath()

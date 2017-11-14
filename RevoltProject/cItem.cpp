@@ -9,6 +9,7 @@ cItem::cItem()
 	, m_pUser(NULL)
 	, m_pPhysX(NULL)
 	, m_isInit(true)
+	, m_isEnd(false)
 {
 }
 

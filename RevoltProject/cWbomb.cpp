@@ -30,11 +30,12 @@ void cWbomb::Update()
 {
 	cItem::Update();
 
-	if (!m_isUse)
+	if (!m_isUse && !m_pImapt->GetIsUse())
 	{
 		m_pPhysX->pos.y = -50.0f;
 		m_pPhysX->pPhysX->m_pActor->setGlobalPosition(m_pPhysX->pos);
 		m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pos);
+		SetIsEnd(true);
 	}
 
 	if (m_isUse && m_fTime > WATERIMPACT)
@@ -61,9 +62,7 @@ void cWbomb::Update()
 	}
 
 	if (!m_isUse && m_pImapt->GetIsUse())
-	{
 		m_pImapt->Update();
-	}
 
 	m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pPhysX->m_pActor->getGlobalPosition());
 }
@@ -76,9 +75,7 @@ void cWbomb::Render()
 		m_pPhysX->pMesh->Render();
 
 	if (!m_isUse && m_pImapt->GetIsUse())
-	{
 		m_pImapt->Render();
-	}
 }
 
 void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
@@ -107,7 +104,7 @@ void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	if (m_isInit)
 	{
 		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
-		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(4.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
+		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(2.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
 		
 		NxVec3 v = m_pPhysX->pPhysX->m_pActor->getGlobalPosition();
 
@@ -128,4 +125,6 @@ void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 void cWbomb::Destroy()
 {
 	SAFE_DELETE(m_pImapt);
+
+	cItem::Destroy();
 }

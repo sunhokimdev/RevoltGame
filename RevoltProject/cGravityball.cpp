@@ -61,12 +61,15 @@ void cGravityball::Update()
 		m_pPhysX->pos.y = -50.0f;
 		m_pPhysX->pPhysX->m_pActor->setGlobalPosition(m_pPhysX->pos);
 		m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pos);
+		SetIsEnd(true);
 	}
 
 
 
 	if (m_fTime % UPDATETIME == 0)
 	{
+		m_pPhysX->pTrigger->m_pActor->putToSleep();
+		m_pPhysX->pTrigger->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
 		m_fTime = 0;
 		m_isUse = false;
 		m_pPhysX->pPhysX->m_pActor->putToSleep();
@@ -101,7 +104,16 @@ void cGravityball::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	force.x = angle.x * 30000;
 	force.y = 0;
 	force.z = angle.z * 30000;
+	
+	if (m_isSleep)
+	{
+		m_pPhysX->pPhysX->m_pActor->wakeUp();
+		m_pPhysX->pPhysX->m_pActor->clearActorFlag(NX_AF_DISABLE_COLLISION);
 
+		m_pPhysX->pTrigger->m_pActor->wakeUp();
+		m_pPhysX->pTrigger->m_pActor->clearActorFlag(NX_AF_DISABLE_COLLISION);
+	}
+	
 	if (m_isInit)
 	{
 		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
@@ -112,13 +124,7 @@ void cGravityball::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	}
 
 	else
-	{
-		if (m_isSleep)
-		{
-			m_pPhysX->pPhysX->m_pActor->wakeUp();
-			m_pPhysX->pPhysX->m_pActor->clearActorFlag(NX_AF_DISABLE_COLLISION);
-		}
-		
+	{	
 		m_pPhysX->pPhysX->m_pActor->setGlobalPosition(m_pPhysX->pos);
 	}
 
@@ -131,6 +137,8 @@ void cGravityball::Destroy()
 		SAFE_DELETE(a);
 
 	SAFE_DELETE(m_pPlasma);
+
+	cItem::Destroy();
 }
 
 void cGravityball::MoveActorOnPath()

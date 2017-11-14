@@ -23,7 +23,7 @@ public:
 	virtual void Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos);
 	virtual void Destroy();
 
-
+	SYNTHESIZE(bool, m_isEnd, IsEnd);		// 효과가 끝낫는지
 	SYNTHESIZE(bool, m_isUse, IsUse);		// 사용 가능한 아이템인지 확인
 	SYNTHESIZE(bool, m_isInit, IsInit);	// 초기화 해준 것인지 확인
 	SYNTHESIZE(cCar*, m_pCar, Car);
