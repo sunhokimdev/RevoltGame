@@ -121,18 +121,30 @@ void MainGame::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 void MainGame::SetAddSound()
 {
-	g_pSoundManager->LoadSound("Sound", "menuUpDown.wav", false);
-	g_pSoundManager->LoadSound("Sound", "menuNext.wav", false);
-	g_pSoundManager->LoadSound("Sound", "menuPrev.wav", false);
-	g_pSoundManager->LoadSound("Sound", "menuLeftRight.wav", false);
-	g_pSoundManager->LoadSound("Sound", "boxslide.wav", false);
-	g_pSoundManager->LoadSound("Sound", "honkgood.wav", false);
-	g_pSoundManager->LoadSound("Sound", "countdown.wav", false);
-	g_pSoundManager->LoadSound("Sound", "countdown_0.wav", false);
-	g_pSoundManager->LoadSound("Sound", "countdown_1.wav", false);
-	g_pSoundManager->LoadSound("Sound", "tvstatic.wav", false);
-	g_pSoundManager->LoadSound("Sound", "pickup.wav", false);
-	g_pSoundManager->LoadSound("Sound", "pickgen.wav", false);
-	g_pSoundManager->LoadSound("Sound", "moto.wav", true);
-	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", true);	
+	g_pSoundManager->LoadSound("Sound", "menuUpDown.wav", "menuUpDown.wav", false, false);
+	g_pSoundManager->LoadSound("Sound", "menuNext.wav", "menuNext.wav", false, false);
+	g_pSoundManager->LoadSound("Sound", "menuPrev.wav", "menuPrev.wav", false, false);
+	g_pSoundManager->LoadSound("Sound", "menuLeftRight.wav", "menuLeftRight.wav", false, false);
+	g_pSoundManager->LoadSound("Sound", "boxslide.wav", "boxslide.wav", false, false);
+	g_pSoundManager->LoadSound("Sound", "honkgood.wav", "honkgood.wav", false, false);
+	g_pSoundManager->LoadSound("Sound", "countdown.wav", "countdown.wav", false, false);
+	g_pSoundManager->LoadSound("Sound", "countdown_0.wav","countdown_0.wav", false, false);
+	g_pSoundManager->LoadSound("Sound", "countdown_1.wav","countdown_1.wav",false, false);
+	g_pSoundManager->LoadSound("Sound", "tvstatic.wav","tvstatic.wav",false, false);
+	g_pSoundManager->LoadSound("Sound", "pickup.wav","pickup.wav",false, true);
+	g_pSoundManager->LoadSound("Sound", "pickgen.wav", "pickgen.wav",false, true);
+
+	g_pSoundManager->LoadSound("Sound", "moto.wav", "moto.0", true, true);
+	g_pSoundManager->LoadSound("Sound", "moto.wav", "moto.1", true, true);
+	g_pSoundManager->LoadSound("Sound", "moto.wav", "moto.2", true, true);
+	g_pSoundManager->LoadSound("Sound", "moto.wav", "moto.3", true, true);
+	g_pSoundManager->LoadSound("Sound", "moto.wav", "moto.4", true, true);
+	g_pSoundManager->LoadSound("Sound", "moto.wav", "moto.5", true, true);
+	
+	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", "skid_normal.0", true, true);	
+	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", "skid_normal.1", true, true);
+	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", "skid_normal.2", true, true);
+	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", "skid_normal.3", true, true);
+	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", "skid_normal.4", true, true);
+	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", "skid_normal.5", true, true);
 }

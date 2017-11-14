@@ -55,6 +55,12 @@ private:
 	bool m_isCtl;
 	bool m_isDrift;
 
+	SYNTHESIZE(int, m_nPlayerID, PlayerID);
+
+	//사운드 관련
+	std::string m_strMotorKey;
+	std::string m_strDriftKey;
+
 	//Track 정보
 	cTrack* m_pTrack;
 	SYNTHESIZE(int, m_aICheckBoxID, AICheckBoxID);				//트랙 순서와 상관없이 항상 체크된 박스의 번호가 올라온다.

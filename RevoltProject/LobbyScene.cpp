@@ -24,7 +24,7 @@ void LobbyScene::Setup()
 	m_pLobby->Setup();
 	m_pLobby->LinkMap(m_pMap);
 	//앰비언트조명
-	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(80, 80, 80));
+	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
 
 	//===========================
 	// write by 이태섭

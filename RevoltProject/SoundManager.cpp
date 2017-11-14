@@ -96,9 +96,10 @@ void SoundManager::Setup()
 
 	m_pSystem->setSoftwareChannels(SOUND_MAX_CHANNEL);
 	float doppler = 1.0f;
-	float scale = 2.0f;
+	float scale = 5.0f;
 	float rolloff = 1.0f;
 	m_pSystem->set3DSettings(doppler, scale, rolloff);
+
 	//m_pSystem->setHardwareChannels(10);
 	//m_pSystem->init(SOUND_MAX_CHANNEL, FMOD_INIT_NORMAL, 0);
 	m_pSystem->init(SOUND_MAX_CHANNEL, FMOD_INIT_3D_RIGHTHANDED, 0);
@@ -203,11 +204,39 @@ void SoundManager::LoadSound(std::string folderName, std::string fileName, bool 
 		//	pSound->SetMaxDistance(10);
 		//	pSound->SetMinDistance(1000);
 		//	pSound->SetDoplerEffect(1);
-
-
 	}
 
 	m_sounds[fileName] = pSound;
+}
+
+void SoundManager::LoadSound(std::string folderName, std::string fileName, std::string key, bool loop, bool is3D)
+{
+	Sound* pSound = FindSound(key);
+
+	if (pSound != NULL) return;
+
+	std::string fullName = folderName + "/" + fileName;
+
+	FMOD_MODE mode;
+	if (is3D)
+	{
+		if (loop) mode = FMOD_3D | FMOD_LOOP_NORMAL | FMOD_HARDWARE;
+		else mode = FMOD_3D | FMOD_HARDWARE;
+	}
+	else
+	{
+		if (loop) mode = FMOD_LOOP_NORMAL | FMOD_HARDWARE;
+		else mode = FMOD_DEFAULT | FMOD_HARDWARE;
+	}
+
+	m_pSystem->createStream(fullName.c_str(), mode, NULL, &pSound);
+	if (pSound == NULL)
+	{
+		std::cout << "해당 파일의 경로를 찾을 수 없습니다 : " << fullName << std::endl;
+		return;
+	}
+
+	m_sounds[key] = pSound;
 }
 
 
@@ -229,6 +258,8 @@ void SoundManager::Play(std::string fileName, float volume, D3DXVECTOR3 soundPos
 		std::cout << "채널 불러오기 실패! : " << fileName << std::endl;
 		return;
 	}
+	pChannel->set3DSpread(90);
+	//pChannel->set3DPanLevel(1);
 	SetSoundPosition(pChannel, soundPos);
 	pChannel->setVolume(volume);
 	m_channels.push_back(pChannel);
@@ -328,6 +359,18 @@ void SoundManager::SetSoundPosition(Channel* pChannel, D3DXVECTOR3 position)
 void SoundManager::SetSoundPosition(Channel * pChannel, FMOD_VECTOR position)
 {
 	pChannel->set3DAttributes(&position, NULL);
+}
+
+void SoundManager::SetPosVolPitch(std::string key, D3DXVECTOR3 position, float volume, float freq)
+{
+	Channel* pChannel = FindChannel(key);
+	FMOD_VECTOR fmodVector;
+	fmodVector.x = position.x;
+	fmodVector.y = position.y;
+	fmodVector.z = position.z;
+	pChannel->set3DAttributes(&fmodVector, NULL);
+	pChannel->setVolume(volume);
+	pChannel->setFrequency(freq);
 }
 
 //Contorl
