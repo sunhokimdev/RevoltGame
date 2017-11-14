@@ -25,6 +25,7 @@ public:
 	void Setup();
 	void Update();
 	void Render();
+	void Destroy();
 	void MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	/*   사운드 트랙 추가 메서드   */

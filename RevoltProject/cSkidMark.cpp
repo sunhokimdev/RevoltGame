@@ -32,11 +32,21 @@ void cSkidMark::Update()
 
 void cSkidMark::Render()
 {
+	g_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
+	g_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	g_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
+	g_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+
+	// Use alpha for transparency
+	g_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+	g_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	g_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+
+
 	D3DMATERIAL9 material;
-	material.Ambient = CX_BLACK;
-	material.Diffuse = CX_BLACK;
-	material.Specular = CX_BLACK;
-	material.Emissive = CX_BLACK;
+	ZeroMemory(&material, sizeof(D3DMATERIAL9));
+	material.Diffuse = D3DXCOLOR(0, 0, 0, 0.1);
 	g_pD3DDevice->SetMaterial(&material);
 
 	for (int i = 0; i < m_vecRubbers.size(); i++)
@@ -44,6 +54,11 @@ void cSkidMark::Render()
 		g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_vecRubbers[i].matLocal);
 		m_vecRubbers[0].mesh->DrawSubset(0);
 	}
+
+	g_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
+//	
+//	g_pD3DDevice->SetRenderState(D3DRS_STENCILENABLE, false);
+
 }
 
 void cSkidMark::Destroy()

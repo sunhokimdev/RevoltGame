@@ -182,6 +182,8 @@ void Lobby::Render()
 
 void Lobby::Destroy()
 {
+	
+
 	SAFE_RELEASE(m_pSprite);
 	SAFE_RELEASE(m_pObjMesh);
 
@@ -260,7 +262,7 @@ void Lobby::KeyUpdate()
 			if (m_mapLobby[m_stateLobby]->m_count <= m_select)
 				m_select = 0;
 		}
-		g_pSoundManager->Play("menuUpDown.wav", 1.0f);
+		g_pSoundManager->Play("menuUpDown.wav", 0.8f);
 	}
 
 	if (g_pKeyManager->isOnceKeyDown(VK_UP))
@@ -276,7 +278,7 @@ void Lobby::KeyUpdate()
 			if (m_select < 0)
 				m_select = m_mapLobby[m_stateLobby]->m_count - 1;
 		}
-		g_pSoundManager->Play("menuUpDown.wav", 1.0f);
+		g_pSoundManager->Play("menuUpDown.wav", 0.8f);
 	}
 
 	if (g_pKeyManager->isOnceKeyDown(VK_RIGHT))
@@ -289,12 +291,12 @@ void Lobby::KeyUpdate()
 			if (m_mapLobby[m_stateLobby]->m_selectCnt <= m_leftAndrightSelect)
 				m_leftAndrightSelect = 0;
 
-			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
+			g_pSoundManager->Play("menuLeftRight.wav", 0.8f);
 		}
 		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
 		{
 			WheelTire::g_xRotAngle += D3DX_PI / 15.0f;
-			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
+			g_pSoundManager->Play("menuLeftRight.wav", 0.8f);
 		}
 
 		if (m_stateLobby == SELECT_MAP_LOBBY)
@@ -317,12 +319,12 @@ void Lobby::KeyUpdate()
 			if (m_leftAndrightSelect < 0)
 				m_leftAndrightSelect = m_mapLobby[m_stateLobby]->m_selectCnt - 1;
 
-			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
+			g_pSoundManager->Play("menuLeftRight.wav", 0.8f);
 		}
 		else if (m_stateLobby == CREATE_PROFILE_LOBBY)
 		{
 			WheelTire::g_xRotAngle -= D3DX_PI / 15.0f;
-			g_pSoundManager->Play("menuLeftRight.wav", 1.0f);
+			g_pSoundManager->Play("menuLeftRight.wav", 0.8f);
 		}
 
 		else if (m_stateLobby == SELECT_MAP_LOBBY)
@@ -335,7 +337,7 @@ void Lobby::KeyUpdate()
 			if (m_leftAndrightSelect < 0)
 				m_leftAndrightSelect = m_mapLobby[m_stateLobby]->m_selectCnt - 1;
 
-			g_pSoundManager->Play("boxslide.wav", 1.0f);
+			g_pSoundManager->Play("boxslide.wav", 0.8f);
 		}
 	}
 
@@ -371,13 +373,11 @@ void Lobby::KeyUpdate()
 
 			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", m_pfileList->GetCarName(), false));
 			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc1", true));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
+			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
+			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
+			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
+			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
 		
-			std::cout << g_pDataManager->vecPlayerData.size() << std::endl;
-
 			g_SceneManager->ChangeScene("Race");
 
 			return;
@@ -450,7 +450,8 @@ void Lobby::KeyUpdate()
 
 		if (m_stateLobby > INTRO3)
 		{
-			g_pSoundManager->Play("menuNext.wav", 1.0f);
+			//g_pSoundManager->Play("menuNext.wav", 1.0f);
+			g_pSoundManager->Play("menuNext.wav", 0.8f);
 			
 			m_time = 0.0f;
 			m_select = 0;
@@ -493,7 +494,8 @@ void Lobby::KeyUpdate()
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
-			g_pSoundManager->Play("menuPrev.wav", 1.0f);
+			//g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
+			g_pSoundManager->Play("menuPrev.wav", 0.8f);
 		}
 	}
 	if (g_pKeyManager->isOnceKeyDown(VK_F5))

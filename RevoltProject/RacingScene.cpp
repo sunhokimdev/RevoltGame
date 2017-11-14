@@ -98,11 +98,11 @@ void RacingScene::Destroy()
 
 void RacingScene::Update()
 {
-	if (g_pKeyManager->isOnceKeyDown(VK_ESCAPE))
-	{
-		m_eRaceProg = RACE_PROG_FINISH;
-		g_SceneManager->ChangeScene("Lobby");
-	}
+	//if (g_pKeyManager->isOnceKeyDown(VK_ESCAPE))
+	//{
+	//	m_eRaceProg = RACE_PROG_FINISH;
+	//	g_SceneManager->ChangeScene("Lobby");
+	//}
 
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
@@ -151,17 +151,18 @@ void RacingScene::Update()
 	switch (m_eRaceProg)
 	{
 	case RACE_PROG_READY:
-	{
-
-	}
-	break;
 	case RACE_PROG_SET:
-	{
-	
-	}
-	break;
 	case RACE_PROG_GO:
 	{
+
+		if (m_eRaceProg == RACE_PROG_GO)
+		{
+			for (int i = 0; i < vecCars.size(); i++)
+			{
+				vecCars[i]->m_isCtl = true;;
+			}
+		}
+
 		if (g_pNetworkManager->GetIsInGameNetwork())
 		{
 			g_pNetworkManager->SetResetKeyEvent();
@@ -211,6 +212,8 @@ void RacingScene::Update()
 	{
 		m_pInGameUI->Update();
 	}
+
+	
 }
 
 void RacingScene::Render()
@@ -243,6 +246,7 @@ void RacingScene::LastUpdate()
 	}
 
 	UpdateCamera();
+	UpdateSound();
 }
 
 void RacingScene::UpdateCamera()
@@ -364,6 +368,12 @@ void RacingScene::UpdateCamera()
 	//CAM_POS = vDest;
 	g_pCamManager->SetCamPos(m_camPos);
 	g_pCamManager->SetLookAt(m_camLookTarget);
+}
+
+void RacingScene::UpdateSound()
+{
+	D3DXVECTOR3 forward = *g_pCamManager->GetLookAt() - *g_pCamManager->GetCamPos();
+	g_pSoundManager->Setup3DCamera(*g_pCamManager->GetCamPos(), forward);
 }
 
 bool RacingScene::IsCarRunTrue(cCar* pCar)
