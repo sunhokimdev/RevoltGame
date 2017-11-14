@@ -71,6 +71,7 @@ public:
 	void LinkUI(int playerID);
 
 	/*   김선호   */
-	SYNTHESIZE(bool, m_loop, LOOPBOOL);
+	void NetworkLoop();			// 네트워크 통신하는 부분
+	void SetNetworkCarData();		// 자동차 데이터 세팅하는 메서드
 };
 

@@ -35,5 +35,6 @@ public:
 	void SetResetCharText();
 	void SetText(std::string str);
 	void SetUserText(std::string str, int index, D3DXCOLOR color);
+	void SetResetData();
 };
 

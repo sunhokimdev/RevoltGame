@@ -107,46 +107,8 @@ void RacingScene::Update()
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
 
-	char* pchIP = NULL;
-	char* pchKEY = NULL;
-	char* pchPOS = NULL;
-	char* pchX = NULL;
-	char* pchY = NULL;
-	char* pchZ = NULL;
-
-	std::string str = "";
-
-	m_loop = false;
-
-	/*   네트워크 부분   */
 	if (g_pNetworkManager->GetIsInGameNetwork())
-	{
-		//g_pNetworkManager->SetClientPosition(vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition());
-
-		str = "$" + g_pNetworkManager->GetClientIP() +"$" + g_pNetworkManager->GetKeYString();
-		g_pNetworkManager->SendMsg(str.c_str());
-
-		if (g_pNetworkManager->RecvMsg())
-		{
-			str = g_pNetworkManager->GetMsg();
-		}
-
-		pchIP = strtok((char*)str.c_str(), "$");
-		pchKEY = strtok(NULL, "$");
-
-		////pchPOS = strtok(NULL, "@");
-		//
-		if (pchIP != NULL && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
-		{
-		//	//pchX = strtok(pchPOS, "/");
-		//	//pchY = strtok(NULL, "/");
-		//	//pchZ = strtok(NULL, "/");
-		//
-			printf("%s\n", pchKEY);
-		//
-			m_loop = true;
-		}
-	}
+		NetworkLoop();		// 네트워크 데이터 받는 메서드
 
 	switch (m_eRaceProg)
 	{
@@ -164,24 +126,7 @@ void RacingScene::Update()
 	{
 		if (g_pNetworkManager->GetIsInGameNetwork())
 		{
-			g_pNetworkManager->SetResetKeyEvent();
-			if (IsCarRunTrue(vecCars[0]))
-			{
-				vecCars[0]->Update();
-			}
-
-			if (IsCarRunTrue(vecCars[0])) vecCars[0]->Update();
-			if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
-
-			if (m_loop)
-			{
-				vecCars[1]->SetResetNetworkKey();
-				if(pchKEY != NULL)
-					vecCars[1]->SetNetworkKey(pchKEY);
-
-				if (IsCarRunTrue(vecCars[1])) vecCars[1]->Update();
-				if (!IsCarRunTrue(vecCars[1])) m_eRaceProg = RACE_PROG_FINISH;
-			}
+			SetNetworkCarData();
 		}
 		else
 		{
@@ -192,8 +137,6 @@ void RacingScene::Update()
 				if (!IsCarRunTrue(vecCars[i])) m_eRaceProg = RACE_PROG_FINISH;
 			}
 		}
-
-		m_pInGameUI->UpdateRaceTime();
 	}
 	break;
 	case RACE_PROG_FINISH:
@@ -393,4 +336,52 @@ void RacingScene::LinkUI(int playerID)
 	{
 		vecCars[i]->LinkTrackPt(m_pTrack);
 	}
+}
+
+void RacingScene::NetworkLoop()
+{
+	std::string str = "";
+
+	char* pchIP = NULL;
+	char* pchKEY = NULL;
+	char* pchPOS = NULL;
+	char* pchX = NULL;
+	char* pchY = NULL;
+	char* pchZ = NULL;
+
+	str = "$" + g_pNetworkManager->GetClientIP() + "$" + g_pNetworkManager->GetKeYString();
+	g_pNetworkManager->SendMsg(str.c_str());
+
+	if (g_pNetworkManager->RecvMsg())
+	{
+		str = g_pNetworkManager->GetMsg();
+	}
+
+	pchIP = strtok((char*)str.c_str(), "$");
+	pchKEY = strtok(NULL, "$");
+
+	////pchPOS = strtok(NULL, "@");
+	//
+	if (pchIP != NULL && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
+	{
+		//	//pchX = strtok(pchPOS, "/");
+		//	//pchY = strtok(NULL, "/");
+		//	//pchZ = strtok(NULL, "/");
+		//
+		printf("%s\n", pchKEY);
+	}
+}
+
+void RacingScene::SetNetworkCarData()
+{
+	g_pNetworkManager->SetResetKeyEvent();
+	if (IsCarRunTrue(vecCars[0]))
+	{
+		vecCars[0]->Update();
+	}
+
+	if (IsCarRunTrue(vecCars[0])) vecCars[0]->Update();
+	if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
+
+	m_pInGameUI->UpdateRaceTime();
 }

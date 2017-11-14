@@ -86,7 +86,7 @@ void cNetworkInRoom::Setup()
 	pImageView5->AddChild(m_vecText[m_index]);
 	pImageView7->AddChild(m_pChating);
 
-	for (int i = 0; i < 500; i++)
+	for (int i = 0; i < 50; i++)
 	{
 		UITextImageView *pText = new UITextImageView;
 		pText->SetTexture("UIImage/font2.png");
@@ -202,3 +202,12 @@ void cNetworkInRoom::SetUserText(std::string str, int index, D3DXCOLOR color)
 	m_vecUser[index]->SetText(pch);
 }
 
+void cNetworkInRoom::SetResetData()
+{
+	for (int i = 0;i < m_vecText.size();i++)
+		m_vecText[i]->SetText("");
+	for (int i = 0;i < m_vecUser.size();i++)
+		m_vecUser[i]->SetText("");
+
+	m_index = 0;
+}
