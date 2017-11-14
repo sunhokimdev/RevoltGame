@@ -1,6 +1,6 @@
 //Revolt Scene File
 //Market2
-//Date : 2017-11-14
+//Date : 2017-10-31
 
 Map Market2
 
@@ -8,7 +8,7 @@ Object
 Tag 0
 Name Check_Box_00
 ID 0
-Position 4 0 -3
+Position 3.70944 0.499036 -2.68269
 Scale 1 20 40
 Rotation 0 0 1
 X_Actor 0
@@ -23,7 +23,7 @@ Object
 Tag 0
 Name Check_Box_01
 ID 0
-Position 50 0 -3
+Position 49.5253 0.499877 -2.83736
 Scale 1 20 40
 Rotation 0 0 1
 X_Actor 0
@@ -38,7 +38,7 @@ Object
 Tag 0
 Name Check_Box_02
 ID 0
-Position 94 0 -2.62052
+Position 93.6706 0.498028 -2.93737
 Scale 1 20 40
 Rotation 0 0 1
 X_Actor 0
@@ -53,14 +53,14 @@ Object
 Tag 0
 Name Check_Box_03
 ID 0
-Position 144 0 -40
-Scale 1 20 15
+Position 146.248 0.5 -36.9541
+Scale 1 20 30
 Rotation 0 0 1
 X_Actor 0
 X_Type 2
 X_Option 1 1 0
 X_Pos 0 0 0
-X_Size 1 20 15
+X_Size 1 20 30
 X_FXU32_[9] 1 0 0 0 1 0 0 0 1
 #
 
@@ -68,9 +68,9 @@ Object
 Tag 0
 Name Check_Box_04
 ID 0
-Position 170 0 -45
+Position 146.749 0.5 -98.8817
 Scale 1 20 40
-Rotation 0 0 1.80278
+Rotation 0 0 1
 X_Actor 0
 X_Type 2
 X_Option 1 1 0
@@ -83,14 +83,14 @@ Object
 Tag 0
 Name Check_Box_05
 ID 0
-Position 185 0 -70
-Scale 35 20 1
+Position 118.262 10 -128.622
+Scale 20 20 1
 Rotation 0 0 1
 X_Actor 0
 X_Type 2
 X_Option 1 1 0
 X_Pos 0 0 0
-X_Size 35 20 1
+X_Size 20 20 1
 X_FXU32_[9] 1 0 0 0 1 0 0 0 1
 #
 
@@ -98,7 +98,7 @@ Object
 Tag 0
 Name Check_Box_06
 ID 0
-Position 170 0 -95
+Position 75.7776 0.5 -147.486
 Scale 1 20 40
 Rotation 0 0 1
 X_Actor 0
@@ -113,52 +113,7 @@ Object
 Tag 0
 Name Check_Box_07
 ID 0
-Position 140.053 0 -100
-Scale 1 20 20
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 1 1 0
-X_Pos 0 0 0
-X_Size 1 20 20
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 0
-Name Check_Box_08
-ID 0
-Position 117 0 -144
-Scale 20 20 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 1 1 0
-X_Pos 0 0 0
-X_Size 20 20 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 0
-Name Check_Box_09
-ID 0
-Position 95 0 -155
-Scale 1 20 50
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 1 1 0
-X_Pos 0 0 0
-X_Size 1 20 50
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 0
-Name Check_Box_10
-ID 0
-Position 35 0 -137
+Position 4.34207 0.5 -139.461
 Scale 1 20 40
 Rotation 0 0 1
 X_Actor 0
@@ -171,54 +126,39 @@ X_FXU32_[9] 1 0 0 0 1 0 0 0 1
 
 Object
 Tag 0
-Name Check_Box_11
+Name Check_Box_08
 ID 0
-Position -26 0 -117.5
-Scale 1 20 15
+Position -24.8762 0.5 -118.097
+Scale 1 20 20
 Rotation 0 0 1
 X_Actor 0
 X_Type 2
 X_Option 1 1 0
 X_Pos 0 0 0
-X_Size 1 20 15
+X_Size 1 20 20
 X_FXU32_[9] 1 0 0 0 1 0 0 0 1
 #
 
 Object
 Tag 0
-Name Check_Box_12
+Name Check_Box_09
 ID 0
-Position -30.5 0 -108
-Scale 10 40 1
-Rotation 0 0 0.999845
-X_Actor 0
-X_Type 2
-X_Option 1 1 0
-X_Pos 0 0 0
-X_Size 10 40 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 0
-Name Check_Box_13
-ID 0
-Position -30.5 0 -45
-Scale 10 40 1
+Position -29.8311 5.02594 -67.3703
+Scale 20 40 1
 Rotation 0 0 1
 X_Actor 0
 X_Type 2
 X_Option 1 1 0
 X_Pos 0 0 0
-X_Size 10 40 1
+X_Size 20 40 1
 X_FXU32_[9] 1 0 0 0 1 0 0 0 1
 #
 
 Object
 Tag 0
-Name Check_Box_14
+Name Check_Box_10
 ID 0
-Position -24.5 0 -31
+Position -24.7544 0.5 -33.5759
 Scale 1 20 20
 Rotation 0 0 1
 X_Actor 0
@@ -233,7 +173,7 @@ Object
 Tag 7
 Name pickup
 ID 6
-Position 25 0.5 12
+Position 24.9357 0.5 12.2457
 Scale 1 1 1
 Rotation 0 0 1
 X_Actor 0
@@ -248,7 +188,7 @@ Object
 Tag 7
 Name pickup
 ID 6
-Position 25 0.5 2.5
+Position 24.9234 0.5 2.51856
 Scale 1 1 1
 Rotation 0 0 1
 X_Actor 0
@@ -518,14 +458,29 @@ Object
 Tag 5
 Name fabric
 ID 4
-Position 36.5018 3.2513 -3.5321
+Position 9.86643 0.4987 3.44728
 Scale 1 1 1
 Rotation 0 0 1
 X_Actor 0
 X_Type 2
 X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 5
+Name cheese
+ID 2
+Position 10.213 0.498755 -6.98744
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 0 0 1
+X_Pos 0 0 0
+X_Size 1 1 1
 X_FXU32_[9] 1 0 0 0 1 0 0 0 1
 #
 
@@ -533,7 +488,7 @@ Object
 Tag 5
 Name kidride
 ID 5
-Position -2.74525 1.5 -46.2994
+Position 6.21856 1.4987 -16.3023
 Scale 0.5 0.5 0.5
 Rotation 0 0 1
 X_Actor 0
@@ -541,726 +496,6 @@ X_Type 2
 X_Option 0 0 1
 X_Pos 0 0 0.2
 X_Size 3 3 4.5
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 12.4638 0.8762 -13.4663
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 17.7074 3.2513 -11.6575
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 24.5527 0.8762 -13.7644
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 32.3832 3.2513 -11.4962
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 35.0763 0.8762 -13.4663
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 12.5145 3.2513 8.56816
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 30.5369 3.2513 -1.45605
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 32.9837 3.2513 6.08
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 22.2542 3.2513 -3.49934
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 15.2649 3.2513 -1.35665
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 17.2866 3.2513 6.08
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 23.717 3.2513 8.56816
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 33.445 0.8762 8.50821
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 36.8864 0.8762 -1.5127
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 20.1175 0.8762 8.58711
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 12.3821 0.8762 -11.2946
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 25.3589 0.8762 -11.1606
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 19.3301 0.8762 -1.47093
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 87.437 3.2513 8.70348
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 75.9496 3.2513 -1.33254
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 70.3003 0.8762 -11.2893
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 65.7823 3.2513 -11.3878
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 67.4667 3.2513 -3.86402
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 85.9186 0.8762 -3.83315
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 73.5671 0.8762 6.60948
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 64.3486 3.2513 -1.45675
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 79.2974 0.8762 -11.5594
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 86.4443 0.8762 -11.7476
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 86.5608 0.8762 -1.07525
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 79.7116 3.2513 6.28682
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 63.0161 3.2513 8.50733
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name fabric
-ID 4
-Position 73.5225 3.2513 8.44325
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.4 0
-X_Size 1 1.8 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name cheese
-ID 2
-Position 98.721 0.2487 13.8604
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.25 0
-X_Size 1 0.5 1
-X_FXU32_[9] -0.707107 0 -0.707107 0 1 0 0.707107 0 -0.707107
-#
-
-Object
-Tag 5
-Name cheese
-ID 2
-Position 109.014 0.2487 11.6752
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.25 0
-X_Size 1 0.5 1
-X_FXU32_[9] 0.707107 0 -0.707107 0 1 0 0.707107 0 0.707107
-#
-
-Object
-Tag 5
-Name cheese
-ID 2
-Position 117.171 0.2487 7.21122
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.25 0
-X_Size 1 0.5 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name cheese
-ID 2
-Position 103.094 1.9987 13.3414
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.25 0
-X_Size 1 0.5 1
-X_FXU32_[9] 0.287348 0 0.957826 -0 1 0 -0.957826 -0 0.287348
-#
-
-Object
-Tag 5
-Name cheese
-ID 2
-Position 112.921 1.9987 9.83322
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.25 0
-X_Size 1 0.5 1
-X_FXU32_[9] -0.707107 0 -0.707107 0 1 0 0.707107 0 -0.707107
-#
-
-Object
-Tag 5
-Name cheese
-ID 2
-Position 120.42 1.9987 4.29753
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.25 0
-X_Size 1 0.5 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name cheese
-ID 2
-Position 124.198 0.2487 0.991806
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.25 0
-X_Size 1 0.5 1
-X_FXU32_[9] -0.707107 0 -0.707107 0 1 0 0.707107 0 -0.707107
-#
-
-Object
-Tag 5
-Name cheese
-ID 2
-Position 126.835 1.9987 -2.37904
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.25 0
-X_Size 1 0.5 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name cheese
-ID 2
-Position 129.336 0.2487 -6.51102
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.25 0
-X_Size 1 0.5 1
-X_FXU32_[9] 0.894427 0 -0.447214 0 1 0 0.447214 0 0.894427
-#
-
-Object
-Tag 5
-Name cheese
-ID 2
-Position 132.04 1.9987 -12.7835
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.25 0
-X_Size 1 0.5 1
-X_FXU32_[9] 0.242536 0 -0.970143 0 1 0 0.970143 0 0.242536
-#
-
-Object
-Tag 5
-Name cheese
-ID 2
-Position 133.521 0.2487 -19.8983
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.25 0
-X_Size 1 0.5 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name chicken
-ID 3
-Position 25.6746 2.9987 -140.51
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0 0
-X_Size 1 0.5 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name chicken
-ID 3
-Position -1.05453 0.7487 -23.2284
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0 0
-X_Size 1 0.5 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name cheese
-ID 2
-Position -0.683591 0.1487 -29.6385
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.25 0
-X_Size 1 0.5 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name chicken
-ID 3
-Position -1.11373 2.4987 -29.9452
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0 0
-X_Size 1 0.5 1
-X_FXU32_[9] 1 0 0 0 1 0 0 0 1
-#
-
-Object
-Tag 5
-Name cheese
-ID 2
-Position -0.856512 1.9987 -35.6958
-Scale 1 1 1
-Rotation 0 0 1
-X_Actor 0
-X_Type 2
-X_Option 0 0 1
-X_Pos 0 0.25 0
-X_Size 1 0.5 1
 X_FXU32_[9] 1 0 0 0 1 0 0 0 1
 #
 
