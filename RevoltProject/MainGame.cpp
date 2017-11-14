@@ -48,6 +48,7 @@ void MainGame::Setup()
 
 	g_SceneManager->AddScene("Lobby", new LobbyScene);
 	g_SceneManager->AddScene("Race", new RacingScene);
+
 	g_SceneManager->ChangeScene("Lobby");
 
 	g_pCamManager->Setup(NULL);
@@ -71,16 +72,16 @@ void MainGame::Update()
 	SAFE_UPDATE(g_SceneManager);
 	SAFE_UPDATE(g_pLightManager);
 	SAFE_UPDATE(g_pItemManager);
-	
+
 	//PhysX 시뮬 런
 	//g_pTimeManager->GetElapsedTime());//
 	//	MgrPhysXScene->simulate((1.f/60.f));	//프레임 지정
 
-	MgrPhysXScene->simulate((float)(1.f/60.f));	//프레임 지정
+	MgrPhysXScene->simulate((float)(1.f / 60.f));	//프레임 지정
 	MgrPhysXScene->flushStream();
 	MgrPhysXScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
 	//	MgrPhysXScene->checkResults(NX_RIGID_BODY_FINISHED, true);
-	
+
 	//PhysX와 정보 동기화
 	if (g_SceneManager) g_SceneManager->LastUpdate();
 	SAFE_UPDATE(g_pCamManager);
@@ -93,7 +94,7 @@ void MainGame::Render()
 	IsUpdate = false;
 
 	g_pD3DDevice->Clear(NULL, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(47, 121, 112), 1.0F, 0);
-		// 그리기 시작
+	// 그리기 시작
 	g_pD3DDevice->BeginScene();
 
 	g_SceneManager->Render();
@@ -134,5 +135,5 @@ void MainGame::SetAddSound()
 	g_pSoundManager->LoadSound("Sound", "pickup.wav", false);
 	g_pSoundManager->LoadSound("Sound", "pickgen.wav", false);
 	g_pSoundManager->LoadSound("Sound", "moto.wav", true);
-	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", true);	
+	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", true);
 }

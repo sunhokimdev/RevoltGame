@@ -22,9 +22,10 @@ void cAI_Master::Setup(AI_DATA pData)
 	familyAI[AI_TAG_RAY] = new cAI_Ray();
 	familyAI[AI_TAG_SPEED] = new cAI_CtrlSpeed();
 	familyAI[AI_TAG_HANDLE] = new cAI_CtrlHandel();
+	familyAI[AI_TAG_USEITEM] = new cAI_CtrlUseItem();
 	familyAI[AI_TAG_FLIP] = new cAI_CtrlFlip();
 	familyAI[AI_TAG_COMPET] = new cAI_CtrlCompete();
-	
+
 	//AI 동작 클래스
 	familyAI[AI_TAG_CTRL] = new cAI_Ctrl();
 

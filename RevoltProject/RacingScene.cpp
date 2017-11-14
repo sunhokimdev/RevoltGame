@@ -109,7 +109,6 @@ void RacingScene::Update()
 	case RACE_PROG_SET:
 	case RACE_PROG_GO:
 	{
-
 		if (m_eRaceProg == RACE_PROG_GO)
 		{
 			for (int i = 0; i < vecCars.size(); i++)
@@ -117,7 +116,6 @@ void RacingScene::Update()
 				vecCars[i]->m_isCtl = true;;
 			}
 		}
-
 		if (g_pNetworkManager->GetIsInGameNetwork())
 		{
 			SetNetworkCarData();

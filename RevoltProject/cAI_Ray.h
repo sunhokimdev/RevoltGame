@@ -79,8 +79,8 @@ public:
 	AIRayCastData Ray_L__;
 	AIRayCastData Ray_R__;
 
-//	AIRayCastData Ray_Pik;
-//	AIRayCastData Ray_Car;
+	AIRayCastData Ray_ITEM_L;
+	AIRayCastData Ray_ITEM_R;
 	//	AIRayCastData Ray_8__;
 	//	AIRayCastData Ray_9__;
 

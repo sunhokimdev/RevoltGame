@@ -118,7 +118,9 @@ void cGravityball::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	{
 		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
 		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(3.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser, true);
+		
 		SetActorGroup(m_pPhysX->pPhysX->m_pActor, E_PHYSX_TAG_GRIVATEBALL);
+		SetActorGroup(m_pPhysX->pTrigger->m_pActor, E_PHYSX_TAG_GRIVATEBALL);
 		this->SetPhysXData(m_pPhysX->pPhysX);
 		m_isInit = false;
 	}
