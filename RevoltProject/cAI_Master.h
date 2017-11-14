@@ -7,6 +7,7 @@
 #include "cAI_CtrlFlip.h"
 #include "cAI_Ctrl.h"
 #include "cAI_CtrlCompete.h"
+#include "cAI_CtrlUseItem.h"
 
 class cAI_Master
 {

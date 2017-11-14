@@ -252,7 +252,9 @@ void cCar::CreateItem()
 		while (1)
 		{
 			m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
-			//m_eHoldItem = eITEM_LIST::ITEM_WBOMB;
+
+			/*TEST*/m_eHoldItem = eITEM_LIST::ITEM_GRAVITY;
+
 			if (m_eHoldItem) break;
 		}
 		m_nItemCount = 1;
