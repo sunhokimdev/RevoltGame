@@ -41,7 +41,8 @@ void Object::LastUpdate()
 	{
 		//물리데이터와 메쉬 데이터동기화
 
-		cTransform::SetPosition(GetPhysXData()->m_pActor->getGlobalPosition());
+	
+		cTransform::SetPosition(GetPhysXData()->m_pActor->getGlobalPosition() - GetPhysXData()->m_localPos);
 
 		NxF32 NxMat[9] = { 1,0,0,0,1,0,0,0,1 };
 		GetPhysXData()->m_pActor->getGlobalPose().M.getColumnMajor(NxMat);

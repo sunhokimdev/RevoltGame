@@ -8,8 +8,10 @@
 class cPhysX
 {
 public:
-	NxActor*  m_pActor;		//save/load (X)		->월드좌표 + 로컬좌표 저장
+	NxActor*  m_pActor;		//save/load (X)		->월드좌표 저장
 	USERDATA* m_pUserData;	//save/load (X)
+
+	NxVec3 m_localPos;
 
 	cPhysX();
 	~cPhysX();

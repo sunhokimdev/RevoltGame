@@ -244,6 +244,8 @@ void cTrack::LoadTrack(std::string FileName)
 							localPosition.y = y;
 							localPosition.z = z;
 
+							std::cout << y << std::endl;
+
 						}
 						else if (szTemp[2] == 'S')
 						{
@@ -277,7 +279,7 @@ void cTrack::LoadTrack(std::string FileName)
 						{
 							NxActor* pActor = MgrPhysX->CreateActor(
 								type,
-								position + worldPosition + localPosition,
+								position + worldPosition,
 								matR,
 								sizeValue,
 								E_PHYSX_MATERIAL_NONE,
@@ -291,6 +293,7 @@ void cTrack::LoadTrack(std::string FileName)
 								
 								physx->m_pActor = pActor;
 								physx->m_pUserData = pUserData;
+								physx->m_localPos = localPosition;
 								Obj->SetPhysXData(physx);
 							}
 
@@ -320,6 +323,7 @@ void cTrack::LoadTrack(std::string FileName)
 								
 								physx->m_pActor = pActor;
 								physx->m_pUserData = pUserData;
+								physx->m_localPos = localPosition;
 								Obj->SetPhysXData(physx);
 							}
 							mapCheckBox[Obj->GetObjName()] = Obj;
@@ -329,7 +333,7 @@ void cTrack::LoadTrack(std::string FileName)
 							//맵에 배치되어있는 장애물들...
 							NxActor* pActor = MgrPhysX->CreateActor(
 								type,
-								position + worldPosition + localPosition,
+								worldPosition - localPosition,
 								matR,
 								sizeValue,
 								E_PHYSX_MATERIAL_03,
@@ -341,6 +345,8 @@ void cTrack::LoadTrack(std::string FileName)
 							{
 								g_pPhysX->SetActorGroup(pActor, E_PHYSX_TAG_NONE);
 								physx->m_pActor = pActor;
+								physx->m_pUserData = pUserData;
+								physx->m_localPos = localPosition;
 								Obj->SetPhysXData(physx);
 							}
 
