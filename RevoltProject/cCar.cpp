@@ -312,28 +312,22 @@ void cCar::LoadWheel(std::string carName)
 
 void cCar::Update()
 {
-	//차가 땅에 박히는 걸 망지
+	//차가 땅에 박히는 걸 방지
 	m_carNxVehicle->getActor()->addForce(NxVec3(0, 0.001, 0));
 
-
-	//	if (!m_isAI) CtrlPlayer();
-	//	if (g_pKeyManager->isStayKeyDown(VK_TAB))
-	//	{
-	//		CtrlAI();
-	//	}
-	if (m_isAI) CtrlAI();
-	else CtrlPlayer();
-	//if (g_pKeyManager->isStayKeyDown(VK_TAB))
-	//{
-	//	CtrlPlayer();
-	//}
-	//이하 AI, PLAYER 의 동일 사용 함수
-
-	//자동차 움직임
 	if (m_isCtl)
 	{
+		if (m_isAI) CtrlAI();
+		else CtrlPlayer();
+		//if (g_pKeyManager->isStayKeyDown(VK_TAB))
+		//{
+		//	CtrlPlayer();
+		//}
+		//이하 AI, PLAYER 의 동일 사용 함수
+
+		//자동차 움직임
 		CarMove();
-		
+
 		//자동차 리포지션
 		if (INPUT_KEY[E_BIT_REPOS]) RePosition();
 
@@ -343,6 +337,7 @@ void cCar::Update()
 		//차 뒤집기
 		if (INPUT_KEY[E_BIT_FLIP_]) CarFlip();
 	}
+
 	// PickUp 충돌
 	CollidePickUp();
 
@@ -430,7 +425,7 @@ void cCar::Destroy()
 		SAFE_DELETE(p);
 	}
 	vecWheels.clear();
-	
+
 	if (familyAI)
 	{
 		familyAI->Destory();
@@ -610,24 +605,11 @@ void cCar::DrawSkidMark()
 			}
 		}
 	}
+
 	else
 	{
 		m_isDrift = false;
 	}
-
-
-	//	테스트용
-	//if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
-	//{
-	//	if (RayCarHit.distance < 0.2f)
-	//	{
-	//		m_pSkidMark->DrawSkidMark();
-	//	}
-	//}
-	//if (g_pKeyManager->isStayKeyDown(VK_SPACE))
-	//{
-	//	m_pSkidMark->Destroy();
-	//}
 }
 
 void cCar::SpeedMath()
@@ -932,6 +914,17 @@ void cCar::UpdateSound()
 	{
 		g_pSoundManager->Stop("skid_normal.wav");
 	}
+	//if (!g_pSoundManager->isPlay("moto.wav"))
+	//{
+	//	g_pSoundManager->Play("moto.wav", 0.3f + rpmRatio * 0.5f);
+	//}
+	g_pSoundManager->SetSoundPosition("moto.wav", GetPosition());
+	//g_pSoundManager->SetSoundPosition("moto.wav", {0,0,0});
+	g_pSoundManager->SetVolum("moto.wav", 0.3f + rpmRatio * 0.5f);
+	g_pSoundManager->SetPitch("moto.wav", frq);
+
+
+	//g_pSoundManager->Play_Loop("moto.wav", 0.8f);
 }
 
 NxVec3 cCar::CarArrow(float angle)

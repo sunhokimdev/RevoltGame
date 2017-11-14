@@ -55,11 +55,13 @@ void cTrack::LastUpdate()
 
 void cTrack::Render()
 {
+	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	Object::Render();
 	for each(Object* pObj in m_vecObject)
 	{
 		pObj->Render();
 	}
+	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 void cTrack::Destroy()

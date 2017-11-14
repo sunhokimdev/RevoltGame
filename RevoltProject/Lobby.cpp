@@ -182,6 +182,8 @@ void Lobby::Render()
 
 void Lobby::Destroy()
 {
+	
+
 	SAFE_RELEASE(m_pSprite);
 	SAFE_RELEASE(m_pObjMesh);
 
@@ -375,13 +377,11 @@ void Lobby::KeyUpdate()
 
 			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", m_pfileList->GetCarName(), false));
 			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc1", true));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
+			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
+			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
+			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
+			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
 		
-			std::cout << g_pDataManager->vecPlayerData.size() << std::endl;
-
 			g_SceneManager->ChangeScene("Race");
 
 			return;
@@ -498,10 +498,7 @@ void Lobby::KeyUpdate()
 			m_time = 0.0f;
 			m_select = 0;
 			m_leftAndrightSelect = 0;
-
-			//g_pCamManager->SetLookAt(&m_mapLobby[m_stateLobby]->m_camLookAt);
-			g_pSoundManager->Play("menuLeftRight.wav", 0.8f);
-
+			g_pSoundManager->Play("menuPrev.wav", 0.8f);
 		}
 	}
 	if (g_pKeyManager->isOnceKeyDown(VK_F5))
