@@ -51,7 +51,6 @@ void cAI_CtrlSpeed::Update()
 		SpeedValue = 1.f;
 	}
 
-	//std::cout << SpeedValue << std::endl;
 	if (LF_Dist < Min_LRDistRange || RF_Dist < Min_LRDistRange)
 	{
 		if (rpmRate > 0) SpeedValue = -1.f;

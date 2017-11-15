@@ -75,7 +75,9 @@ void UIObject::Destroy()
 	for each(auto c in m_vecChild)
 	{
 		c->Destroy();
+		SAFE_DELETE(c);
 	}
+	m_vecChild.clear();
 	this->Release();
 }
 

@@ -37,3 +37,8 @@ void WheelTire::Render()
 {
 	Thing::Render();
 }
+
+void WheelTire::Destroy()
+{
+	Thing::Destroy();
+}

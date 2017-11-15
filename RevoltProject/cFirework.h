@@ -3,6 +3,7 @@
 
 #define FIREWORKEFFECT 80
 
+class cCar;
 class PSystem;
 
 class cFirework : public cItem
@@ -10,13 +11,15 @@ class cFirework : public cItem
 private:
 	ST_PHYSX* m_pPhysX;
 	bool m_isSleep;
-	bool m_isTarget;		// 타깃이 있는지
+	
 	
 	PSystem* m_pEffect;		// 폭죽 터지는 파티클
 	PSystem* m_pTail;		// 폭죽 꼬리 파티클
 
 	D3DXVECTOR3 fwPos;		// 폭죽 자신의 포지션
 	D3DXVECTOR3 dir;		// 폭죽이 날아가는 방향
+	cCar* m_pCar;
+
 public:
 	cFirework();
 	virtual ~cFirework();
@@ -25,5 +28,10 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual void Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos);
+	virtual void Destroy();
+
+	void LinkCar(cCar* LinkCar) { m_pCar = LinkCar; }
+	SYNTHESIZE(D3DXVECTOR3, m_vTarget, Target);
+	SYNTHESIZE(bool, m_isTarget, IsTarget);
 };
 

@@ -32,3 +32,8 @@ void PickUpObject::Render()
 {
 	Thing::Render();
 }
+
+void PickUpObject::Destroy()
+{
+	Thing::Destroy();
+}

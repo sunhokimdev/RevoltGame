@@ -91,26 +91,6 @@ private:
 	cCar* m_pCar;
 	RacingScene* m_pRacingScene;
 
-public:
-	InGameUI();
-	virtual ~InGameUI();
-
-	virtual void Setup();
-	virtual void Update();
-	virtual void Render(LPD3DXSPRITE pSprite);
-	virtual void Destroy();
-
-	UIObject* GetUIObject() { return m_pRootUI; }
-	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
-
-	void UpdateSpeed();
-	void UpdateLabCount();									// UpdateCurrentLab
-	void UpdateLastTime();									// UpdateLastTimer
-	void CompareBestTime();									// UpdateBestTimer(Compare BestLab with CurrentLab)
-	void UpdateLabTime();									// UpdateLabTimer
-	void UpdateRaceTime();									// UpdateRaceTimer
-	void UpdateArrowDir();									// 화살표 방향
-	void RaceResults();
 
 	/*          SYNTHESIZE          */
 
@@ -152,6 +132,26 @@ public:
 	SYNTHESIZE(int, m_SecTenth, SecTenth);
 	SYNTHESIZE(int, m_MinOneth, MinOneth);
 	SYNTHESIZE(int, m_MinTenth, MinTenth);
+public:
+	InGameUI();
+	virtual ~InGameUI();
+
+	virtual void Setup();
+	virtual void Update();
+	virtual void Render(LPD3DXSPRITE pSprite);
+	virtual void Destroy();
+
+	UIObject* GetUIObject() { return m_pRootUI; }
+	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
+
+	void UpdateSpeed();
+	void UpdateLabCount();									// UpdateCurrentLab
+	void UpdateLastTime();									// UpdateLastTimer
+	void CompareBestTime();									// UpdateBestTimer(Compare BestLab with CurrentLab)
+	void UpdateLabTime();									// UpdateLabTimer
+	void UpdateRaceTime();									// UpdateRaceTimer
+	void UpdateArrowDir();									// 화살표 방향
+	void RaceResults();
 
 	void LinkCarPt(cCar* car)
 	{

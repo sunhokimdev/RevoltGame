@@ -49,6 +49,7 @@ public:
 	virtual void Update();
 	virtual void Render(LPD3DXSPRITE pSprite) override;
 	virtual void SetTexture(char* szFullPath);	// 텍스쳐 설정
+	virtual void Destroy();
 
 	std::string GetChatName() { return m_chatText; };
 	void SetChatText(std::string) { m_chatText = ""; };

@@ -45,8 +45,32 @@ DeviceManager::DeviceManager()
 		nVertexProcessing,
 		&stD3DPP,
 		&m_pD3DDevice2);
-	
+
 	m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+
+	//Texture
+	//DWORD dwFactor = D3DCOLOR_RGBA(255, 255, 255, 255);
+	//m_pD3DDevice->SetRenderState(D3DRS_TEXTUREFACTOR, dwFactor);
+	////m_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	//m_pD3DDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+	////아래 3줄이 알파블랜딩을 시작하겠다는 소스
+	//m_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	//m_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	//m_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	//Maler
+	// Use material's alpha
+	m_pD3DDevice->SetRenderState(D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL);
+	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
+	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+
+	// Use alpha for transparency
+//	m_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+//	m_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+//	m_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 }
 
 

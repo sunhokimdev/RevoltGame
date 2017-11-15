@@ -14,18 +14,22 @@ c321GO::~c321GO()
 void c321GO::Setup()
 {
 	Object* gogo = new Object;
+	gogo->SetMeshData(new cMesh);
 	gogo->GetMeshData()->LoadMesh("Objects/gogo", "gogo.obj");
 	m_vec321go.push_back(gogo);
 
 	Object* go1 = new Object;
+	go1->SetMeshData(new cMesh);
 	go1->GetMeshData()->LoadMesh("Objects/go1", "go1.obj");
 	m_vec321go.push_back(go1);
 
 	Object* go2 = new Object;
+	go2->SetMeshData(new cMesh);
 	go2->GetMeshData()->LoadMesh("Objects/go2", "go2.obj");
 	m_vec321go.push_back(go2);
 
 	Object* go3 = new Object;
+	go3->SetMeshData(new cMesh);
 	go3->GetMeshData()->LoadMesh("Objects/go3", "go3.obj");
 	m_vec321go.push_back(go3);
 
@@ -40,11 +44,6 @@ void c321GO::Setup()
 void c321GO::Update()
 {
 	//매쉬 방향은 Y가 PI일때 정면
-
-	if (g_pKeyManager->isOnceKeyDown('S'))
-	{
-		StartCount();
-	}
 
 	Count();
 }
@@ -61,7 +60,7 @@ void c321GO::Destroy()
 {
 	for each(Object* p in m_vec321go)
 	{
-		p->GetMeshData()->m_pMesh->Release();
+		p->Destroy();
 		SAFE_DELETE(p);
 	}
 	m_vec321go.clear();
@@ -96,72 +95,21 @@ void c321GO::Count()
 
 	if (m_isStart)
 	{
-		m_fTime += g_pTimeManager->GetElapsedTime();
+		if (m_fTime == 0)
+		{
+			if (m_nCount != 0)
+			{
+				g_pSoundManager->Play("countdown.wav", 0.8f);
+			}
+			else
+			{
+				g_pSoundManager->Play("countdown_0.wav", 0.8f);
+				g_pSoundManager->Play("countdown_1.wav", 0.8f);
+			}
+			
+		}
 
-		//if (m_fTime > 3)
-		//{
-		//	m_nCount = 0;
-		//	if (m_fTime > 3.875)
-		//	{
-		//		m_isStart = false;
-		//	}
-		//	else if (m_fTime > 3.125)
-		//	{
-		//		m_fAngle = D3DX_PI;
-		//	}
-		//	else
-		//	{
-		//		m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
-		//	}
-		//}
-		//else if (m_fTime > 2)
-		//{
-		//	m_nCount = 1;
-		//	if (m_fTime > 2.875)
-		//	{
-		//		m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
-		//	}
-		//	else if (m_fTime > 2.125)
-		//	{
-		//		m_fAngle = D3DX_PI;
-		//	}
-		//	else
-		//	{
-		//		m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
-		//	}
-		//}
-		//else if (m_fTime > 1)
-		//{
-		//	m_nCount = 2;
-		//	if (m_fTime > 1.875)
-		//	{
-		//		m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
-		//	}
-		//	else if (m_fTime > 1.125)
-		//	{
-		//		m_fAngle = D3DX_PI;
-		//	}
-		//	else
-		//	{
-		//		m_fAngle = (((m_fTime * 4) + 0.5f) * D3DX_PI);
-		//	}
-		//}
-		//else if (m_fTime > 0)
-		//{
-		//	m_nCount = 3;
-		//	if (m_fTime > 0.875)
-		//	{
-		//		m_fAngle = (((m_fTime * 4) - 0.5f) * D3DX_PI);
-		//	}
-		//	else if (m_fTime > 0.125)
-		//	{
-		//		m_fAngle = D3DX_PI;
-		//	}
-		//	else
-		//	{
-		//		//Lerp = m_fTime * 8;
-		//	}
-		//}
+		m_fTime += g_pTimeManager->GetElapsedTime();
 
 		float min = -1;
 
@@ -203,6 +151,7 @@ void c321GO::Count()
 			}
 			
 			m_fTime = 0;
+
 		}
 	}
 

@@ -27,6 +27,10 @@ cCar::cCar()
 	m_eHoldItem = ITEM_NONE;
 
 	familyAI = NULL;
+	m_pTarget = NULL;
+
+	m_isCtl = false;
+	m_isDrift = false;
 }
 
 cCar::~cCar()
@@ -205,6 +209,7 @@ void cCar::LoadCar(std::string carName)
 	m_pSkidMark = new cSkidMark;
 	m_pSkidMark->LinkCar(this);
 
+	g_pSoundManager->Play("moto.wav", 0.0f, GetPosition());
 }
 
 void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc, bool isAI)
@@ -247,8 +252,8 @@ void cCar::CreateItem()
 	{
 		while (1)
 		{
-			m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
-			//m_eHoldItem = eITEM_LIST::ITEM_WBOMB;
+			//m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
+			m_eHoldItem = eITEM_LIST::ITEM_FIREWORK;
 			if (m_eHoldItem) break;
 		}
 		m_nItemCount = 1;
@@ -277,6 +282,7 @@ void cCar::CreatePhsyX(stCARSPEC carspec)
 
 void cCar::LoadMesh(std::string carName)
 {
+	SetMeshData(new cMesh);
 	GetMeshData()->LoadCarMesh("Cars/" + carName, carName + ".obj");
 }
 
@@ -293,7 +299,7 @@ void cCar::LoadWheel(std::string carName)
 	{
 		for each(cMesh* p in vecWheels)
 		{
-			p->Destory();
+			p->Destroy();
 		}
 		vecWheels.clear();
 	}
@@ -302,43 +308,39 @@ void cCar::LoadWheel(std::string carName)
 	vecWheels[1]->LoadMesh("Cars/" + carName, carName + "fr.obj");
 	vecWheels[2]->LoadMesh("Cars/" + carName, carName + "bl.obj");
 	vecWheels[3]->LoadMesh("Cars/" + carName, carName + "br.obj");
+
 }
 
 void cCar::Update()
 {
-	//차가 땅에 박히는 걸 망지
+	//차가 땅에 박히는 걸 방지
 	m_carNxVehicle->getActor()->addForce(NxVec3(0, 0.001, 0));
 
+	if (m_isCtl)
+	{
+		if (m_isAI) CtrlAI();
+		else CtrlPlayer();
+		//if (g_pKeyManager->isStayKeyDown(VK_TAB))
+		//{
+		//	CtrlPlayer();
+		//}
+		//이하 AI, PLAYER 의 동일 사용 함수
 
-	//	if (!m_isAI) CtrlPlayer();
-	//	if (g_pKeyManager->isStayKeyDown(VK_TAB))
-	//	{
-	//		CtrlAI();
-	//	}
-	if (m_isAI) CtrlAI();
-	else CtrlPlayer();
-	//if (g_pKeyManager->isStayKeyDown(VK_TAB))
-	//{
-	//	CtrlPlayer();
-	//}
-	//이하 AI, PLAYER 의 동일 사용 함수
+		//자동차 움직임
+		CarMove();
 
-	//자동차 움직임
-	CarMove();
+		//자동차 리포지션
+		if (INPUT_KEY[E_BIT_REPOS]) RePosition();
 
-	//자동차 리포지션
-	if (INPUT_KEY[E_BIT_REPOS]) RePosition();
+		//아이템 사용
+		if (INPUT_KEY[E_BIT_ITEM_]) UsedItem();
+
+		//차 뒤집기
+		if (INPUT_KEY[E_BIT_FLIP_]) CarFlip();
+	}
 
 	// PickUp 충돌
-	//if (INPUT_KEY[E_BIT_FLIP_]) CollidePickUp();
 	CollidePickUp();
-	//아이템 사용
-	if (INPUT_KEY[E_BIT_ITEM_]) UsedItem();
-
-	//차 뒤집기
-	if (INPUT_KEY[E_BIT_FLIP_]) CarFlip();
-
-
 
 	//스피드 계산
 	SpeedMath();
@@ -348,6 +350,8 @@ void cCar::Update()
 
 	//바퀴 자국
 	CreateSkidMark();
+
+	UpdateSound();
 }
 
 void cCar::LastUpdate()
@@ -410,11 +414,29 @@ void cCar::Render()
 	}
 }
 
-void cCar::Destory()
+void cCar::Destroy()
 {
-	if (m_pSkidMark) m_pSkidMark->Destory();
+	if (m_pSkidMark) m_pSkidMark->Destroy();
 	SAFE_DELETE(m_pSkidMark);
+	SAFE_DELETE(m_carNxVehicle);
+
+	for each(cMesh* p in vecWheels)
+	{
+		p->Destroy();
+		SAFE_DELETE(p);
+	}
+	vecWheels.clear();
+
+	if (familyAI)
+	{
+		familyAI->Destory();
+		SAFE_DELETE(familyAI);
+	}
+
 	Object::Destroy();
+	m_pInGameUI = NULL;
+	m_pTrack = NULL;
+	g_pSoundManager->AllSoundIsStop();
 }
 
 void cCar::CtrlPlayer()
@@ -470,7 +492,7 @@ void cCar::TrackCheck()
 	{
 		if (checkId == (*m_pTrack->GetCheckBoxsPt())[0]->GetPhysXData()->m_pUserData->CheckBoxID)
 		{
-			std::cout << "START" << std::endl;
+			//std::cout << "START" << std::endl;
 			m_nextCheckBoxID = 1;
 			m_currCheckBoxID = 0;	//체크 시작
 			m_countRapNum = 0;
@@ -500,13 +522,16 @@ void cCar::TrackCheck()
 
 		if (m_currCheckBoxID == 0)
 		{
-			// m_countRapNum++;
-			if (!m_isAI) m_pInGameUI->SetLabCnt(m_countRapNum);
-			if (!m_isAI) m_pInGameUI->UpdateLastTime();
-			if (!m_isAI) m_pInGameUI->CompareBestTime();
-			if (!m_isAI) m_pInGameUI->SetLabElapseTime(0);
-			if (!m_isAI) m_pInGameUI->SetLabMinOneth(FONT2_NUM0);
-			if (!m_isAI) m_pInGameUI->SetLabMinTenth(FONT2_NUM0);
+			m_countRapNum++;
+			if (!m_isAI)
+			{
+				m_pInGameUI->SetLabCnt(m_countRapNum);
+				m_pInGameUI->UpdateLastTime();
+				m_pInGameUI->CompareBestTime();
+				m_pInGameUI->SetLabElapseTime(0);
+				m_pInGameUI->SetLabMinOneth(FONT2_NUM0);
+				m_pInGameUI->SetLabMinTenth(FONT2_NUM0);
+			}
 
 			if (m_bastRapTimeCount > m_rapTimeCount || m_bastRapTimeCount < 0.0f)
 			{
@@ -531,6 +556,7 @@ void cCar::RunEnd()
 		NxWheel* wheel = m_carNxVehicle->getWheel(i);
 		if (wheel->getRpm() < m_maxRpm)	wheel->tick(false, 0, m_maxMoterPower, 1.f / 60.f);
 	}
+	UpdateSound();
 }
 
 void cCar::CarRunStop()
@@ -569,23 +595,20 @@ void cCar::DrawSkidMark()
 				if (RayCarHit.distance < 0.2f && str == "map")
 				{
 					m_pSkidMark->DrawSkidMark();
+					if (!m_isDrift)
+					{
+						g_pSoundManager->Play("skid_normal.wav", 0.5f, GetPosition());
+						m_isDrift = true;
+					}
 				}
 			}
 		}
 	}
 
-	//	테스트용
-	//if (g_pKeyManager->isStayKeyDown(VK_SHIFT))
-	//{
-	//	if (RayCarHit.distance < 0.2f)
-	//	{
-	//		m_pSkidMark->DrawSkidMark();
-	//	}
-	//}
-	//if (g_pKeyManager->isStayKeyDown(VK_SPACE))
-	//{
-	//	m_pSkidMark->Destory();
-	//}
+	else
+	{
+		m_isDrift = false;
+	}
 }
 
 void cCar::SpeedMath()
@@ -701,8 +724,6 @@ void cCar::CarMove()
 
 void cCar::UsedItem()
 {
-	g_pItemManager->FireItem(ITEM_MYBOMB, this);
-
 	if (m_eHoldItem != ITEM_NONE)
 	{
 		//아이템 사용 함수 호츨
@@ -710,11 +731,12 @@ void cCar::UsedItem()
 		m_nItemCount--;
 		if (m_nItemCount == 0)
 		{
-			g_pItemManager->FireItem(m_eHoldItem, this);
+			g_pItemManager->FireItem(ITEM_FIREWORK, this, m_pTarget);
 			m_eHoldItem = ITEM_NONE;
 			GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
+			g_pItemManager->SetItemID(m_eHoldItem);
 		}
-		std::cout << "FIRE!" << std::endl;
+		//std::cout << "FIRE!" << std::endl;
 	}
 }
 
@@ -782,7 +804,6 @@ void cCar::SetFrustum(D3DXVECTOR3 pv)
 	m_vecWorldVertex.resize(8);
 
 }
-
 
 void cCar::UpdateFrustum()
 {
@@ -877,6 +898,39 @@ bool cCar::IsIn(D3DXVECTOR3* pv)
 	return true;
 }
 
+void cCar::UpdateSound()
+{
+	NxWheel* wheel = m_carNxVehicle->getWheel(0);
+	float rpmRatio = wheel->getRpm() / m_maxRpm;
+
+	float frq = 10000 + (rpmRatio * 20000);
+
+	g_pSoundManager->SetSoundPosition("moto.wav", GetPosition());
+	g_pSoundManager->SetVolum("moto.wav", 0.5f + rpmRatio * 0.5f);
+	g_pSoundManager->SetPitch("moto.wav", frq);
+
+	if (m_isDrift)
+	{
+		g_pSoundManager->SetSoundPosition("skid_normal.wav", GetPosition());
+		//g_pSoundManager->Play("skid_normal.wav", 0.8f, GetPosition());
+	}
+	else
+	{
+		g_pSoundManager->Stop("skid_normal.wav");
+	}
+	//if (!g_pSoundManager->isPlay("moto.wav"))
+	//{
+	//	g_pSoundManager->Play("moto.wav", 0.3f + rpmRatio * 0.5f);
+	//}
+	g_pSoundManager->SetSoundPosition("moto.wav", GetPosition());
+	//g_pSoundManager->SetSoundPosition("moto.wav", {0,0,0});
+	g_pSoundManager->SetVolum("moto.wav", 0.3f + rpmRatio * 0.5f);
+	g_pSoundManager->SetPitch("moto.wav", frq);
+
+
+	//g_pSoundManager->Play_Loop("moto.wav", 0.8f);
+}
+
 NxVec3 cCar::CarArrow(float angle)
 {
 	NxQuat quat = GetPhysXData()->m_pActor->getGlobalOrientationQuat();
@@ -924,13 +978,13 @@ void cCar::SetResetNetworkKey()
 
 void cCar::SetNetworkKey(std::string str)
 {
-	INPUT_KEY[E_BIT_UP___] = (str[0] == '1');//	m_keySet.up = true;
-	INPUT_KEY[E_BIT_DOWN_] = (str[1] == '1');//	m_keySet.down = true;
-	INPUT_KEY[E_BIT_LEFT_] = (str[2] == '1');//	m_keySet.left = true;
-	INPUT_KEY[E_BIT_RIGHT] = (str[3] == '1');//	m_keySet.right = true;
-	INPUT_KEY[E_BIT_ITEM_] = (str[4] == '1');//	m_keySet.ctrl = true;
-	INPUT_KEY[E_BIT_REPOS] = (str[5] == '1');//	m_keySet.r_key = true;
-	INPUT_KEY[E_BIT_FLIP_] = (str[5] == '1');//	m_keySet.f_key = true;
+	INPUT_KEY[E_BIT_UP___] = (str[0] == '1');	m_keySet.up = INPUT_KEY[E_BIT_UP___];
+	INPUT_KEY[E_BIT_DOWN_] = (str[1] == '1');	m_keySet.down = INPUT_KEY[E_BIT_DOWN_];
+	INPUT_KEY[E_BIT_LEFT_] = (str[2] == '1');	m_keySet.left = INPUT_KEY[E_BIT_LEFT_];
+	INPUT_KEY[E_BIT_RIGHT] = (str[3] == '1');	m_keySet.right = INPUT_KEY[E_BIT_RIGHT];
+	INPUT_KEY[E_BIT_ITEM_] = (str[4] == '1');	m_keySet.ctrl = INPUT_KEY[E_BIT_ITEM_];
+	INPUT_KEY[E_BIT_REPOS] = (str[5] == '1');	m_keySet.r_key = INPUT_KEY[E_BIT_REPOS];
+	INPUT_KEY[E_BIT_FLIP_] = (str[5] == '1');	m_keySet.f_key = INPUT_KEY[E_BIT_FLIP_];
 }
 
 NxVec3 cCar::WheelArrow(float angle, bool back)

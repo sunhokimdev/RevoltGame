@@ -19,5 +19,6 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual void Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos);
+	virtual void Destroy();
 };
 

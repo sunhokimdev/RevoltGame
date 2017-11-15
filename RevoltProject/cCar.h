@@ -52,6 +52,9 @@ private:
 	cAI_Master* familyAI;
 	bool m_isAI = false;
 
+	bool m_isCtl;
+	bool m_isDrift;
+
 	//Track 정보
 	cTrack* m_pTrack;
 	SYNTHESIZE(int, m_aICheckBoxID, AICheckBoxID);				//트랙 순서와 상관없이 항상 체크된 박스의 번호가 올라온다.
@@ -80,6 +83,7 @@ private:
 	std::vector<D3DXVECTOR3>	m_vecWorldVertex;
 	std::vector<D3DXPLANE>		m_vecPlane;
 
+	SYNTHESIZE(cCar*, m_pTarget, Target);
 public:
 	cCar();
 	~cCar();
@@ -99,7 +103,7 @@ public:
 	void Update();
 	void LastUpdate();
 	void Render();
-	void Destory();
+	void Destroy();
 
 
 	void CtrlPlayer();
@@ -132,11 +136,18 @@ public:
 	bool IsIn(D3DXVECTOR3* pv);
 
 
+
+	void UpdateSound();
+
 	/*   김선호   */
+	///////////////////////////////////////
+public:
 	void SetResetNetworkKey();
 	void SetNetworkKey(std::string);
 
+	SYNTHESIZE(NxVec3, m_carPos, CarSunPos);
 	SYNTHESIZE(bool, m_isUser, IsUser);
+	////////////////////////////////////////
 	//e
 	NxVec3 CarArrow(float radianAngle = 0);
 	NxVec3 WheelArrow(float degAngle = 0 , bool back = false);

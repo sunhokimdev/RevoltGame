@@ -184,7 +184,6 @@
     <ClInclude Include="cMyBomb.h" />
     <ClInclude Include="cMybombImapct.h" />
     <ClInclude Include="cNetwork.h" />
-    <ClInclude Include="cNetworkCreateRoom.h" />
     <ClInclude Include="cNetworkInRoom.h" />
     <ClInclude Include="cNetworkLobby.h" />
     <ClInclude Include="cNetworkManager.h" />
@@ -194,7 +193,6 @@
     <ClInclude Include="cPlasmaImpact.h" />
     <ClInclude Include="cPlayerData.h" />
     <ClInclude Include="cSelectCarLob.h" />
-    <ClInclude Include="cSelectNetworkLob.h" />
     <ClInclude Include="cSkidMark.h" />
     <ClInclude Include="cSkyBox.h" />
     <ClInclude Include="cStringUtil.h" />
@@ -309,7 +307,6 @@
     <ClCompile Include="cMyBomb.cpp" />
     <ClCompile Include="cMybombImapct.cpp" />
     <ClCompile Include="cNetwork.cpp" />
-    <ClCompile Include="cNetworkCreateRoom.cpp" />
     <ClCompile Include="cNetworkInRoom.cpp" />
     <ClCompile Include="cNetworkLobby.cpp" />
     <ClCompile Include="cNetworkManager.cpp" />
@@ -319,7 +316,6 @@
     <ClCompile Include="cPlasmaImpact.cpp" />
     <ClCompile Include="cPlayerData.cpp" />
     <ClCompile Include="cSelectCarLob.cpp" />
-    <ClCompile Include="cSelectNetworkLob.cpp" />
     <ClCompile Include="cSkidMark.cpp" />
     <ClCompile Include="cSkyBox.cpp" />
     <ClCompile Include="cStringUtil.cpp" />

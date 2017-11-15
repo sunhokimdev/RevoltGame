@@ -7,6 +7,7 @@
 #include "Object.h"
 #include "cCheckBox.h"
 #include "c321GO.h"
+#include "RacingScene.h"
 
 #define TIMEMAX 60
 
@@ -406,7 +407,6 @@ void InGameUI::Setup()
 	pLastLabFont->AddChild(pRaceFont);
 	pImageView6->AddChild(m_pItemImage);
 
-	pImageView7->AddChild(pIV_arrowDir);
 	pImageView7->AddChild(pITV_Rank);
 	pImageView7->AddChild(pITV_Rank2);
 
@@ -487,8 +487,9 @@ void InGameUI::Update()
 	}
 
 
-	if (m_LabCnt > -1 && m_LabCnt < 3)	UpdateLabTime();
-	if (m_LabCnt >= 3)
+	int nTrackCount = m_pRacingScene->GettrackEndCount();
+	if (m_LabCnt > -1 && m_LabCnt < nTrackCount)	UpdateLabTime();
+	if (m_LabCnt >= nTrackCount)
 	{
 		RaceResults();
 		if (g_pKeyManager->isOnceKeyDown(VK_RETURN))
@@ -515,7 +516,7 @@ void InGameUI::Destroy()
 {
 	SAFE_DELETE(m_pItemImage);
 	SAFE_DELETE(m_pLobby);
-	SAFE_DELETE(m_pLab);
+	//SAFE_DELETE(m_pLab);
 	SAFE_DELETE(m_pCurrentLab);
 	SAFE_DELETE(m_pMaxLab);
 	SAFE_DELETE(m_pLastDotOneTh);
@@ -554,11 +555,11 @@ void InGameUI::Destroy()
 	SAFE_DELETE(pITV_Rank2);
 	SAFE_DELETE(pIV_arrowDir);
 	SAFE_DELETE(m_p321go);
-	SAFE_DELETE(m_pTrack);
-	SAFE_DELETE(m_pCar);
+	m_pTrack = NULL;
+	m_pCar = NULL;
 	m_pRacingScene = NULL;
 
-	iLobby::Destroy();
+	//iLobby::Destroy();
 }
 
 void InGameUI::UpdateSpeed()
@@ -575,6 +576,10 @@ void InGameUI::UpdateSpeed()
 	nOne = (int)(fTemp % 10) + FONT2_NUM0;
 	nTen = (int)((fTemp / 10)%10) + FONT2_NUM0;
 	nHun = (int)(fTemp / 100) + FONT2_NUM0;
+
+	if (nOne <= FONT2_NUM0) nOne = FONT2_NUM0;
+	if (nTen <= FONT2_NUM0) nTen = FONT2_NUM0;
+	if (nHun <= FONT2_NUM0) nHun = FONT2_NUM0;
 
 	std::string strHun;
 	std::string strTen;

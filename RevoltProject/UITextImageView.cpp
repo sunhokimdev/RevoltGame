@@ -28,9 +28,9 @@ UITextImageView::UITextImageView()
 
 UITextImageView::~UITextImageView()
 {
-	SAFE_RELEASE(m_pTexture);
-	SAFE_DELETE(m_Select);
-	SAFE_DELETE(m_LeftAndRightSelect);
+	//SAFE_RELEASE(m_pTexture);
+	//SAFE_DELETE(m_Select); // 삭제해햐함
+	//SAFE_DELETE(m_LeftAndRightSelect); // 삭제해야함
 }
 
 void UITextImageView::SetTexture(char * szFullPath)
@@ -58,6 +58,13 @@ void UITextImageView::SetTexture(char * szFullPath)
 		m_textPos.y = 16;
 	}
 
+}
+
+void UITextImageView::Destroy()
+{
+	SAFE_RELEASE(m_pTexture);
+	//SAFE_DELETE(m_Select); // 삭제해햐함
+	//SAFE_DELETE(m_LeftAndRightSelect); // 삭제해야함
 }
 
 std::string UITextImageView::GetCarName()
@@ -121,6 +128,28 @@ void UITextImageView::KeyEvent()
 		m_chatText += 'y';
 	else if (g_pKeyManager->isOnceKeyDown('Z'))
 		m_chatText += 'z';
+	else if (g_pKeyManager->isOnceKeyDown('1'))
+		m_chatText += '1';
+	else if (g_pKeyManager->isOnceKeyDown('2'))
+		m_chatText += '2';
+	else if (g_pKeyManager->isOnceKeyDown('3'))
+		m_chatText += '3';
+	else if (g_pKeyManager->isOnceKeyDown('4'))
+		m_chatText += '4';
+	else if (g_pKeyManager->isOnceKeyDown('5'))
+		m_chatText += '5';
+	else if (g_pKeyManager->isOnceKeyDown('6'))
+		m_chatText += '6';
+	else if (g_pKeyManager->isOnceKeyDown('7'))
+		m_chatText += '7';
+	else if (g_pKeyManager->isOnceKeyDown('8'))
+		m_chatText += '8';
+	else if (g_pKeyManager->isOnceKeyDown('9'))
+		m_chatText += '9';
+	else if (g_pKeyManager->isOnceKeyDown('0'))
+		m_chatText += '0';
+	else if (g_pKeyManager->isOnceKeyDown(VK_OEM_PERIOD))
+		m_chatText += '.';
 	else if (g_pKeyManager->isOnceKeyDown(' '))
 		m_chatText += ' ';
 	else if (g_pKeyManager->isOnceKeyDown('?'))

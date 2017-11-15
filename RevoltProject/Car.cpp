@@ -32,6 +32,11 @@ void Car::Render()
 	}
 }
 
+void Car::Destroy()
+{
+
+}
+
 void Car::MirrorRender()
 {
 	Thing::MirrorRender();

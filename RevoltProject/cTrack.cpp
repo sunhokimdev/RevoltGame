@@ -55,14 +55,16 @@ void cTrack::LastUpdate()
 
 void cTrack::Render()
 {
+	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	Object::Render();
 	for each(Object* pObj in m_vecObject)
 	{
 		pObj->Render();
 	}
+	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-void cTrack::Destory()
+void cTrack::Destroy()
 {
 	for each(auto p in m_vecCheckBox)
 	{
@@ -74,6 +76,7 @@ void cTrack::Destory()
 		p->Destroy();
 		SAFE_DELETE(p);
 	}
+	Object::Destroy();
 }
 
 void cTrack::SetData()

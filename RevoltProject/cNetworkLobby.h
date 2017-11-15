@@ -10,6 +10,9 @@ class cNetwork;
 class cNetworkLobby : public iLobby
 {
 private:
+
+	UITextImageView* m_pServerIP;
+
 	UITextImageView* m_pUserName;
 	UITextImageView* m_pCarName;
 	UITextImageView* pImageView4;
@@ -23,7 +26,6 @@ private:
 	UIImageView*	 pImageView6;
 	UIImageView*	 pImageView7;
 
-
 public:
 	cNetworkLobby();
 	virtual ~cNetworkLobby();
@@ -34,10 +36,7 @@ public:
 	virtual void Render(LPD3DXSPRITE pSprite);
 	virtual void Destroy();
 
-	/*   유저 이름, 자동차 이름 셋업   */
-	void SetUserName(std::string Name);
-	void SetCarName(std::string pName);
-	std::string GetName();
+	std::string GetServerIP();
 };
 
 // ChatClient.cpp : 콘솔 응용 프로그램에 대한 진입점을 정의합니다.

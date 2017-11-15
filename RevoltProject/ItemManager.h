@@ -13,6 +13,16 @@ struct ST_PHYSX
 	cPhysX* pTrigger;
 	cMesh* pMesh;
 	NxVec3 pos;
+
+	~ST_PHYSX()
+	{
+		pPhysX->Destroy();
+		SAFE_DELETE(pPhysX);
+		pTrigger->Destroy();
+		SAFE_DELETE(pTrigger);
+		pMesh->Destroy();
+		SAFE_DELETE(pMesh);
+	}
 };
 
 struct ST_USERDATA
@@ -46,11 +56,6 @@ private:
 	int m_vecIndex[4];
 	eITEM_LIST m_eItemList;
 
-	NxActor* box1;
-	NxActor* box2;
-	NxActor* box3;
-	NxActor* box4;
-
 public:
 	SINGLETONE(ItemManager);
 
@@ -58,12 +63,15 @@ public:
 	void Update();
 	void Render();
 
+	cItem* GetLastItem() { return m_vecItem[m_vecItem.size() - 1]; }
+
 	void SetFire(D3DXVECTOR3 angle, D3DXVECTOR3 pos);
 	void SetActorGroup(NxActor* actor, NxCollisionGroup group);
 	void InitCollisionGroup();
-	void FireItem(eITEM_LIST tag/*아이템종류*/,cCar* car/*자동차 포인터*/);
+	void FireItem(eITEM_LIST tag/*아이템종류*/,cCar* car/*자동차 포인터*/, cCar* target = NULL);
 
 	int GetItemID();
 	void SetItemID(eITEM_LIST e) { m_eItemList = e; };
+	void Destroy();
 };
 

@@ -117,7 +117,7 @@ BOOL cPhysXManager::InitNxPhysX()
 	return S_OK;
 }
 
-void cPhysXManager::Destory()
+void cPhysXManager::Destroy()
 {
 	if (m_pNxPhysicsSDK != NULL)
 	{
@@ -253,7 +253,13 @@ void cPhysXManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
 	for (int i = 0; i < actor->getNbShapes(); i++)
 	{
 		shapes[i]->setGroup(group);
-		if (!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_RAYCAST_TO_AI, group))
+		if (!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_RAYCAST_TO_AI, group)
+			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_FIREWORK, group)
+			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_WHATEBOMB, group)
+			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_MYBOMB, group)
+			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_GRIVATEBALL, group)
+			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_RAYCAST_TO_AI, group)
+			)
 			shapes[i]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
 	}
 
@@ -601,7 +607,7 @@ NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * 
 	NxActor* actor = m_pNxScene->createActor(ActorDesc);
 	if (actor == NULL)
 	{
-		std::cout << "NULL";
+		//std::cout << "NULL";
 	}
 	return actor;
 
@@ -703,7 +709,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			{
 				pUserData0->IsPickUp = NX_FALSE;
 				pUserData1->IsPickUp = NX_TRUE;
-				std::cout << "GetItem" << std::endl;
+				//std::cout << "GetItem" << std::endl;
 			}
 		}
 
