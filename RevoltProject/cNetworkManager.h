@@ -22,6 +22,7 @@ struct ST_NETUSER
 	std::string userIP;
 	std::string userID;
 	std::string carName;
+	int carIndex;
 	bool IsReady;
 	bool IsUse;
 	int index;
@@ -34,7 +35,7 @@ private:
 	SOCKET m_hSock;
 	ST_NETUSER m_user;						// 클라이언트 유저
 	std::vector<std::string> m_vecMyIP;		// 클라이언트 IP
-	ST_NETUSER m_vecUserIP[USER_SIZE];		// 클라이언트를 제외한 유저 IP
+	std::vector<ST_NETUSER> m_vecUserIP;		// 클라이언트를 제외한 유저 IP
 
 	std::string m_serverIP;		// 서버 IP 주소
 	std::string m_vPosition;	// 클라이언트 위치 지정
@@ -57,7 +58,8 @@ public:
 	std::string GetMsg() { return m_msg; }
 
 	std::string GetKeYString();
-	std::string GetClientIP() { return m_user.userIP; };
+	std::string GetUserIP() { return m_user.userIP; };
+	std::string GetClientIP(int index) { return m_vecUserIP[index].userIP; };
 
 	void SetClientPosition(NxVec3 v);
 	std::string GetClientPosition();
@@ -71,15 +73,21 @@ public:
 	std::string GetCarName() { return m_user.carName; };
 
 	bool GetReady(int index) { return m_vecUserIP[index].IsReady; };
+	void SetClientReadyReset();
 
 	std::string GetClientList(int index) { return m_vecUserIP[index].userID; };
 	bool GetIsClientUse(int index) { return m_vecUserIP[index].IsUse; };
 
 	// 클라이언트가 사용하는지
 	void SetIsUse(bool b) { m_user.IsUse = b; };
+	bool GetIsUse() { return m_user.IsUse; };
 
 	int GetUserIndex() { return m_user.index; };
 	bool GetIsReady() { return m_user.IsReady; };
+	void SetIsReady(bool b) { m_user.IsReady = b; };
+
+	void SetCarIndex(int d) { m_user.carIndex = d; };
+	int GetCarIndex() { return m_user.carIndex; }
 
 	bool GetClientReady(int index) { return m_vecUserIP[index].IsReady; };
 	void SetUserReady();
