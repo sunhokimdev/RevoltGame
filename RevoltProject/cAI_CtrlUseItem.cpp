@@ -17,14 +17,12 @@ void cAI_CtrlUseItem::Update()
 {
 	m_isFire = false;
 	int a = 0;
-	//std::cout << 0 << "\t";
 	switch (AI_Data->pCar->GetHoldItem())
 	{
 	case ITEM_FIREWORK:	//return;	break;
 	case ITEM_WBOMB:	//return;	break;
 	case ITEM_GRAVITY:
 	{
-		//std::cout << 1 << "\t";
 		//아이템 발사를 위한 레이
 		NxVec3 thisPos = AI_Data->pCar->GetPhysXData()->GetPositionToNxVec3();
 
@@ -43,12 +41,10 @@ void cAI_CtrlUseItem::Update()
 			cCar* p = (*AI_Data->pCars)[i];
 			if (AI_Data->pCar == p) continue;
 
-			//std::cout << 2 << "\t";
 			NxVec3 carPos = p->GetPhysXData()->GetPositionToNxVec3();
 			//거리에 들어왔는지
 			if (carPos.distance(thisPos) < 50.f)
 			{
-			//	std::cout << 3 << "\t";
 
 				NxVec3 toDirL = carPos - rayposL; toDirL.normalize();
 				NxVec3 toDirR = carPos - rayposR; toDirR.normalize();
@@ -58,13 +54,11 @@ void cAI_CtrlUseItem::Update()
 				//두 레이 사이에 있는지
 				if (isUpL != isUpR)
 				{
-				//	std::cout << 4 << "\t";
 
 					NxVec3 LtoR = rayposR - rayposL; LtoR.normalize();
 					//정면 에 있는지
 					if ((LtoR.cross(toDirL).y < 0))
 					{
-					//	std::cout << 5 << "\t";
 
 						NxVec3 thisToCar = carPos - thisPos; thisToCar.normalize();
 						NxRaycastHit hitT;
@@ -76,7 +70,6 @@ void cAI_CtrlUseItem::Update()
 						{
 							if (hitC.distance > carPos.distance(thisPos) - 0.01f)
 							{
-							//	std::cout << 6 << "\t";
 
 								m_isFire = true;
 							}

@@ -37,10 +37,10 @@ void cAI::Setup()
 {
 }
 
-void cAI::Destory()
+void cAI::Destroy()
 {
 	if (AI_Mesh) AI_Mesh->Release();
-	if(AI_Data) AI_Data->Destory();
+	if(AI_Data) AI_Data->Destroy();
 
 	AI_Mesh = NULL;
 	

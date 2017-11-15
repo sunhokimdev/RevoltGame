@@ -34,7 +34,7 @@ struct AI_DATA
 		pCars = NULL;
 	}
 	AI_DATA(cCar* pCar, cTrack* pTrack, std::vector<cCar*>* pCars);
-	void Destory()
+	void Destroy()
 	{
 		pCar = NULL;
 		pTrack = NULL;
@@ -54,7 +54,7 @@ public:
 
 public:
 	virtual void Setup();
-	virtual void Destory();
+	virtual void Destroy();
 	virtual void Update();
 	virtual void Render();
 

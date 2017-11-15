@@ -239,7 +239,7 @@ void cCar::SetAI(bool isAI, AI_DATA aidata)
 
 		if (familyAI)
 		{
-			familyAI->Destory();
+			familyAI->Destroy();
 			SAFE_DELETE(familyAI);
 		}
 
@@ -434,7 +434,7 @@ void cCar::Destroy()
 
 	if (familyAI)
 	{
-		familyAI->Destory();
+		familyAI->Destroy();
 		SAFE_DELETE(familyAI);
 	}
 

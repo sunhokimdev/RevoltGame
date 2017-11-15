@@ -37,11 +37,11 @@ void cAI_Master::Setup(AI_DATA pData)
 	}
 }
 
-void cAI_Master::Destory()
+void cAI_Master::Destroy()
 {
 	for each(cAI*p in familyAI)
 	{
-		p->Destory();
+		p->Destroy();
 		SAFE_DELETE(p);
 	}
 	familyAI.clear();

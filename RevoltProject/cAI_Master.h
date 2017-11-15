@@ -21,7 +21,7 @@ public:
 	~cAI_Master();
 
 	void Setup(AI_DATA pData);
-	void Destory();
+	void Destroy();
 	void Update();
 	void Render();
 };
