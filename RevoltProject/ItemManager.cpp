@@ -89,6 +89,9 @@ void ItemManager::Update()
 			m_vecItem.erase(m_vecItem.begin() + i);
 			break;
 		}
+
+		if (m_vecItem[i]->GetIsFw())
+			m_vecItem[i]->SetTarget(m_pTarPos->GetPosition());
 	}
 
 	//for (int i = 0; i < 4; ++i)
@@ -214,7 +217,10 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 				pItem->Setup();
 				pItem->SetItemTag(ITEM_FIREWORK);
 				pItem->SetIsTarget(true);
+				pItem->SetIsFw(true);
+				pItem->SetCar(car);
 				pItem->SetTarget(target->GetPosition());
+				m_pTarPos = target;
 				m_vecItem.push_back(pItem);
 				m_vecItem[m_vecItem.size() - 1]->Create(carDir, carPos);
 				m_vecItem[m_vecItem.size() - 1]->SetIsUse(true);

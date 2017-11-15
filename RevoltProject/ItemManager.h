@@ -56,6 +56,7 @@ private:
 	int m_vecIndex[4];
 	eITEM_LIST m_eItemList;
 
+	cCar* m_pTarPos;
 public:
 	SINGLETONE(ItemManager);
 
@@ -68,7 +69,7 @@ public:
 	void SetFire(D3DXVECTOR3 angle, D3DXVECTOR3 pos);
 	void SetActorGroup(NxActor* actor, NxCollisionGroup group);
 	void InitCollisionGroup();
-	void FireItem(eITEM_LIST tag/*아이템종류*/,cCar* car/*자동차 포인터*/, cCar* target = NULL);
+	void FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인터*/, cCar* target = NULL);
 
 	int GetItemID();
 	void SetItemID(eITEM_LIST e) { m_eItemList = e; };

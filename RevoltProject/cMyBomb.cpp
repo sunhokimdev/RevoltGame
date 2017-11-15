@@ -9,6 +9,8 @@ cMyBomb::cMyBomb()
 	, m_BombTime(NULL)
 	, m_isSleep(true)
 	, m_fTimer(0.0f)
+	, m_isSoundBomb(false)
+	, m_isSoundFuse(false)
 {
 	cItem::cItem();
 }
@@ -53,6 +55,7 @@ void cMyBomb::Update()
 	if (m_fTimer < -0.35f)
 		m_fTimer = -0.35f;
 
+	//m_pPhysX->pPhysX->m_pActor->getGlobalPose()
 	if (m_pCar->GetPhysXData()->m_pUserData->isMyBomb && m_isUse)
 	{
 		if (m_fTime > UPDATETIME)
@@ -81,7 +84,15 @@ void cMyBomb::Update()
 	}
 
 	if (!m_isUse && m_pImpact->GetIsUse())
+	{
+		if (!m_isSoundBomb)
+		{
+			g_pSoundManager->Play("puttbang.wav", 0.8f, m_BombPos);
+			m_isSoundBomb = true;
+		}
 		m_pImpact->Update();
+	}
+		
 }
 
 void cMyBomb::Render()

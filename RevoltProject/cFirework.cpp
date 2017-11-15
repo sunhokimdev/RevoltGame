@@ -9,7 +9,7 @@ cFirework::cFirework()
 	, m_pTail(NULL)
 	, m_isSleep(false)
 	, m_isTarget(false)
-	, m_vTarget(0, 0, 0)
+	, m_isSound(false)
 {
 }
 
@@ -48,7 +48,7 @@ void cFirework::Update()
 	fwPos.x = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().x;
 	fwPos.y = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().y;
 	fwPos.z = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().z;
-		
+
 	m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pPhysX->m_pActor->getGlobalPose().t);
 
 	if (!m_isUse && !m_pEffect->GetIsUse())
@@ -63,15 +63,19 @@ void cFirework::Update()
 	{
 		NxVec3 force;
 
+		std::cout << m_isTarget << std::endl;
+
 		if (m_isTarget)
 		{
-			dir = m_vTarget - fwPos;
+			D3DXVECTOR3 tar = m_Target;
+			dir = tar - fwPos;
 
 			D3DXVec3Normalize(&dir, &dir);
 
 			force.x = dir.x * 1000;
 			force.y = dir.y * 500;
 			force.z = dir.z * 500;
+
 		}
 		else
 		{
@@ -90,7 +94,7 @@ void cFirework::Update()
 	m_pTail->Update(0.1f);
 	m_pTail->Reset();
 
-	if (m_isUse && m_fTime > FIREWORKEFFECT)
+	if (m_isUse &&(m_fTime > FIREWORKEFFECT || m_pPhysX->pPhysX->m_pUserData->isFirework))
 	{
 		m_pPhysX->pPhysX->m_pActor->putToSleep();
 		m_pPhysX->pPhysX->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
@@ -114,7 +118,15 @@ void cFirework::Update()
 	}
 
 	if (!m_isUse && m_pEffect->GetIsUse())
+	{
+		if (!m_isSound)
+		{
+			m_isSound = true;
+			g_pSoundManager->Play("firebang.wav", 1.0f, fwPos);
+		}
 		m_pEffect->Update(0.3f);
+	}
+		
 }
 
 void cFirework::Render()
@@ -134,7 +146,6 @@ void cFirework::Render()
 
 void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {
-	m_isTarget = false;
 	dir = angle;
 
 	m_pPhysX->pos.x = pos.x;
@@ -147,6 +158,8 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	force.y = 2000;
 	force.z = angle.z * 50;
 	
+	g_pSoundManager->Play("firefire.wav", 0.8f, pos);
+
 	if (m_isSleep)
 	{
 		m_pPhysX->pPhysX->m_pActor->wakeUp();
@@ -161,6 +174,9 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	{
 		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_CAPSULE, m_pPhysX->pos, NULL, NxVec3(0.5f, 1.5f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
 		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(2.5f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
+	
+		m_pPhysX->pPhysX->m_pUserData = new USERDATA;
+		m_pPhysX->pPhysX->m_pUserData->USER_TAG = E_PHYSX_TAG_FIREWORK;
 
 		m_pPhysX->pTrigger->m_pActor->putToSleep();
 		m_pPhysX->pTrigger->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);

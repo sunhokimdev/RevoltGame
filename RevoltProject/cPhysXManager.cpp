@@ -461,6 +461,7 @@ NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * 
 
 	NxActorDesc ActorDesc;
 	ActorDesc.setToDefault();
+	
 
 	switch (type)
 	{

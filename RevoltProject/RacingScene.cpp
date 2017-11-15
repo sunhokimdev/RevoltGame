@@ -50,7 +50,6 @@ void RacingScene::Setup()
 	g_pCamManager->SetLookAt(m_camLookTarget);
 
 	//¾Úºñ¾ðÆ®
-	//g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(230,230,230));
 	g_pD3DDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(50, 50, 50));
 
 	m_pSkyBox = new cSkyBox;
@@ -67,7 +66,7 @@ void RacingScene::Setup()
 
 	for (int i = 0; i < vecCars.size(); ++i)
 	{
-		vecCars[i]->SetFrustum(vecCars[i]->GetPosition());
+		vecCars[i]->SetFrustum();
 	}	
 
 
@@ -78,7 +77,7 @@ void RacingScene::Setup()
 	
 	g_pNetworkManager->SetResetKeyEvent();
 
-	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+//	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 }
 
 void RacingScene::Destroy()
@@ -89,8 +88,8 @@ void RacingScene::Destroy()
 	m_pLightSun->Destroy();
 	SAFE_DELETE(m_pLightSun);
 
-	m_pInGameUI->Destroy();
-	SAFE_DELETE(m_pInGameUI);
+	//m_pInGameUI->Destroy();
+	//SAFE_DELETE(m_pInGameUI);
 	SAFE_DESTROY(m_pSkyBox);
 	SAFE_DELETE(m_pSkyBox);
 	SAFE_DELETE(m_camPos);
@@ -118,11 +117,14 @@ void RacingScene::Update()
 	case RACE_PROG_SET:
 	case RACE_PROG_GO:
 	{
-
 		if (m_eRaceProg == RACE_PROG_GO)
+		{
 			m_pInGameUI->UpdateRaceTime();
-
-
+			for (int i = 0; i < vecCars.size(); i++)
+			{
+				vecCars[i]->m_isCtl = true;;
+			}
+		}
 		if (g_pNetworkManager->GetIsInGameNetwork())
 		{
 			SetNetworkCarData();
@@ -131,16 +133,11 @@ void RacingScene::Update()
 		{
 			for (int i = 0; i < vecCars.size(); i++)
 			{
-				if (IsCarRunTrue(vecCars[i]))
-				{
-					vecCars[i]->m_isCtl = true;;
-					vecCars[i]->Update();
+				FindTarget(vecCars[i]);
+			
+				if (IsCarRunTrue(vecCars[i]))	vecCars[i]->Update();
 
-					FindTarget(vecCars[i]);
-				}
-
-
-				if (!IsCarRunTrue(vecCars[i])) m_eRaceProg = RACE_PROG_FINISH;
+				if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
 			}
 		}
 	}
@@ -161,11 +158,51 @@ void RacingScene::Update()
 		m_pInGameUI->Update();
 	}
 
-	
+
+	if (g_pKeyManager->isOnceKeyDown(VK_ESCAPE))
+	{
+		m_eRaceProg = RACE_PROG_FINISH;
+		g_SceneManager->ChangeScene("Lobby");
+	}
 }
 
 void RacingScene::Render()
 {
+	//D3DXVECTOR3 forward = *g_pCamManager->GetLookAt() - *g_pCamManager->GetCamPos();
+	//D3DXVec3Normalize(&forward, &forward);
+
+
+	//LPD3DXMESH mesh;
+	//D3DXCreateTeapot(g_pD3DDevice, &mesh, 0);
+
+	//D3DMATERIAL9 mtl;
+	//mtl.Ambient = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
+	//mtl.Diffuse = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
+	//mtl.Emissive = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
+	//mtl.Specular = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
+
+	//g_pD3DDevice->SetMaterial(&mtl);
+
+	//D3DXMATRIXA16 mat, matR, matT, matS;
+
+	//D3DXMatrixScaling(&matS, 1, 1, 1);
+
+	//D3DXMatrixTranslation(&matT,
+	//	vecCars[0]->GetPosition().x,
+	//	vecCars[0]->GetPosition().y,
+	//	vecCars[0]->GetPosition().z);
+
+	////D3DXMatrixIdentity(&matR);
+	//D3DXMatrixRotationZ(&matR, (D3DX_PI / 2.0f));
+	////D3DXVec3TransformNormal(&forward, &forward, &matR);
+
+	//mat = matS * vecCars[0]->GetMatrix(0,1,0) * matT;
+	//g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat);
+
+	//mesh->DrawSubset(0);
+
+
+
 	if (m_pSkyBox)
 	{
 		m_pSkyBox->Render();
@@ -320,8 +357,16 @@ void RacingScene::UpdateCamera()
 
 void RacingScene::UpdateSound()
 {
-	D3DXVECTOR3 forward = *g_pCamManager->GetLookAt() - *g_pCamManager->GetCamPos();
-	g_pSoundManager->Setup3DCamera(*g_pCamManager->GetCamPos(), forward);
+	D3DXVECTOR3 forward = *g_pCamManager->GetCamPos() - *g_pCamManager->GetLookAt();
+	D3DXVec3Normalize(&forward, &forward);
+
+	//D3DXMATRIXA16 matR;
+
+	//D3DXMatrixRotationX(&matR, (D3DX_PI/2.0f));
+	//D3DXVec3TransformNormal(&forward, &forward, &matR);
+	//g_pSoundManager->Setup3DCamera(*g_pCamManager->GetCamPos(), forward);
+	g_pSoundManager->Setup3DCamera(vecCars[0]->GetPosition(), forward);
+	//g_pSoundManager->Setup3DCamera(*g_pCamManager->GetCamPos(), vecCars[0]->GetDirection());
 }
 
 bool RacingScene::IsCarRunTrue(cCar* pCar)
@@ -333,6 +378,7 @@ void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carNam
 {
 	cCar* pCar = new cCar;
 	AI_DATA aiData(pCar, m_pTrack, &vecCars);
+	pCar->SetPlayerID(playerID);
 	pCar->LoadCar(carName);
 	pCar->SetAI(isAI, aiData);
 	pCar->SetIsUser(isUser);

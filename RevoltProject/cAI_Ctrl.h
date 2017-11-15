@@ -21,6 +21,7 @@ public:
 	void Handle();
 	void Flip();
 	void Repos();
+	void UseItem();
 
 	float VecHandleValue();
 	float VecSpeedValue();

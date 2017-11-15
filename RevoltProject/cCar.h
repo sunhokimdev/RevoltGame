@@ -55,6 +55,12 @@ private:
 	bool m_isCtl;
 	bool m_isDrift;
 
+	SYNTHESIZE(int, m_nPlayerID, PlayerID);
+
+	//사운드 관련
+	std::string m_strMotorKey;
+	std::string m_strDriftKey;
+
 	//Track 정보
 	cTrack* m_pTrack;
 	SYNTHESIZE(int, m_aICheckBoxID, AICheckBoxID);				//트랙 순서와 상관없이 항상 체크된 박스의 번호가 올라온다.
@@ -131,7 +137,8 @@ public:
 	void CarFlip();
 
 	/*          Ray Cast          */
-	void SetFrustum(D3DXVECTOR3 pv);
+	void SetFrustum();
+	void UpdateFrustum(D3DXVECTOR3 pv);
 	void UpdateFrustum();
 	bool IsIn(D3DXVECTOR3* pv);
 
@@ -149,6 +156,6 @@ public:
 	SYNTHESIZE(bool, m_isUser, IsUser);
 	////////////////////////////////////////
 	//e
-	NxVec3 CarArrow(float radianAngle = 0);
+	NxVec3 CarArrow(float degAngle = 0);
 	NxVec3 WheelArrow(float degAngle = 0 , bool back = false);
 };

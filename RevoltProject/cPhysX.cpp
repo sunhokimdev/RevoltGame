@@ -6,6 +6,7 @@ cPhysX::cPhysX()
 {
 	m_pActor = NULL;
 	m_pUserData = NULL;
+	m_localPos = NxVec3(0, 0, 0);
 }
 
 

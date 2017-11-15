@@ -93,6 +93,9 @@ struct USERDATA
 
 	/*   ±è¼±È£ ÀÛ¾÷   */
 	bool isMyBomb;
+	bool isFirework;
+	bool isFireFirework;
+	bool isFireFireworkCollision;
 	NxVec3* m_pCarPosion;
 
 	USERDATA(ePhysXTag tag)
@@ -119,6 +122,9 @@ struct USERDATA
 
 		/*   ±è¼±È£   */
 		isMyBomb = false;
+		isFirework = false;
+		isFireFirework = false;
+		isFireFireworkCollision = false;
 	}
 	void Reset()
 	{

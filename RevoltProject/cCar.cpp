@@ -209,7 +209,10 @@ void cCar::LoadCar(std::string carName)
 	m_pSkidMark = new cSkidMark;
 	m_pSkidMark->LinkCar(this);
 
-	g_pSoundManager->Play("moto.wav", 0.0f, GetPosition());
+	m_strMotorKey = "moto." + std::to_string(m_nPlayerID);
+	m_strDriftKey = "skid_normal." + std::to_string(m_nPlayerID);
+
+	g_pSoundManager->Play(m_strMotorKey, 0.0f, GetPosition());
 }
 
 void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float breakPower, float wheelAngle, float wheelAcc, bool isAI)
@@ -237,7 +240,7 @@ void cCar::SetAI(bool isAI, AI_DATA aidata)
 
 		if (familyAI)
 		{
-			familyAI->Destory();
+			familyAI->Destroy();
 			SAFE_DELETE(familyAI);
 		}
 
@@ -252,8 +255,12 @@ void cCar::CreateItem()
 	{
 		while (1)
 		{
+			srand(time(NULL));
 			//m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
+
+			/*TEST*/
 			m_eHoldItem = eITEM_LIST::ITEM_FIREWORK;
+
 			if (m_eHoldItem) break;
 		}
 		m_nItemCount = 1;
@@ -429,7 +436,7 @@ void cCar::Destroy()
 
 	if (familyAI)
 	{
-		familyAI->Destory();
+		familyAI->Destroy();
 		SAFE_DELETE(familyAI);
 	}
 
@@ -597,7 +604,7 @@ void cCar::DrawSkidMark()
 					m_pSkidMark->DrawSkidMark();
 					if (!m_isDrift)
 					{
-						g_pSoundManager->Play("skid_normal.wav", 0.5f, GetPosition());
+						g_pSoundManager->Play(m_strDriftKey, 0.5f, GetPosition());
 						m_isDrift = true;
 					}
 				}
@@ -731,7 +738,7 @@ void cCar::UsedItem()
 		m_nItemCount--;
 		if (m_nItemCount == 0)
 		{
-			g_pItemManager->FireItem(ITEM_FIREWORK, this, m_pTarget);
+			g_pItemManager->FireItem(m_eHoldItem, this, m_pTarget);
 			m_eHoldItem = ITEM_NONE;
 			GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
 			g_pItemManager->SetItemID(m_eHoldItem);
@@ -787,18 +794,18 @@ void cCar::CarFlip()
 	p->getGlobalPose().t.add(carPos, NxVec3(0, 3, 0));
 }
 
-void cCar::SetFrustum(D3DXVECTOR3 pv)
+void cCar::SetFrustum()
 {
 	// : near 
-	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y - 1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y + 1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y + 1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y - 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, - 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, + 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, + 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, - 1, 0)); //
 	// : far
-	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y - 1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y + 1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y + 1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y - 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, - 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, + 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, + 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, - 1, 1)); //
 
 	m_vecPlane.resize(6);
 	m_vecWorldVertex.resize(8);
@@ -807,6 +814,84 @@ void cCar::SetFrustum(D3DXVECTOR3 pv)
 
 void cCar::UpdateFrustum()
 {
+
+	D3DXMATRIXA16	matView, matProj;
+	g_pD3DDevice->GetTransform(D3DTS_PROJECTION,
+		&matProj);
+	g_pD3DDevice->GetTransform(D3DTS_VIEW,
+		&matView);
+
+	for (int i = 0; i < m_vecProjVertex.size(); i++)
+	{
+		D3DXVec3Unproject
+		(
+			&m_vecWorldVertex[i],
+			&m_vecProjVertex[i],
+			NULL,
+			&matProj,
+			&matView,
+			NULL
+		);
+	}
+
+	// Front
+	D3DXPlaneFromPoints(&m_vecPlane[0],
+		&m_vecWorldVertex[0],
+		&m_vecWorldVertex[1],
+		&m_vecWorldVertex[2]
+	);
+
+	// Back
+	D3DXPlaneFromPoints(&m_vecPlane[1],
+		&m_vecWorldVertex[6],
+		&m_vecWorldVertex[5],
+		&m_vecWorldVertex[4]
+	);
+
+	// Top
+	D3DXPlaneFromPoints(&m_vecPlane[2],
+		&m_vecWorldVertex[1],
+		&m_vecWorldVertex[5],
+		&m_vecWorldVertex[6]
+	);
+
+	// Bottom
+	D3DXPlaneFromPoints(&m_vecPlane[3],
+		&m_vecWorldVertex[0],
+		&m_vecWorldVertex[3],
+		&m_vecWorldVertex[7]
+	);
+
+	// Left
+	D3DXPlaneFromPoints(&m_vecPlane[4],
+		&m_vecWorldVertex[1],
+		&m_vecWorldVertex[0],
+		&m_vecWorldVertex[4]
+	);
+
+	// Rihgt
+	D3DXPlaneFromPoints(&m_vecPlane[5],
+		&m_vecWorldVertex[2],
+		&m_vecWorldVertex[6],
+		&m_vecWorldVertex[7]
+	);
+}
+void cCar::UpdateFrustum(D3DXVECTOR3 pv)
+{
+	// : near 
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y - 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y + 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y + 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y - 1, 0)); //
+																   // : far
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y - 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y + 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y + 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y - 1, 1)); //
+
+	m_vecPlane.resize(6);
+	m_vecWorldVertex.resize(8);
+
 	D3DXMATRIXA16	matView, matProj;
 	g_pD3DDevice->GetTransform(D3DTS_PROJECTION,
 		&matProj);
@@ -901,34 +986,30 @@ bool cCar::IsIn(D3DXVECTOR3* pv)
 void cCar::UpdateSound()
 {
 	NxWheel* wheel = m_carNxVehicle->getWheel(0);
-	float rpmRatio = wheel->getRpm() / m_maxRpm;
+	float rpmRatio = fabsf(wheel->getRpm()) / m_maxRpm;
 
-	float frq = 10000 + (rpmRatio * 20000);
+	float frq = 13000 + (rpmRatio * 20000);
+	//std::cout << rpmRatio << std::endl;
+	float volume = 0.5f + rpmRatio * 0.5f;
+	if(m_nPlayerID == 0) volume = 0.2f + rpmRatio * 0.5f;
+	//g_pSoundManager->SetSoundPosition(m_strMotorKey, GetPosition());
+	//g_pSoundManager->SetVolum(m_strMotorKey, 0.5f + rpmRatio * 0.5f);
+	//g_pSoundManager->SetPitch(m_strMotorKey, frq);
 
-	g_pSoundManager->SetSoundPosition("moto.wav", GetPosition());
-	g_pSoundManager->SetVolum("moto.wav", 0.5f + rpmRatio * 0.5f);
-	g_pSoundManager->SetPitch("moto.wav", frq);
+	g_pSoundManager->SetPosVolPitch(
+		m_strMotorKey,
+		GetPosition(),
+		volume,
+		frq);
 
 	if (m_isDrift)
 	{
-		g_pSoundManager->SetSoundPosition("skid_normal.wav", GetPosition());
-		//g_pSoundManager->Play("skid_normal.wav", 0.8f, GetPosition());
+		g_pSoundManager->SetSoundPosition(m_strDriftKey, GetPosition());
 	}
 	else
 	{
-		g_pSoundManager->Stop("skid_normal.wav");
+		g_pSoundManager->Stop(m_strDriftKey);
 	}
-	//if (!g_pSoundManager->isPlay("moto.wav"))
-	//{
-	//	g_pSoundManager->Play("moto.wav", 0.3f + rpmRatio * 0.5f);
-	//}
-	g_pSoundManager->SetSoundPosition("moto.wav", GetPosition());
-	//g_pSoundManager->SetSoundPosition("moto.wav", {0,0,0});
-	g_pSoundManager->SetVolum("moto.wav", 0.3f + rpmRatio * 0.5f);
-	g_pSoundManager->SetPitch("moto.wav", frq);
-
-
-	//g_pSoundManager->Play_Loop("moto.wav", 0.8f);
 }
 
 NxVec3 cCar::CarArrow(float angle)

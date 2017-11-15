@@ -38,6 +38,7 @@ public:
 	Channel* FindChannel(std::string key);
 
 	void LoadSound(std::string folderName, std::string fileName, bool loop);
+	void LoadSound(std::string folderName, std::string fileName, std::string key, bool loop, bool is3D);
 
 	void Play(std::string fileName, float volume = 1.0f, D3DXVECTOR3 soundPos = D3DXVECTOR3(0, 0, 0));
 	void Play_BGM(std::string fileName, float volume = 1.0f);
@@ -50,6 +51,8 @@ public:
 	void SetSoundPosition(std::string fileName, D3DXVECTOR3 position);
 	void SetSoundPosition(Channel* pChannel, D3DXVECTOR3 position);
 	void SetSoundPosition(Channel* pChannel, FMOD_VECTOR position);
+
+	void SetPosVolPitch(std::string pChannel, D3DXVECTOR3 position, float volume, float freq);
 
 	void Stop(std::string fileName);
 	void Pause(std::string fileName);
