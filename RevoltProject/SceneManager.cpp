@@ -75,12 +75,13 @@ HRESULT SceneManager::ChangeScene(std::string sceneName)
 
 	
 	{
+		g_pSoundManager->AllSoundIsStop();
 		//새롭게 변경되는 씬의 Setup실행
 		find->second->Setup();
 
 		//씬을 바꿨으니 현재씬 해제
 		if (_scCurrent) _scCurrent->Destroy();
-
+		
 		_scCurrent = find->second;
 
 		return S_OK;

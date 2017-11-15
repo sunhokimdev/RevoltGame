@@ -155,5 +155,8 @@ void MainGame::SetAddSound()
 	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", "skid_normal.3", true, true);
 	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", "skid_normal.4", true, true);
 	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", "skid_normal.5", true, true);
-
+	
+	g_pSoundManager->LoadSound("Sound", "The Rockafeller Skank.mp3", "BGM_RACE", true,false);
+	g_pSoundManager->LoadSound("Sound", "01 Nitty Gritty.mp3", "BGM_LOBBY", true, false);
+	
 }

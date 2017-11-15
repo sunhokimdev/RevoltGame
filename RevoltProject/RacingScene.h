@@ -1,9 +1,6 @@
 #pragma once
 #include "GameNode.h"
 
-
-
-
 class cTrack;
 class cLight;
 class cCar;
@@ -44,6 +41,7 @@ private:
 	LPD3DXSPRITE m_Sprite;
 
 	bool m_isDrift;
+	bool m_isPlayBGM;
 
 	cSkyBox* m_pSkyBox;
 

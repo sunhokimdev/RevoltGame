@@ -257,7 +257,7 @@ void cCar::CreateItem()
 			srand(time(NULL));
 			m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
 
-			/*TEST*///m_eHoldItem = eITEM_LIST::ITEM_GRAVITY;
+			/*TEST*///m_eHoldItem = eITEM_LIST::ITEM_WBOMB;
 
 			if (m_eHoldItem) break;
 		}
@@ -905,13 +905,10 @@ void cCar::UpdateSound()
 	NxWheel* wheel = m_carNxVehicle->getWheel(0);
 	float rpmRatio = fabsf(wheel->getRpm()) / m_maxRpm;
 
-	float frq = 13000 + (rpmRatio * 20000);
+	float frq = 10000 + (rpmRatio * 15000) + (rand() % 1000);
 	//std::cout << rpmRatio << std::endl;
-	float volume = 0.5f + rpmRatio * 0.5f;
-	if(m_nPlayerID == 0) volume = 0.2f + rpmRatio * 0.5f;
-	//g_pSoundManager->SetSoundPosition(m_strMotorKey, GetPosition());
-	//g_pSoundManager->SetVolum(m_strMotorKey, 0.5f + rpmRatio * 0.5f);
-	//g_pSoundManager->SetPitch(m_strMotorKey, frq);
+	float volume = 0.1f + rpmRatio * 0.4f;
+	if(m_nPlayerID == 0) volume = 0.1f + rpmRatio * 0.3f;
 
 	g_pSoundManager->SetPosVolPitch(
 		m_strMotorKey,

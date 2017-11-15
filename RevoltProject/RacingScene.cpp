@@ -12,6 +12,7 @@
 RacingScene::RacingScene()
 	: m_select(99)
 	, m_pSkyBox(NULL)
+	, m_isPlayBGM(false)
 {}
 
 RacingScene::~RacingScene() {}
@@ -68,6 +69,8 @@ void RacingScene::Setup()
 	
 	g_pNetworkManager->SetResetKeyEvent();
 
+
+	
 //	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 }
 
@@ -98,6 +101,12 @@ void RacingScene::Update()
 {
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
+
+	if (!m_isPlayBGM)
+	{
+		g_pSoundManager->Play("BGM_RACE", 0.6f);
+		m_isPlayBGM = true;
+	}
 
 	if (g_pNetworkManager->GetIsInGameNetwork())
 		NetworkLoop();		// 네트워크 데이터 받는 메서드
@@ -347,8 +356,8 @@ void RacingScene::UpdateSound()
 
 	//D3DXMatrixRotationX(&matR, (D3DX_PI/2.0f));
 	//D3DXVec3TransformNormal(&forward, &forward, &matR);
-	//g_pSoundManager->Setup3DCamera(*g_pCamManager->GetCamPos(), forward);
-	g_pSoundManager->Setup3DCamera(vecCars[0]->GetPosition(), forward);
+	g_pSoundManager->Setup3DCamera(*g_pCamManager->GetCamPos(), forward);
+	//g_pSoundManager->Setup3DCamera(vecCars[0]->GetPosition(), forward);
 	//g_pSoundManager->Setup3DCamera(*g_pCamManager->GetCamPos(), vecCars[0]->GetDirection());
 }
 

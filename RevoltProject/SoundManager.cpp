@@ -96,8 +96,8 @@ void SoundManager::Setup()
 
 	m_pSystem->setSoftwareChannels(SOUND_MAX_CHANNEL);
 	float doppler = 1.0f;
-	float scale = 5.0f;
-	float rolloff = 1.0f;
+	float scale = 8.0f;
+	float rolloff = 0.8f;
 	m_pSystem->set3DSettings(doppler, scale, rolloff);
 
 	//m_pSystem->setHardwareChannels(10);
