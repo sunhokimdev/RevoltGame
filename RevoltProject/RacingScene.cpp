@@ -104,7 +104,7 @@ void RacingScene::Update()
 
 	if (!m_isPlayBGM)
 	{
-		g_pSoundManager->Play("BGM_RACE", 0.6f);
+		g_pSoundManager->Play("BGM_RACE", 0.5f);
 		m_isPlayBGM = true;
 	}
 
