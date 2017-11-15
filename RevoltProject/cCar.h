@@ -144,12 +144,17 @@ public:
 
 	/*   �輱ȣ   */
 	///////////////////////////////////////
+private:
+	LPD3DXSPRITE m_pSprite;
+	LPDIRECT3DTEXTURE9 m_pNameTexture;
 public:
 	void SetResetNetworkKey();
 	void SetNetworkKey(std::string);
+	void RenderBillboardID();
 
 	SYNTHESIZE(NxVec3, m_carPos, CarSunPos);
 	SYNTHESIZE(bool, m_isUser, IsUser);
+	SYNTHESIZE(std::string, m_userName, UserName);
 	////////////////////////////////////////
 	//e
 	NxVec3 CarArrow(float degAngle = 0);

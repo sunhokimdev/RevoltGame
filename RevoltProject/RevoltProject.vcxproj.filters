@@ -82,9 +82,6 @@
     <Filter Include="FileLoader\UserFileLoader">
       <UniqueIdentifier>{e809c21e-13aa-41b0-b2d8-5780c4627f1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Basic">
-      <UniqueIdentifier>{68f0285e-643b-42fd-bae9-3439e804edfa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Lobby\Network">
       <UniqueIdentifier>{84cc79f3-aed7-4131-be04-ad7204e1e0dc}</UniqueIdentifier>
     </Filter>
@@ -96,9 +93,6 @@
     </Filter>
     <Filter Include="Manager\ItemManager">
       <UniqueIdentifier>{52227257-6077-4203-b22e-ab035207dd7c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NewClass">
-      <UniqueIdentifier>{92ea350d-78be-45e7-91bc-e1a14aae6bf8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Manager\LightManager">
       <UniqueIdentifier>{1379161c-5a0c-4a2a-a084-e0215577d405}</UniqueIdentifier>
@@ -138,6 +132,30 @@
     </Filter>
     <Filter Include="Item\FakeBomb">
       <UniqueIdentifier>{b4f05561-0ccf-41a2-94e0-86875c4963b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map\Light">
+      <UniqueIdentifier>{931975b7-7fb0-4d57-98e0-976b6e161420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map\Object">
+      <UniqueIdentifier>{0d6323ff-ffa7-498a-8b3a-e3d8ad671dc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\PhysxManager">
+      <UniqueIdentifier>{a8a6b3fd-fbde-4d2b-b35d-79102ede43e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Car\CarSetting">
+      <UniqueIdentifier>{8aafd830-e289-46a5-acb3-1e0fe76fde98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Car\SkidMark">
+      <UniqueIdentifier>{2ed723c2-dc38-4ec7-9e2c-99e08099854b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map\SkyBox">
+      <UniqueIdentifier>{bceefb85-fe7e-4bbc-82d4-c61c52c2632c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map\FollowPoint">
+      <UniqueIdentifier>{02e9a041-c864-4522-813c-0b16973e29a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\DataManager">
+      <UniqueIdentifier>{e24670fe-33c4-4c11-a1c9-5f4afb660f9e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -271,24 +289,6 @@
     <ClInclude Include="InGameUI.h">
       <Filter>Lobby\GameUI</Filter>
     </ClInclude>
-    <ClInclude Include="cPhysXManager.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="cStringUtil.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="cTrack.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="cMesh.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="cPhysX.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="cTransform.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
     <ClInclude Include="ProfileList.h">
       <Filter>FileLoader\UserFileLoader</Filter>
     </ClInclude>
@@ -297,27 +297,6 @@
     </ClInclude>
     <ClInclude Include="DEBUG_RENDERER.h">
       <Filter>PhysX</Filter>
-    </ClInclude>
-    <ClInclude Include="cFollowPoint.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="cLight.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="cStuff.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="cCar.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="cCheckBox.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="cPickUp.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="cWheel.h">
-      <Filter>Basic</Filter>
     </ClInclude>
     <ClInclude Include="cNetwork.h">
       <Filter>Lobby\Network</Filter>
@@ -409,9 +388,6 @@
     <ClInclude Include="PhysX\NxWheelDesc.h">
       <Filter>PhysX\NxFile</Filter>
     </ClInclude>
-    <ClInclude Include="cBillBoardEffect.h">
-      <Filter>NewClass</Filter>
-    </ClInclude>
     <ClInclude Include="cImpact.h">
       <Filter>Item</Filter>
     </ClInclude>
@@ -441,12 +417,6 @@
     </ClInclude>
     <ClInclude Include="cPlasmaImpact.h">
       <Filter>Item\GravityBall</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkidMark.h">
-      <Filter>Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkyBox.h">
-      <Filter>Basic</Filter>
     </ClInclude>
     <ClInclude Include="cMyBomb.h">
       <Filter>Item\MyBomb</Filter>
@@ -484,14 +454,62 @@
     <ClInclude Include="cAI_CtrlCompete.h">
       <Filter>AI</Filter>
     </ClInclude>
-    <ClInclude Include="cDataManager.h">
-      <Filter>NewClass</Filter>
-    </ClInclude>
-    <ClInclude Include="cPlayerData.h">
-      <Filter>NewClass</Filter>
-    </ClInclude>
     <ClInclude Include="cAI_CtrlUseItem.h">
       <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="cCar.h">
+      <Filter>Car</Filter>
+    </ClInclude>
+    <ClInclude Include="cLight.h">
+      <Filter>Map\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="cCheckBox.h">
+      <Filter>Map\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="cPickUp.h">
+      <Filter>Map\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="cTrack.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="cPhysXManager.h">
+      <Filter>Manager\PhysxManager</Filter>
+    </ClInclude>
+    <ClInclude Include="cPhysX.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="cTransform.h">
+      <Filter>Car\CarSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="cWheel.h">
+      <Filter>Car\CarSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkidMark.h">
+      <Filter>Car\SkidMark</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkyBox.h">
+      <Filter>Map\SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="cMesh.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="cStuff.h">
+      <Filter>Map\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="cStringUtil.h">
+      <Filter>PhysX</Filter>
+    </ClInclude>
+    <ClInclude Include="cFollowPoint.h">
+      <Filter>Map\FollowPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="cDataManager.h">
+      <Filter>Manager\DataManager</Filter>
+    </ClInclude>
+    <ClInclude Include="cPlayerData.h">
+      <Filter>Manager\DataManager</Filter>
+    </ClInclude>
+    <ClInclude Include="cBillBoardEffect.h">
+      <Filter>Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -606,24 +624,6 @@
     <ClCompile Include="InGameUI.cpp">
       <Filter>Lobby\GameUI</Filter>
     </ClCompile>
-    <ClCompile Include="cPhysXManager.cpp">
-      <Filter>Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="cStringUtil.cpp">
-      <Filter>Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="cTrack.cpp">
-      <Filter>Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="cMesh.cpp">
-      <Filter>Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="cPhysX.cpp">
-      <Filter>Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="cTransform.cpp">
-      <Filter>Basic</Filter>
-    </ClCompile>
     <ClCompile Include="ProfileList.cpp">
       <Filter>FileLoader\UserFileLoader</Filter>
     </ClCompile>
@@ -632,27 +632,6 @@
     </ClCompile>
     <ClCompile Include="DEBUG_RENDERER.cpp">
       <Filter>PhysX</Filter>
-    </ClCompile>
-    <ClCompile Include="cFollowPoint.cpp">
-      <Filter>Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="cLight.cpp">
-      <Filter>Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="cStuff.cpp">
-      <Filter>Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="cCar.cpp">
-      <Filter>Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="cCheckBox.cpp">
-      <Filter>Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="cPickUp.cpp">
-      <Filter>Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="cWheel.cpp">
-      <Filter>Basic</Filter>
     </ClCompile>
     <ClCompile Include="cNetwork.cpp">
       <Filter>Lobby\Network</Filter>
@@ -720,9 +699,6 @@
     <ClCompile Include="PhysX\NxAllVehicles.cpp">
       <Filter>PhysX\NxFile</Filter>
     </ClCompile>
-    <ClCompile Include="cBillBoardEffect.cpp">
-      <Filter>NewClass</Filter>
-    </ClCompile>
     <ClCompile Include="cImpact.cpp">
       <Filter>Item</Filter>
     </ClCompile>
@@ -752,12 +728,6 @@
     </ClCompile>
     <ClCompile Include="cPlasmaImpact.cpp">
       <Filter>Item\GravityBall</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkidMark.cpp">
-      <Filter>Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkyBox.cpp">
-      <Filter>Basic</Filter>
     </ClCompile>
     <ClCompile Include="cMyBomb.cpp">
       <Filter>Item\MyBomb</Filter>
@@ -795,14 +765,62 @@
     <ClCompile Include="cAI_CtrlCompete.cpp">
       <Filter>AI</Filter>
     </ClCompile>
-    <ClCompile Include="cDataManager.cpp">
-      <Filter>NewClass</Filter>
-    </ClCompile>
-    <ClCompile Include="cPlayerData.cpp">
-      <Filter>NewClass</Filter>
-    </ClCompile>
     <ClCompile Include="cAI_CtrlUseItem.cpp">
       <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="cCar.cpp">
+      <Filter>Car</Filter>
+    </ClCompile>
+    <ClCompile Include="cLight.cpp">
+      <Filter>Map\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="cCheckBox.cpp">
+      <Filter>Map\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="cPickUp.cpp">
+      <Filter>Map\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="cTrack.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysXManager.cpp">
+      <Filter>Manager\PhysxManager</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysX.cpp">
+      <Filter>PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="cTransform.cpp">
+      <Filter>Car\CarSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="cWheel.cpp">
+      <Filter>Car\CarSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkidMark.cpp">
+      <Filter>Car\SkidMark</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkyBox.cpp">
+      <Filter>Map\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="cMesh.cpp">
+      <Filter>PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="cStuff.cpp">
+      <Filter>Map\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="cStringUtil.cpp">
+      <Filter>PhysX</Filter>
+    </ClCompile>
+    <ClCompile Include="cFollowPoint.cpp">
+      <Filter>Map\FollowPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="cDataManager.cpp">
+      <Filter>Manager\DataManager</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlayerData.cpp">
+      <Filter>Manager\DataManager</Filter>
+    </ClCompile>
+    <ClCompile Include="cBillBoardEffect.cpp">
+      <Filter>Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

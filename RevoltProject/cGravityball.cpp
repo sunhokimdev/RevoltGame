@@ -3,6 +3,7 @@
 #include "cImpact.h"
 #include "GravityBallImpact.h"
 #include "cPlasmaImpact.h"
+#include "cCar.h"
 
 cGravityball::cGravityball()
 	: m_impactIndex(0)
@@ -10,7 +11,6 @@ cGravityball::cGravityball()
 	, m_isSleep(false)
 {
 }
-
 
 cGravityball::~cGravityball()
 {
@@ -61,15 +61,14 @@ void cGravityball::Update()
 		m_pPhysX->pos.y = -50.0f;
 		m_pPhysX->pPhysX->m_pActor->setGlobalPosition(m_pPhysX->pos);
 		m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pos);
+		m_pCar->GetPhysXData()->m_pUserData->isFireGravity = false;
 		SetIsEnd(true);
 	}
 
-
-
 	if (m_fTime % UPDATETIME == 0)
 	{
-		m_pPhysX->pTrigger->m_pActor->putToSleep();
-		m_pPhysX->pTrigger->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
+		//m_pPhysX->pTrigger->m_pActor->putToSleep();
+		//m_pPhysX->pTrigger->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
 		m_fTime = 0;
 		m_isUse = false;
 		m_pPhysX->pPhysX->m_pActor->putToSleep();
@@ -111,19 +110,17 @@ void cGravityball::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	{
 		m_pPhysX->pPhysX->m_pActor->wakeUp();
 		m_pPhysX->pPhysX->m_pActor->clearActorFlag(NX_AF_DISABLE_COLLISION);
-
-		m_pPhysX->pTrigger->m_pActor->wakeUp();
-		m_pPhysX->pTrigger->m_pActor->clearActorFlag(NX_AF_DISABLE_COLLISION);
 	}
 	
 	if (m_isInit)
 	{
 		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
-		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(3.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser, true);
-		
+		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(4.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser, true);
+
 		SetActorGroup(m_pPhysX->pPhysX->m_pActor, E_PHYSX_TAG_GRIVATEBALL);
 		SetActorGroup(m_pPhysX->pTrigger->m_pActor, E_PHYSX_TAG_GRIVATEBALL);
 		this->SetPhysXData(m_pPhysX->pPhysX);
+		m_pCar->GetPhysXData()->m_pUserData->isFireGravity = true;
 		m_isInit = false;
 	}
 
