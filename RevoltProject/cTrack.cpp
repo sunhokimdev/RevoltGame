@@ -243,9 +243,6 @@ void cTrack::LoadTrack(std::string FileName)
 							localPosition.x = x;
 							localPosition.y = y;
 							localPosition.z = z;
-
-							std::cout << y << std::endl;
-
 						}
 						else if (szTemp[2] == 'S')
 						{
@@ -401,6 +398,7 @@ void cTrack::CreateTrackPhysX()
 		//bodyDesc.flags |= NX_BF_KINEMATIC;
 
 		NxTriangleMeshShapeDesc shapeDesc = MgrPhysX->CreateTringleMesh(GetMeshData()->m_pMesh);
+
 		shapeDesc.materialIndex = 1; // ÀçÁú : 0 (default)°ª
 		shapeDesc.localPose.t = NxVec3(0, 0, 0);
 		shapeDesc.group = E_PHYSX_TAG_TRACK;

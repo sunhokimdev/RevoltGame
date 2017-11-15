@@ -67,10 +67,13 @@ private:
 	SYNTHESIZE(int, m_currCheckBoxID, CurrCheckBoxID);			//최근에 체크된 박스
 	SYNTHESIZE(int, m_nextCheckBoxID, NextCheckBoxID);			//드음에 체크할 박스
 	SYNTHESIZE(int, m_countRapNum, CountRapNum);				//돈 바퀴수
+	SYNTHESIZE(int, m_endRapNum, EndRapNum);					//돌아야 하는 바퀴 수
 
 	SYNTHESIZE(float, m_rapTimeCount, RapTimeCount);			//현제 렙 시간
 	SYNTHESIZE(float, m_bastRapTimeCount, BastRapTimeCount);	//가장 짭은 랩 시간
 	SYNTHESIZE(float, m_totlaTimeCount, TotlaTimeCount);		//총 경과된 랩 시간
+
+
 
 	//m_aICheckBoxID에서 다음 체크박스를 가리키는 방향
 //	SYNTHESIZE(D3DXVECTOR3, m_nextDir, NextCheckDir);

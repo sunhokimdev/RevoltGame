@@ -32,6 +32,7 @@ class cCar;
 #define  g_pPhysXSDK	MgrPhysXSDK		
 #define  g_pPhysXData	MgrPhysXData	
 
+#define IS_DEBUG_RENDER cPhysXManager::GetInstance()->m_IS_DEBUG_RENDER
 
 #define RAYCAST			MgrPhysX->RaycastClosestShape
 
@@ -197,6 +198,7 @@ public:
 	void Update();
 	void Destroy();
 
+	bool m_IS_DEBUG_RENDER;
 	void Render();
 
 	NxTriangleMeshShapeDesc CreateTringleMesh(ID3DXMesh* pMesh, D3DXMATRIXA16* matS = NULL);
@@ -248,5 +250,7 @@ public:
 
 	NxVehicle* createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERDATA* pUserData, bool frontWheelDrive, bool backWheelDrive);
 
-
+	//CCD 는 사각형
+	NxActor* CreateActorToCCD(NxVec3 position, NxF32* mat, NxVec3 sizeValue, eMaterialTag materialTag = E_PHYSX_MATERIAL_NONE, USERDATA* pUserData = NULL,
+		bool IsTrigger = false, bool isStatic = false, bool isGravaty = true);
 };

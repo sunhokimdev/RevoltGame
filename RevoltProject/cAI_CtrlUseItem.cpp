@@ -79,13 +79,13 @@ void cAI_CtrlUseItem::Update()
 			}
 		}
 	}break;
-	case ITEM_MYBOMB:	break;
+	case ITEM_MYBOMB:	m_isFire = true; break;
 	case ITEM_NONE:		break;
 
 	default:		break;
 	}
 
-	std::cout << std::endl;
+	//std::cout << std::endl;
 }
 
 void cAI_CtrlUseItem::Render()

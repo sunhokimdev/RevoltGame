@@ -373,11 +373,11 @@ void Lobby::KeyUpdate()
 			g_pDataManager->mapName = m_pfileList->GetMapName();
 
 			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", m_pfileList->GetCarName(), false));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc1", true));
-			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
-			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
-			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
-			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
+			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc6", true));
 		
 			g_SceneManager->ChangeScene("Race");
 

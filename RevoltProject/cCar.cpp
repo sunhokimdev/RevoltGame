@@ -497,7 +497,7 @@ void cCar::TrackCheck()
 	{
 		if (checkId == (*m_pTrack->GetCheckBoxsPt())[0]->GetPhysXData()->m_pUserData->CheckBoxID)
 		{
-			std::cout << "START" << std::endl;
+		//	std::cout << "START" << std::endl;
 			m_nextCheckBoxID = 1;
 			m_currCheckBoxID = 0;	//체크 시작
 			m_countRapNum = 0;
@@ -505,7 +505,7 @@ void cCar::TrackCheck()
 
 			if (!m_isAI)
 			{
-				std::cout << m_isAI << std::endl;
+			//	std::cout << m_isAI << std::endl;
 				m_pInGameUI->SetLabCnt(m_countRapNum);
 			}
 			cCheckBox* nextCheckBox = (cCheckBox*)m_pTrack->GetCheckBoxs()[GetCurrCheckBoxID()];
@@ -744,7 +744,7 @@ void cCar::UsedItem()
 			GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
 			g_pItemManager->SetItemID(m_eHoldItem);
 		}
-		std::cout << "FIRE!" << std::endl;
+		//std::cout << "FIRE!" << std::endl;
 	}
 }
 
@@ -953,6 +953,7 @@ NxVec3 cCar::CarArrow(float angle)
 	D3DXMatrixRotationAxis(&matAngle, &D3DXVECTOR3(0, 1, 0), D3DXToRadian(angle));
 
 
+	
 	D3DXVECTOR3 dir(1, 0, 0);
 
 	D3DXVec3TransformNormal(&dir, &dir, &(matR*matAngle));

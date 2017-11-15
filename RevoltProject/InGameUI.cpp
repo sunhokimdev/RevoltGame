@@ -475,17 +475,18 @@ void InGameUI::Update()
 {
 	iLobby::Update();
 	
+	if (m_p321go)
+	{
+		m_p321go->Update();
+//		return;
+	}
 
 	UpdateSpeed();
 	UpdateLabCount();
 
 	UpdateArrowDir();
 
-	if (m_p321go)
-	{
-		m_p321go->Update();
-	}
-
+	
 
 	int nTrackCount = m_pRacingScene->GettrackEndCount();
 	if (m_LabCnt > -1 && m_LabCnt < nTrackCount)	UpdateLabTime();

@@ -79,6 +79,7 @@ void RacingScene::Destroy()
 	m_pLightSun->Destroy();
 	SAFE_DELETE(m_pLightSun);
 
+	//오류로 인한 주석처리
 	//m_pInGameUI->Destroy();
 	//SAFE_DELETE(m_pInGameUI);
 	SAFE_DESTROY(m_pSkyBox);
@@ -92,6 +93,8 @@ void RacingScene::Destroy()
 		SAFE_DELETE(p);
 	}
 	vecCars.clear();
+
+	g_pDataManager->Reset();
 }
 
 void RacingScene::Update()
@@ -156,41 +159,6 @@ void RacingScene::Update()
 
 void RacingScene::Render()
 {
-	//D3DXVECTOR3 forward = *g_pCamManager->GetLookAt() - *g_pCamManager->GetCamPos();
-	//D3DXVec3Normalize(&forward, &forward);
-
-
-	//LPD3DXMESH mesh;
-	//D3DXCreateTeapot(g_pD3DDevice, &mesh, 0);
-
-	//D3DMATERIAL9 mtl;
-	//mtl.Ambient = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
-	//mtl.Diffuse = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
-	//mtl.Emissive = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
-	//mtl.Specular = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
-
-	//g_pD3DDevice->SetMaterial(&mtl);
-
-	//D3DXMATRIXA16 mat, matR, matT, matS;
-
-	//D3DXMatrixScaling(&matS, 1, 1, 1);
-
-	//D3DXMatrixTranslation(&matT,
-	//	vecCars[0]->GetPosition().x,
-	//	vecCars[0]->GetPosition().y,
-	//	vecCars[0]->GetPosition().z);
-
-	////D3DXMatrixIdentity(&matR);
-	//D3DXMatrixRotationZ(&matR, (D3DX_PI / 2.0f));
-	////D3DXVec3TransformNormal(&forward, &forward, &matR);
-
-	//mat = matS * vecCars[0]->GetMatrix(0,1,0) * matT;
-	//g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat);
-
-	//mesh->DrawSubset(0);
-
-
-
 	if (m_pSkyBox)
 	{
 		m_pSkyBox->Render();
@@ -247,11 +215,6 @@ void RacingScene::UpdateCamera()
 		vecCars[0]->GetPosition().x,
 		vecCars[0]->GetPosition().y + 0.5f ,
 		vecCars[0]->GetPosition().z };
-
-	//D3DXVECTOR3 carPos = {
-	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().x,
-	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().y + 0.5f ,
-	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().z };
 
 	*m_camLookTarget = carPos;//D3DXVECTOR3(pos.x, pos.y + 2.f, pos.z);
 
@@ -348,13 +311,7 @@ void RacingScene::UpdateSound()
 	D3DXVECTOR3 forward = *g_pCamManager->GetCamPos() - *g_pCamManager->GetLookAt();
 	D3DXVec3Normalize(&forward, &forward);
 
-	//D3DXMATRIXA16 matR;
-
-	//D3DXMatrixRotationX(&matR, (D3DX_PI/2.0f));
-	//D3DXVec3TransformNormal(&forward, &forward, &matR);
-	//g_pSoundManager->Setup3DCamera(*g_pCamManager->GetCamPos(), forward);
 	g_pSoundManager->Setup3DCamera(vecCars[0]->GetPosition(), forward);
-	//g_pSoundManager->Setup3DCamera(*g_pCamManager->GetCamPos(), vecCars[0]->GetDirection());
 }
 
 bool RacingScene::IsCarRunTrue(cCar* pCar)
@@ -413,9 +370,6 @@ void RacingScene::NetworkLoop()
 	//
 	if (pchIP != NULL && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
 	{
-		//	//pchX = strtok(pchPOS, "/");
-		//	//pchY = strtok(NULL, "/");
-		//	//pchZ = strtok(NULL, "/");
 		//
 		printf("%s\n", pchKEY);
 	}
