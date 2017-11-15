@@ -39,14 +39,12 @@ void cSkidMark::Render()
 
 	// Use alpha for transparency
 	g_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
-//	g_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-//	g_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
-
+	g_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	g_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
 	D3DMATERIAL9 material;
 	ZeroMemory(&material, sizeof(D3DMATERIAL9));
-	material.Diffuse = D3DXCOLOR(0, 0, 0, 0.1);
+	material.Diffuse = D3DXCOLOR(0, 0, 0, 0.6);
 	g_pD3DDevice->SetMaterial(&material);
 
 	for (int i = 0; i < m_vecRubbers.size(); i++)
@@ -70,12 +68,11 @@ void cSkidMark::DrawSkidMark()
 {
 	stRubber rubberL,rubberR;
 
-	//rubberL.matR = m_pCar->GetCarRotMatrix();
+	// 자동차의 매트릭스 받아온다.
 	rubberL.matR = m_pCar->GetMatrix(0, 1, 0);
-
-	//rubberR.matR = m_pCar->GetCarRotMatrix();
 	rubberR.matR = m_pCar->GetMatrix(0, 1, 0);
 
+	// 휠 포지션 받아온다
 	D3DXVECTOR3 posWheelL = {
 		m_pCar->GetNxVehicle()->getWheel(3)->getWheelPos().x,
 		m_pCar->GetNxVehicle()->getWheel(3)->getWheelPos().y,
@@ -87,20 +84,23 @@ void cSkidMark::DrawSkidMark()
 		m_pCar->GetNxVehicle()->getWheel(2)->getWheelPos().z
 	};
 
+	//자동차 매트릭스로 회전
 	D3DXVec3TransformCoord(&posWheelL, &posWheelL, &rubberL.matR);
 	D3DXVec3TransformCoord(&posWheelR, &posWheelR, &rubberR.matR);
 
+	//자동차 위치
 	D3DXVECTOR3 carpos = {
 		m_pCar->GetPhysXData()->m_pActor->getGlobalPosition().x,
 		m_pCar->GetPhysXData()->m_pActor->getGlobalPosition().y,
 		m_pCar->GetPhysXData()->m_pActor->getGlobalPosition().z };
 
+	//자동차 위치 더해줌
 	rubberL.position = carpos + posWheelL;
 	rubberR.position = carpos + posWheelR;
 
 	rubberL.position.y += 0.001f;
 	rubberR.position.y += 0.001f;
-		
+	
 	D3DXMATRIXA16 matTL,matTR;
 	D3DXMatrixIdentity(&rubberL.matLocal);
 	D3DXMatrixIdentity(&rubberR.matLocal);
@@ -110,11 +110,11 @@ void cSkidMark::DrawSkidMark()
 	D3DXMatrixTranslation(&matTR, rubberR.position.x, rubberR.position.y, rubberR.position.z);
 	rubberL.matLocal = rubberL.matR * matTL;
 	rubberR.matLocal = rubberR.matR * matTR;
-	
+
 	//D3DXCreateSphere(g_pD3DDevice, 0.05f, 20, 20, &rubberL.mesh, 0);
 	//D3DXCreateSphere(g_pD3DDevice, 0.05f, 20, 20, &rubberR.mesh, 0);
-	D3DXCreateBox(g_pD3DDevice, 0.1f, 0, 0.1f, &rubberL.mesh, 0);
-	D3DXCreateBox(g_pD3DDevice, 0.1f, 0, 0.1f, &rubberR.mesh, 0);
+	D3DXCreateBox(g_pD3DDevice, 0.2f, 0, 0.1f, &rubberL.mesh, 0);
+	D3DXCreateBox(g_pD3DDevice, 0.2f, 0, 0.1f, &rubberR.mesh, 0);
 
 	rubberL.timer = 0;
 	rubberR.timer = 0;
