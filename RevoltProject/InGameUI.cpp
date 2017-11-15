@@ -514,6 +514,9 @@ void InGameUI::Render(LPD3DXSPRITE pSprite)
 
 void InGameUI::Destroy()
 {
+	iLobby::Destroy();
+
+	return;
 	SAFE_DELETE(m_pItemImage);
 	SAFE_DELETE(m_pLobby);
 	//SAFE_DELETE(m_pLab);
@@ -559,7 +562,7 @@ void InGameUI::Destroy()
 	m_pCar = NULL;
 	m_pRacingScene = NULL;
 
-	//iLobby::Destroy();
+	iLobby::Destroy();
 }
 
 void InGameUI::UpdateSpeed()

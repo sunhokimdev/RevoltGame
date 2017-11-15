@@ -324,3 +324,9 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 
 	UIObject::Render(pSprite);
 }
+
+void UIImageView::Destroy()
+{
+	SAFE_RELEASE(m_pTexture);
+	UIObject::Destroy();
+}

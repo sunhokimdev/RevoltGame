@@ -82,8 +82,8 @@ void RacingScene::Destroy()
 	m_pLightSun->Destroy();
 	SAFE_DELETE(m_pLightSun);
 
-	m_pInGameUI->Destroy();
-	SAFE_DELETE(m_pInGameUI);
+	//m_pInGameUI->Destroy();
+	//SAFE_DELETE(m_pInGameUI);
 	SAFE_DESTROY(m_pSkyBox);
 	SAFE_DELETE(m_pSkyBox);
 	SAFE_DELETE(m_camPos);
@@ -155,7 +155,12 @@ void RacingScene::Update()
 		m_pInGameUI->Update();
 	}
 
-	
+
+	if (g_pKeyManager->isOnceKeyDown(VK_ESCAPE))
+	{
+		m_eRaceProg = RACE_PROG_FINISH;
+		g_SceneManager->ChangeScene("Lobby");
+	}
 }
 
 void RacingScene::Render()
