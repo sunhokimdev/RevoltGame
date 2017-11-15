@@ -11,6 +11,8 @@ private:
 	Map* m_pMap;
 	Lobby* m_pLobby;
 
+	bool m_isPlayBGM;
+
 public:
 	LobbyScene();
 	~LobbyScene();

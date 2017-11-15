@@ -30,6 +30,8 @@ cCar::cCar()
 
 	m_isCtl = false;
 	m_isDrift = false;
+	
+	D3DXCreateSprite(g_pD3DDevice, &m_pSprite);
 }
 
 cCar::~cCar()
@@ -257,7 +259,7 @@ void cCar::CreateItem()
 			srand(time(NULL));
 			m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
 
-			/*TEST*///m_eHoldItem = eITEM_LIST::ITEM_GRAVITY;
+			/*TEST*///m_eHoldItem = eITEM_LIST::ITEM_WBOMB;
 
 			if (m_eHoldItem) break;
 		}
@@ -281,6 +283,7 @@ void cCar::CreatePhsyX(stCARSPEC carspec)
 		physX->SetPosition(NxVec3(0, 0, 0));
 		physX->m_pActor->setGroup(3);
 		physX->m_pUserData->isMyBomb = false;
+		physX->m_pUserData->isFireGravity = false;
 		physX->m_pUserData->m_pCarPosion = &physX->m_pActor->getGlobalPosition();
 	}
 }
@@ -381,6 +384,8 @@ void cCar::LastUpdate()
 void cCar::Render()
 {
 	Object::Render();
+
+	//RenderBillboardID();
 
 	//물리데이터와 바퀴 동기화
 	for (int i = 0; i < vecWheels.size(); i++)
@@ -549,7 +554,7 @@ void cCar::TrackCheck()
 		}
 	}
 	//시간을 더해 나간다.
-	if (m_countRapNum < 3)
+	if (m_countRapNum < *m_pEndRapNum)
 	{
 		m_rapTimeCount += g_pTimeManager->GetElapsedTime();
 		m_totlaTimeCount += g_pTimeManager->GetElapsedTime();
@@ -905,13 +910,10 @@ void cCar::UpdateSound()
 	NxWheel* wheel = m_carNxVehicle->getWheel(0);
 	float rpmRatio = fabsf(wheel->getRpm()) / m_maxRpm;
 
-	float frq = 13000 + (rpmRatio * 20000);
+	float frq = 10000 + (rpmRatio * 15000) + (rand() % 1000);
 	//std::cout << rpmRatio << std::endl;
-	float volume = 0.5f + rpmRatio * 0.5f;
-	if(m_nPlayerID == 0) volume = 0.2f + rpmRatio * 0.5f;
-	//g_pSoundManager->SetSoundPosition(m_strMotorKey, GetPosition());
-	//g_pSoundManager->SetVolum(m_strMotorKey, 0.5f + rpmRatio * 0.5f);
-	//g_pSoundManager->SetPitch(m_strMotorKey, frq);
+	float volume = 0.1f + rpmRatio * 0.4f;
+	if(m_nPlayerID == 0) volume = 0.1f + rpmRatio * 0.3f;
 
 	g_pSoundManager->SetPosVolPitch(
 		m_strMotorKey,
@@ -984,6 +986,57 @@ void cCar::SetNetworkKey(std::string str)
 	INPUT_KEY[E_BIT_ITEM_] = (str[4] == '1');	m_keySet.ctrl = INPUT_KEY[E_BIT_ITEM_];
 	INPUT_KEY[E_BIT_REPOS] = (str[5] == '1');	m_keySet.r_key = INPUT_KEY[E_BIT_REPOS];
 	INPUT_KEY[E_BIT_FLIP_] = (str[5] == '1');	m_keySet.f_key = INPUT_KEY[E_BIT_FLIP_];
+}
+
+void cCar::RenderBillboardID()
+{
+	D3DXMATRIXA16 matWorld;
+	D3DXMATRIXA16 matView;
+	D3DXMATRIXA16 matS;
+	D3DXMATRIXA16 matR;
+	D3DXMATRIXA16 matT;
+
+	D3DXVECTOR3 pos = this->GetPosition();
+
+	LPDIRECT3DTEXTURE9 mPtexture = g_pTextureManager->GetTexture("UIImage/font2.png");
+
+	int tTempValue;
+	int textPosX = 8;
+	int textPosY = 16;
+
+	tTempValue = 32;
+
+	D3DXMatrixTranslation(&matT, pos.x, pos.y + 1.5f, pos.z);
+	D3DXMatrixIdentity(&matWorld);
+	D3DXMatrixRotationZ(&matR, D3DX_PI);
+
+	matWorld = matR * matT;
+	g_pD3DDevice->GetTransform(D3DTS_VIEW, &matView);
+	m_pSprite->SetWorldViewLH(NULL, &matView);
+
+	m_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE | D3DXSPRITE_BILLBOARD);
+
+	for (int i = 0;i < m_userName.size();i++)
+	{
+		RECT rc;
+		char tChar = m_userName[i];
+		int tPos;
+
+		tPos = tChar - 33;
+
+		SetRect(&rc,
+			(tPos % tTempValue) * textPosX,
+			(tPos / tTempValue) * textPosY,
+			((tPos % tTempValue) * textPosX) + textPosX,
+			((tPos / tTempValue) * textPosY) + textPosY);
+
+		matWorld._41 = matWorld._41 + 1.0f;
+
+		m_pSprite->SetTransform(&matWorld);
+		m_pSprite->Draw(mPtexture, &rc, &D3DXVECTOR3(8, 0, 0), &D3DXVECTOR3(0, 0, 0), D3DCOLOR_ARGB(255, 255, 0, 0));
+	}
+
+	m_pSprite->End();
 }
 
 NxVec3 cCar::WheelArrow(float angle, bool back)

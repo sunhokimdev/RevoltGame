@@ -67,7 +67,7 @@ private:
 	SYNTHESIZE(int, m_currCheckBoxID, CurrCheckBoxID);			//최근에 체크된 박스
 	SYNTHESIZE(int, m_nextCheckBoxID, NextCheckBoxID);			//드음에 체크할 박스
 	SYNTHESIZE(int, m_countRapNum, CountRapNum);				//돈 바퀴수
-	SYNTHESIZE(int, m_endRapNum, EndRapNum);					//돌아야 하는 바퀴 수
+	SYNTHESIZE(int*, m_pEndRapNum, EndRapNum);					//돌아야 하는 바퀴 수
 
 	SYNTHESIZE(float, m_rapTimeCount, RapTimeCount);			//현제 렙 시간
 	SYNTHESIZE(float, m_bastRapTimeCount, BastRapTimeCount);	//가장 짭은 랩 시간
@@ -147,12 +147,17 @@ public:
 
 	/*   김선호   */
 	///////////////////////////////////////
+private:
+	LPD3DXSPRITE m_pSprite;
+	LPDIRECT3DTEXTURE9 m_pNameTexture;
 public:
 	void SetResetNetworkKey();
 	void SetNetworkKey(std::string);
+	void RenderBillboardID();
 
 	SYNTHESIZE(NxVec3, m_carPos, CarSunPos);
 	SYNTHESIZE(bool, m_isUser, IsUser);
+	SYNTHESIZE(std::string, m_userName, UserName);
 	////////////////////////////////////////
 	//e
 	NxVec3 CarArrow(float degAngle = 0);

@@ -176,7 +176,7 @@ void cPhysXManager::PhysXReportSeting()
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_FIREWORK);
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_WHATEBOMB);
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_METALBALL);
-	CollisionEnable(F, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_GRIVATEBALL);
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_TRACK);
 
 	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_PICKUP);
@@ -242,9 +242,6 @@ void cPhysXManager::CollisionEnable(bool collied, bool report, NxCollisionGroup 
 		//	g_pPhysXScene->setDominanceGroupPair
 
 	//	g_pPhysXScene->setShapePairFlags()
-
-
-
 }
 
 
@@ -720,7 +717,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			pUserData1->CheckBoxID = pUserData0->CheckBoxID;
 		}
 
-		if (pUserData0->USER_TAG == E_PHYSX_TAG_PICKUP)
+		else if (pUserData0->USER_TAG == E_PHYSX_TAG_PICKUP)
 		{
 			if (pUserData1->IsPickUp == NX_FALSE
 				&& pUserData0->IsPickUp == NX_TRUE)
@@ -733,15 +730,38 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 
 		if (pUserData1->USER_TAG == E_PHYSX_TAG_CAR && pUserData0->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
-			otherShape.getActor().addLocalForce(NxVec3(0, 10000, 0));
-			otherShape.getActor().addTorque(NxVec3(1.5f, 0, 0));
-			printf("데이터 충돌\n");
+			if (!pUserData1->isFireGravity)
+			{
+				otherShape.getActor().addForce(NxVec3(0, 700000, 0));
+				otherShape.getActor().addTorque(NxVec3(5.0f, 1.0f, 1.5f));
+				printf("데이터 충돌\n");
+			}
 		}
 		else if (pUserData0->USER_TAG == E_PHYSX_TAG_CAR && pUserData1->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
-			triggerShape.getActor().addLocalForce(NxVec3(0, 10000, 0));
-			triggerShape.getActor().addTorque(NxVec3(1.5f, 0, 0));
-			printf("데이터 충돌\n");
+			if (!pUserData0->isFireGravity)
+			{
+				triggerShape.getActor().addForce(NxVec3(0, 700000, 0));
+				triggerShape.getActor().addTorque(NxVec3(5.0f, 1.0f, 1.5f));
+				printf("데이터 충돌\n");
+			}
+		}
+
+		if (pUserData0->USER_TAG == E_PHYSX_TAG_FAKEBOMB && pUserData1->USER_TAG == E_PHYSX_TAG_CAR)
+		{
+			if (pUserData1->isFireFakebomb)
+				pUserData1->isFireFakebomb = false;
+			else
+				pUserData1->isFakebombCollision = true;
+			printf("충돌\n");
+		}
+		else if (pUserData1->USER_TAG == E_PHYSX_TAG_FAKEBOMB && pUserData0->USER_TAG == E_PHYSX_TAG_CAR)
+		{
+			if (pUserData0->isFireFakebomb)
+				pUserData0->isFireFakebomb = false;
+			else
+				pUserData0->isFakebombCollision = true;
+			printf("충돌\n");
 		}
 	}
 	else if (status & NX_TRIGGER_ON_STAY)
@@ -756,11 +776,17 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 		// 2가 중력자탄
 		if (pUserData1->USER_TAG == E_PHYSX_TAG_CAR && pUserData0->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
-
+			if (pUserData1->isFireGravity)
+			{
+				pUserData1->isFireGravity = false;
+			}
 		}
 		else if (pUserData0->USER_TAG == E_PHYSX_TAG_CAR &&pUserData1->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
-
+			if (pUserData0->isFireGravity)
+			{
+				pUserData0->isFireGravity = false;
+			}
 		}
 
 		else

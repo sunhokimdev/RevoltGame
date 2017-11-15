@@ -12,6 +12,7 @@
 RacingScene::RacingScene()
 	: m_select(99)
 	, m_pSkyBox(NULL)
+	, m_isPlayBGM(false)
 {}
 
 RacingScene::~RacingScene() {}
@@ -58,7 +59,7 @@ void RacingScene::Setup()
 	for each(cPlayerData* p in g_pDataManager->vecPlayerData)
 	{
 		if (i  == m_pTrack->GetStartPositions().size()) break;
-		CreateCar(m_pTrack->GetStartPositions()[i], i, p->CAR_NAME, p->IsAI, p->isUser);
+		CreateCar(m_pTrack->GetStartPositions()[i], i,p->ID, p->CAR_NAME, m_trackEndCount, p->IsAI, p->isUser);
 		i++;
 	}
 
@@ -68,6 +69,8 @@ void RacingScene::Setup()
 	
 	g_pNetworkManager->SetResetKeyEvent();
 
+
+	
 //	g_pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 }
 
@@ -101,6 +104,12 @@ void RacingScene::Update()
 {
 	GameNode::Update();
 	SAFE_UPDATE(m_pTrack);
+
+	if (!m_isPlayBGM)
+	{
+		g_pSoundManager->Play("BGM_RACE", 0.5f);
+		m_isPlayBGM = true;
+	}
 
 	if (g_pNetworkManager->GetIsInGameNetwork())
 		NetworkLoop();		// 네트워크 데이터 받는 메서드
@@ -311,7 +320,13 @@ void RacingScene::UpdateSound()
 	D3DXVECTOR3 forward = *g_pCamManager->GetCamPos() - *g_pCamManager->GetLookAt();
 	D3DXVec3Normalize(&forward, &forward);
 
-	g_pSoundManager->Setup3DCamera(vecCars[0]->GetPosition(), forward);
+	//D3DXMATRIXA16 matR;
+
+	//D3DXMatrixRotationX(&matR, (D3DX_PI/2.0f));
+	//D3DXVec3TransformNormal(&forward, &forward, &matR);
+	g_pSoundManager->Setup3DCamera(*g_pCamManager->GetCamPos(), forward);
+	//g_pSoundManager->Setup3DCamera(vecCars[0]->GetPosition(), forward);
+	//g_pSoundManager->Setup3DCamera(*g_pCamManager->GetCamPos(), vecCars[0]->GetDirection());
 }
 
 bool RacingScene::IsCarRunTrue(cCar* pCar)
@@ -319,7 +334,7 @@ bool RacingScene::IsCarRunTrue(cCar* pCar)
 	return m_trackEndCount > pCar->GetCountRapNum();
 }
 
-void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carName, bool isAI, bool isUser)
+void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userName, std::string carName, int trackEndCount, bool isAI, bool isUser)
 {
 	cCar* pCar = new cCar;
 	AI_DATA aiData(pCar, m_pTrack, &vecCars);
@@ -327,6 +342,9 @@ void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carNam
 	pCar->LoadCar(carName);
 	pCar->SetAI(isAI, aiData);
 	pCar->SetIsUser(isUser);
+	pCar->SetUserName(userName);
+	pCar->SetEndRapNum(&trackEndCount);
+
 	vecCars.push_back(pCar);
 
 	pCar->GetPhysXData()->SetPosition(m_pTrack->GetStartPositions()[playerID]);
@@ -355,7 +373,7 @@ void RacingScene::NetworkLoop()
 	char* pchY = NULL;
 	char* pchZ = NULL;
 
-	str = "$" + g_pNetworkManager->GetClientIP() + "$" + g_pNetworkManager->GetKeYString();
+	str = "$" + g_pNetworkManager->GetUserIP() + "$" + g_pNetworkManager->GetKeYString();
 	g_pNetworkManager->SendMsg(str.c_str());
 
 	if (g_pNetworkManager->RecvMsg())
@@ -368,7 +386,7 @@ void RacingScene::NetworkLoop()
 
 	////pchPOS = strtok(NULL, "@");
 	//
-	if (pchIP != NULL && g_pNetworkManager->GetClientIP().find(pchIP) == -1)
+	if (pchIP != NULL && g_pNetworkManager->GetUserIP().find(pchIP) == -1)
 	{
 		//
 		printf("%s\n", pchKEY);
@@ -378,13 +396,16 @@ void RacingScene::NetworkLoop()
 void RacingScene::SetNetworkCarData()
 {
 	g_pNetworkManager->SetResetKeyEvent();
-	if (IsCarRunTrue(vecCars[0]))
-	{
-		vecCars[0]->Update();
-	}
 
-	if (IsCarRunTrue(vecCars[0])) vecCars[0]->Update();
-	if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
+	if (IsCarRunTrue(vecCars[g_pNetworkManager->GetCarIndex()])) vecCars[g_pNetworkManager->GetCarIndex()]->Update();
+	if (!IsCarRunTrue(vecCars[g_pNetworkManager->GetCarIndex()])) m_eRaceProg = RACE_PROG_FINISH;
+
+	for (int i = 0; i < vecCars.size(); i++)
+	{
+		if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
+
+		if (!IsCarRunTrue(vecCars[i])) m_eRaceProg = RACE_PROG_FINISH;
+	}
 
 	m_pInGameUI->UpdateRaceTime();
 }
