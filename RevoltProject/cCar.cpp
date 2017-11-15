@@ -378,7 +378,7 @@ void cCar::Render()
 {
 	Object::Render();
 
-	RenderBillboardID();
+	//RenderBillboardID();
 
 	//물리데이터와 바퀴 동기화
 	for (int i = 0; i < vecWheels.size(); i++)
@@ -736,7 +736,8 @@ void cCar::UsedItem()
 		m_nItemCount--;
 		if (m_nItemCount == 0)
 		{
-			g_pItemManager->FireItem(ITEM_GRAVITY, this);
+			g_pItemManager->FireItem(ITEM_FAKEBOMB, this);
+			//g_pItemManager->FireItem(ITEM_GRAVITY, this);
 			m_eHoldItem = ITEM_NONE;
 			GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
 			g_pItemManager->SetItemID(m_eHoldItem);
@@ -1008,9 +1009,6 @@ void cCar::RenderBillboardID()
 	D3DXMatrixTranslation(&matT, pos.x, pos.y + 1.5f, pos.z);
 	D3DXMatrixIdentity(&matWorld);
 	D3DXMatrixRotationZ(&matR, D3DX_PI);
-	
-	if (m_pSprite == NULL)
-		printf("asf\n");
 
 	matWorld = matR * matT;
 	g_pD3DDevice->GetTransform(D3DTS_VIEW, &matView);

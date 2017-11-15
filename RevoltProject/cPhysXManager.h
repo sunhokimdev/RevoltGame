@@ -45,6 +45,7 @@ enum ePhysXTag
 	, E_PHYSX_TAG_FIREWORK
 	, E_PHYSX_TAG_WHATEBOMB
 	, E_PHYSX_TAG_MYBOMB
+	, E_PHYSX_TAG_FAKEBOMB
 	, E_PHYSX_TAG_METALBALL
 	, E_PHYSX_TAG_GRIVATEBALL
 	, E_PHYSX_TAG_TRACK
@@ -94,6 +95,8 @@ struct USERDATA
 	/*   김선호 작업   */
 	bool isMyBomb;
 	bool isFireGravity;
+	bool isFireFakebomb;			
+	bool isFakebombCollision;		//	페이크 폭탄과 충돌할 시
 	NxVec3* m_pCarPosion;
 
 	USERDATA(ePhysXTag tag)

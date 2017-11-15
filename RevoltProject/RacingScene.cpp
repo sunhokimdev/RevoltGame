@@ -379,13 +379,16 @@ void RacingScene::NetworkLoop()
 void RacingScene::SetNetworkCarData()
 {
 	g_pNetworkManager->SetResetKeyEvent();
-	if (IsCarRunTrue(vecCars[0]))
-	{
-		vecCars[0]->Update();
-	}
 
-	if (IsCarRunTrue(vecCars[0])) vecCars[0]->Update();
-	if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
+	if (IsCarRunTrue(vecCars[g_pNetworkManager->GetCarIndex()])) vecCars[g_pNetworkManager->GetCarIndex()]->Update();
+	if (!IsCarRunTrue(vecCars[g_pNetworkManager->GetCarIndex()])) m_eRaceProg = RACE_PROG_FINISH;
+
+	for (int i = 0; i < vecCars.size(); i++)
+	{
+		if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
+
+		if (!IsCarRunTrue(vecCars[i])) m_eRaceProg = RACE_PROG_FINISH;
+	}
 
 	m_pInGameUI->UpdateRaceTime();
 }

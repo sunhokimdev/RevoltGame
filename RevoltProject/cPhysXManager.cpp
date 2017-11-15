@@ -699,7 +699,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			pUserData1->CheckBoxID = pUserData0->CheckBoxID;
 		}
 
-		if (pUserData0->USER_TAG == E_PHYSX_TAG_PICKUP)
+		else if (pUserData0->USER_TAG == E_PHYSX_TAG_PICKUP)
 		{
 			if (pUserData1->IsPickUp == NX_FALSE
 				&& pUserData0->IsPickUp == NX_TRUE)
@@ -710,7 +710,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			}
 		}
 
-		if (pUserData1->USER_TAG == E_PHYSX_TAG_CAR && pUserData0->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
+		else if (pUserData1->USER_TAG == E_PHYSX_TAG_CAR && pUserData0->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
 		{
 			if (!pUserData1->isFireGravity)
 			{
@@ -727,6 +727,23 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 				triggerShape.getActor().addTorque(NxVec3(5.0f, 1.0f, 1.5f));
 				printf("데이터 충돌\n");
 			}
+		}
+
+		else if (pUserData0->USER_TAG == E_PHYSX_TAG_FAKEBOMB && pUserData1->USER_TAG == E_PHYSX_TAG_CAR)
+		{
+			if (pUserData1->isFireFakebomb)
+				pUserData1->isFireFakebomb = false;	
+			else
+				pUserData1->isFakebombCollision = true;
+			printf("충돌\n");
+		}
+		else if (pUserData1->USER_TAG == E_PHYSX_TAG_FAKEBOMB && pUserData0->USER_TAG == E_PHYSX_TAG_CAR)
+		{
+			if (pUserData0->isFireFakebomb)
+				pUserData0->isFireFakebomb = false;
+			else
+				pUserData0->isFakebombCollision = true;
+			printf("충돌\n");
 		}
 	}
 	else if (status & NX_TRIGGER_ON_STAY)

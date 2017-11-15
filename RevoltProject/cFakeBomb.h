@@ -2,8 +2,16 @@
 
 #include "cItem.h"
 
+#define UPDATETIME 100
+
+class cFakeImpact;
+
 class cFakeBomb : public cItem
 {
+private:
+	cFakeImpact* m_pImpact;
+	float m_bombTime;
+	float m_bombAngle;
 public:
 	cFakeBomb();
 	virtual ~cFakeBomb();

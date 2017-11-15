@@ -8,6 +8,7 @@
 #include "cFirework.h"
 #include "cCar.h"
 #include "cMyBomb.h"
+#include "cFakeBomb.h"
 
 ItemManager::ItemManager()
 	: m_max(50)
@@ -248,6 +249,18 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 			//m_vecItem[m_vecIndex[3] + 30]->SetIsUse(true);
 			//
 			//m_vecIndex[3]++;
+		}
+		break;
+		case ITEM_FAKEBOMB:
+		{
+			cItem* pItem = new cFakeBomb;
+			pItem->Setup();
+			pItem->SetCar(car);
+			pItem->SetItemTag(ITEM_FAKEBOMB);
+			m_vecItem.push_back(pItem);
+			m_vecItem[m_vecItem.size() - 1]->Create(carDir, carPos);
+			m_vecItem[m_vecItem.size() - 1]->SetIsUse(true);
+			printf("FakeBomb\n");
 		}
 		break;
 		default: break;

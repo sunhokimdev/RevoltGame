@@ -22,6 +22,7 @@ struct ST_NETUSER
 	std::string userIP;
 	std::string userID;
 	std::string carName;
+	int carIndex;
 	bool IsReady;
 	bool IsUse;
 	int index;
@@ -34,7 +35,7 @@ private:
 	SOCKET m_hSock;
 	ST_NETUSER m_user;						// 클라이언트 유저
 	std::vector<std::string> m_vecMyIP;		// 클라이언트 IP
-	ST_NETUSER m_vecUserIP[USER_SIZE];		// 클라이언트를 제외한 유저 IP
+	std::vector<ST_NETUSER> m_vecUserIP;		// 클라이언트를 제외한 유저 IP
 
 	std::string m_serverIP;		// 서버 IP 주소
 	std::string m_vPosition;	// 클라이언트 위치 지정
@@ -84,6 +85,9 @@ public:
 	int GetUserIndex() { return m_user.index; };
 	bool GetIsReady() { return m_user.IsReady; };
 	void SetIsReady(bool b) { m_user.IsReady = b; };
+
+	void SetCarIndex(int d) { m_user.carIndex = d; };
+	int GetCarIndex() { return m_user.carIndex; }
 
 	bool GetClientReady(int index) { return m_vecUserIP[index].IsReady; };
 	void SetUserReady();
