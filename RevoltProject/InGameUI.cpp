@@ -489,6 +489,7 @@ void InGameUI::Update()
 
 	int nTrackCount = m_pRacingScene->GettrackEndCount();
 	if (m_LabCnt > -1 && m_LabCnt < nTrackCount)	UpdateLabTime();
+
 	if (m_LabCnt >= nTrackCount)
 	{
 		RaceResults();
@@ -889,24 +890,26 @@ void InGameUI::UpdateRaceTime()
 	std::string MinOneth;								//	  0.xx.xxx
 	std::string MinTenth;								//	 0x.xx.xxx
 
-
-	m_ElapseTime += g_pTimeManager->GetElapsedTime();	// Uptate ElapsedTime
-
-	if (m_ElapseTime > TIMEMAX)							// After 60 Second
-	{
-		m_ElapseTime = 0;								// ElapsedTime = 0
-		m_MinOneth += 1;								// Add 1 Minute
-	}
-	if (m_MinOneth > FONT2_NUM9)						// After 10 Minute
-	{
-		m_MinOneth = FONT2_NUM0;						// MinuteOneth = 0; 
-		m_MinTenth += 1;								// Add MinuteTenth ( 09:59 -> 10:00 )
-	}
-	if (m_MinTenth > FONT2_NUM9)
-	{
-		m_MinTenth = FONT2_NUM0;
-	}
-	m_SecTenth = (m_ElapseTime / 10) + FONT2_NUM0;		// Ex : m_ElapseTime = 59
+	m_ElapseTime = m_pCar->GetTotlaTimeCount();
+	//m_ElapseTime += g_pTimeManager->GetElapsedTime();	// Uptate ElapsedTime
+	int CalcMin = (int)(m_ElapseTime / 60.f);
+	m_MinOneth = CalcMin % 10 + FONT2_NUM0;
+	m_MinTenth = CalcMin / 10 + FONT2_NUM0;
+	//if (m_ElapseTime > TIMEMAX)							// After 60 Second
+	//{
+	//	m_ElapseTime = 0;								// ElapsedTime = 0
+	//	m_MinOneth += 1;								// Add 1 Minute
+	//}
+	//f (m_MinOneth > FONT2_NUM9)						// After 10 Minute
+	//
+	//	m_MinOneth = FONT2_NUM0;						// MinuteOneth = 0; 
+	//	m_MinTenth += 1;								// Add MinuteTenth ( 09:59 -> 10:00 )
+	//
+	//if (m_MinTenth > FONT2_NUM9)
+	//{
+	//	m_MinTenth = FONT2_NUM0;
+	//}
+	m_SecTenth = (int(m_ElapseTime / 10) % 6) + FONT2_NUM0;		// Ex : m_ElapseTime = 59
 	m_SecOneth = ((int)m_ElapseTime % 10) + FONT2_NUM0; //      m_ElapseTime / 10 = 5;	
 														//      m_ElapseTime % 10 = 9;
 														//      Therefore Current Second : 59
@@ -1016,7 +1019,7 @@ void InGameUI::RaceResults()
 	pFirst->SetYSize(1.0f);
 	pFirst->SetPosition(0, 30);
 
-	g_pDataManager->vecPlayerData[0]->ID = std::string("Hi");
+	//g_pDataManager->vecPlayerData[0]->ID = std::string("Hi");
 
 	UITextImageView* pPlayerName = new UITextImageView;
 	pPlayerName->SetText(g_pDataManager->vecPlayerData[0]->ID);
