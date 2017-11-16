@@ -24,7 +24,7 @@ void RacingScene::Setup()
 	m_eRaceProg = RACE_PROG_READY;
 
 	//TrackEndCount 돌아야 되는 바퀴 수	
-	m_trackEndCount = 3;
+	m_trackEndCount = 1;
 
 	//카메라 초기값
 	m_camPos = new D3DXVECTOR3(70, 5, 0);
@@ -129,14 +129,7 @@ void RacingScene::Update()
 	case RACE_PROG_SET:
 	case RACE_PROG_GO:
 	{
-		if (m_eRaceProg == RACE_PROG_GO)
-		{
-			m_pInGameUI->UpdateRaceTime();
-			for (int i = 0; i < vecCars.size(); i++)
-			{
-				vecCars[i]->m_isCtl = true;;
-			}
-		}
+
 		if (g_pNetworkManager->GetIsInGameNetwork())
 		{
 			SetNetworkCarData();
@@ -148,12 +141,30 @@ void RacingScene::Update()
 			{
 				FindTarget(vecCars[i]);
 			
-				if (IsCarRunTrue(vecCars[i]))	vecCars[i]->Update();
+				if (IsCarRunTrue(vecCars[i]))
+				{
+					vecCars[i]->Update();
+				}
+				else
+				{
+					vecCars[i]->SetFinishTime(vecCars[i]->GetTotlaTimeCount());
+				}
 
-				if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
+				if (!IsCarRunTrue(vecCars[0]))
+				{
+					vecCars[0]->SetFinishTime(vecCars[0]->GetTotlaTimeCount());
+					m_eRaceProg = RACE_PROG_FINISH;
+				}
 			}
 		}
-
+		if (m_eRaceProg == RACE_PROG_GO)
+		{
+			m_pInGameUI->UpdateRaceTime();
+			for (int i = 0; i < vecCars.size(); i++)
+			{
+				vecCars[i]->m_isCtl = true;;
+			}
+		}
 		UpdateRnak();
 	}
 	break;
@@ -342,34 +353,47 @@ void RacingScene::UpdateSound()
 void RacingScene::UpdateRnak()
 {
 	m_vecRank.clear();
-	//std::map<float, std::string> mapRank;
 	std::map<float, cCar*> mapRank;
 
-	for (int i = 0; i < vecCars.size(); i++)
+	if (m_eRaceProg == RACE_PROG_GO)
 	{
-		mapRank.insert(std::make_pair(vecCars[i]->GetRankPoint(), vecCars[i]));
+		for (int i = 0; i < vecCars.size(); i++)
+		{
+			mapRank.insert(std::make_pair(vecCars[i]->GetRankPoint(), vecCars[i]));
+		}
+
+		int num = mapRank.size();
+		std::map<float, cCar*>::iterator iter;
+		for (iter = mapRank.begin();
+			iter != mapRank.end();
+			iter++)
+		{
+			m_vecRank.insert(m_vecRank.begin(), iter->second);
+			//m_vecRank.push_back(iter->second);
+			iter->second->SetCurRank(num);
+			num--;
+		}
+	}
+	else if (m_eRaceProg == RACE_PROG_FINISH)
+	{
+		for (int i = 0; i < vecCars.size(); i++)
+		{
+			//mapRank.insert(std::make_pair(vecCars[i]->GetTotlaTimeCount(), vecCars[i]));
+			mapRank.insert(std::make_pair(vecCars[i]->GetFinishTime(), vecCars[i]));
+		}
+		int num = 1;
+		std::map<float, cCar*>::iterator iter;
+		for (iter = mapRank.begin();
+			iter != mapRank.end();
+			iter++)
+		{
+			m_vecRank.push_back(iter->second);
+			iter->second->SetCurRank(num);
+			num++;
+		}
 	}
 
-	int num = mapRank.size();
-	std::map<float, cCar*>::iterator iter;
-	for (iter = mapRank.begin();
-		iter != mapRank.end();
-		iter++)
-	{
-		m_vecRank.insert(m_vecRank.begin(),iter->second);
-		//m_vecRank.push_back(iter->second);
-		iter->second->SetCurRank(num);
-		num--;
-	}
-	
-	if (g_pKeyManager->isOnceKeyDown('U'))
-	{
-		for (int i = 0; i < m_vecRank.size(); i++)
-		{
-			std::cout << i + 1 << " : " << m_vecRank[i]->GetUserNameW() << " : " << m_vecRank[i]->GetCurRank() << std::endl;
-		}
-		std::cout << std::endl;
-	}
+
 }
 
 bool RacingScene::IsCarRunTrue(cCar* pCar)

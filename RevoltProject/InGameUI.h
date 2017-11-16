@@ -94,9 +94,21 @@ private:
 	// Race Result
 	UIImageView* m_pResultRing;
 	UITextImageView* m_pRaceResult;
+
 	UITextImageView* m_pFirst;
 	UITextImageView* m_pFirstPlayerName;
+	UITextImageView* m_pSecond;
+	UITextImageView* m_pSndPlayerName;
+	UITextImageView* m_pThird;
+	UITextImageView* m_pTrdPlayerName;
+	UITextImageView* m_pFourth;
+	UITextImageView* m_pFourthPlayerName;
+	UITextImageView* m_pFifth;
+	UITextImageView* m_pFifthPlayerName;
+	UITextImageView* m_pSixth;
+	UITextImageView* m_pSixthPlayerName;
 
+	//First
 	UITextImageView* m_pFirstResultMinTenth;
 	UITextImageView* m_pFirstResultMinOneth;
 	UITextImageView* m_pFirstResultMinColon;
@@ -107,9 +119,66 @@ private:
 	UITextImageView* m_pFirstResultDotTenth;
 	UITextImageView* m_pFirstResultDotOneth;
 
+	//Second
+	UITextImageView* m_pSndResultMinTenth;
+	UITextImageView* m_pSndResultMinOneth;
+	UITextImageView* m_pSndResultMinColon;
+	UITextImageView* m_pSndResultSecTenth;
+	UITextImageView* m_pSndResultSecOneth;
+	UITextImageView* m_pSndResultSecColon;
+	UITextImageView* m_pSndResultDotMilth;
+	UITextImageView* m_pSndResultDotTenth;
+	UITextImageView* m_pSndResultDotOneth;
 
+	//Third
+	UITextImageView* m_pTrdResultMinTenth;
+	UITextImageView* m_pTrdResultMinOneth;
+	UITextImageView* m_pTrdResultMinColon;
+	UITextImageView* m_pTrdResultSecTenth;
+	UITextImageView* m_pTrdResultSecOneth;
+	UITextImageView* m_pTrdResultSecColon;
+	UITextImageView* m_pTrdResultDotMilth;
+	UITextImageView* m_pTrdResultDotTenth;
+	UITextImageView* m_pTrdResultDotOneth;
 
+	//Fourth
+	UITextImageView* m_pFourthResultMinTenth;
+	UITextImageView* m_pFourthResultMinOneth;
+	UITextImageView* m_pFourthResultMinColon;
+	UITextImageView* m_pFourthResultSecTenth;
+	UITextImageView* m_pFourthResultSecOneth;
+	UITextImageView* m_pFourthResultSecColon;
+	UITextImageView* m_pFourthResultDotMilth;
+	UITextImageView* m_pFourthResultDotTenth;
+	UITextImageView* m_pFourthResultDotOneth;
 
+	//Fifth
+	UITextImageView* m_pFifthResultMinTenth;
+	UITextImageView* m_pFifthResultMinOneth;
+	UITextImageView* m_pFifthResultMinColon;
+	UITextImageView* m_pFifthResultSecTenth;
+	UITextImageView* m_pFifthResultSecOneth;
+	UITextImageView* m_pFifthResultSecColon;
+	UITextImageView* m_pFifthResultDotMilth;
+	UITextImageView* m_pFifthResultDotTenth;
+	UITextImageView* m_pFifthResultDotOneth;
+
+	//Sixth
+	UITextImageView* m_pSixthResultMinTenth;
+	UITextImageView* m_pSixthResultMinOneth;
+	UITextImageView* m_pSixthResultMinColon;
+	UITextImageView* m_pSixthResultSecTenth;
+	UITextImageView* m_pSixthResultSecOneth;
+	UITextImageView* m_pSixthResultSecColon;
+	UITextImageView* m_pSixthResultDotMilth;
+	UITextImageView* m_pSixthResultDotTenth;
+	UITextImageView* m_pSixthResultDotOneth;
+
+	UITextImageView* m_pSecondRetired;
+	UITextImageView* m_pThridRetired;
+	UITextImageView* m_pFourthRetired;
+	UITextImageView* m_pFifthRetired;
+	UITextImageView* m_pSixthRetired;
 	/*          SYNTHESIZE          */
 
 	// Lab Count

@@ -78,5 +78,6 @@ public:
 	void SetNetworkCarData();		// 자동차 데이터 세팅하는 메서드
 
 	std::vector<cCar*>* GetRankVectorPt() { return &m_vecRank; }
+	cCar* GetRankVector(int n) { return m_vecRank[n]; }
 };
 

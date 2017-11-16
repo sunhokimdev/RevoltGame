@@ -29,7 +29,7 @@ cCar::cCar()
 	m_fRankPoint = 0;
 	familyAI = NULL;
 	m_pTarget = NULL;
-
+	m_finishTime = 1000 + rand() % 10000;
 	m_isCtl = false;
 	m_isDrift = false;
 
@@ -574,6 +574,7 @@ void cCar::TrackCheck()
 
 void cCar::RunEnd()
 {
+	//m_finishTime = m_totlaTimeCount;
 	for (int i = 0; i < 4; i++)
 	{
 		NxWheel* wheel = m_carNxVehicle->getWheel(i);
