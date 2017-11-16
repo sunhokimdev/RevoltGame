@@ -422,10 +422,7 @@ void RacingScene::FindTarget(cCar* MyCar)
 			MyCar->SetTarget(vecCars[i]);
 			// Firework's Target = vecCars[i]'s Position
 		}
-
-		else if (i == 0
-			|| !vecCars[0]->IsIn(&vecCars[i]->GetPosition())
-			|| vecCars[0]->GetHoldItem() != ITEM_FIREWORK)
+		else
 		{
 			// target == false
 			MyCar->SetTarget(NULL);
