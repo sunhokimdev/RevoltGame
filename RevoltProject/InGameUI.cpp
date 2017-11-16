@@ -45,6 +45,7 @@ InGameUI::InGameUI()
 	, m_select(99)
 	, m_LabCnt(-1)
 	, m_arrowIndex(0)
+	, m_RankIndex(0)
 {
 }
 
@@ -327,30 +328,32 @@ void InGameUI::Setup()
 	pITV_Rank->SetXSize(3.0f);
 	pITV_Rank->SetYSize(3.0f);
 	pITV_Rank->SetPosition(25, -50);
-	pITV_Rank->SetText("8");
+	pITV_Rank->SetText("1");
 	pITV_Rank->SetTexture("UIImage/font2.png");
 
 	pITV_Rank2 = new UITextImageView;
 	pITV_Rank2->SetXSize(1.0f);
 	pITV_Rank2->SetYSize(1.0f);
 	pITV_Rank2->SetPosition(55, -45);
-	pITV_Rank2->SetText("th");
+	pITV_Rank2->SetText("st");
 	pITV_Rank2->SetTexture("UIImage/font2.png");
 	pITV_Rank2->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
-	pITV_preRank = new UITextImageView;
-	pITV_preRank->SetXSize(1.0f);
-	pITV_preRank->SetYSize(1.0f);
-	pITV_preRank->SetPosition(55, -10);
-	pITV_preRank->SetText("aaa");
-	pITV_preRank->SetTexture("UIImage/font2.png");
+	pITV_FrontRank = new UITextImageView;
+	pITV_FrontRank->SetXSize(1.3f);
+	pITV_FrontRank->SetYSize(1.3f);
+	pITV_FrontRank->SetPosition(100, 20);
+	pITV_FrontRank->SetText("");
+	pITV_FrontRank->SetTexture("UIImage/font2.png");
+	pITV_FrontRank->SetColor(D3DCOLOR_ARGB(255, 150, 255, 150));
 
-	pITV_nextRank = new UITextImageView;
-	pITV_nextRank->SetXSize(1.0f);
-	pITV_nextRank->SetYSize(1.0f);
-	pITV_nextRank->SetPosition(55, -30);
-	pITV_nextRank->SetText("bbbb");
-	pITV_nextRank->SetTexture("UIImage/font2.png");
+	pITV_BackRank = new UITextImageView;
+	pITV_BackRank->SetXSize(1.3f);
+	pITV_BackRank->SetYSize(1.3f);
+	pITV_BackRank->SetPosition(0, 25);
+	pITV_BackRank->SetText("");
+	pITV_BackRank->SetTexture("UIImage/font2.png");
+	pITV_BackRank->SetColor(D3DCOLOR_ARGB(255, 250, 150, 150));
 
 
 
@@ -492,8 +495,8 @@ void InGameUI::Setup()
 
 	pImageView7->AddChild(pITV_Rank);
 	pImageView7->AddChild(pITV_Rank2);
-	pImageView7->AddChild(pITV_preRank);
-	pITV_preRank->AddChild(pITV_nextRank);
+	pImageView7->AddChild(pITV_FrontRank);
+	pITV_FrontRank->AddChild(pITV_BackRank);
 
 	pSpeedFrame->AddChild(m_pSpeedometerImage);
 	pSpeedFrame->AddChild(m_pSpeedOne);
@@ -581,6 +584,7 @@ void InGameUI::Update()
 //		return;
 	}
 
+	UpdateRank();
 	UpdateSpeed();
 	UpdateLabCount();
 
@@ -663,6 +667,45 @@ void InGameUI::Destroy()
 	m_pRacingScene = NULL;
 
 	iLobby::Destroy();
+}
+
+void InGameUI::UpdateRank()
+{
+	std::string strRank;
+	strRank = (m_pCar->GetCurRank() + FONT2_NUM0);
+	
+	m_RankIndex = m_pCar->GetCurRank();  // 현재 내 등수
+
+
+	// 등수(숫자) 표시
+	pITV_Rank->SetText(strRank);
+
+	// 등수(숫자) 옆에 글씨
+	if (m_RankIndex == 1)			pITV_Rank2->SetText("st");
+	else if (m_RankIndex == 2)		pITV_Rank2->SetText("nd");
+	else if (m_RankIndex == 3)		pITV_Rank2->SetText("rd");
+	else							pITV_Rank2->SetText("th");
+
+
+	// 내 앞과 뒤에 누가 있는지
+	if (m_pRacingScene->GetRankVectorPt().size() > 1)
+	{
+		if (m_RankIndex != 1 && m_RankIndex != m_pRacingScene->GetRankVectorPt().size())
+		{
+			pITV_FrontRank->SetText(m_pRacingScene->GetRankVectorPt()[m_RankIndex - 2]->GetUserNameW());
+			pITV_BackRank->SetText(m_pRacingScene->GetRankVectorPt()[m_RankIndex]->GetUserNameW());
+		}
+		else if (m_RankIndex == 1)
+		{
+			pITV_FrontRank->SetText("");
+			pITV_BackRank->SetText(m_pRacingScene->GetRankVectorPt()[m_RankIndex]->GetUserNameW());
+		}
+		else if (m_RankIndex == m_pRacingScene->GetRankVectorPt().size())
+		{
+			pITV_FrontRank->SetText(m_pRacingScene->GetRankVectorPt()[m_RankIndex - 2]->GetUserNameW());
+			pITV_BackRank->SetText("");
+		}
+	}
 }
 
 void InGameUI::UpdateSpeed()

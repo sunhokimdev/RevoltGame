@@ -80,8 +80,9 @@ private:
 	// 등수, 방향 화살표
 	UITextImageView* pITV_Rank;
 	UITextImageView* pITV_Rank2;
-	UITextImageView* pITV_preRank;
-	UITextImageView* pITV_nextRank;
+	UITextImageView* pITV_FrontRank;
+	UITextImageView* pITV_BackRank;
+	int m_RankIndex;
 
 	UIImageView* pIV_arrowDir;
 
@@ -165,6 +166,7 @@ public:
 	UIObject* GetUIObject() { return m_pRootUI; }
 	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
 
+	void UpdateRank();
 	void UpdateSpeed();
 	void UpdateLabCount();									// UpdateCurrentLab
 	void UpdateLastTime();									// UpdateLastTimer
