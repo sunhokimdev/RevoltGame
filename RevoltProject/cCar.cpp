@@ -1017,7 +1017,7 @@ bool cCar::IsIn(D3DXVECTOR3* pv)
 	// 시야에서 가려질 경우
 	D3DXVECTOR3 thisCar = GetPhysXData()->GetPositionToD3DXVec3() + D3DXVECTOR3(0, 0.3, 0);
 	D3DXVECTOR3 toDirL = (*pv + D3DXVECTOR3(0, 0.3, 0)) - thisCar;
-	D3DXVECTOR3 toDir(0,0,0);
+	D3DXVECTOR3 toDir(0, 0, 0);
 	D3DXVec3Normalize(&toDir, &toDirL);
 	NxRaycastHit hit = RAYCAST(thisCar, toDir, 1000);
 	if (hit.distance < D3DXVec3Length(&toDirL))
@@ -1134,7 +1134,7 @@ void cCar::RenderBillboardID()
 	dir.y = 0.0f;
 	dir.z = this->CarArrow(0).z;
 
-	m_yAngle = atan2f(dir.x, dir.z);
+	D3DXVec3Normalize(&dir, &dir);
 
 	if (!m_isAI)
 	{
@@ -1158,21 +1158,21 @@ void cCar::RenderBillboardID()
 	D3DXMatrixRotationZ(&matRZ, D3DX_PI);
 	D3DXMatrixRotationY(&matRY, -D3DX_PI);
 
-	m_pSprite->SetTransform(&matWorld);
-
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
 	matR = matRY * matRZ;
 
 	matWorld = matS * matR * matT;
 	g_pD3DDevice->GetTransform(D3DTS_VIEW, &matView);
 	m_pSprite->SetWorldViewLH(NULL, &matView);
-	HRESULT sOK = m_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE | D3DXSPRITE_BILLBOARD);
-	matW = matWorld;
+	m_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE | D3DXSPRITE_BILLBOARD);
 
-	matWorld._43 = matWorld._43 + ((0.08f) * m_userName.size() / 2);
-
+	//matWorld._43 = matWorld._43 + ((0.08f) * m_userName.size() / 2);
+	float  leftI = (int)m_userName.size() * 0.5;
+	D3DXMATRIXA16 matLieft = matWorld;
 	for (int i = 0; i < m_userName.size(); i++)
 	{
+		matLieft = matWorld;
+
 		RECT rc;
 		char tChar = m_userName[i];
 		int tPos;
@@ -1185,11 +1185,12 @@ void cCar::RenderBillboardID()
 			((tPos % tTempValue) * textPosX) + textPosX,
 			((tPos / tTempValue) * textPosY) + textPosY);
 
-		matWorld._43 = matWorld._43 - (0.08f * g_pDataManager->m_position.x);
-		matWorld._41 = matWorld._41 + (0.08f * g_pDataManager->m_position.z);
 
-		m_pSprite->SetTransform(&matWorld);
-		m_pSprite->Draw(mPtexture, &rc, &D3DXVECTOR3(8, 0, 0), &D3DXVECTOR3(0, 0, 0), m_textIDColor);
+		matLieft._43 = matWorld._43 - ((i - leftI)*0.08f * g_pDataManager->m_position.x);
+		matLieft._41 = matWorld._41 + ((i - leftI)*0.08f * g_pDataManager->m_position.z);
+
+		m_pSprite->SetTransform(&matLieft);
+		m_pSprite->Draw(mPtexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_textIDColor);
 	}
 
 	m_pSprite->End();
