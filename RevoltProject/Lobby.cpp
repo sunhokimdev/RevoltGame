@@ -405,12 +405,12 @@ void Lobby::KeyUpdate()
 			}
 			else
 			{
-				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", m_pfileList->GetCarName(), false));
-				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc1", true));
-				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
-				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
-				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
-				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", m_pfileList->GetUserNameText(), m_pfileList->GetCarName(), false));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "SUNHO", "tc1", true));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "TAESUB", "tc2", true));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "GUNBAE", "tc3", true));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "JONGHUN", "tc4", true));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "DONGHUN", "tc5", true));
 			}
 
 			g_SceneManager->ChangeScene("Race");
@@ -472,6 +472,8 @@ void Lobby::KeyUpdate()
 			{
 				g_pNetworkManager->SetClientName(m_pCreateProfileLobby->GetName());
 			}
+
+			m_pfileList->SetUserNameText(m_pCreateProfileLobby->GetName());
 		}
 
 		else if (m_stateLobby == NETWORK_LOBBY)

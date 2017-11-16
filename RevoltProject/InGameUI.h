@@ -171,10 +171,7 @@ public:
 	void UpdateArrowDir();									// 화살표 방향
 	void RaceResults();
 
-	void LinkCarPt(cCar* car)
-	{
-		m_pCar = car;
-	}
+	void LinkCarPt(cCar* car);
 	void LinkTrack(cTrack* track) { m_pTrack = track; }
 	void LinkRacingScene(RacingScene* rc) { m_pRacingScene = rc; }
 	c321GO* Get321goPt() { return m_p321go; }
