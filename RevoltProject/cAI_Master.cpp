@@ -4,8 +4,7 @@
 
 cAI_Master::cAI_Master()
 {
-	//updateTime = 0.0f;
-	//fpsTime = .0f / 60.f;
+
 }
 
 
@@ -29,7 +28,7 @@ void cAI_Master::Setup(AI_DATA pData)
 	//AI 동작 클래스
 	familyAI[AI_TAG_CTRL] = new cAI_Ctrl();
 
-	//AI 연결
+	//AI 클래스 연결
 	for each(cAI*p in familyAI)
 	{
 		p->AI_Data = &AIData;
@@ -37,11 +36,11 @@ void cAI_Master::Setup(AI_DATA pData)
 	}
 }
 
-void cAI_Master::Destory()
+void cAI_Master::Destroy()
 {
 	for each(cAI*p in familyAI)
 	{
-		p->Destory();
+		p->Destroy();
 		SAFE_DELETE(p);
 	}
 	familyAI.clear();
@@ -49,12 +48,6 @@ void cAI_Master::Destory()
 
 void cAI_Master::Update()
 {
-	//if (updateTime < fpsTime)
-	//{
-	//	updateTime += g_pTimeManager->GetElapsedTime();
-	//	return;
-	//}
-	//updateTime  = 0.f;
 	AIData.pCar->INPUT_KEY.reset();
 
 	for each(cAI*p in familyAI)
@@ -65,6 +58,7 @@ void cAI_Master::Update()
 
 void cAI_Master::Render()
 {
+	if (!IS_DEBUG_RENDER) return;
 	for each(cAI*p in familyAI)
 	{
 		p->Render();

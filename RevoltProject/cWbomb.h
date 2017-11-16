@@ -11,6 +11,8 @@ class cWbomb : public cItem
 private:
 	cWaterBombImpact* m_pImapt;
 	bool m_isSleep;
+	bool m_isSoundFire;
+	bool m_isSoundBang;
 public:
 	cWbomb();
 	virtual ~cWbomb();

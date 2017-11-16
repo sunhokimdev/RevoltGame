@@ -7,7 +7,6 @@ class UIImageView : public UIObject
 {
 protected:
 
-
 	/*   아이템 창 뜨게 하기 위한 작업   */
 	int m_itemPrevID;	// 아이템의 이전 아이디
 	int m_itemID;		// 아이템의 현재 아이디
@@ -33,6 +32,9 @@ public:
 	virtual void SetTexture(char* szFullPath);
 	virtual void Update();
 	virtual void Render(LPD3DXSPRITE pSprite) override;
+
+	virtual void Destroy();
+
 
 	void SetRpmGauge(int rpm) { m_Rpm = rpm; }
 	void SetArrowAngle(float angle) { m_fArrowAngle = angle; }

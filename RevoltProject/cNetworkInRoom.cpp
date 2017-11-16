@@ -211,3 +211,9 @@ void cNetworkInRoom::SetResetData()
 
 	m_index = 0;
 }
+
+void cNetworkInRoom::SetResetUserNameColor()
+{
+	for (int i = 0;i < m_vecUser.size();i++)
+		m_vecUser[i]->SetColor(D3DXCOLOR(255, 255, 255, 255));
+}

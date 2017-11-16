@@ -17,6 +17,7 @@ public:
 	std::vector<std::string>  GetUpdateList() { return m_vProfileList; }	// 리스트 업데이트
 
 	SYNTHESIZE(std::string, m_CarName, CarName);
+	SYNTHESIZE(std::string, m_UserName, UserNameText);
 	SYNTHESIZE(std::string, m_MapName, MapName);
 };
 

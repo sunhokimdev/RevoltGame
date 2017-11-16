@@ -27,7 +27,7 @@ UIImageView::UIImageView()
 
 UIImageView::~UIImageView()
 {
-	SAFE_RELEASE(m_pTexture);
+	//SAFE_RELEASE(m_pTexture);
 }
 
 void UIImageView::SetTexture(char * szFullPath)
@@ -321,4 +321,10 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 	pSprite->End();
 
 	UIObject::Render(pSprite);
+}
+
+void UIImageView::Destroy()
+{
+	SAFE_RELEASE(m_pTexture);
+	UIObject::Destroy();
 }

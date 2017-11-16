@@ -1,9 +1,6 @@
 #pragma once
 #include "GameNode.h"
 
-
-
-
 class cTrack;
 class cLight;
 class cCar;
@@ -44,10 +41,13 @@ private:
 	LPD3DXSPRITE m_Sprite;
 
 	bool m_isDrift;
+	bool m_isPlayBGM;
 
 	cSkyBox* m_pSkyBox;
 
 	SYNTHESIZE(eRACE_PROG, m_eRaceProg, RaceProg);
+
+	std::vector<std::string> m_vecRank;
 
 public:
 
@@ -61,18 +61,21 @@ public:
 	void LastUpdate();
 	void UpdateCamera();
 	void UpdateSound();
+	void UpdateRnak();
 
 	//자동차가 계속 달려야하는지를 체크
 	bool IsCarRunTrue(cCar* pCar);
 
 
 //	void CreateCar(int carId) {}
-	void CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carName, bool isAI, bool isUser = false);
-	void CreateCar(int playerID, std::string carName);
+	void CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userName, std::string carName, int trackEndCount, bool isAI, bool isUser = false);
+	//void CreateCar(int playerID, std::string carName);
 	void LinkUI(int playerID);
 
 	/*   김선호   */
 	void NetworkLoop();			// 네트워크 통신하는 부분
 	void SetNetworkCarData();		// 자동차 데이터 세팅하는 메서드
+
+	std::vector<std::string>* GetRankVectorPt() { return &m_vecRank; }
 };
 

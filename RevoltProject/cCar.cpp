@@ -15,21 +15,24 @@
 
 cCar::cCar()
 	:m_pSkidMark(NULL)
+	, m_pSprite(NULL)
 {
 	m_countRapNum = -1;
 	m_currCheckBoxID = -1;
 	m_aICheckBoxID = 0;
-	m_rapTimeCount = 0.f;
+	m_LabTimeCount = 0.f;
 	m_totlaTimeCount = 0.f;
-	m_bastRapTimeCount = -1.0f;
+	m_bastLabTimeCount = -1.0f;
 	isFliping = false;
 	m_nextCheckBoxID = 0;
 	m_eHoldItem = ITEM_NONE;
-
+	m_fRankPoint = 0;
 	familyAI = NULL;
 
 	m_isCtl = false;
 	m_isDrift = false;
+
+	m_yAngle = 0.0f;
 }
 
 cCar::~cCar()
@@ -40,6 +43,8 @@ cCar::~cCar()
 void cCar::LoadCar(std::string carName)
 {
 	std::string FullPath = "Cars/" + carName + "/" + carName + ".car";
+
+	D3DXCreateSprite(g_pD3DDevice, &m_pSprite);
 
 	std::fstream LOAD;
 	LOAD.open(FullPath);
@@ -239,7 +244,7 @@ void cCar::SetAI(bool isAI, AI_DATA aidata)
 
 		if (familyAI)
 		{
-			familyAI->Destory();
+			familyAI->Destroy();
 			SAFE_DELETE(familyAI);
 		}
 
@@ -257,7 +262,7 @@ void cCar::CreateItem()
 			srand(time(NULL));
 			m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
 
-			/*TEST*///m_eHoldItem = eITEM_LIST::ITEM_GRAVITY;
+			/*TEST*///m_eHoldItem = eITEM_LIST::ITEM_WBOMB;
 
 			if (m_eHoldItem) break;
 		}
@@ -281,6 +286,7 @@ void cCar::CreatePhsyX(stCARSPEC carspec)
 		physX->SetPosition(NxVec3(0, 0, 0));
 		physX->m_pActor->setGroup(3);
 		physX->m_pUserData->isMyBomb = false;
+		physX->m_pUserData->isFireGravity = false;
 		physX->m_pUserData->m_pCarPosion = &physX->m_pActor->getGlobalPosition();
 	}
 }
@@ -356,6 +362,12 @@ void cCar::Update()
 	//바퀴 자국
 	CreateSkidMark();
 
+	//랭크 포인트
+	if (m_currCheckBoxID >= 0)
+	{
+		UpdateRankPoint();
+	}
+
 	UpdateSound();
 }
 
@@ -417,6 +429,8 @@ void cCar::Render()
 	{
 		m_pSkidMark->Render();
 	}
+
+	RenderBillboardID();
 }
 
 void cCar::Destroy()
@@ -434,7 +448,7 @@ void cCar::Destroy()
 
 	if (familyAI)
 	{
-		familyAI->Destory();
+		familyAI->Destroy();
 		SAFE_DELETE(familyAI);
 	}
 
@@ -497,15 +511,15 @@ void cCar::TrackCheck()
 	{
 		if (checkId == (*m_pTrack->GetCheckBoxsPt())[0]->GetPhysXData()->m_pUserData->CheckBoxID)
 		{
-			std::cout << "START" << std::endl;
+		//	std::cout << "START" << std::endl;
 			m_nextCheckBoxID = 1;
 			m_currCheckBoxID = 0;	//체크 시작
 			m_countRapNum = 0;
-			m_rapTimeCount = 0.f;
+			m_LabTimeCount = 0.f;
 
 			if (!m_isAI)
 			{
-				std::cout << m_isAI << std::endl;
+			//	std::cout << m_isAI << std::endl;
 				m_pInGameUI->SetLabCnt(m_countRapNum);
 			}
 			cCheckBox* nextCheckBox = (cCheckBox*)m_pTrack->GetCheckBoxs()[GetCurrCheckBoxID()];
@@ -540,18 +554,18 @@ void cCar::TrackCheck()
 				m_pInGameUI->SetLabMinTenth(FONT2_NUM0);
 			}
 
-			if (m_bastRapTimeCount > m_rapTimeCount || m_bastRapTimeCount < 0.0f)
+			if (m_bastLabTimeCount > m_LabTimeCount || m_bastLabTimeCount < 0.0f)
 			{
-				m_bastRapTimeCount = m_rapTimeCount;
+				m_bastLabTimeCount = m_LabTimeCount;
 
 			}
-			m_rapTimeCount = 0.f;
+			m_LabTimeCount = 0.f;
 		}
 	}
 	//시간을 더해 나간다.
-	if (m_countRapNum < 3)
+	if (m_countRapNum < *m_pEndRapNum)
 	{
-		m_rapTimeCount += g_pTimeManager->GetElapsedTime();
+		m_LabTimeCount += g_pTimeManager->GetElapsedTime();
 		m_totlaTimeCount += g_pTimeManager->GetElapsedTime();
 	}
 }
@@ -744,7 +758,7 @@ void cCar::UsedItem()
 			GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
 			g_pItemManager->SetItemID(m_eHoldItem);
 		}
-		std::cout << "FIRE!" << std::endl;
+		//std::cout << "FIRE!" << std::endl;
 	}
 }
 
@@ -905,13 +919,10 @@ void cCar::UpdateSound()
 	NxWheel* wheel = m_carNxVehicle->getWheel(0);
 	float rpmRatio = fabsf(wheel->getRpm()) / m_maxRpm;
 
-	float frq = 13000 + (rpmRatio * 20000);
+	float frq = 10000 + (rpmRatio * 15000) + (rand() % 1000);
 	//std::cout << rpmRatio << std::endl;
-	float volume = 0.5f + rpmRatio * 0.5f;
-	if(m_nPlayerID == 0) volume = 0.2f + rpmRatio * 0.5f;
-	//g_pSoundManager->SetSoundPosition(m_strMotorKey, GetPosition());
-	//g_pSoundManager->SetVolum(m_strMotorKey, 0.5f + rpmRatio * 0.5f);
-	//g_pSoundManager->SetPitch(m_strMotorKey, frq);
+	float volume = 0.1f + rpmRatio * 0.4f;
+	if(m_nPlayerID == 0) volume = 0.1f + rpmRatio * 0.3f;
 
 	g_pSoundManager->SetPosVolPitch(
 		m_strMotorKey,
@@ -927,6 +938,17 @@ void cCar::UpdateSound()
 	{
 		g_pSoundManager->Stop(m_strDriftKey);
 	}
+}
+
+void cCar::UpdateRankPoint()
+{
+	int Lap = (m_countRapNum + 1) * 100000;
+	int Check = m_currCheckBoxID * 1000;
+	D3DXVECTOR3 checkboxPos = m_pTrack->GetCheckBoxs()[m_currCheckBoxID]->GetPosition();
+	D3DXVECTOR3 vecTemp = checkboxPos - m_position;
+	float Dist = D3DXVec3Length(&vecTemp);
+
+	m_fRankPoint = Lap + Check + Dist;
 }
 
 NxVec3 cCar::CarArrow(float angle)
@@ -953,6 +975,7 @@ NxVec3 cCar::CarArrow(float angle)
 	D3DXMatrixRotationAxis(&matAngle, &D3DXVECTOR3(0, 1, 0), D3DXToRadian(angle));
 
 
+	
 	D3DXVECTOR3 dir(1, 0, 0);
 
 	D3DXVec3TransformNormal(&dir, &dir, &(matR*matAngle));
@@ -983,6 +1006,67 @@ void cCar::SetNetworkKey(std::string str)
 	INPUT_KEY[E_BIT_ITEM_] = (str[4] == '1');	m_keySet.ctrl = INPUT_KEY[E_BIT_ITEM_];
 	INPUT_KEY[E_BIT_REPOS] = (str[5] == '1');	m_keySet.r_key = INPUT_KEY[E_BIT_REPOS];
 	INPUT_KEY[E_BIT_FLIP_] = (str[5] == '1');	m_keySet.f_key = INPUT_KEY[E_BIT_FLIP_];
+}
+
+void cCar::RenderBillboardID()
+{
+	D3DXMATRIXA16 matWorld;
+	D3DXMATRIXA16 matView;
+	D3DXMATRIXA16 matS;
+	D3DXMATRIXA16 matR, matRZ, matRY;
+	D3DXMATRIXA16 matT;
+
+	D3DXVECTOR3 pos = this->GetPhysXData()->GetPositionToD3DXVec3();
+	D3DXVECTOR3 dir;
+	dir.x = this->CarArrow(0).x;
+	dir.z = this->CarArrow(0).z;
+
+	m_yAngle = atan2f(1, -dir.z);
+
+	LPDIRECT3DTEXTURE9 mPtexture = g_pTextureManager->GetTexture("UIImage/font2.png");
+
+	int tTempValue;
+	int textPosX = 8;
+	int textPosY = 16;
+
+	tTempValue = 32;
+
+	D3DXMatrixTranslation(&matT, pos.x, pos.y + 0.9f, pos.z);
+	D3DXMatrixScaling(&matS, 0.01f, 0.01f, 0.01f);
+	D3DXMatrixIdentity(&matWorld);
+	D3DXMatrixRotationZ(&matRZ, D3DX_PI);
+
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+
+	D3DXMatrixRotationY(&matRY, -D3DX_PI);
+	matR = matRY * matRZ;
+
+	matWorld = matS * matR * matT;
+	g_pD3DDevice->GetTransform(D3DTS_VIEW, &matView);
+	m_pSprite->SetWorldViewLH(NULL, &matView);
+	HRESULT sOK = m_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE | D3DXSPRITE_BILLBOARD);
+
+	for (int i = 0;i < m_userName.size();i++)
+	{
+		RECT rc;
+		char tChar = m_userName[i];
+		int tPos;
+
+		tPos = tChar - 33;
+
+		SetRect(&rc,
+			(tPos % tTempValue) * textPosX,
+			(tPos / tTempValue) * textPosY,
+			((tPos % tTempValue) * textPosX) + textPosX,
+			((tPos / tTempValue) * textPosY) + textPosY);
+
+		matWorld._43 = matWorld._43 - 0.08f;
+
+		m_pSprite->SetTransform(&matWorld);
+		m_pSprite->Draw(mPtexture, &rc, &D3DXVECTOR3(8, 0, 0), &D3DXVECTOR3(0, 0, 0), 0xFFFFFFFF);
+	}
+
+	m_pSprite->End();
 }
 
 NxVec3 cCar::WheelArrow(float angle, bool back)

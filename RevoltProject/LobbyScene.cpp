@@ -7,6 +7,7 @@
 LobbyScene::LobbyScene()
 	: m_pMap(NULL)
 	, m_pLobby(NULL)
+	, m_isPlayBGM(false)
 {
 }
 
@@ -32,6 +33,8 @@ void LobbyScene::Setup()
 	// ==========================
 	SetupLight();
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
+
+
 }
 
 void LobbyScene::Update()
@@ -39,9 +42,11 @@ void LobbyScene::Update()
 	if (m_pMap)	m_pMap->Update();
 	if (m_pLobby) m_pLobby->Update();
 
-	//cLight light;
-	//light.SetupPoint(0, C_WHITE, *g_pCamManager->GetCamPos(), 50);
-	//light.Switch(true);
+	if (!m_isPlayBGM)
+	{
+		g_pSoundManager->Play("BGM_LOBBY", 0.8f);
+		m_isPlayBGM = true;
+	}
 }
 
 void LobbyScene::Render()
@@ -76,6 +81,7 @@ void LobbyScene::Render()
 
 void LobbyScene::Destroy()
 {
+	
 	/*if (m_pMap)
 	{
 		m_pMap->Destroy();

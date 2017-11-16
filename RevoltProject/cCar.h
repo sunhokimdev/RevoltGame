@@ -67,10 +67,13 @@ private:
 	SYNTHESIZE(int, m_currCheckBoxID, CurrCheckBoxID);			//최근에 체크된 박스
 	SYNTHESIZE(int, m_nextCheckBoxID, NextCheckBoxID);			//드음에 체크할 박스
 	SYNTHESIZE(int, m_countRapNum, CountRapNum);				//돈 바퀴수
+	SYNTHESIZE(int*, m_pEndRapNum, EndRapNum);					//돌아야 하는 바퀴 수
 
-	SYNTHESIZE(float, m_rapTimeCount, RapTimeCount);			//현제 렙 시간
-	SYNTHESIZE(float, m_bastRapTimeCount, BastRapTimeCount);	//가장 짭은 랩 시간
+	SYNTHESIZE(float, m_LabTimeCount, LabTimeCount); //현제 렙 시간
+	SYNTHESIZE(float, m_bastLabTimeCount, BastLabTimeCount);	//가장 짭은 랩 시간
 	SYNTHESIZE(float, m_totlaTimeCount, TotlaTimeCount);		//총 경과된 랩 시간
+
+
 
 	//m_aICheckBoxID에서 다음 체크박스를 가리키는 방향
 //	SYNTHESIZE(D3DXVECTOR3, m_nextDir, NextCheckDir);
@@ -89,6 +92,9 @@ private:
 	std::vector<D3DXVECTOR3>	m_vecWorldVertex;
 	std::vector<D3DXPLANE>		m_vecPlane;
 
+	//Rank관련
+	float m_fRankPoint;
+	
 public:
 	cCar();
 	~cCar();
@@ -142,14 +148,23 @@ public:
 
 	void UpdateSound();
 
+	void UpdateRankPoint();
+
+	float GetRankPoint() { return m_fRankPoint; }
 	/*   김선호   */
 	///////////////////////////////////////
+private:
+	LPD3DXSPRITE m_pSprite;
+	LPDIRECT3DTEXTURE9 m_pNameTexture;
 public:
 	void SetResetNetworkKey();
 	void SetNetworkKey(std::string);
+	void RenderBillboardID();
 
 	SYNTHESIZE(NxVec3, m_carPos, CarSunPos);
 	SYNTHESIZE(bool, m_isUser, IsUser);
+	SYNTHESIZE(float, m_yAngle, YAngle);
+	SYNTHESIZE(std::string, m_userName, UserName);
 	////////////////////////////////////////
 	//e
 	NxVec3 CarArrow(float degAngle = 0);
