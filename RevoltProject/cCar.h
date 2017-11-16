@@ -97,9 +97,12 @@ private:
 
 	//Rank°ü·Ã
 	float m_fRankPoint;
-	
+
+	SYNTHESIZE(int, m_nCurRank, CurRank);
+
 	bool m_itemEable;
 	int m_itemEableTime;
+
 public:
 	cCar();
 	~cCar();

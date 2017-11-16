@@ -342,26 +342,31 @@ void RacingScene::UpdateSound()
 void RacingScene::UpdateRnak()
 {
 	m_vecRank.clear();
-	std::map<float, std::string> mapRank;
+	//std::map<float, std::string> mapRank;
+	std::map<float, cCar*> mapRank;
 
 	for (int i = 0; i < vecCars.size(); i++)
 	{
-		mapRank.insert(std::make_pair(vecCars[i]->GetRankPoint(), vecCars[i]->GetUserNameW()));
+		mapRank.insert(std::make_pair(vecCars[i]->GetRankPoint(), vecCars[i]));
 	}
 
-	std::map<float, std::string>::iterator iter;
+	int num = mapRank.size();
+	std::map<float, cCar*>::iterator iter;
 	for (iter = mapRank.begin();
 		iter != mapRank.end();
 		iter++)
 	{
 		m_vecRank.insert(m_vecRank.begin(),iter->second);
+		//m_vecRank.push_back(iter->second);
+		iter->second->SetCurRank(num);
+		num--;
 	}
 	
 	if (g_pKeyManager->isOnceKeyDown('U'))
 	{
 		for (int i = 0; i < m_vecRank.size(); i++)
 		{
-			std::cout << m_vecRank[i] << std::endl;
+			std::cout << i + 1 << " : " << m_vecRank[i]->GetUserNameW() << " : " << m_vecRank[i]->GetCurRank() << std::endl;
 		}
 		std::cout << std::endl;
 	}
