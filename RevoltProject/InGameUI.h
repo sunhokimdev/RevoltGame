@@ -95,17 +95,17 @@ private:
 	UIImageView* m_pResultRing;
 	UITextImageView* m_pRaceResult;
 	UITextImageView* m_pFirst;
-	UITextImageView* m_pPlayerName;
+	UITextImageView* m_pFirstPlayerName;
 
-	UITextImageView* m_pResultMinTenth;
-	UITextImageView* m_pResultMinOneth;
-	UITextImageView* m_pResultMinColon;
-	UITextImageView* m_pResultSecTenth;
-	UITextImageView* m_pResultSecOneth;
-	UITextImageView* m_pResultSecColon;
-	UITextImageView* m_pResultDotMilth;
-	UITextImageView* m_pResultDotTenth;
-	UITextImageView* m_pResultDotOneth;
+	UITextImageView* m_pFirstResultMinTenth;
+	UITextImageView* m_pFirstResultMinOneth;
+	UITextImageView* m_pFirstResultMinColon;
+	UITextImageView* m_pFirstResultSecTenth;
+	UITextImageView* m_pFirstResultSecOneth;
+	UITextImageView* m_pFirstResultSecColon;
+	UITextImageView* m_pFirstResultDotMilth;
+	UITextImageView* m_pFirstResultDotTenth;
+	UITextImageView* m_pFirstResultDotOneth;
 
 
 

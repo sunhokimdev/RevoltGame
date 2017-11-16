@@ -406,52 +406,43 @@ void InGameUI::Setup()
 	m_pRaceResult->SetPosition(10, 10);
 	m_pRaceResult->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
+	// First
 	m_pFirst = new UITextImageView;
 	m_pFirst->SetTexture("UIImage/font2.png");
 	m_pFirst->SetXSize(1.0f);
 	m_pFirst->SetYSize(1.0f);
 	m_pFirst->SetPosition(0, 30);
-
-	m_pPlayerName = new UITextImageView;
-	m_pPlayerName->SetTexture("UIImage/font2.png");
-	m_pPlayerName->SetPosition(30, 0);
-	m_pPlayerName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
-
-	m_pResultMinTenth = new UITextImageView;
-	m_pResultMinTenth->SetTexture("UIImage/font2.png");
-	m_pResultMinTenth->SetPosition(160, 0);
-
-	m_pResultMinOneth = new UITextImageView;
-	m_pResultMinOneth->SetTexture("UIImage/font2.png");
-	m_pResultMinOneth->SetPosition(10, 0);
-
-	m_pResultMinColon = new UITextImageView;
-	m_pResultMinColon->SetTexture("UIImage/font2.png");
-	m_pResultMinColon->SetPosition(10, 0);
-
-	m_pResultSecTenth = new UITextImageView;
-	m_pResultSecTenth->SetTexture("UIImage/font2.png");
-	m_pResultSecTenth->SetPosition(10, 0);
-
-	m_pResultSecOneth = new UITextImageView;
-	m_pResultSecOneth->SetTexture("UIImage/font2.png");
-	m_pResultSecOneth->SetPosition(10, 0);
-
-	m_pResultSecColon = new UITextImageView;
-	m_pResultSecColon->SetTexture("UIImage/font2.png");
-	m_pResultSecColon->SetPosition(10, 0);
-
-	m_pResultDotMilth = new UITextImageView;
-	m_pResultDotMilth->SetTexture("UIImage/font2.png");
-	m_pResultDotMilth->SetPosition(10, 0);
-
-	m_pResultDotTenth = new UITextImageView;
-	m_pResultDotTenth->SetTexture("UIImage/font2.png");
-	m_pResultDotTenth->SetPosition(10, 0);
-
-	m_pResultDotOneth = new UITextImageView;
-	m_pResultDotOneth->SetTexture("UIImage/font2.png");
-	m_pResultDotOneth->SetPosition(10, 0);
+	m_pFirstPlayerName = new UITextImageView;
+	m_pFirstPlayerName->SetTexture("UIImage/font2.png");
+	m_pFirstPlayerName->SetPosition(30, 0);
+	m_pFirstPlayerName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+	m_pFirstResultMinTenth = new UITextImageView;
+	m_pFirstResultMinTenth->SetTexture("UIImage/font2.png");
+	m_pFirstResultMinTenth->SetPosition(160, 0);
+	m_pFirstResultMinOneth = new UITextImageView;
+	m_pFirstResultMinOneth->SetTexture("UIImage/font2.png");
+	m_pFirstResultMinOneth->SetPosition(10, 0);
+	m_pFirstResultMinColon = new UITextImageView;
+	m_pFirstResultMinColon->SetTexture("UIImage/font2.png");
+	m_pFirstResultMinColon->SetPosition(10, 0);
+	m_pFirstResultSecTenth = new UITextImageView;
+	m_pFirstResultSecTenth->SetTexture("UIImage/font2.png");
+	m_pFirstResultSecTenth->SetPosition(10, 0);
+	m_pFirstResultSecOneth = new UITextImageView;
+	m_pFirstResultSecOneth->SetTexture("UIImage/font2.png");
+	m_pFirstResultSecOneth->SetPosition(10, 0);
+	m_pFirstResultSecColon = new UITextImageView;
+	m_pFirstResultSecColon->SetTexture("UIImage/font2.png");
+	m_pFirstResultSecColon->SetPosition(10, 0);
+	m_pFirstResultDotMilth = new UITextImageView;
+	m_pFirstResultDotMilth->SetTexture("UIImage/font2.png");
+	m_pFirstResultDotMilth->SetPosition(10, 0);
+	m_pFirstResultDotTenth = new UITextImageView;
+	m_pFirstResultDotTenth->SetTexture("UIImage/font2.png");
+	m_pFirstResultDotTenth->SetPosition(10, 0);
+	m_pFirstResultDotOneth = new UITextImageView;
+	m_pFirstResultDotOneth->SetTexture("UIImage/font2.png");
+	m_pFirstResultDotOneth->SetPosition(10, 0);
 
 
 	/*          Set Child          */
@@ -529,16 +520,18 @@ void InGameUI::Setup()
 	m_pRootUI->AddChild(m_pResultRing);
 	m_pResultRing->AddChild(m_pRaceResult);
 	m_pRaceResult->AddChild(m_pFirst);
-	m_pFirst->AddChild(m_pResultMinTenth);
-	m_pFirst->AddChild(m_pPlayerName);
-	m_pResultMinTenth->AddChild(m_pResultMinOneth);
-	m_pResultMinOneth->AddChild(m_pResultMinColon);
-	m_pResultMinColon->AddChild(m_pResultSecTenth);
-	m_pResultSecTenth->AddChild(m_pResultSecOneth);
-	m_pResultSecOneth->AddChild(m_pResultSecColon);
-	m_pResultSecColon->AddChild(m_pResultDotMilth);
-	m_pResultDotMilth->AddChild(m_pResultDotTenth);
-	m_pResultDotTenth->AddChild(m_pResultDotOneth);
+
+	/*          First          */
+	m_pFirst->AddChild(m_pFirstResultMinTenth);
+	m_pFirst->AddChild(m_pFirstPlayerName);
+	m_pFirstResultMinTenth->AddChild(m_pFirstResultMinOneth);
+	m_pFirstResultMinOneth->AddChild(m_pFirstResultMinColon);
+	m_pFirstResultMinColon->AddChild(m_pFirstResultSecTenth);
+	m_pFirstResultSecTenth->AddChild(m_pFirstResultSecOneth);
+	m_pFirstResultSecOneth->AddChild(m_pFirstResultSecColon);
+	m_pFirstResultSecColon->AddChild(m_pFirstResultDotMilth);
+	m_pFirstResultDotMilth->AddChild(m_pFirstResultDotTenth);
+	m_pFirstResultDotTenth->AddChild(m_pFirstResultDotOneth);
 
 
 	//========================================
@@ -1057,35 +1050,105 @@ void InGameUI::UpdateArrowDir()
 
 void InGameUI::RaceResults()
 {
-	std::string ResultElapseTime;							// Elase(x.xx0)
-	std::string ResultDotTenth;								//		 x.x0x
-	std::string ResultDotMilth;								//		 x.0xx
-	std::string ResultSecOneth;								//		 0.xxx
-	std::string ResultSecTenth;								//		0x.xxx
-	std::string ResultMinOneth;								//	  0.xx.xxx
-	std::string ResultMinTenth;								//	 0x.xx.xxx
+	// String
 
-	ResultElapseTime = m_WorldDotOneth;
-	ResultDotTenth = m_DotTenth;
-	ResultDotMilth = m_DotMilth;
-	ResultSecOneth = m_SecOneth;
-	ResultSecTenth = m_SecTenth;
-	ResultMinOneth = m_MinOneth;
-	ResultMinTenth = m_MinTenth;
+	/*          First          */
+	std::string FstResultElapseTime;								
+	std::string FstResultDotTenth;								
+	std::string FstResultDotMilth;								
+	std::string FstResultSecOneth;								
+	std::string FstResultSecTenth;								
+	std::string FstResultMinOneth;								
+	std::string FstResultMinTenth;	
+
+	/*          Sec          */
+	std::string SndResultElapseTime;
+	std::string SndResultDotTenth;
+	std::string SndResultDotMilth;
+	std::string SndResultSecOneth;
+	std::string SndResultSecTenth;
+	std::string SndResultMinOneth;
+	std::string SndResultMinTenth;
+
+	/*         Third          */
+	std::string TrdResultElapseTime;
+	std::string TrdResultDotTenth;
+	std::string TrdResultDotMilth;
+	std::string TrdResultSecOneth;
+	std::string TrdResultSecTenth;
+	std::string TrdResultMinOneth;
+	std::string TrdResultMinTenth;
+
+	/*         Fourth          */
+	std::string FourthResultElapseTime;
+	std::string FourthResultDotTenth;
+	std::string FourthResultDotMilth;
+	std::string FourthResultSecOneth;
+	std::string FourthResultSecTenth;
+	std::string FourthResultMinOneth;
+	std::string FourthResultMinTenth;
+
+	/*         Fifth          */
+	std::string FifthResultElapseTime;
+	std::string FifthResultDotTenth;
+	std::string FifthResultDotMilth;
+	std::string FifthResultSecOneth;
+	std::string FifthResultSecTenth;
+	std::string FifthResultMinOneth;
+	std::string FifthResultMinTenth;
+
+	/*         Sixth          */
+	std::string SixthResultElapseTime;
+	std::string SixthResultDotTenth;
+	std::string SixthResultDotMilth;
+	std::string SixthResultSecOneth;
+	std::string SixthResultSecTenth;
+	std::string SixthResultMinOneth;
+	std::string SixthResultMinTenth;
+
+	/*         Seventh          */
+	std::string SeventhResultElapseTime;
+	std::string SeventhResultDotTenth;
+	std::string SeventhResultDotMilth;
+	std::string SeventhResultSecOneth;
+	std::string SeventhResultSecTenth;
+	std::string SeventhResultMinOneth;
+	std::string SeventhResultMinTenth;
+
+	/*         Eighth          */
+	std::string EighthResultElapseTime;
+	std::string EighthResultDotTenth;
+	std::string EighthResultDotMilth;
+	std::string EighthResultSecOneth;
+	std::string EighthResultSecTenth;
+	std::string EighthResultMinOneth;
+	std::string EighthResultMinTenth;
 
 
-	m_pResultMinTenth->SetText(ResultMinTenth);
-	m_pResultMinOneth->SetText(ResultMinOneth);
-	m_pResultMinColon->SetText(":");
-	m_pResultSecTenth->SetText(ResultSecTenth);
-	m_pResultSecOneth->SetText(ResultSecOneth);
-	m_pResultSecColon->SetText(":");
-	m_pResultDotMilth->SetText(ResultDotMilth);
-	m_pResultDotTenth->SetText(ResultDotTenth);
-	m_pResultDotOneth->SetText(ResultElapseTime);
+	FstResultElapseTime		= m_WorldDotOneth;
+	FstResultDotTenth		= m_DotTenth;
+	FstResultDotMilth		= m_DotMilth;
+	FstResultSecOneth		= m_SecOneth;
+	FstResultSecTenth		= m_SecTenth;
+	FstResultMinOneth		= m_MinOneth;
+	FstResultMinTenth		= m_MinTenth;
+
+
+
+
+
 	m_pResultRing->SetTexture("UIImage/ring.png");
 	m_pRaceResult->SetText("Race Results");
-	m_pPlayerName->SetText(g_pDataManager->vecPlayerData[0]->ID);
+	m_pFirstResultMinTenth->SetText(FstResultMinTenth);
+	m_pFirstResultMinOneth->SetText(FstResultMinOneth);
+	m_pFirstResultMinColon->SetText(":");
+	m_pFirstResultSecTenth->SetText(FstResultSecTenth);
+	m_pFirstResultSecOneth->SetText(FstResultSecOneth);
+	m_pFirstResultSecColon->SetText(":");
+	m_pFirstResultDotMilth->SetText(FstResultDotMilth);
+	m_pFirstResultDotTenth->SetText(FstResultDotTenth);
+	m_pFirstResultDotOneth->SetText(FstResultElapseTime);
+	m_pFirstPlayerName->SetText(g_pDataManager->vecPlayerData[0]->ID);
 	m_pFirst->SetText("01");
 }
 
