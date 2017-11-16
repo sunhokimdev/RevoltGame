@@ -334,24 +334,31 @@ void cCar::Update()
 	{
 		if (m_isAI) CtrlAI();
 		else CtrlPlayer();
-		//if (g_pKeyManager->isStayKeyDown(VK_TAB))
-		//{
-		//	CtrlPlayer();
-		//}
-		//이하 AI, PLAYER 의 동일 사용 함수
-
-		//자동차 움직임
-		CarMove();
-
-		//자동차 리포지션
-		if (INPUT_KEY[E_BIT_REPOS]) RePosition();
-
-		//아이템 사용
-		if (INPUT_KEY[E_BIT_ITEM_]) UsedItem();
-
-		//차 뒤집기
-		if (INPUT_KEY[E_BIT_FLIP_]) CarFlip();
 	}
+
+	//경기장 밖으로 나가버리면...
+	if (GetPhysXData()->GetPositionToNxVec3().y > 11.f || GetPhysXData()->GetPositionToNxVec3().y < -11.f)
+	{
+		INPUT_KEY[E_BIT_REPOS] = true;
+	}
+
+	//if (g_pKeyManager->isStayKeyDown(VK_TAB))
+	//{
+	//	CtrlPlayer();
+	//}
+	//이하 AI, PLAYER 의 동일 사용 함수
+
+	//자동차 움직임
+	CarMove();
+
+	//자동차 리포지션
+	if (INPUT_KEY[E_BIT_REPOS]) RePosition();
+
+	//아이템 사용
+	if (INPUT_KEY[E_BIT_ITEM_]) UsedItem();
+
+	//차 뒤집기
+	if (INPUT_KEY[E_BIT_FLIP_]) CarFlip();
 
 	// PickUp 충돌
 	CollidePickUp();
@@ -1016,7 +1023,7 @@ bool cCar::IsIn(D3DXVECTOR3* pv)
 	// 시야에서 가려질 경우
 	D3DXVECTOR3 thisCar = GetPhysXData()->GetPositionToD3DXVec3() + D3DXVECTOR3(0, 0.3, 0);
 	D3DXVECTOR3 toDirL = (*pv + D3DXVECTOR3(0, 0.3, 0)) - thisCar;
-	D3DXVECTOR3 toDir(0,0,0);
+	D3DXVECTOR3 toDir(0, 0, 0);
 	D3DXVec3Normalize(&toDir, &toDirL);
 	NxRaycastHit hit = RAYCAST(thisCar, toDir, 1000);
 	if (hit.distance < D3DXVec3Length(&toDirL))
