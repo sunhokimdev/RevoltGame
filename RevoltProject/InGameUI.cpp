@@ -338,6 +338,25 @@ void InGameUI::Setup()
 	pITV_Rank2->SetTexture("UIImage/font2.png");
 	pITV_Rank2->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
+	pITV_preRank = new UITextImageView;
+	pITV_preRank->SetXSize(1.0f);
+	pITV_preRank->SetYSize(1.0f);
+	pITV_preRank->SetPosition(55, -10);
+	pITV_preRank->SetText("aaa");
+	pITV_preRank->SetTexture("UIImage/font2.png");
+
+	pITV_nextRank = new UITextImageView;
+	pITV_nextRank->SetXSize(1.0f);
+	pITV_nextRank->SetYSize(1.0f);
+	pITV_nextRank->SetPosition(55, -30);
+	pITV_nextRank->SetText("bbbb");
+	pITV_nextRank->SetTexture("UIImage/font2.png");
+
+
+
+
+	// 아이템 리스트
+
 	m_pItemImage = new UIImageView;
 	m_pItemImage->SetXSize(1.2f);
 	m_pItemImage->SetYSize(1.2f);
@@ -410,6 +429,8 @@ void InGameUI::Setup()
 
 	pImageView7->AddChild(pITV_Rank);
 	pImageView7->AddChild(pITV_Rank2);
+	pImageView7->AddChild(pITV_preRank);
+	pITV_preRank->AddChild(pITV_nextRank);
 
 	pSpeedFrame->AddChild(m_pSpeedometerImage);
 	pSpeedFrame->AddChild(m_pSpeedOne);

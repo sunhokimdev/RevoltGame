@@ -80,6 +80,9 @@ private:
 	// 등수, 방향 화살표
 	UITextImageView* pITV_Rank;
 	UITextImageView* pITV_Rank2;
+	UITextImageView* pITV_preRank;
+	UITextImageView* pITV_nextRank;
+
 	UIImageView* pIV_arrowDir;
 
 	//321go

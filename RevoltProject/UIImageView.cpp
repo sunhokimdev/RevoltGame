@@ -87,7 +87,7 @@ void UIImageView::Update()
 	}
 	else if (m_isSpeed)
 	{
-		m_Rpm = m_Rpm * 7;
+		m_Rpm = abs(m_Rpm) * 7;
 
 		for (int i = 0; i < sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]); i++)
 		{
