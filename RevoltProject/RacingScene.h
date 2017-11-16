@@ -1,10 +1,10 @@
 #pragma once
 #include "GameNode.h"
 
+class cFirework;
 class cTrack;
 class cLight;
 class cCar;
-class cBillBoardEffect;
 class InGameUI;
 class cSkyBox;
 
@@ -47,7 +47,7 @@ private:
 
 	SYNTHESIZE(eRACE_PROG, m_eRaceProg, RaceProg);
 
-	std::vector<std::string> m_vecRank;
+	std::vector<cCar*> m_vecRank;
 
 public:
 
@@ -68,14 +68,15 @@ public:
 
 
 //	void CreateCar(int carId) {}
-	void CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userName, std::string carName, int trackEndCount, bool isAI, bool isUser = false);
+	void CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userName, std::string carName, int* trackEndCount, bool isAI, bool isUser = false);
 	//void CreateCar(int playerID, std::string carName);
 	void LinkUI(int playerID);
+	void FindTarget(cCar* MyCar);
 
 	/*   김선호   */
 	void NetworkLoop();			// 네트워크 통신하는 부분
 	void SetNetworkCarData();		// 자동차 데이터 세팅하는 메서드
 
-	std::vector<std::string>* GetRankVectorPt() { return &m_vecRank; }
+	std::vector<cCar*>* GetRankVectorPt() { return &m_vecRank; }
 };
 

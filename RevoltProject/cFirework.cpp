@@ -11,6 +11,7 @@ cFirework::cFirework()
 	, m_isTarget(false)
 	, m_isSound(false)
 {
+	cItem::cItem();
 }
 
 
@@ -48,7 +49,7 @@ void cFirework::Update()
 	fwPos.x = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().x;
 	fwPos.y = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().y;
 	fwPos.z = m_pPhysX->pPhysX->m_pActor->getGlobalPosition().z;
-		
+
 	m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pPhysX->m_pActor->getGlobalPose().t);
 
 	if (!m_isUse && !m_pEffect->GetIsUse())
@@ -63,9 +64,11 @@ void cFirework::Update()
 	{
 		NxVec3 force;
 
+		std::cout << m_isTarget << std::endl;
+
 		if (m_isTarget)
 		{
-			D3DXVECTOR3 tar = D3DXVECTOR3(-10.0f, 0.0f, -10.0f);
+			D3DXVECTOR3 tar = m_Target;
 			dir = tar - fwPos;
 
 			D3DXVec3Normalize(&dir, &dir);
@@ -73,6 +76,7 @@ void cFirework::Update()
 			force.x = dir.x * 1000;
 			force.y = dir.y * 500;
 			force.z = dir.z * 500;
+
 		}
 		else
 		{
@@ -143,7 +147,6 @@ void cFirework::Render()
 
 void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 {
-	m_isTarget = false;
 	dir = angle;
 
 	m_pPhysX->pos.x = pos.x;

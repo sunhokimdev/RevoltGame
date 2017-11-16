@@ -33,7 +33,7 @@ struct ST_USERDATA
 
 enum eITEM_LIST{ 
 	ITEM_NONE, 
-	ITEM_WBOMB,
+	ITEM_WBOMB, 
 	ITEM_FIREWORK,
 	ITEM_GRAVITY,
 	ITEM_MYBOMB,
@@ -57,6 +57,7 @@ private:
 	int m_vecIndex[4];
 	eITEM_LIST m_eItemList;
 
+	cCar* m_pTarPos;
 public:
 	SINGLETONE(ItemManager);
 
@@ -64,10 +65,12 @@ public:
 	void Update();
 	void Render();
 
+	cItem* GetLastItem() { return m_vecItem[m_vecItem.size() - 1]; }
+
 	void SetFire(D3DXVECTOR3 angle, D3DXVECTOR3 pos);
 	void SetActorGroup(NxActor* actor, NxCollisionGroup group);
 	void InitCollisionGroup();
-	void FireItem(eITEM_LIST tag/*아이템종류*/,cCar* car/*자동차 포인터*/);
+	void FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인터*/, cCar* target = NULL);
 
 	int GetItemID();
 	void SetItemID(eITEM_LIST e) { m_eItemList = e; };

@@ -32,73 +32,6 @@ void ItemManager::Init()
 	USERDATA* user1 = new USERDATA;
 	user1->USER_TAG = E_PHYSX_TAG_NONE;
 
-	//for (int i = 0;i < 10;i++)
-	//{
-	//	cWbomb* pItem = new cWbomb;
-	//	pItem->Setup();
-	//	pItem->SetIsUse(false);
-	//	pItem->SetItemTag(ITEM_WBOMB);
-	//	m_vecItem.push_back(pItem);
-	//}
-	//
-	//for (int i = 0;i < 10;i++)
-	//{
-	//	cGravityball* pItem = new cGravityball;
-	//	pItem->Setup();
-	//	pItem->SetIsUse(false);
-	//	m_vecItem.push_back(pItem);
-	//}
-	//
-	//for (int i = 0;i < 10;i++)
-	//{
-	//	cMyBomb* pItem = new cMyBomb;
-	//	pItem->Setup();
-	//	pItem->SetIsUse(false);
-	//	pItem->SetItemTag(ITEM_MYBOMB);
-	//	m_vecItem.push_back(pItem);
-	//}
-
-
-	/* ¾ÆÀÌÅÛ »ç¿ëÇÒ¶§¸¶´Ù »ý¼ºÀ¸·Î ¹Ù²Þ */
-	//for (int i = 0;i < 10;i++)
-	//{
-	//	cWbomb* pItem = new cWbomb;
-	//	pItem->Setup();
-	//	pItem->SetIsUse(false);
-	//	pItem->SetItemTag(ITEM_WBOMB);
-	//	m_vecItem.push_back(pItem);
-	//}
-	//
-	//for (int i = 0;i < 10;i++)
-	//{
-	//	cGravityball* pItem = new cGravityball;
-	//	pItem->Setup();
-	//	pItem->SetIsUse(false);
-	//	m_vecItem.push_back(pItem);
-	//}
-	//
-	//for (int i = 0;i < 10;i++)
-	//{
-	//	cMyBomb* pItem = new cMyBomb;
-	//	pItem->Setup();
-	//	pItem->SetIsUse(false);
-	//	pItem->SetItemTag(ITEM_MYBOMB);
-	//	m_vecItem.push_back(pItem);
-	//}
-	//
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	cFirework* pItem = new cFirework;
-	//	pItem->Setup();
-	//	pItem->SetIsUse(false);
-	//	pItem->SetItemTag(ITEM_FIREWORK);
-	//	m_vecItem.push_back(pItem);
-	//}
-	//
-	//for (int i = 0;i < 4;i++)
-	//{
-	//	m_vecIndex[i] = 0;
-	//}
 
 	InitCollisionGroup();
 }
@@ -117,22 +50,10 @@ void ItemManager::Update()
 			m_vecItem.erase(m_vecItem.begin() + i);
 			break;
 		}
-	}
 
-	//for (int i = 0; i < 4; ++i)
-	//{
-	//	for (int j = 0; j < m_vecIndex[i]; ++j)
-	//	{
-	//		m_vecItem[j + i * 10]->Update();
-	//	}
-	//}
-	//for (int i = 0; i < 4; ++i)
-	//{
-	//	for (int j = 0; j < m_vecIndex[i]; ++j)
-	//	{
-	//		m_vecItem[j + i * 10]->LastUpdate();
-	//	}
-	//}
+		if (m_vecItem[i]->GetIsFw())
+			m_vecItem[i]->SetTarget(m_pTarPos->GetPosition());
+	}
 }
 
 void ItemManager::Render()
@@ -141,14 +62,6 @@ void ItemManager::Render()
 	{
 		m_vecItem[i]->Render();
 	}
-
-	//for (int i = 0; i < 4; ++i)
-	//{
-	//	for (int j = 0; j < m_vecIndex[i]; ++j)
-	//	{
-	//		m_vecItem[j + i * 10]->Render();
-	//	}
-	//}
 }
 
 void ItemManager::SetFire(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
@@ -173,7 +86,7 @@ void ItemManager::InitCollisionGroup()
 	
 }
 
-void ItemManager::FireItem(eITEM_LIST tag/*¾ÆÀÌÅÛÁ¾·ù*/, cCar* car/*ÀÚµ¿Â÷ Æ÷ÀÎÅÍ*/)
+void ItemManager::FireItem(eITEM_LIST tag/*¾ÆÀÌÅÛÁ¾·ù*/, cCar* car/*ÀÚµ¿Â÷ Æ÷ÀÎÅÍ*/, cCar* target)
 {
 	D3DXVECTOR3 carPos = car->GetPosition(); // ÀÚµ¿Â÷ À§Ä¡
 	D3DXMATRIXA16 matR;
@@ -183,7 +96,6 @@ void ItemManager::FireItem(eITEM_LIST tag/*¾ÆÀÌÅÛÁ¾·ù*/, cCar* car/*ÀÚµ¿Â÷ Æ÷ÀÎÅ
 	carDir.x = car->CarArrow(0).x;
 	carDir.y = car->CarArrow(0).y;
 	carDir.z = car->CarArrow(0).z;
-	//D3DXVec3TransformNormal(&carDir, &carDir, &matR);
 	
 	switch (tag)
 	{
@@ -195,11 +107,6 @@ void ItemManager::FireItem(eITEM_LIST tag/*¾ÆÀÌÅÛÁ¾·ù*/, cCar* car/*ÀÚµ¿Â÷ Æ÷ÀÎÅ
 			m_vecItem.push_back(pItem);
 			m_vecItem[m_vecItem.size() - 1]->Create(carDir, carPos);
 			m_vecItem[m_vecItem.size() - 1]->SetIsUse(true);
-
-			//m_vecItem[m_vecIndex[0]]->Create(carDir, carPos);
-			//m_vecItem[m_vecIndex[0]]->SetIsUse(true);
-			//
-			//m_vecIndex[0]++;
 		}
 		break;
 		case ITEM_GRAVITY:
@@ -211,11 +118,6 @@ void ItemManager::FireItem(eITEM_LIST tag/*¾ÆÀÌÅÛÁ¾·ù*/, cCar* car/*ÀÚµ¿Â÷ Æ÷ÀÎÅ
 			m_vecItem.push_back(pItem);
 			m_vecItem[m_vecItem.size() - 1]->Create(carDir, carPos);
 			m_vecItem[m_vecItem.size() - 1]->SetIsUse(true);
-
-			//m_vecItem[m_vecIndex[1] + 10]->Create(carDir, carPos);
-			//m_vecItem[m_vecIndex[1] + 10]->SetIsUse(true);
-			//
-			//m_vecIndex[1]++;
 		}
 		break;
 		case ITEM_MYBOMB:
@@ -227,28 +129,34 @@ void ItemManager::FireItem(eITEM_LIST tag/*¾ÆÀÌÅÛÁ¾·ù*/, cCar* car/*ÀÚµ¿Â÷ Æ÷ÀÎÅ
 			m_vecItem[m_vecItem.size() - 1]->SetCar(car);
 			m_vecItem[m_vecItem.size() - 1]->Create(carDir, carPos);
 			m_vecItem[m_vecItem.size() - 1]->SetIsUse(true);
-
-			//m_vecItem[m_vecIndex[2] + 20]->SetCar(car);
-			//m_vecItem[m_vecIndex[2] + 20]->Create(carDir, carPos);
-			//m_vecItem[m_vecIndex[2] + 20]->SetIsUse(true);
-			//
-			//m_vecIndex[2]++;
 		}
 		break;
 		case ITEM_FIREWORK:
 		{
-			cItem* pItem = new cFirework;
-			pItem->Setup();
-			pItem->SetItemTag(ITEM_FIREWORK);
-			m_vecItem.push_back(pItem);
-			m_vecItem[m_vecItem.size() - 1]->Create(carDir, carPos);
-			m_vecItem[m_vecItem.size() - 1]->SetIsUse(true);
-
-
-			//m_vecItem[m_vecIndex[3] + 30]->Create(carDir, carPos);
-			//m_vecItem[m_vecIndex[3] + 30]->SetIsUse(true);
-			//
-			//m_vecIndex[3]++;
+			if (target)
+			{
+				cFirework* pItem = new cFirework;
+				pItem->Setup();
+				pItem->SetItemTag(ITEM_FIREWORK);
+				pItem->SetIsTarget(true);
+				pItem->SetIsFw(true);
+				pItem->SetCar(car);
+				pItem->SetTarget(target->GetPosition());
+				m_pTarPos = target;
+				m_vecItem.push_back(pItem);
+				m_vecItem[m_vecItem.size() - 1]->Create(carDir, carPos);
+				m_vecItem[m_vecItem.size() - 1]->SetIsUse(true);
+			}
+			else
+			{
+				cFirework* pItem = new cFirework;
+				pItem->Setup();
+				pItem->SetItemTag(ITEM_FIREWORK);
+				pItem->SetIsTarget(false);
+				m_vecItem.push_back(pItem);
+				m_vecItem[m_vecItem.size() - 1]->Create(carDir, carPos);
+				m_vecItem[m_vecItem.size() - 1]->SetIsUse(true);
+			}
 		}
 		break;
 		case ITEM_FAKEBOMB:
@@ -266,25 +174,15 @@ void ItemManager::FireItem(eITEM_LIST tag/*¾ÆÀÌÅÛÁ¾·ù*/, cCar* car/*ÀÚµ¿Â÷ Æ÷ÀÎÅ
 		default: break;
 	}
 
-	//for (int i = 0;i < 4;i++)
-	//{
-	//	if (m_vecIndex[i] == 10)
-	//		m_vecIndex[i] = 0;
-	//}
 }
 
 int ItemManager::GetItemID()
 {
-	if (m_eItemList == ITEM_WBOMB)
-		return 8;
-	else if (m_eItemList == ITEM_FIREWORK)
-		return 6;
-	else if (m_eItemList == ITEM_MYBOMB)
-		return 5;
-	else if (m_eItemList == ITEM_GRAVITY)
-		return 4;
-	else
-		return INT_MAX;
+	if (m_eItemList == ITEM_WBOMB)				return 8;
+	else if (m_eItemList == ITEM_FIREWORK)		return 6;
+	else if (m_eItemList == ITEM_MYBOMB)		return 5;
+	else if (m_eItemList == ITEM_GRAVITY)		return 4;
+	else return INT_MAX;
 }
 
 void ItemManager::Destroy()

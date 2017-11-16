@@ -56,7 +56,11 @@ void UIImageView::Update()
 		{
 			m_alpha = 255;
 
-			m_itemID = g_pItemManager->GetItemID();
+			if (m_pCar->GetHoldItem() == ITEM_WBOMB)				m_itemID= 8;
+			else if (m_pCar->GetHoldItem() == ITEM_FIREWORK)		m_itemID= 6;
+			else if (m_pCar->GetHoldItem() == ITEM_MYBOMB)			m_itemID= 5;
+			else if (m_pCar->GetHoldItem() == ITEM_GRAVITY)			m_itemID= 4;
+			else m_itemID = INT_MAX;
 		}
 		else if(m_pCar->GetHoldItem() != eITEM_LIST::ITEM_NONE)
 		{

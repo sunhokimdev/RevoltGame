@@ -15,9 +15,12 @@ cAI_CtrlUseItem::~cAI_CtrlUseItem()
 
 void cAI_CtrlUseItem::Update()
 {
+	if (!AI_Data->pCar->m_itemEable) return;
+
 	float lengrh = 0.f;
 	m_isFire = false;
 	int a = 0;
+
 	switch (AI_Data->pCar->GetHoldItem())
 	{
 	case ITEM_FIREWORK:
@@ -89,6 +92,7 @@ void cAI_CtrlUseItem::Update()
 		}
 	}break;
 	case ITEM_MYBOMB:	m_isFire = true; break;
+	case ITEM_FAKEBOMB: m_isFire = true; break;
 	case ITEM_NONE:		break;
 
 	default:		break;

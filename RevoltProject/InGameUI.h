@@ -94,26 +94,24 @@ private:
 	cCar* m_pCar;
 	RacingScene* m_pRacingScene;
 
-public:
-	InGameUI();
-	virtual ~InGameUI();
+	// Race Result
+	UIImageView* m_pResultRing;
+	UITextImageView* m_pRaceResult;
+	UITextImageView* m_pFirst;
+	UITextImageView* m_pPlayerName;
 
-	virtual void Setup();
-	virtual void Update();
-	virtual void Render(LPD3DXSPRITE pSprite);
-	virtual void Destroy();
+	UITextImageView* m_pResultMinTenth;
+	UITextImageView* m_pResultMinOneth;
+	UITextImageView* m_pResultMinColon;
+	UITextImageView* m_pResultSecTenth;
+	UITextImageView* m_pResultSecOneth;
+	UITextImageView* m_pResultSecColon;
+	UITextImageView* m_pResultDotMilth;
+	UITextImageView* m_pResultDotTenth;
+	UITextImageView* m_pResultDotOneth;
 
-	UIObject* GetUIObject() { return m_pRootUI; }
-	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
 
-	void UpdateSpeed();
-	void UpdateLabCount();									// UpdateCurrentLab
-	void UpdateLastTime();									// UpdateLastTimer
-	void CompareBestTime();									// UpdateBestTimer(Compare BestLab with CurrentLab)
-	void UpdateLabTime();									// UpdateLabTimer
-	void UpdateRaceTime();									// UpdateRaceTimer
-	void UpdateArrowDir();									// 화살표 방향
-	void RaceResults();
+
 
 	/*          SYNTHESIZE          */
 
@@ -155,6 +153,26 @@ public:
 	SYNTHESIZE(int, m_SecTenth, SecTenth);
 	SYNTHESIZE(int, m_MinOneth, MinOneth);
 	SYNTHESIZE(int, m_MinTenth, MinTenth);
+public:
+	InGameUI();
+	virtual ~InGameUI();
+
+	virtual void Setup();
+	virtual void Update();
+	virtual void Render(LPD3DXSPRITE pSprite);
+	virtual void Destroy();
+
+	UIObject* GetUIObject() { return m_pRootUI; }
+	void SetLobby(LOBBY* lobby) { m_pLobby = lobby; }
+
+	void UpdateSpeed();
+	void UpdateLabCount();									// UpdateCurrentLab
+	void UpdateLastTime();									// UpdateLastTimer
+	void CompareBestTime();									// UpdateBestTimer(Compare BestLab with CurrentLab)
+	void UpdateLabTime();									// UpdateLabTimer
+	void UpdateRaceTime();									// UpdateRaceTimer
+	void UpdateArrowDir();									// 화살표 방향
+	void RaceResults();
 
 	void LinkCarPt(cCar* car);
 	void LinkTrack(cTrack* track) { m_pTrack = track; }
