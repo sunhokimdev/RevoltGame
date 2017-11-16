@@ -25,10 +25,9 @@ void cAI_CtrlUseItem::Update()
 	{
 	case ITEM_FIREWORK:
 	{
-		//lengrh = 30;
-		//if (AI_Data->pCar->m_pTarget)
-		//	m_isFire = true;
-		//break;
+		if (AI_Data->pCar->GetTarget() != NULL)
+			m_isFire = true;
+		break;
 	}
 	break;
 	case ITEM_WBOMB:	lengrh = 30.f;

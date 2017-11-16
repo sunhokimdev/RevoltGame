@@ -167,6 +167,7 @@ public:
 private:
 	LPD3DXSPRITE m_pSprite;
 	LPDIRECT3DTEXTURE9 m_pNameTexture;
+	D3DXCOLOR m_textIDColor;
 public:
 	void SetResetNetworkKey();
 	void SetNetworkKey(std::string);

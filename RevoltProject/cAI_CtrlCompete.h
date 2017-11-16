@@ -11,7 +11,6 @@ public:
 	D3DXVECTOR3 POS_THISPOSDIR;
 	D3DXVECTOR3 POS_CARPOSDIR;
 
-
 	float maxDistance;
 	
 	cPickUp* closePickup;

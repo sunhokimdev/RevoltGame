@@ -333,7 +333,7 @@ void cTrack::LoadTrack(std::string FileName)
 								worldPosition - localPosition,
 								matR,
 								sizeValue,
-								E_PHYSX_MATERIAL_03,
+								E_PHYSX_MATERIAL_ETC,
 								pUserData,
 								isTrigger,
 								isStatic_,

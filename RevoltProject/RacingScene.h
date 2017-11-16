@@ -77,7 +77,8 @@ public:
 	void NetworkLoop();			// 네트워크 통신하는 부분
 	void SetNetworkCarData();		// 자동차 데이터 세팅하는 메서드
 
-	std::vector<cCar*>* GetRankVectorPt() { return &m_vecRank; }
+	std::vector<cCar*> GetRankVectorPt() { return m_vecRank; }
+
 	cCar* GetRankVector(int n) { return m_vecRank[n]; }
 };
 

@@ -8,6 +8,7 @@ public:
 	SINGLETONE(cDataManager);
 private:
 public:
+	D3DXVECTOR3 m_position;
 	std::string mapName;
 	std::vector<cPlayerData*> vecPlayerData;
 
