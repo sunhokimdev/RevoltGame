@@ -504,6 +504,8 @@ float cCar::GetRpmRate()
 
 void cCar::TrackCheck()
 {
+	if (m_isCtl)	m_totlaTimeCount += g_pTimeManager->GetElapsedTime();
+
 	//체크박스 및 트랙 카운터
 	int checkId = GetPhysXData()->m_pUserData->CheckBoxID;
 	m_aICheckBoxID = (checkId == -1) ? 0 : checkId;
@@ -567,9 +569,7 @@ void cCar::TrackCheck()
 	if (m_countRapNum < *m_pEndRapNum)
 	{
 		m_LabTimeCount += g_pTimeManager->GetElapsedTime();
-		m_totlaTimeCount += g_pTimeManager->GetElapsedTime();
 	}
-	//std::cout << *m_pEndRapNum << std::endl;
 }
 
 void cCar::RunEnd()
@@ -673,6 +673,22 @@ void cCar::CollidePickUp()
 			CreateItem();
 			g_pItemManager->SetItemID(m_eHoldItem);
 		}
+	
+	}
+	
+	if(m_eHoldItem != ITEM_NONE)
+	{
+		m_itemEableTime -= 2;
+		if (m_itemEableTime <= 0)
+		{
+			m_itemEable = true;
+			m_itemEableTime = 0.f;
+		}
+	}
+	else
+	{
+		m_itemEable = false;
+		m_itemEableTime = 500;
 	}
 }
 
@@ -747,7 +763,8 @@ void cCar::CarMove()
 
 void cCar::UsedItem()
 {
-	if (m_eHoldItem != ITEM_NONE)
+	
+	if (m_eHoldItem != ITEM_NONE && m_itemEable)
 	{
 		//아이템 사용 함수 호츨
 
