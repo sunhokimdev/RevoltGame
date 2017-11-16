@@ -163,6 +163,7 @@ public:
 
 	SYNTHESIZE(NxVec3, m_carPos, CarSunPos);
 	SYNTHESIZE(bool, m_isUser, IsUser);
+	SYNTHESIZE(float, m_yAngle, YAngle);
 	SYNTHESIZE(std::string, m_userName, UserName);
 	////////////////////////////////////////
 	//e

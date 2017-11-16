@@ -122,6 +122,7 @@ void RacingScene::Update()
 	{
 		if (m_eRaceProg == RACE_PROG_GO)
 		{
+			m_pInGameUI->UpdateRaceTime();
 			for (int i = 0; i < vecCars.size(); i++)
 			{
 				vecCars[i]->m_isCtl = true;;
@@ -431,6 +432,4 @@ void RacingScene::SetNetworkCarData()
 
 		if (!IsCarRunTrue(vecCars[i])) m_eRaceProg = RACE_PROG_FINISH;
 	}
-
-	m_pInGameUI->UpdateRaceTime();
 }
