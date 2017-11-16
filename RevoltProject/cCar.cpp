@@ -671,6 +671,17 @@ void cCar::CollidePickUp()
 			CreateItem();
 			g_pItemManager->SetItemID(m_eHoldItem);
 		}
+		m_itemEable = false;
+		m_itemEableTime = 500;
+	}
+	else
+	{
+		m_itemEableTime -= 2;
+		if (m_itemEableTime <= 0)
+		{
+			m_itemEable = true;
+			m_itemEableTime = 0.f;
+		}
 	}
 }
 
@@ -745,7 +756,8 @@ void cCar::CarMove()
 
 void cCar::UsedItem()
 {
-	if (m_eHoldItem != ITEM_NONE)
+	
+	if (m_eHoldItem != ITEM_NONE && m_itemEable)
 	{
 		//아이템 사용 함수 호츨
 

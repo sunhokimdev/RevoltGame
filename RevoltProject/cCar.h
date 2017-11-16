@@ -95,6 +95,8 @@ private:
 	//Rank°ü·Ã
 	float m_fRankPoint;
 	
+	bool m_itemEable;
+	int m_itemEableTime;
 public:
 	cCar();
 	~cCar();
