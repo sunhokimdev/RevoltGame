@@ -59,7 +59,7 @@ void RacingScene::Setup()
 	for each(cPlayerData* p in g_pDataManager->vecPlayerData)
 	{
 		if (i  == m_pTrack->GetStartPositions().size()) break;
-		CreateCar(m_pTrack->GetStartPositions()[i], i,p->ID, p->CAR_NAME, p->IsAI, p->isUser);
+		CreateCar(m_pTrack->GetStartPositions()[i], i,p->ID, p->CAR_NAME, m_trackEndCount, p->IsAI, p->isUser);
 		i++;
 	}
 
@@ -82,6 +82,7 @@ void RacingScene::Destroy()
 	m_pLightSun->Destroy();
 	SAFE_DELETE(m_pLightSun);
 
+	//오류로 인한 주석처리
 	//m_pInGameUI->Destroy();
 	//SAFE_DELETE(m_pInGameUI);
 	SAFE_DESTROY(m_pSkyBox);
@@ -95,6 +96,8 @@ void RacingScene::Destroy()
 		SAFE_DELETE(p);
 	}
 	vecCars.clear();
+
+	g_pDataManager->Reset();
 }
 
 void RacingScene::Update()
@@ -168,41 +171,6 @@ void RacingScene::Update()
 
 void RacingScene::Render()
 {
-	//D3DXVECTOR3 forward = *g_pCamManager->GetLookAt() - *g_pCamManager->GetCamPos();
-	//D3DXVec3Normalize(&forward, &forward);
-
-
-	//LPD3DXMESH mesh;
-	//D3DXCreateTeapot(g_pD3DDevice, &mesh, 0);
-
-	//D3DMATERIAL9 mtl;
-	//mtl.Ambient = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
-	//mtl.Diffuse = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
-	//mtl.Emissive = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
-	//mtl.Specular = D3DXCOLOR(0.8f, 0.8f, 0.8f, 1.0f);
-
-	//g_pD3DDevice->SetMaterial(&mtl);
-
-	//D3DXMATRIXA16 mat, matR, matT, matS;
-
-	//D3DXMatrixScaling(&matS, 1, 1, 1);
-
-	//D3DXMatrixTranslation(&matT,
-	//	vecCars[0]->GetPosition().x,
-	//	vecCars[0]->GetPosition().y,
-	//	vecCars[0]->GetPosition().z);
-
-	////D3DXMatrixIdentity(&matR);
-	//D3DXMatrixRotationZ(&matR, (D3DX_PI / 2.0f));
-	////D3DXVec3TransformNormal(&forward, &forward, &matR);
-
-	//mat = matS * vecCars[0]->GetMatrix(0,1,0) * matT;
-	//g_pD3DDevice->SetTransform(D3DTS_WORLD, &mat);
-
-	//mesh->DrawSubset(0);
-
-
-
 	if (m_pSkyBox)
 	{
 		m_pSkyBox->Render();
@@ -259,11 +227,6 @@ void RacingScene::UpdateCamera()
 		vecCars[0]->GetPosition().x,
 		vecCars[0]->GetPosition().y + 0.5f ,
 		vecCars[0]->GetPosition().z };
-
-	//D3DXVECTOR3 carPos = {
-	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().x,
-	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().y + 0.5f ,
-	//	vecCars[0]->GetPhysXData()->m_pActor->getGlobalPosition().z };
 
 	*m_camLookTarget = carPos;//D3DXVECTOR3(pos.x, pos.y + 2.f, pos.z);
 
@@ -396,7 +359,7 @@ bool RacingScene::IsCarRunTrue(cCar* pCar)
 	return m_trackEndCount > pCar->GetCountRapNum();
 }
 
-void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userName, std::string carName, bool isAI, bool isUser)
+void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userName, std::string carName, int trackEndCount, bool isAI, bool isUser)
 {
 	cCar* pCar = new cCar;
 	AI_DATA aiData(pCar, m_pTrack, &vecCars);
@@ -405,6 +368,8 @@ void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userNa
 	pCar->SetAI(isAI, aiData);
 	pCar->SetIsUser(isUser);
 	pCar->SetUserName(userName);
+	pCar->SetEndRapNum(&trackEndCount);
+
 	vecCars.push_back(pCar);
 
 	pCar->GetPhysXData()->SetPosition(m_pTrack->GetStartPositions()[playerID]);
@@ -448,9 +413,6 @@ void RacingScene::NetworkLoop()
 	//
 	if (pchIP != NULL && g_pNetworkManager->GetUserIP().find(pchIP) == -1)
 	{
-		//	//pchX = strtok(pchPOS, "/");
-		//	//pchY = strtok(NULL, "/");
-		//	//pchZ = strtok(NULL, "/");
 		//
 		printf("%s\n", pchKEY);
 	}

@@ -112,7 +112,7 @@ void Lobby::Update()
 	else if (m_stateLobby == NETWORK_IN_LOBBY)
 	{
 		/*    서버에서 recv가 무한대기에 빠지지 않도록 메시지를 계속해서 보낸다    */
-	
+
 		bool isNext = true;
 		bool isUser = false;
 
@@ -132,7 +132,7 @@ void Lobby::Update()
 				{
 					isUser = true;
 
-					if (g_pNetworkManager->GetClientReady(i)) 
+					if (g_pNetworkManager->GetClientReady(i))
 						m_pInRoom->SetUserText(g_pNetworkManager->GetClientList(i), index, D3DCOLOR_ARGB(255, 255, 0, 0));
 					else
 					{
@@ -143,12 +143,12 @@ void Lobby::Update()
 					index++;
 				}
 			}
-			
+
 			// 만약 다음스테이지로 넘어가기 위한 단계라면
 			if (isNext && isUser)
 			{
 				if (m_stateLobby == NETWORK_IN_LOBBY)
-					m_stateLobby = SELECT_MAP_LOBBY;			
+					m_stateLobby = SELECT_MAP_LOBBY;
 			}
 		}
 	}
@@ -173,23 +173,23 @@ void Lobby::Render()
 	if (m_mapLobby[m_stateLobby]->m_pObject)
 		m_mapLobby[m_stateLobby]->m_pObject->Render(m_pSprite);
 
-	if(m_stateLobby > INTRO3)
+	if (m_stateLobby > INTRO3)
 		m_pSelectMap->Render(m_pSprite);
 }
 
 void Lobby::Destroy()
 {
-	
+
 
 	SAFE_RELEASE(m_pSprite);
 	SAFE_RELEASE(m_pObjMesh);
 
-	if(m_pSelectMap)
+	if (m_pSelectMap)
 	{
 		m_pSelectMap->Destroy();
 		SAFE_DELETE(m_pSelectMap);
 	}
-	
+
 	if (m_multiLobby)
 	{
 		//m_multiLobby->Destroy();
@@ -208,19 +208,19 @@ void Lobby::Destroy()
 		//m_pSelectCarLobbby->Destroy();
 		SAFE_DELETE(m_pSelectCarLobbby);
 	}
-	
+
 	if (m_pViewCarLobby)
 	{
 		//m_pViewCarLobby->Destroy();
 		SAFE_DELETE(m_pViewCarLobby);
 	}
-	
+
 	if (m_pInRoom)
 	{
 		//m_pInRoom->Destroy();
 		SAFE_DELETE(m_pInRoom);
 	}
-	
+
 	if (m_pfileList)
 	{
 		//m_pfileList->Destroy();
@@ -252,7 +252,7 @@ void Lobby::KeyUpdate()
 
 		if (m_stateLobby == START_LOBBY)
 		{
-	
+
 		}
 		else
 		{
@@ -268,7 +268,7 @@ void Lobby::KeyUpdate()
 
 		if (m_stateLobby == START_LOBBY)
 		{
-	
+
 		}
 		else
 		{
@@ -396,7 +396,6 @@ void Lobby::KeyUpdate()
 						index++;
 					}
 				}
-
 				for (int i = index; i < 6; i++)
 				{
 					AIName = "AI" + std::to_string((i + 1) % 6);
@@ -413,7 +412,7 @@ void Lobby::KeyUpdate()
 				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
 				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
 			}
-		
+
 			g_SceneManager->ChangeScene("Race");
 
 			return;
@@ -488,7 +487,7 @@ void Lobby::KeyUpdate()
 		{
 			//g_pSoundManager->Play("menuNext.wav", 1.0f);
 			g_pSoundManager->Play("menuPrev.wav", 0.6f);
-			
+
 			m_time = 0.0f;
 			m_select = 0;
 
@@ -554,10 +553,8 @@ void Lobby::TimeUpdate()
 	{
 		m_time = 0.0f;
 
-		if (m_stateLobby == INTRO1)
-			m_stateLobby = INTRO2;
-		else if (m_stateLobby == INTRO2)
-			m_stateLobby = INTRO3;
+		if (m_stateLobby == INTRO1)			m_stateLobby = INTRO2;
+		else if (m_stateLobby == INTRO2)	m_stateLobby = INTRO3;
 		else if (m_stateLobby == INTRO3)
 		{
 			m_stateLobby = START_LOBBY;

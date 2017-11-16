@@ -68,8 +68,8 @@ public:
 
 
 //	void CreateCar(int carId) {}
-	void CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userName, std::string carName, bool isAI, bool isUser = false);
-	void CreateCar(int playerID, std::string carName);
+	void CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userName, std::string carName, int trackEndCount, bool isAI, bool isUser = false);
+	//void CreateCar(int playerID, std::string carName);
 	void LinkUI(int playerID);
 
 	/*   �輱ȣ   */

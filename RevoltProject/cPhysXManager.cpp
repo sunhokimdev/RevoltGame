@@ -37,15 +37,19 @@ BOOL cPhysXManager::InitNxPhysX()
 
 	sceneDesc.gravity = NxVec3(0.0f, -9.81f, 0.0f);
 
+
+
 	NxHWVersion HWVersion = m_pNxPhysicsSDK->getHWVersion();
 	if (HWVersion != NX_HW_VERSION_NONE)
 		sceneDesc.simType = NX_SIMULATION_HW;
+
 
 	m_pNxScene = m_pNxPhysicsSDK->createScene(sceneDesc);
 	if (m_pNxScene == NULL)
 	{
 		return S_FALSE;
 	}
+
 
 	m_physXUserData = NULL;
 	PHYSXDATA*  newPhysXUserData = new PHYSXDATA;
@@ -114,6 +118,7 @@ BOOL cPhysXManager::InitNxPhysX()
 
 
 	//	
+	m_IS_DEBUG_RENDER = true;
 	return S_OK;
 }
 
@@ -139,7 +144,7 @@ void cPhysXManager::Destroy()
 
 void cPhysXManager::Render()
 {
-	if (pDebugRenderer) pDebugRenderer->RenderData(MgrPhysXScene->getDebugRenderable());
+	if (m_IS_DEBUG_RENDER && pDebugRenderer) pDebugRenderer->RenderData(MgrPhysXScene->getDebugRenderable());
 }
 
 void cPhysXManager::PhysXReportSeting()
@@ -251,11 +256,11 @@ void cPhysXManager::SetActorGroup(NxActor * actor, NxCollisionGroup group)
 	{
 		shapes[i]->setGroup(group);
 		if (!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_RAYCAST_TO_AI, group)
-			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_FIREWORK, group)
-			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_WHATEBOMB, group)
-			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_MYBOMB, group)
-			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_GRIVATEBALL, group)
-			||!g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_RAYCAST_TO_AI, group)
+			|| !g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_FIREWORK, group)
+			|| !g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_WHATEBOMB, group)
+			|| !g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_MYBOMB, group)
+			|| !g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_GRIVATEBALL, group)
+			|| !g_pPhysXScene->getGroupCollisionFlag(E_PHYSX_TAG_RAYCAST_TO_AI, group)
 			)
 			shapes[i]->setFlag(NX_SF_DISABLE_RAYCASTING, true);
 	}
@@ -376,7 +381,19 @@ void cPhysXManager::D3DMatToNxMat(NxF32 * nx, D3DMATRIX & dx)
 
 void cPhysXManager::Update()
 {
+	//	g_pTimeManager->GetElapsedTime());//
+	//	MgrPhysXScene->simulate((1.f/60.f));	//프레임 지정
+	//	MgrPhysXScene->checkResults(NX_RIGID_BODY_FINISHED, true);
 
+	MgrPhysXScene->simulate((float)(1.f / 60.f));	//프레임 지정
+	MgrPhysXScene->flushStream();
+	MgrPhysXScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
+
+
+	if (g_pKeyManager->isOnceKeyDown(VK_TAB))
+	{
+		m_IS_DEBUG_RENDER = !m_IS_DEBUG_RENDER;
+	}
 }
 
 void cPhysXManager::RaycastClosestShape(D3DXVECTOR3 start, D3DXVECTOR3 dir)
@@ -388,7 +405,7 @@ void cPhysXManager::RaycastClosestShape(D3DXVECTOR3 start, D3DXVECTOR3 dir)
 
 	NxRaycastHit raycastHit;
 	MgrPhysXScene->raycastClosestShape(worldRay, NX_ALL_SHAPES, raycastHit);// , 0xffffffff, NX_MAX_F32, 0xffffffff, NULL, NULL);
-	
+
 	if (raycastHit.shape)
 	{
 
@@ -437,7 +454,7 @@ void cPhysXManager::RaycastClosestShapePt(NxRaycastHit * raycasthit, NxVec3 star
 {
 	NxRay worldRay;
 
-	
+
 	worldRay.orig = start;
 	dir.normalize();
 	worldRay.dir = dir;
@@ -458,7 +475,7 @@ NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * 
 
 	NxActorDesc ActorDesc;
 	ActorDesc.setToDefault();
-	
+
 
 	switch (type)
 	{
@@ -500,7 +517,6 @@ NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * 
 		NxCapsuleShapeDesc desc; desc.setToDefault();
 		desc.radius = sizeValue.x;
 		desc.height = sizeValue.y;
-		shapeDesc = &desc;
 
 		if (isKinematic)
 		{
@@ -557,24 +573,24 @@ NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * 
 
 	shapeDesc->materialIndex = (int)materialTag;
 
-	NxBodyDesc triggerBody;
-	triggerBody.setToDefault();
+	NxBodyDesc BodyDesc;
+	BodyDesc.setToDefault();
 
-	if (!isGravaty) triggerBody.flags |= NX_BF_DISABLE_GRAVITY;
+	if (!isGravaty) BodyDesc.flags |= NX_BF_DISABLE_GRAVITY;
 
 	if (isKinematic&& IsTrigger)
 	{
 		shapeDesc->shapeFlags |= NX_TRIGGER_ENABLE;
-		triggerBody.flags |= NX_BF_KINEMATIC;
+		BodyDesc.flags |= NX_BF_KINEMATIC;
 
-		ActorDesc.body = &triggerBody;
+		ActorDesc.body = &BodyDesc;
 		//	ActorDesc.body = NULL;
 	}
 	if (isKinematic && !IsTrigger)
 	{
-		triggerBody.flags |= NX_BF_KINEMATIC;
+		BodyDesc.flags |= NX_BF_KINEMATIC;
 
-		ActorDesc.body = &triggerBody;
+		ActorDesc.body = &BodyDesc;
 	}
 	if (!isKinematic&& IsTrigger)
 	{
@@ -584,7 +600,7 @@ NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * 
 	}
 	if (!isKinematic && !IsTrigger)
 	{
-		ActorDesc.body = &triggerBody;
+		ActorDesc.body = &BodyDesc;
 	}
 
 	if (isStatic) ActorDesc.body = NULL;
@@ -632,6 +648,7 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 	USERDATA* pUserData0 = (USERDATA*)pair.actors[0]->userData;
 	USERDATA* pUserData1 = (USERDATA*)pair.actors[1]->userData;
 	if (pUserData0 == NULL || pUserData1 == NULL) return;
+
 
 
 	switch (_event)
@@ -733,7 +750,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 		if (pUserData0->USER_TAG == E_PHYSX_TAG_FAKEBOMB && pUserData1->USER_TAG == E_PHYSX_TAG_CAR)
 		{
 			if (pUserData1->isFireFakebomb)
-				pUserData1->isFireFakebomb = false;	
+				pUserData1->isFireFakebomb = false;
 			else
 				pUserData1->isFakebombCollision = true;
 			printf("충돌\n");
@@ -901,4 +918,98 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 		std::string pritfOut("자동차가의 물리정보가 생성되지 않았습니다.");
 		MessageBoxA(g_hWnd, pritfOut.c_str(), "심각한 오류", MB_OK);
 	}
+}
+
+NxActor * cPhysXManager::CreateActorToCCD(NxVec3 position, NxF32 * mat, NxVec3 sizeValue, eMaterialTag materialTag, USERDATA * pUserData, bool IsTrigger, bool isStatic, bool isGravaty)
+{
+	sizeValue *= 0.5f;
+
+	NxU32 triangles[3 * 12] = {
+		0,1,3,
+		0,3,2,
+		3,7,6,
+		3,6,2,
+		1,5,7,
+		1,7,3,
+		4,6,7,
+		4,7,5,
+		1,0,4,
+		5,1,4,
+		4,0,2,
+		4,2,6
+	};
+	NxVec3 points[8];
+	//static mesh
+	points[0].set(sizeValue.x, -sizeValue.y, -sizeValue.z);
+	points[1].set(sizeValue.x, -sizeValue.y, sizeValue.z);
+	points[2].set(sizeValue.x, sizeValue.y, -sizeValue.z);
+	points[3].set(sizeValue.x, sizeValue.y, sizeValue.z);
+	points[4].set(-sizeValue.x, -sizeValue.y, -sizeValue.z);
+	points[5].set(-sizeValue.x, -sizeValue.y, sizeValue.z);
+	points[6].set(-sizeValue.x, sizeValue.y, -sizeValue.z);
+	points[7].set(-sizeValue.x, sizeValue.y, sizeValue.z);
+	NxSimpleTriangleMesh stm;
+	stm.numVertices = 8;
+	stm.numTriangles = 6 * 2;
+	stm.pointStrideBytes = sizeof(NxVec3);
+	stm.triangleStrideBytes = sizeof(NxU32) * 3;
+	stm.points = points;
+	stm.triangles = triangles;
+	stm.flags |= NX_MF_FLIPNORMALS;
+
+
+
+	//
+	sizeValue *= 0.5f;
+
+	bool isKinematic = false;
+	// Our trigger is a cube
+
+
+	NxBoxShapeDesc* ShapeDesc = NULL;
+	ShapeDesc->setToDefault();
+	ShapeDesc->dimensions.set(sizeValue);
+	ShapeDesc->materialIndex = (int)materialTag;
+
+	ShapeDesc->ccdSkeleton = MgrPhysXSDK->createCCDSkeleton(stm);
+	ShapeDesc->shapeFlags |= NX_SF_DYNAMIC_DYNAMIC_CCD;
+
+
+	NxBodyDesc BodyDesc;
+	BodyDesc.setToDefault();
+
+
+	NxActorDesc ActorDesc;
+	ActorDesc.setToDefault();
+
+
+	if (!isGravaty) BodyDesc.flags |= NX_BF_DISABLE_GRAVITY;
+
+	if (IsTrigger)		ShapeDesc->shapeFlags |= NX_TRIGGER_ENABLE;
+	if (!IsTrigger)		ActorDesc.body = &BodyDesc;
+
+	if (isStatic) ActorDesc.body = NULL;
+
+	ActorDesc.density = 10.f;
+	ActorDesc.shapes.pushBack(ShapeDesc);
+	ActorDesc.globalPose.t = position;
+
+
+	if (mat == NULL)
+	{
+		NxF32 mat_[9] = { 1,0,0,0,1,0,0,0,1 };
+		mat = mat_;
+	}
+
+	ActorDesc.globalPose.M.setColumnMajor(mat);
+
+	if (pUserData != NULL) ActorDesc.userData = (pUserData);
+	NxActor* actor = m_pNxScene->createActor(ActorDesc);
+	if (actor == NULL)
+	{
+		std::cout << "NULL";
+	}
+	return actor;
+
+	//TEST
 }

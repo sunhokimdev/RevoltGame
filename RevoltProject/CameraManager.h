@@ -4,6 +4,7 @@
 class CameraManager
 {
 	SINGLETONE(CameraManager);
+
 public:
 
 	void Setup(D3DXVECTOR3*	pvTarget);
