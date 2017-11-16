@@ -172,6 +172,7 @@ void cPhysXManager::PhysXReportSeting()
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_WHATEBOMB);
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_METALBALL);
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_FAKEBOMB);
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_TRACK);
 
 	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_PICKUP);
@@ -735,7 +736,8 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			if (pUserData1->isFireFakebomb)
 				pUserData1->isFireFakebomb = false;	
 			else
-				pUserData1->isFakebombCollision = true;
+				pUserData0->isFakebombCollision = true;
+
 			printf("충돌\n");
 		}
 		else if (pUserData1->USER_TAG == E_PHYSX_TAG_FAKEBOMB && pUserData0->USER_TAG == E_PHYSX_TAG_CAR)
@@ -743,7 +745,8 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			if (pUserData0->isFireFakebomb)
 				pUserData0->isFireFakebomb = false;
 			else
-				pUserData0->isFakebombCollision = true;
+				pUserData1->isFakebombCollision = true;
+
 			printf("충돌\n");
 		}
 	}
