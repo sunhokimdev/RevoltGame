@@ -125,6 +125,7 @@ struct USERDATA
 
 		/*   �輱ȣ   */
 		isMyBomb = false;
+		isFireFakebomb = false;
 	}
 	void Reset()
 	{

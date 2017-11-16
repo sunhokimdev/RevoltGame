@@ -261,10 +261,10 @@ void cCar::CreateItem()
 		while (1)
 		{
 			srand(time(NULL));
-			//m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
+			m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
 
 			/*TEST*/
-			m_eHoldItem = eITEM_LIST::ITEM_FIREWORK;
+			//m_eHoldItem = eITEM_LIST::ITEM_FIREWORK;
 
 
 			if (m_eHoldItem) break;
@@ -334,24 +334,31 @@ void cCar::Update()
 	{
 		if (m_isAI) CtrlAI();
 		else CtrlPlayer();
-		//if (g_pKeyManager->isStayKeyDown(VK_TAB))
-		//{
-		//	CtrlPlayer();
-		//}
-		//이하 AI, PLAYER 의 동일 사용 함수
-
-		//자동차 움직임
-		CarMove();
-
-		//자동차 리포지션
-		if (INPUT_KEY[E_BIT_REPOS]) RePosition();
-
-		//아이템 사용
-		if (INPUT_KEY[E_BIT_ITEM_]) UsedItem();
-
-		//차 뒤집기
-		if (INPUT_KEY[E_BIT_FLIP_]) CarFlip();
 	}
+
+	//경기장 밖으로 나가버리면...
+	if (GetPhysXData()->GetPositionToNxVec3().y > 11.f || GetPhysXData()->GetPositionToNxVec3().y < -11.f)
+	{
+		INPUT_KEY[E_BIT_REPOS] = true;
+	}
+
+	//if (g_pKeyManager->isStayKeyDown(VK_TAB))
+	//{
+	//	CtrlPlayer();
+	//}
+	//이하 AI, PLAYER 의 동일 사용 함수
+
+	//자동차 움직임
+	CarMove();
+
+	//자동차 리포지션
+	if (INPUT_KEY[E_BIT_REPOS]) RePosition();
+
+	//아이템 사용
+	if (INPUT_KEY[E_BIT_ITEM_]) UsedItem();
+
+	//차 뒤집기
+	if (INPUT_KEY[E_BIT_FLIP_]) CarFlip();
 
 	// PickUp 충돌
 	CollidePickUp();
@@ -673,10 +680,10 @@ void cCar::CollidePickUp()
 			CreateItem();
 			g_pItemManager->SetItemID(m_eHoldItem);
 		}
-	
+
 	}
-	
-	if(m_eHoldItem != ITEM_NONE)
+
+	if (m_eHoldItem != ITEM_NONE)
 	{
 		m_itemEableTime -= 2;
 		if (m_itemEableTime <= 0)
@@ -763,7 +770,7 @@ void cCar::CarMove()
 
 void cCar::UsedItem()
 {
-	
+
 	if (m_eHoldItem != ITEM_NONE && m_itemEable)
 	{
 		//아이템 사용 함수 호츨
@@ -830,15 +837,15 @@ void cCar::CarFlip()
 void cCar::SetFrustum()
 {
 	// : near 
-	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, - 1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, + 1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, + 1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, - 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, +1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(+1, +1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(+1, -1, 0)); //
 	// : far
-	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, - 1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, + 1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, + 1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, - 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, +1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(+1, +1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(+1, -1, 1)); //
 
 	m_vecPlane.resize(6);
 	m_vecWorldVertex.resize(8);
@@ -1012,7 +1019,16 @@ bool cCar::IsIn(D3DXVECTOR3* pv)
 	fDist = D3DXPlaneDotCoord(&m_vecPlane[5], pv);
 	a = 0;
 	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 right로 향하고 있으므로 양수이면 프러스텀의 오른쪽
-	
+
+	// 시야에서 가려질 경우
+	D3DXVECTOR3 thisCar = GetPhysXData()->GetPositionToD3DXVec3() + D3DXVECTOR3(0, 0.3, 0);
+	D3DXVECTOR3 toDirL = (*pv + D3DXVECTOR3(0, 0.3, 0)) - thisCar;
+	D3DXVECTOR3 toDir(0, 0, 0);
+	D3DXVec3Normalize(&toDir, &toDirL);
+	NxRaycastHit hit = RAYCAST(thisCar, toDir, 1000);
+	if (hit.distance < D3DXVec3Length(&toDirL))
+		return FALSE;
+
 	return true;
 }
 
@@ -1024,7 +1040,7 @@ void cCar::UpdateSound()
 	float frq = 10000 + (rpmRatio * 15000) + (rand() % 1000);
 	//std::cout << rpmRatio << std::endl;
 	float volume = 0.1f + rpmRatio * 0.4f;
-	if(m_nPlayerID == 0) volume = 0.1f + rpmRatio * 0.3f;
+	if (m_nPlayerID == 0) volume = 0.1f + rpmRatio * 0.3f;
 
 	g_pSoundManager->SetPosVolPitch(
 		m_strMotorKey,
@@ -1077,7 +1093,7 @@ NxVec3 cCar::CarArrow(float angle)
 	D3DXMatrixRotationAxis(&matAngle, &D3DXVECTOR3(0, 1, 0), D3DXToRadian(angle));
 
 
-	
+
 	D3DXVECTOR3 dir(1, 0, 0);
 
 	D3DXVec3TransformNormal(&dir, &dir, &(matR*matAngle));
@@ -1148,7 +1164,7 @@ void cCar::RenderBillboardID()
 	m_pSprite->SetWorldViewLH(NULL, &matView);
 	HRESULT sOK = m_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE | D3DXSPRITE_BILLBOARD);
 
-	for (int i = 0;i < m_userName.size();i++)
+	for (int i = 0; i < m_userName.size(); i++)
 	{
 		RECT rc;
 		char tChar = m_userName[i];

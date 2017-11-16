@@ -13,7 +13,7 @@ cAI_CtrlCompete::cAI_CtrlCompete()
 
 	PickupAngle = 0.5f;
 
-	PickupValue = 500.0f;
+	PickupValue = 100.0f;
 	CarsValue = 500.0f;
 	Competitive = 0.5f;
 }
