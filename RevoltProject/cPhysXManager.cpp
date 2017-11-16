@@ -514,9 +514,11 @@ NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * 
 		break;
 	}
 	case NX_SHAPE_CAPSULE: {
-		NxCapsuleShapeDesc desc; desc.setToDefault();
+		NxCapsuleShapeDesc desc;
+		desc.setToDefault();
 		desc.radius = sizeValue.x;
 		desc.height = sizeValue.y;
+		shapeDesc = &desc;
 
 		if (isKinematic)
 		{
@@ -621,7 +623,7 @@ NxActor * cPhysXManager::CreateActor(NxShapeType type, NxVec3 position, NxF32 * 
 	NxActor* actor = m_pNxScene->createActor(ActorDesc);
 	if (actor == NULL)
 	{
-		std::cout << "NULL";
+		//std::cout << "NULL";
 	}
 	return actor;
 
@@ -648,8 +650,6 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 	USERDATA* pUserData0 = (USERDATA*)pair.actors[0]->userData;
 	USERDATA* pUserData1 = (USERDATA*)pair.actors[1]->userData;
 	if (pUserData0 == NULL || pUserData1 == NULL) return;
-
-
 
 	switch (_event)
 	{
@@ -724,7 +724,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			{
 				pUserData0->IsPickUp = NX_FALSE;
 				pUserData1->IsPickUp = NX_TRUE;
-				std::cout << "GetItem" << std::endl;
+				//std::cout << "GetItem" << std::endl;
 			}
 		}
 
@@ -732,7 +732,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 		{
 			if (!pUserData1->isFireGravity)
 			{
-				otherShape.getActor().addForce(NxVec3(0, 700000, 0));
+				otherShape.getActor().addForce(NxVec3(0, 900000, 0));
 				otherShape.getActor().addTorque(NxVec3(5.0f, 1.0f, 1.5f));
 				printf("데이터 충돌\n");
 			}
@@ -741,7 +741,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 		{
 			if (!pUserData0->isFireGravity)
 			{
-				triggerShape.getActor().addForce(NxVec3(0, 700000, 0));
+				triggerShape.getActor().addForce(NxVec3(0, 900000, 0));
 				triggerShape.getActor().addTorque(NxVec3(5.0f, 1.0f, 1.5f));
 				printf("데이터 충돌\n");
 			}

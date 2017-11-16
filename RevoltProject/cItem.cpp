@@ -10,6 +10,7 @@ cItem::cItem()
 	, m_pPhysX(NULL)
 	, m_isInit(true)
 	, m_isEnd(false)
+	, m_isFw(false)
 {
 }
 

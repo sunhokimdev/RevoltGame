@@ -15,14 +15,23 @@ cAI_CtrlUseItem::~cAI_CtrlUseItem()
 
 void cAI_CtrlUseItem::Update()
 {
+	float lengrh = 0.f;
 	m_isFire = false;
 	int a = 0;
 	switch (AI_Data->pCar->GetHoldItem())
 	{
-	case ITEM_FIREWORK:	//return;	break;
-	case ITEM_WBOMB:	//return;	break;
+	case ITEM_FIREWORK:
+	{
+		//lengrh = 30;
+		//if (AI_Data->pCar->m_pTarget)
+		//	m_isFire = true;
+		//break;
+	}
+	break;
+	case ITEM_WBOMB:	lengrh = 30.f;
 	case ITEM_GRAVITY:
 	{
+		lengrh = 80.f;
 		//아이템 발사를 위한 레이
 		NxVec3 thisPos = AI_Data->pCar->GetPhysXData()->GetPositionToNxVec3();
 
@@ -43,7 +52,7 @@ void cAI_CtrlUseItem::Update()
 
 			NxVec3 carPos = p->GetPhysXData()->GetPositionToNxVec3();
 			//거리에 들어왔는지
-			if (carPos.distance(thisPos) < 50.f)
+			if (carPos.distance(thisPos) < lengrh)
 			{
 
 				NxVec3 toDirL = carPos - rayposL; toDirL.normalize();

@@ -344,6 +344,7 @@ void InGameUI::Setup()
 	m_pItemImage->SetPosition(22, 22);
 	m_pItemImage->SetIsItem(true);
 	m_pItemImage->SetTexture("UIImage/itemlist.png");
+	m_pItemImage->LinkCarPt(m_pCar);
 
 	//속도계 추가
 
@@ -389,6 +390,69 @@ void InGameUI::Setup()
 	pSpeed_mph->SetYSize(1.2f);
 	pSpeed_mph->SetPosition(170, 8);
 	pSpeed_mph->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+
+
+	//Result
+	m_pResultRing = new UIImageView;
+	m_pResultRing->SetIsBoard(true);
+	m_pResultRing->SetXSize(15.0f);
+	m_pResultRing->SetYSize(12.5f);
+	m_pResultRing->SetPosition(400, 200);
+
+	m_pRaceResult = new UITextImageView;
+	m_pRaceResult->SetTexture("UIImage/font2.png");
+	m_pRaceResult->SetXSize(1.0f);
+	m_pRaceResult->SetYSize(1.0f);
+	m_pRaceResult->SetPosition(10, 10);
+	m_pRaceResult->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+
+	m_pFirst = new UITextImageView;
+	m_pFirst->SetTexture("UIImage/font2.png");
+	m_pFirst->SetXSize(1.0f);
+	m_pFirst->SetYSize(1.0f);
+	m_pFirst->SetPosition(0, 30);
+
+	m_pPlayerName = new UITextImageView;
+	m_pPlayerName->SetTexture("UIImage/font2.png");
+	m_pPlayerName->SetPosition(30, 0);
+	m_pPlayerName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+
+	m_pResultMinTenth = new UITextImageView;
+	m_pResultMinTenth->SetTexture("UIImage/font2.png");
+	m_pResultMinTenth->SetPosition(160, 0);
+
+	m_pResultMinOneth = new UITextImageView;
+	m_pResultMinOneth->SetTexture("UIImage/font2.png");
+	m_pResultMinOneth->SetPosition(10, 0);
+
+	m_pResultMinColon = new UITextImageView;
+	m_pResultMinColon->SetTexture("UIImage/font2.png");
+	m_pResultMinColon->SetPosition(10, 0);
+
+	m_pResultSecTenth = new UITextImageView;
+	m_pResultSecTenth->SetTexture("UIImage/font2.png");
+	m_pResultSecTenth->SetPosition(10, 0);
+
+	m_pResultSecOneth = new UITextImageView;
+	m_pResultSecOneth->SetTexture("UIImage/font2.png");
+	m_pResultSecOneth->SetPosition(10, 0);
+
+	m_pResultSecColon = new UITextImageView;
+	m_pResultSecColon->SetTexture("UIImage/font2.png");
+	m_pResultSecColon->SetPosition(10, 0);
+
+	m_pResultDotMilth = new UITextImageView;
+	m_pResultDotMilth->SetTexture("UIImage/font2.png");
+	m_pResultDotMilth->SetPosition(10, 0);
+
+	m_pResultDotTenth = new UITextImageView;
+	m_pResultDotTenth->SetTexture("UIImage/font2.png");
+	m_pResultDotTenth->SetPosition(10, 0);
+
+	m_pResultDotOneth = new UITextImageView;
+	m_pResultDotOneth->SetTexture("UIImage/font2.png");
+	m_pResultDotOneth->SetPosition(10, 0);
+
 
 	/*          Set Child          */
 
@@ -461,6 +525,21 @@ void InGameUI::Setup()
 	pMinColon->AddChild(m_pMinOneth);
 	m_pMinOneth->AddChild(m_pMinTenth);
 
+	// Result
+	m_pRootUI->AddChild(m_pResultRing);
+	m_pResultRing->AddChild(m_pRaceResult);
+	m_pRaceResult->AddChild(m_pFirst);
+	m_pFirst->AddChild(m_pResultMinTenth);
+	m_pFirst->AddChild(m_pPlayerName);
+	m_pResultMinTenth->AddChild(m_pResultMinOneth);
+	m_pResultMinOneth->AddChild(m_pResultMinColon);
+	m_pResultMinColon->AddChild(m_pResultSecTenth);
+	m_pResultSecTenth->AddChild(m_pResultSecOneth);
+	m_pResultSecOneth->AddChild(m_pResultSecColon);
+	m_pResultSecColon->AddChild(m_pResultDotMilth);
+	m_pResultDotMilth->AddChild(m_pResultDotTenth);
+	m_pResultDotTenth->AddChild(m_pResultDotOneth);
+
 
 	//========================================
 	// 시작시 321GO 
@@ -490,6 +569,7 @@ void InGameUI::Update()
 
 	int nTrackCount = m_pRacingScene->GettrackEndCount();
 	if (m_LabCnt > -1 && m_LabCnt < nTrackCount)	UpdateLabTime();
+
 	if (m_LabCnt >= nTrackCount)
 	{
 		RaceResults();
@@ -499,8 +579,6 @@ void InGameUI::Update()
 			*iLobby::m_gLobbyState = START_LOBBY;
 		}
 	}
-
-
 }
 
 void InGameUI::Render(LPD3DXSPRITE pSprite)
@@ -596,7 +674,6 @@ void InGameUI::UpdateSpeed()
 	m_pSpeedHun->SetText(strHun);
 	m_pSpeedTen->SetText(strTen);
 	m_pSpeedOne->SetText(strOne);
-
 	m_pSpeedometerImage->SetRpmGauge(m_pCar->GetNxVehicle()->getWheel(1)->getRpm());
 }
 
@@ -890,24 +967,26 @@ void InGameUI::UpdateRaceTime()
 	std::string MinOneth;								//	  0.xx.xxx
 	std::string MinTenth;								//	 0x.xx.xxx
 
-
-	m_ElapseTime += g_pTimeManager->GetElapsedTime();	// Uptate ElapsedTime
-
-	if (m_ElapseTime > TIMEMAX)							// After 60 Second
-	{
-		m_ElapseTime = 0;								// ElapsedTime = 0
-		m_MinOneth += 1;								// Add 1 Minute
-	}
-	if (m_MinOneth > FONT2_NUM9)						// After 10 Minute
-	{
-		m_MinOneth = FONT2_NUM0;						// MinuteOneth = 0; 
-		m_MinTenth += 1;								// Add MinuteTenth ( 09:59 -> 10:00 )
-	}
-	if (m_MinTenth > FONT2_NUM9)
-	{
-		m_MinTenth = FONT2_NUM0;
-	}
-	m_SecTenth = (m_ElapseTime / 10) + FONT2_NUM0;		// Ex : m_ElapseTime = 59
+	m_ElapseTime = m_pCar->GetTotlaTimeCount();
+	//m_ElapseTime += g_pTimeManager->GetElapsedTime();	// Uptate ElapsedTime
+	int CalcMin = (int)(m_ElapseTime / 60.f);
+	m_MinOneth = CalcMin % 10 + FONT2_NUM0;
+	m_MinTenth = CalcMin / 10 + FONT2_NUM0;
+	//if (m_ElapseTime > TIMEMAX)							// After 60 Second
+	//{
+	//	m_ElapseTime = 0;								// ElapsedTime = 0
+	//	m_MinOneth += 1;								// Add 1 Minute
+	//}
+	//f (m_MinOneth > FONT2_NUM9)						// After 10 Minute
+	//
+	//	m_MinOneth = FONT2_NUM0;						// MinuteOneth = 0; 
+	//	m_MinTenth += 1;								// Add MinuteTenth ( 09:59 -> 10:00 )
+	//
+	//if (m_MinTenth > FONT2_NUM9)
+	//{
+	//	m_MinTenth = FONT2_NUM0;
+	//}
+	m_SecTenth = (int(m_ElapseTime / 10) % 6) + FONT2_NUM0;		// Ex : m_ElapseTime = 59
 	m_SecOneth = ((int)m_ElapseTime % 10) + FONT2_NUM0; //      m_ElapseTime / 10 = 5;	
 														//      m_ElapseTime % 10 = 9;
 														//      Therefore Current Second : 59
@@ -995,92 +1074,22 @@ void InGameUI::RaceResults()
 	ResultMinTenth = m_MinTenth;
 
 
-	UIImageView* pResultRing = new UIImageView;
-	pResultRing->SetIsBoard(true);
-	pResultRing->SetXSize(15.0f);
-	pResultRing->SetYSize(12.5f);
-	pResultRing->SetPosition(400, 200);
-	pResultRing->SetTexture("UIImage/ring.png");
+	m_pResultMinTenth->SetText(ResultMinTenth);
+	m_pResultMinOneth->SetText(ResultMinOneth);
+	m_pResultMinColon->SetText(":");
+	m_pResultSecTenth->SetText(ResultSecTenth);
+	m_pResultSecOneth->SetText(ResultSecOneth);
+	m_pResultSecColon->SetText(":");
+	m_pResultDotMilth->SetText(ResultDotMilth);
+	m_pResultDotTenth->SetText(ResultDotTenth);
+	m_pResultDotOneth->SetText(ResultElapseTime);
+	m_pResultRing->SetTexture("UIImage/ring.png");
+	m_pRaceResult->SetText("Race Results");
+	m_pPlayerName->SetText(g_pDataManager->vecPlayerData[0]->ID);
+	m_pFirst->SetText("01");
+}
 
-	UITextImageView* pRaceResult = new UITextImageView;
-	pRaceResult->SetTexture("UIImage/font2.png");
-	pRaceResult->SetText("Race Results");
-	pRaceResult->SetXSize(1.0f);
-	pRaceResult->SetYSize(1.0f);
-	pRaceResult->SetPosition(10, 10);
-	pRaceResult->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
-
-	UITextImageView* pFirst = new UITextImageView;
-	pFirst->SetTexture("UIImage/font2.png");
-	pFirst->SetText("01");
-	pFirst->SetXSize(1.0f);
-	pFirst->SetYSize(1.0f);
-	pFirst->SetPosition(0, 30);
-
-	g_pDataManager->vecPlayerData[0]->ID = std::string("Hi");
-
-	UITextImageView* pPlayerName = new UITextImageView;
-	pPlayerName->SetText(g_pDataManager->vecPlayerData[0]->ID);
-	pPlayerName->SetTexture("UIImage/font2.png");
-	pPlayerName->SetPosition(30, 0);
-	pPlayerName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
-
-	UITextImageView* pMinTenth = new UITextImageView;
-	pMinTenth->SetTexture("UIImage/font2.png");
-	pMinTenth->SetText(ResultMinTenth);
-	pMinTenth->SetPosition(160, 0);
-
-	UITextImageView* pMinOneth = new UITextImageView;
-	pMinOneth->SetTexture("UIImage/font2.png");
-	pMinOneth->SetText(ResultMinOneth);
-	pMinOneth->SetPosition(10, 0);
-
-	UITextImageView* pMinColon = new UITextImageView;
-	pMinColon->SetTexture("UIImage/font2.png");
-	pMinColon->SetText(":");
-	pMinColon->SetPosition(10, 0);
-
-	UITextImageView* pSecTenth = new UITextImageView;
-	pSecTenth->SetTexture("UIImage/font2.png");
-	pSecTenth->SetText(ResultSecTenth);
-	pSecTenth->SetPosition(10, 0);
-
-	UITextImageView* pSecOneth = new UITextImageView;
-	pSecOneth->SetTexture("UIImage/font2.png");
-	pSecOneth->SetText(ResultSecOneth);
-	pSecOneth->SetPosition(10, 0);
-
-	UITextImageView* pSecColon = new UITextImageView;
-	pSecColon->SetTexture("UIImage/font2.png");
-	pSecColon->SetText(":");
-	pSecColon->SetPosition(10, 0);
-
-	UITextImageView* pDotMilth = new UITextImageView;
-	pDotMilth->SetTexture("UIImage/font2.png");
-	pDotMilth->SetText(ResultDotMilth);
-	pDotMilth->SetPosition(10, 0);
-
-	UITextImageView* pDotTenth = new UITextImageView;
-	pDotTenth->SetTexture("UIImage/font2.png");
-	pDotTenth->SetText(ResultDotTenth);
-	pDotTenth->SetPosition(10, 0);
-
-	UITextImageView* pDotOneth = new UITextImageView;
-	pDotOneth->SetTexture("UIImage/font2.png");
-	pDotOneth->SetText(ResultElapseTime);
-	pDotOneth->SetPosition(10, 0);
-
-	m_pRootUI->AddChild(pResultRing);
-	pResultRing->AddChild(pRaceResult);
-	pRaceResult->AddChild(pFirst);
-	pFirst->AddChild(pMinTenth);
-	pFirst->AddChild(pPlayerName);
-	pMinTenth->AddChild(pMinOneth);
-	pMinOneth->AddChild(pMinColon);
-	pMinColon->AddChild(pSecTenth);
-	pSecTenth->AddChild(pSecOneth);
-	pSecOneth->AddChild(pSecColon);
-	pSecColon->AddChild(pDotMilth);
-	pDotMilth->AddChild(pDotTenth);
-	pDotTenth->AddChild(pDotOneth);
+void InGameUI::LinkCarPt(cCar * car)
+{
+	m_pCar = car;
 }

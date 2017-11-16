@@ -76,7 +76,6 @@ void cAI_CtrlHandel::Update()
 			* CheckBoxPoint(L__Dir) * LR__D_RateVAlue
 			;
 		HandleValue -= add;
-		//		std::cout << -add << " + ";
 	}
 	{
 		float add = 1.0
@@ -85,7 +84,6 @@ void cAI_CtrlHandel::Update()
 			* CheckBoxPoint(LF_Dir) * LRF_D_RateVAlue
 			;
 		HandleValue -= add;
-		//		std::cout << -add << " + ";
 	}
 	{
 		float add = 1.0
@@ -103,9 +101,7 @@ void cAI_CtrlHandel::Update()
 			* CheckBoxPoint(R__Dir) * LR__D_RateVAlue
 			;
 		HandleValue += add;
-		//				std::cout << add << " = ";
 	}
-	//	std::cout << HandleValue << std::endl;
 
 
 }
