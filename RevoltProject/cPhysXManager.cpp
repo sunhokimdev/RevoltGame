@@ -61,18 +61,18 @@ BOOL cPhysXManager::InitNxPhysX()
 	E_PHYSX_MATERIAL_MAP; {
 		NxMaterialDesc material;
 		material.setToDefault();
-		material.restitution = 0.3;
-		material.staticFriction = 10.f;
-		material.dynamicFriction = 8.f;
+		material.restitution = 0.5;
+		material.staticFriction = 0.2f;
+		material.dynamicFriction = 0.1f;
 		m_pNxScene->createMaterial(material);
 
 	}
 	E_PHYSX_MATERIAL_CAR; {
 		NxMaterialDesc material;
 		material.setToDefault();
-		material.restitution = 0.3f;
-		material.staticFriction = 2.f;
-		material.dynamicFriction = 1.f;
+		material.restitution = 0.5;
+		material.staticFriction = 0.2f;
+		material.dynamicFriction = 0.1f;
 		m_pNxScene->createMaterial(material);
 	}
 	E_PHYSX_MATERIAL_GRIVATEBALL; {
