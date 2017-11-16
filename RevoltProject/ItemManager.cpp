@@ -275,16 +275,11 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 
 int ItemManager::GetItemID()
 {
-	if (m_eItemList == ITEM_WBOMB)
-		return 8;
-	else if (m_eItemList == ITEM_FIREWORK)
-		return 6;
-	else if (m_eItemList == ITEM_MYBOMB)
-		return 5;
-	else if (m_eItemList == ITEM_GRAVITY)
-		return 4;
-	else
-		return INT_MAX;
+	if (m_eItemList == ITEM_WBOMB)				return 8;
+	else if (m_eItemList == ITEM_FIREWORK)		return 6;
+	else if (m_eItemList == ITEM_MYBOMB)		return 5;
+	else if (m_eItemList == ITEM_GRAVITY)		return 4;
+	else return INT_MAX;
 }
 
 void ItemManager::Destroy()

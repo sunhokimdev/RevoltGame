@@ -518,8 +518,8 @@ void InGameUI::Render(LPD3DXSPRITE pSprite)
 void InGameUI::Destroy()
 {
 	iLobby::Destroy();
-
 	return;
+
 	SAFE_DELETE(m_pItemImage);
 	SAFE_DELETE(m_pLobby);
 	//SAFE_DELETE(m_pLab);
