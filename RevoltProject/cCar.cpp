@@ -11,7 +11,7 @@
 #include <fstream>
 
 /// 프러스텀에 정확하게 포함되지 않더라도, 약간의 여분을 주어서 프러스텀에 포함시키기 위한 값
-#define PLANE_EPSILON	5.0f
+#define PLANE_EPSILON	0.0f
 
 cCar::cCar()
 	:m_pSkidMark(NULL)
@@ -28,6 +28,7 @@ cCar::cCar()
 	m_eHoldItem = ITEM_NONE;
 	m_fRankPoint = 0;
 	familyAI = NULL;
+	m_pTarget = NULL;
 
 	m_isCtl = false;
 	m_isDrift = false;
@@ -260,9 +261,11 @@ void cCar::CreateItem()
 		while (1)
 		{
 			srand(time(NULL));
-			m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
+			//m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
 
-			/*TEST*///m_eHoldItem = eITEM_LIST::ITEM_WBOMB;
+			/*TEST*/
+			m_eHoldItem = eITEM_LIST::ITEM_FIREWORK;
+
 
 			if (m_eHoldItem) break;
 		}
@@ -513,17 +516,15 @@ void cCar::TrackCheck()
 	{
 		if (checkId == (*m_pTrack->GetCheckBoxsPt())[0]->GetPhysXData()->m_pUserData->CheckBoxID)
 		{
-		//	std::cout << "START" << std::endl;
+			//std::cout << "START" << std::endl;
 			m_nextCheckBoxID = 1;
 			m_currCheckBoxID = 0;	//체크 시작
 			m_countRapNum = 0;
 			m_LabTimeCount = 0.f;
 
 			if (!m_isAI)
-			{
-			//	std::cout << m_isAI << std::endl;
 				m_pInGameUI->SetLabCnt(m_countRapNum);
-			}
+
 			cCheckBox* nextCheckBox = (cCheckBox*)m_pTrack->GetCheckBoxs()[GetCurrCheckBoxID()];
 
 		}
@@ -569,7 +570,6 @@ void cCar::TrackCheck()
 	{
 		m_LabTimeCount += g_pTimeManager->GetElapsedTime();
 	}
-	
 }
 
 void cCar::RunEnd()
@@ -771,8 +771,7 @@ void cCar::UsedItem()
 		m_nItemCount--;
 		if (m_nItemCount == 0)
 		{
-			g_pItemManager->FireItem(m_eHoldItem, this);
-
+			g_pItemManager->FireItem(m_eHoldItem, this, m_pTarget);
 			m_eHoldItem = ITEM_NONE;
 			GetPhysXData()->m_pUserData->IsPickUp = NX_FALSE;
 			g_pItemManager->SetItemID(m_eHoldItem);
@@ -828,27 +827,104 @@ void cCar::CarFlip()
 	p->getGlobalPose().t.add(carPos, NxVec3(0, 3, 0));
 }
 
-//void cCar::SetFrustum()
-//{
-//	// : near 
-//	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 0)); //
-//	m_vecProjVertex.push_back(D3DXVECTOR3(-1, 1, 0)); //
-//	m_vecProjVertex.push_back(D3DXVECTOR3(1, 1, 0)); //
-//	m_vecProjVertex.push_back(D3DXVECTOR3(1, -1, 0)); //
-//	// : far
-//	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 1)); //
-//	m_vecProjVertex.push_back(D3DXVECTOR3(-1, 1, 1)); //
-//	m_vecProjVertex.push_back(D3DXVECTOR3(1, 1, 1)); //
-//	m_vecProjVertex.push_back(D3DXVECTOR3(1, -1, 1)); //
-//
-//	m_vecPlane.resize(6);
-//	m_vecWorldVertex.resize(8);
-//
-//	int a = 1;
-//}
+void cCar::SetFrustum()
+{
+	// : near 
+	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, - 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, + 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, + 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, - 1, 0)); //
+	// : far
+	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, - 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, + 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, + 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, - 1, 1)); //
+
+	m_vecPlane.resize(6);
+	m_vecWorldVertex.resize(8);
+
+}
 
 void cCar::UpdateFrustum()
 {
+
+	D3DXMATRIXA16	matView, matProj;
+	g_pD3DDevice->GetTransform(D3DTS_PROJECTION,
+		&matProj);
+	g_pD3DDevice->GetTransform(D3DTS_VIEW,
+		&matView);
+
+	for (int i = 0; i < m_vecProjVertex.size(); i++)
+	{
+		D3DXVec3Unproject
+		(
+			&m_vecWorldVertex[i],
+			&m_vecProjVertex[i],
+			NULL,
+			&matProj,
+			&matView,
+			NULL
+		);
+	}
+
+	// Front
+	D3DXPlaneFromPoints(&m_vecPlane[0],
+		&m_vecWorldVertex[0],
+		&m_vecWorldVertex[1],
+		&m_vecWorldVertex[2]
+	);
+
+	// Back
+	D3DXPlaneFromPoints(&m_vecPlane[1],
+		&m_vecWorldVertex[6],
+		&m_vecWorldVertex[5],
+		&m_vecWorldVertex[4]
+	);
+
+	// Top
+	D3DXPlaneFromPoints(&m_vecPlane[2],
+		&m_vecWorldVertex[1],
+		&m_vecWorldVertex[5],
+		&m_vecWorldVertex[6]
+	);
+
+	// Bottom
+	D3DXPlaneFromPoints(&m_vecPlane[3],
+		&m_vecWorldVertex[0],
+		&m_vecWorldVertex[3],
+		&m_vecWorldVertex[7]
+	);
+
+	// Left
+	D3DXPlaneFromPoints(&m_vecPlane[4],
+		&m_vecWorldVertex[1],
+		&m_vecWorldVertex[0],
+		&m_vecWorldVertex[4]
+	);
+
+	// Rihgt
+	D3DXPlaneFromPoints(&m_vecPlane[5],
+		&m_vecWorldVertex[2],
+		&m_vecWorldVertex[6],
+		&m_vecWorldVertex[7]
+	);
+}
+void cCar::UpdateFrustum(D3DXVECTOR3 pv)
+{
+	// : near 
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y - 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y + 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y + 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y - 1, 0)); //
+																   // : far
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y - 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x - 1, pv.y + 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y + 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(pv.x + 1, pv.y - 1, 1)); //
+
+	m_vecPlane.resize(6);
+	m_vecWorldVertex.resize(8);
+
 	D3DXMATRIXA16	matView, matProj;
 	g_pD3DDevice->GetTransform(D3DTS_PROJECTION,
 		&matProj);
@@ -914,25 +990,32 @@ bool cCar::IsIn(D3DXVECTOR3* pv)
 	float fDist;
 
 	fDist = D3DXPlaneDotCoord(&m_vecPlane[0], pv);
+	int a = 0;
 	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 Front로 향하고 있으므로 양수이면 프러스텀의 바깥쪽
 
 	fDist = D3DXPlaneDotCoord(&m_vecPlane[1], pv);
+	a = 0;
 	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 Back로 향하고 있으므로 양수이면 프러스텀의 오른쪽
 
 	fDist = D3DXPlaneDotCoord(&m_vecPlane[2], pv);
+	a = 0;
 	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 Up로 향하고 있으므로 양수이면 프러스텀의 오른쪽
 
 	fDist = D3DXPlaneDotCoord(&m_vecPlane[3], pv);
+	a = 0;
 	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 Down로 향하고 있으므로 양수이면 프러스텀의 오른쪽
 
 	fDist = D3DXPlaneDotCoord(&m_vecPlane[4], pv);
+	a = 0;
 	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 left로 향하고 있으므로 양수이면 프러스텀의 왼쪽
 
 	fDist = D3DXPlaneDotCoord(&m_vecPlane[5], pv);
+	a = 0;
 	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 right로 향하고 있으므로 양수이면 프러스텀의 오른쪽
-
+	
 	return true;
 }
+
 void cCar::UpdateSound()
 {
 	NxWheel* wheel = m_carNxVehicle->getWheel(0);

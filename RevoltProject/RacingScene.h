@@ -1,10 +1,10 @@
 #pragma once
 #include "GameNode.h"
 
+class cFirework;
 class cTrack;
 class cLight;
 class cCar;
-class cBillBoardEffect;
 class InGameUI;
 class cSkyBox;
 
@@ -68,9 +68,10 @@ public:
 
 
 //	void CreateCar(int carId) {}
-	void CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userName, std::string carName, int trackEndCount, bool isAI, bool isUser = false);
+	void CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userName, std::string carName, int* trackEndCount, bool isAI, bool isUser = false);
 	//void CreateCar(int playerID, std::string carName);
 	void LinkUI(int playerID);
+	void FindTarget(cCar* MyCar);
 
 	/*   김선호   */
 	void NetworkLoop();			// 네트워크 통신하는 부분

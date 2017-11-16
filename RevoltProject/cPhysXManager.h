@@ -79,6 +79,7 @@ struct PHYSXDATA
 
 struct USERDATA
 {
+	
 	ePhysXTag USER_TAG;
 	NxU32 UserPointValue;
 	std::vector<NxU32> TargetPointValue;

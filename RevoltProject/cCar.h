@@ -92,6 +92,9 @@ private:
 	std::vector<D3DXVECTOR3>	m_vecWorldVertex;
 	std::vector<D3DXPLANE>		m_vecPlane;
 
+
+	SYNTHESIZE(cCar*, m_pTarget, Target);
+
 	//Rank°ü·Ã
 	float m_fRankPoint;
 	
@@ -145,8 +148,11 @@ public:
 
 	/*          Ray Cast          */
 	void SetFrustum();
+	void UpdateFrustum(D3DXVECTOR3 pv);
 	void UpdateFrustum();
 	bool IsIn(D3DXVECTOR3* pv);
+
+
 
 	void UpdateSound();
 

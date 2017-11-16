@@ -8,6 +8,7 @@
 #include "cSkyBox.h"
 #include "c321GO.h"
 #include "cAI_Master.h"
+#include "cFirework.h"
 
 RacingScene::RacingScene()
 	: m_select(99)
@@ -56,12 +57,20 @@ void RacingScene::Setup()
 	m_pSkyBox->Setup("Maps/SkyBox", "SkyBox.obj");
 
 	int i = 0;
+
 	for each(cPlayerData* p in g_pDataManager->vecPlayerData)
 	{
 		if (i  == m_pTrack->GetStartPositions().size()) break;
-		CreateCar(m_pTrack->GetStartPositions()[i], i,p->ID, p->CAR_NAME, m_trackEndCount, p->IsAI, p->isUser);
+		CreateCar(m_pTrack->GetStartPositions()[i], i,p->ID, p->CAR_NAME, &m_trackEndCount, p->IsAI, p->isUser);
 		i++;
 	}
+
+	for (int i = 0; i < vecCars.size(); ++i)
+	{
+		vecCars[i]->SetFrustum();
+	}	
+
+
 
 	m_pInGameUI = new InGameUI;
 	LinkUI(0); // 인게임 InGameUI::Setup(); 전에 위치해야함, new InGameUI 가 선언되어 있어야 함.
@@ -123,7 +132,6 @@ void RacingScene::Update()
 		if (m_eRaceProg == RACE_PROG_GO)
 		{
 			m_pInGameUI->UpdateRaceTime();
-
 			for (int i = 0; i < vecCars.size(); i++)
 			{
 				vecCars[i]->m_isCtl = true;;
@@ -138,7 +146,9 @@ void RacingScene::Update()
 		{
 			for (int i = 0; i < vecCars.size(); i++)
 			{
-				if (IsCarRunTrue(vecCars[i])) vecCars[i]->Update();
+				FindTarget(vecCars[i]);
+			
+				if (IsCarRunTrue(vecCars[i]))	vecCars[i]->Update();
 
 				if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
 			}
@@ -362,7 +372,7 @@ bool RacingScene::IsCarRunTrue(cCar* pCar)
 	return m_trackEndCount > pCar->GetCountRapNum();
 }
 
-void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userName, std::string carName, int trackEndCount, bool isAI, bool isUser)
+void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userName, std::string carName, int* trackEndCount, bool isAI, bool isUser)
 {
 	cCar* pCar = new cCar;
 	AI_DATA aiData(pCar, m_pTrack, &vecCars);
@@ -371,7 +381,7 @@ void RacingScene::CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userNa
 	pCar->SetAI(isAI, aiData);
 	pCar->SetIsUser(isUser);
 	pCar->SetUserName(userName);
-	pCar->SetEndRapNum(&trackEndCount);
+	pCar->SetEndRapNum(trackEndCount);
 
 	vecCars.push_back(pCar);
 
@@ -388,6 +398,35 @@ void RacingScene::LinkUI(int playerID)
 	{
 		vecCars[i]->LinkTrackPt(m_pTrack);
 	}
+}
+
+void RacingScene::FindTarget(cCar* MyCar)
+{
+	MyCar->SetTarget(NULL);
+
+	MyCar->UpdateFrustum();
+
+	for (int i = 0; i < vecCars.size(); ++i)
+	{
+		if (vecCars[i] == MyCar) continue;
+
+		if (MyCar->IsIn(&vecCars[i]->GetPosition())
+			&& MyCar->GetHoldItem() == ITEM_FIREWORK)
+		{
+			// target == true
+			MyCar->SetTarget(vecCars[i]);
+			// Firework's Target = vecCars[i]'s Position
+		}
+
+		else if (i == 0
+			|| !vecCars[0]->IsIn(&vecCars[i]->GetPosition())
+			|| vecCars[0]->GetHoldItem() != ITEM_FIREWORK)
+		{
+			// target == false
+			MyCar->SetTarget(NULL);
+		}
+	}
+
 }
 
 void RacingScene::NetworkLoop()
@@ -434,4 +473,5 @@ void RacingScene::SetNetworkCarData()
 
 		if (!IsCarRunTrue(vecCars[i])) m_eRaceProg = RACE_PROG_FINISH;
 	}
+
 }
