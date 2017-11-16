@@ -26,8 +26,8 @@ void ItemManager::Init()
 	MgrPhysXScene->setUserTriggerReport(new TriggerCallback());
 	MgrPhysXScene->setUserContactReport(new ContactCallBack());
 
-	if (MgrPhysXScene->getUserContactReport() == NULL)
-		printf("report error");
+	if (MgrPhysXScene->getUserContactReport() == NULL);
+	//	printf("report error");
 
 	USERDATA* user1 = new USERDATA;
 	user1->USER_TAG = E_PHYSX_TAG_NONE;
@@ -168,7 +168,7 @@ void ItemManager::FireItem(eITEM_LIST tag/*아이템종류*/, cCar* car/*자동차 포인�
 			m_vecItem.push_back(pItem);
 			m_vecItem[m_vecItem.size() - 1]->Create(carDir, carPos);
 			m_vecItem[m_vecItem.size() - 1]->SetIsUse(true);
-			printf("FakeBomb\n");
+			//printf("FakeBomb\n");
 		}
 		break;
 		default: break;

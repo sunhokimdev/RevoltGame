@@ -1,7 +1,8 @@
 #pragma once
 
 #include "targetver.h"
-#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console") 
+//#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console") 
+
 //======================================
 // - ## 10.11.17 ##
 // - written by �輱ȣ

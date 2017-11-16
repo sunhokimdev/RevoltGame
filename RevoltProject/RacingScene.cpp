@@ -483,7 +483,7 @@ void RacingScene::NetworkLoop()
 	if (pchIP != NULL && g_pNetworkManager->GetUserIP().find(pchIP) == -1)
 	{
 		//
-		printf("%s\n", pchKEY);
+		//printf("%s\n", pchKEY);
 	}
 }
 

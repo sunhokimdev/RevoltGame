@@ -65,7 +65,6 @@ BOOL cPhysXManager::InitNxPhysX()
 		material.staticFriction = 0.2f;
 		material.dynamicFriction = 0.1f;
 		m_pNxScene->createMaterial(material);
-
 	}
 	E_PHYSX_MATERIAL_CAR; {
 		NxMaterialDesc material;
@@ -689,7 +688,7 @@ void ContactCallBack::onContactNotify(NxContactPair & pair, NxU32 _event)
 				//*pUserData1->m_pCarPosion = v;
 			}
 
-			printf("%d %d\n", pUserData0->isMyBomb, pUserData1->isMyBomb);
+		//	printf("%d %d\n", pUserData0->isMyBomb, pUserData1->isMyBomb);
 		}
 	}break;
 	default:
@@ -734,8 +733,8 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			if (!pUserData1->isFireGravity)
 			{
 				otherShape.getActor().addForce(NxVec3(0, 900000, 0));
-				otherShape.getActor().addTorque(NxVec3(5.0f, 1.0f, 1.5f));
-				printf("데이터 충돌\n");
+				otherShape.getActor().addLocalTorque(NxVec3((1000000 + rand() % 400000), (1000000 + rand() % 400000), (1000000 + rand() % 400000)));
+			//	printf("데이터 충돌\n");
 			}
 		}
 		else if (pUserData0->USER_TAG == E_PHYSX_TAG_CAR && pUserData1->USER_TAG == E_PHYSX_TAG_GRIVATEBALL)
@@ -743,8 +742,8 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			if (!pUserData0->isFireGravity)
 			{
 				triggerShape.getActor().addForce(NxVec3(0, 900000, 0));
-				triggerShape.getActor().addTorque(NxVec3(5.0f, 1.0f, 1.5f));
-				printf("데이터 충돌\n");
+				triggerShape.getActor().addLocalTorque(NxVec3((1000000 + rand() % 400000), (1000000 + rand() % 400000), (1000000 + rand() % 400000)));
+			//	printf("데이터 충돌\n");
 			}
 		}
 
@@ -755,7 +754,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			else
 				pUserData0->isFakebombCollision = true;
 
-			printf("충돌\n");
+		//	printf("충돌\n");
 		}
 		else if (pUserData1->USER_TAG == E_PHYSX_TAG_FAKEBOMB && pUserData0->USER_TAG == E_PHYSX_TAG_CAR)
 		{
@@ -764,7 +763,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			else
 				pUserData1->isFakebombCollision = true;
 
-			printf("충돌\n");
+		//	printf("충돌\n");
 		}
 	}
 	else if (status & NX_TRIGGER_ON_STAY)
@@ -1011,7 +1010,7 @@ NxActor * cPhysXManager::CreateActorToCCD(NxVec3 position, NxF32 * mat, NxVec3 s
 	NxActor* actor = m_pNxScene->createActor(ActorDesc);
 	if (actor == NULL)
 	{
-		std::cout << "NULL";
+	//	std::cout << "NULL";
 	}
 	return actor;
 

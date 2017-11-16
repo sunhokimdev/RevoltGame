@@ -58,7 +58,7 @@ void cWaterBombImpact::Update()
 		m_currentX = 0;
 		m_currentY = 0;
 
-		printf("asdf\n");
+		//printf("asdf\n");
 	}
 }
 

@@ -131,7 +131,7 @@ bool cNetworkManager::RecvMsg()
 
 		m_vecUserIP[netUser.index] = netUser;
 
-		printf("%s %s\n", sIP.c_str(), sIndex.c_str());
+		//printf("%s %s\n", sIP.c_str(), sIndex.c_str());
 
 		return false;
 	}
@@ -262,7 +262,7 @@ sockaddr_in cNetworkManager::GetDefaultMyIP()
 		for (int i = 0;ptr->h_addr_list[i] != NULL;i++)
 		{
 			memcpy(&addr.sin_addr, ptr->h_addr_list[i], ptr->h_length);
-			printf("%s\n", inet_ntoa(addr.sin_addr));
+			//printf("%s\n", inet_ntoa(addr.sin_addr));
 			m_vecMyIP.push_back(inet_ntoa(addr.sin_addr));
 		}
 	}

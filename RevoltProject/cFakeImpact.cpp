@@ -47,7 +47,7 @@ void cFakeImpact::Update()
 			m_currentX = 0;
 			m_currentY++;
 		}
-		printf("ads\n");
+		//printf("ads\n");
 	}
 
 	if (m_index == MAX_XSIZE)

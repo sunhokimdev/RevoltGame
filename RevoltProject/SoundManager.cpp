@@ -84,7 +84,7 @@ void SoundManager::Setup()
 	m_pSystem->getVersion(&uiFMODVersion);
 	if (uiFMODVersion < FMOD_VERSION)
 	{
-		std::cout << "버전 오류" << std::endl;
+	//	std::cout << "버전 오류" << std::endl;
 		return;
 	}
 
@@ -184,7 +184,7 @@ void SoundManager::LoadSound(std::string folderName, std::string fileName, bool 
 		//m_pSystem->createStream(fullName.c_str(), FMOD_LOOP_NORMAL, NULL, &pSound);
 		if (pSound == NULL)
 		{
-			std::cout << "해당 파일의 경로를 찾을 수 없습니다 : " << fullName << std::endl;
+			//std::cout << "해당 파일의 경로를 찾을 수 없습니다 : " << fullName << std::endl;
 			return;
 		}
 	}
@@ -194,7 +194,7 @@ void SoundManager::LoadSound(std::string folderName, std::string fileName, bool 
 		//FMOD_DEFAULT | 
 		if (pSound == NULL)
 		{
-			std::cout << "해당 파일의 경로를 찾을 수 없습니다 : " << fullName << std::endl;
+			//std::cout << "해당 파일의 경로를 찾을 수 없습니다 : " << fullName << std::endl;
 			return;
 		}
 		//	pSound->setMode(FMOD_LOOP_NORMAL);	//test;
@@ -232,7 +232,7 @@ void SoundManager::LoadSound(std::string folderName, std::string fileName, std::
 	m_pSystem->createStream(fullName.c_str(), mode, NULL, &pSound);
 	if (pSound == NULL)
 	{
-		std::cout << "해당 파일의 경로를 찾을 수 없습니다 : " << fullName << std::endl;
+		//std::cout << "해당 파일의 경로를 찾을 수 없습니다 : " << fullName << std::endl;
 		return;
 	}
 
@@ -246,7 +246,7 @@ void SoundManager::Play(std::string fileName, float volume, D3DXVECTOR3 soundPos
 	Sound* pSound = FindSound(fileName);
 	if (pSound == NULL)
 	{
-		std::cout << "해당 키 값은 메니저에 등록되어있지 않습니다 : " << fileName << std::endl;
+		//std::cout << "해당 키 값은 메니저에 등록되어있지 않습니다 : " << fileName << std::endl;
 		return;
 	}
 
@@ -255,7 +255,7 @@ void SoundManager::Play(std::string fileName, float volume, D3DXVECTOR3 soundPos
 	m_pSystem->playSound(FMOD_CHANNEL_FREE, pSound, false, &pChannel);
 	if (pChannel == NULL)
 	{
-		std::cout << "채널 불러오기 실패! : " << fileName << std::endl;
+		//std::cout << "채널 불러오기 실패! : " << fileName << std::endl;
 		return;
 	}
 	pChannel->set3DSpread(90);
@@ -296,7 +296,7 @@ void SoundManager::Play_BGM(std::string fileName, float volume)
 	Sound* pSound = FindSound(fileName);
 	if (pSound == NULL)
 	{
-		std::cout << "해당 키 값은 메니저에 등록되어있지 않습니다 : " << fileName << std::endl;
+		//std::cout << "해당 키 값은 메니저에 등록되어있지 않습니다 : " << fileName << std::endl;
 		return;
 	}
 
@@ -305,7 +305,7 @@ void SoundManager::Play_BGM(std::string fileName, float volume)
 	m_pSystem->playSound(FMOD_CHANNEL_REUSE, pSound, false, &m_pBgmChnnel);
 	if (m_pBgmChnnel == NULL)
 	{
-		std::cout << "채널 불러오기 실패! : " << fileName << std::endl;
+		//std::cout << "채널 불러오기 실패! : " << fileName << std::endl;
 		return;
 	}
 	m_pBgmChnnel->setVolume(volume);
@@ -336,7 +336,7 @@ void SoundManager::SetVolum(std::string fileName, float volume)
 	Channel* pChannel = FindChannel(fileName);
 	if (pChannel == NULL)
 	{
-		std::cout << "해당 키 값은 메니저에 등록되어있지 않습니다 : " << fileName << std::endl;
+		//std::cout << "해당 키 값은 메니저에 등록되어있지 않습니다 : " << fileName << std::endl;
 	}
 	pChannel->setVolume(volume);
 }
