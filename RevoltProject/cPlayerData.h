@@ -32,7 +32,6 @@ public:
 	std::string CAR_NAME;
 	std::bitset<BITESET_8_SIZE> INPUT_KEY;
 	bool isUser;
-
 	//0~11
 	int ITEM_ID;
 };

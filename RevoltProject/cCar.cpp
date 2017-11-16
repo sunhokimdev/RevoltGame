@@ -34,6 +34,8 @@ cCar::cCar()
 	m_isDrift = false;
 
 	m_yAngle = 0.0f;
+
+	m_textIDColor = D3DXCOLOR(255, 0, 0, 255);
 }
 
 cCar::~cCar()
@@ -233,7 +235,6 @@ void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float bre
 	m_moterPower = 0;
 	m_eHoldItem = ITEM_NONE;
 	m_nItemCount = 0;
-
 }
 
 void cCar::SetAI(bool isAI, AI_DATA aidata)
@@ -334,31 +335,24 @@ void cCar::Update()
 	{
 		if (m_isAI) CtrlAI();
 		else CtrlPlayer();
+		//if (g_pKeyManager->isStayKeyDown(VK_TAB))
+		//{
+		//	CtrlPlayer();
+		//}
+		//이하 AI, PLAYER 의 동일 사용 함수
+
+		//자동차 움직임
+		CarMove();
+
+		//자동차 리포지션
+		if (INPUT_KEY[E_BIT_REPOS]) RePosition();
+
+		//아이템 사용
+		if (INPUT_KEY[E_BIT_ITEM_]) UsedItem();
+
+		//차 뒤집기
+		if (INPUT_KEY[E_BIT_FLIP_]) CarFlip();
 	}
-
-	//경기장 밖으로 나가버리면...
-	if (GetPhysXData()->GetPositionToNxVec3().y > 11.f || GetPhysXData()->GetPositionToNxVec3().y < -11.f)
-	{
-		INPUT_KEY[E_BIT_REPOS] = true;
-	}
-
-	//if (g_pKeyManager->isStayKeyDown(VK_TAB))
-	//{
-	//	CtrlPlayer();
-	//}
-	//이하 AI, PLAYER 의 동일 사용 함수
-
-	//자동차 움직임
-	CarMove();
-
-	//자동차 리포지션
-	if (INPUT_KEY[E_BIT_REPOS]) RePosition();
-
-	//아이템 사용
-	if (INPUT_KEY[E_BIT_ITEM_]) UsedItem();
-
-	//차 뒤집기
-	if (INPUT_KEY[E_BIT_FLIP_]) CarFlip();
 
 	// PickUp 충돌
 	CollidePickUp();
@@ -1023,7 +1017,7 @@ bool cCar::IsIn(D3DXVECTOR3* pv)
 	// 시야에서 가려질 경우
 	D3DXVECTOR3 thisCar = GetPhysXData()->GetPositionToD3DXVec3() + D3DXVECTOR3(0, 0.3, 0);
 	D3DXVECTOR3 toDirL = (*pv + D3DXVECTOR3(0, 0.3, 0)) - thisCar;
-	D3DXVECTOR3 toDir(0, 0, 0);
+	D3DXVECTOR3 toDir(0,0,0);
 	D3DXVec3Normalize(&toDir, &toDirL);
 	NxRaycastHit hit = RAYCAST(thisCar, toDir, 1000);
 	if (hit.distance < D3DXVec3Length(&toDirL))
@@ -1128,7 +1122,7 @@ void cCar::SetNetworkKey(std::string str)
 
 void cCar::RenderBillboardID()
 {
-	D3DXMATRIXA16 matWorld;
+	D3DXMATRIXA16 matWorld, matW;
 	D3DXMATRIXA16 matView;
 	D3DXMATRIXA16 matS;
 	D3DXMATRIXA16 matR, matRZ, matRY;
@@ -1137,9 +1131,18 @@ void cCar::RenderBillboardID()
 	D3DXVECTOR3 pos = this->GetPhysXData()->GetPositionToD3DXVec3();
 	D3DXVECTOR3 dir;
 	dir.x = this->CarArrow(0).x;
+	dir.y = 0.0f;
 	dir.z = this->CarArrow(0).z;
 
-	m_yAngle = atan2f(1, -dir.z);
+	m_yAngle = atan2f(dir.x, dir.z);
+
+	if (!m_isAI)
+	{
+		g_pDataManager->m_position = dir;
+		m_textIDColor = D3DXCOLOR(0, 0, 255, 255);
+	}
+	else
+		m_textIDColor = D3DXCOLOR(255, 0, 0, 255);
 
 	LPDIRECT3DTEXTURE9 mPtexture = g_pTextureManager->GetTexture("UIImage/font2.png");
 
@@ -1153,16 +1156,20 @@ void cCar::RenderBillboardID()
 	D3DXMatrixScaling(&matS, 0.01f, 0.01f, 0.01f);
 	D3DXMatrixIdentity(&matWorld);
 	D3DXMatrixRotationZ(&matRZ, D3DX_PI);
+	D3DXMatrixRotationY(&matRY, -D3DX_PI);
+
+	m_pSprite->SetTransform(&matWorld);
 
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
-
-	D3DXMatrixRotationY(&matRY, -D3DX_PI);
 	matR = matRY * matRZ;
 
 	matWorld = matS * matR * matT;
 	g_pD3DDevice->GetTransform(D3DTS_VIEW, &matView);
 	m_pSprite->SetWorldViewLH(NULL, &matView);
 	HRESULT sOK = m_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE | D3DXSPRITE_BILLBOARD);
+	matW = matWorld;
+
+	matWorld._43 = matWorld._43 + ((0.08f) * m_userName.size() / 2);
 
 	for (int i = 0; i < m_userName.size(); i++)
 	{
@@ -1178,10 +1185,11 @@ void cCar::RenderBillboardID()
 			((tPos % tTempValue) * textPosX) + textPosX,
 			((tPos / tTempValue) * textPosY) + textPosY);
 
-		matWorld._43 = matWorld._43 - 0.08f;
+		matWorld._43 = matWorld._43 - (0.08f * g_pDataManager->m_position.x);
+		matWorld._41 = matWorld._41 + (0.08f * g_pDataManager->m_position.z);
 
 		m_pSprite->SetTransform(&matWorld);
-		m_pSprite->Draw(mPtexture, &rc, &D3DXVECTOR3(8, 0, 0), &D3DXVECTOR3(0, 0, 0), 0xFFFFFFFF);
+		m_pSprite->Draw(mPtexture, &rc, &D3DXVECTOR3(8, 0, 0), &D3DXVECTOR3(0, 0, 0), m_textIDColor);
 	}
 
 	m_pSprite->End();

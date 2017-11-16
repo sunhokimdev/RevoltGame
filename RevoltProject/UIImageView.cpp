@@ -60,6 +60,7 @@ void UIImageView::Update()
 			else if (m_pCar->GetHoldItem() == ITEM_FIREWORK)		m_itemID= 6;
 			else if (m_pCar->GetHoldItem() == ITEM_MYBOMB)			m_itemID= 5;
 			else if (m_pCar->GetHoldItem() == ITEM_GRAVITY)			m_itemID= 4;
+			else if (m_pCar->GetHoldItem() == ITEM_FAKEBOMB)			m_itemID = 9;
 			else m_itemID = INT_MAX;
 		}
 		else if(m_pCar->GetHoldItem() != eITEM_LIST::ITEM_NONE)
@@ -91,7 +92,7 @@ void UIImageView::Update()
 	}
 	else if (m_isSpeed)
 	{
-		m_Rpm = m_Rpm * 7;
+		m_Rpm = abs(m_Rpm) * 7;
 
 		for (int i = 0; i < sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]); i++)
 		{
