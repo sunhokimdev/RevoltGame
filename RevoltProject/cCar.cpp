@@ -569,7 +569,7 @@ void cCar::TrackCheck()
 		m_LabTimeCount += g_pTimeManager->GetElapsedTime();
 		m_totlaTimeCount += g_pTimeManager->GetElapsedTime();
 	}
-	std::cout << *m_pEndRapNum << std::endl;
+	//std::cout << *m_pEndRapNum << std::endl;
 }
 
 void cCar::RunEnd()
