@@ -34,13 +34,17 @@ void cFakeBomb::Update()
 {
 	cItem::Update();
 	
-	if (m_pCar->GetPhysXData()->m_pUserData->isFakebombCollision)
+	if (m_pUser->isFakebombCollision)
 	{
 		m_pPhysX->pPhysX->m_pActor->wakeUp();
 		m_pPhysX->pPhysX->m_pActor->clearActorFlag(NX_AF_DISABLE_COLLISION);
 		m_pImpact->SetIsUse(true);
 
-		D3DXVECTOR3 pos = m_pCar->GetPhysXData()->GetPositionToD3DXVec3();
+		m_pCar->GetPhysXData()->m_pUserData->isFireFakebomb = false;
+		D3DXVECTOR3 pos;
+		pos.x = m_pPhysX->pos.x;
+		pos.y = m_pPhysX->pos.y;
+		pos.z = m_pPhysX->pos.z;
 		
 		m_pImpact->SetPosition(pos);
 		m_isUse = false;
@@ -99,7 +103,7 @@ void cFakeBomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 
 	if (m_isInit)
 	{
-		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(3.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_NONE, m_pUser, false);
+		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(2.5f, 0.0f, 0.0f), E_PHYSX_MATERIAL_NONE, m_pUser, false);
 		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_NONE, m_pUser, true);
 		SetActorGroup(m_pPhysX->pTrigger->m_pActor, E_PHYSX_TAG_FAKEBOMB);
 		SetActorGroup(m_pPhysX->pPhysX->m_pActor, E_PHYSX_TAG_FAKEBOMB);
@@ -112,6 +116,16 @@ void cFakeBomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	m_pCar->GetPhysXData()->m_pUserData->isFireFakebomb = true;
 	m_pCar->GetPhysXData()->m_pUserData->isFakebombCollision = false;
 
+	m_pUser->isFakebombCollision = false;
 	m_isUse = true;
 	m_isEnd = false;
+}
+
+void cFakeBomb::Destroy()
+{
+	SAFE_DELETE(m_pImpact);
+	SAFE_DELETE(m_pUser);
+	SAFE_DELETE(m_pPhysX);
+
+	cItem::Destroy();
 }
