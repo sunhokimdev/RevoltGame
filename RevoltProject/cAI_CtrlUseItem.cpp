@@ -85,7 +85,7 @@ void cAI_CtrlUseItem::Update()
 	default:		break;
 	}
 
-	std::cout << std::endl;
+	//std::cout << std::endl;
 }
 
 void cAI_CtrlUseItem::Render()

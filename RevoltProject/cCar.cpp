@@ -19,13 +19,13 @@ cCar::cCar()
 	m_countRapNum = -1;
 	m_currCheckBoxID = -1;
 	m_aICheckBoxID = 0;
-	m_rapTimeCount = 0.f;
+	m_LabTimeCount = 0.f;
 	m_totlaTimeCount = 0.f;
-	m_bastRapTimeCount = -1.0f;
+	m_bastLabTimeCount = -1.0f;
 	isFliping = false;
 	m_nextCheckBoxID = 0;
 	m_eHoldItem = ITEM_NONE;
-
+	m_fRankPoint = 0;
 	familyAI = NULL;
 
 	m_isCtl = false;
@@ -359,6 +359,12 @@ void cCar::Update()
 	//바퀴 자국
 	CreateSkidMark();
 
+	//랭크 포인트
+	if (m_currCheckBoxID >= 0)
+	{
+		UpdateRankPoint();
+	}
+
 	UpdateSound();
 }
 
@@ -506,7 +512,7 @@ void cCar::TrackCheck()
 			m_nextCheckBoxID = 1;
 			m_currCheckBoxID = 0;	//체크 시작
 			m_countRapNum = 0;
-			m_rapTimeCount = 0.f;
+			m_LabTimeCount = 0.f;
 
 			if (!m_isAI)
 			{
@@ -545,18 +551,18 @@ void cCar::TrackCheck()
 				m_pInGameUI->SetLabMinTenth(FONT2_NUM0);
 			}
 
-			if (m_bastRapTimeCount > m_rapTimeCount || m_bastRapTimeCount < 0.0f)
+			if (m_bastLabTimeCount > m_LabTimeCount || m_bastLabTimeCount < 0.0f)
 			{
-				m_bastRapTimeCount = m_rapTimeCount;
+				m_bastLabTimeCount = m_LabTimeCount;
 
 			}
-			m_rapTimeCount = 0.f;
+			m_LabTimeCount = 0.f;
 		}
 	}
 	//시간을 더해 나간다.
 	if (m_countRapNum < 3)
 	{
-		m_rapTimeCount += g_pTimeManager->GetElapsedTime();
+		m_LabTimeCount += g_pTimeManager->GetElapsedTime();
 		m_totlaTimeCount += g_pTimeManager->GetElapsedTime();
 	}
 }
@@ -929,6 +935,17 @@ void cCar::UpdateSound()
 	{
 		g_pSoundManager->Stop(m_strDriftKey);
 	}
+}
+
+void cCar::UpdateRankPoint()
+{
+	int Lap = (m_countRapNum + 1) * 100000;
+	int Check = m_currCheckBoxID * 1000;
+	D3DXVECTOR3 checkboxPos = m_pTrack->GetCheckBoxs()[m_currCheckBoxID]->GetPosition();
+	D3DXVECTOR3 vecTemp = checkboxPos - m_position;
+	float Dist = D3DXVec3Length(&vecTemp);
+
+	m_fRankPoint = Lap + Check + Dist;
 }
 
 NxVec3 cCar::CarArrow(float angle)

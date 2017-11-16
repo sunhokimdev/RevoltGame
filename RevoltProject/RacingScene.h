@@ -47,6 +47,8 @@ private:
 
 	SYNTHESIZE(eRACE_PROG, m_eRaceProg, RaceProg);
 
+	std::vector<std::string> m_vecRank;
+
 public:
 
 	RacingScene();
@@ -59,6 +61,7 @@ public:
 	void LastUpdate();
 	void UpdateCamera();
 	void UpdateSound();
+	void UpdateRnak();
 
 	//자동차가 계속 달려야하는지를 체크
 	bool IsCarRunTrue(cCar* pCar);
@@ -72,5 +75,7 @@ public:
 	/*   김선호   */
 	void NetworkLoop();			// 네트워크 통신하는 부분
 	void SetNetworkCarData();		// 자동차 데이터 세팅하는 메서드
+
+	std::vector<std::string>* GetRankVectorPt() { return &m_vecRank; }
 };
 

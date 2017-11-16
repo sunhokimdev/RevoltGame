@@ -137,6 +137,8 @@ void RacingScene::Update()
 				if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
 			}
 		}
+
+		UpdateRnak();
 	}
 	break;
 	case RACE_PROG_FINISH:
@@ -161,6 +163,7 @@ void RacingScene::Update()
 		m_eRaceProg = RACE_PROG_FINISH;
 		g_SceneManager->ChangeScene("Lobby");
 	}
+
 }
 
 void RacingScene::Render()
@@ -357,13 +360,35 @@ void RacingScene::UpdateSound()
 	D3DXVECTOR3 forward = *g_pCamManager->GetCamPos() - *g_pCamManager->GetLookAt();
 	D3DXVec3Normalize(&forward, &forward);
 
-	//D3DXMATRIXA16 matR;
-
-	//D3DXMatrixRotationX(&matR, (D3DX_PI/2.0f));
-	//D3DXVec3TransformNormal(&forward, &forward, &matR);
 	g_pSoundManager->Setup3DCamera(*g_pCamManager->GetCamPos(), forward);
-	//g_pSoundManager->Setup3DCamera(vecCars[0]->GetPosition(), forward);
-	//g_pSoundManager->Setup3DCamera(*g_pCamManager->GetCamPos(), vecCars[0]->GetDirection());
+}
+
+void RacingScene::UpdateRnak()
+{
+	m_vecRank.clear();
+	std::map<float, std::string> mapRank;
+
+	for (int i = 0; i < vecCars.size(); i++)
+	{
+		mapRank.insert(std::make_pair(vecCars[i]->GetRankPoint(), vecCars[i]->GetUserNameW()));
+	}
+
+	std::map<float, std::string>::iterator iter;
+	for (iter = mapRank.begin();
+		iter != mapRank.end();
+		iter++)
+	{
+		m_vecRank.insert(m_vecRank.begin(),iter->second);
+	}
+	
+	if (g_pKeyManager->isOnceKeyDown('U'))
+	{
+		for (int i = 0; i < m_vecRank.size(); i++)
+		{
+			std::cout << m_vecRank[i] << std::endl;
+		}
+		std::cout << std::endl;
+	}
 }
 
 bool RacingScene::IsCarRunTrue(cCar* pCar)
