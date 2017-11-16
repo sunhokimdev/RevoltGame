@@ -36,6 +36,8 @@ cCar::cCar()
 	m_yAngle = 0.0f;
 
 	m_textIDColor = D3DXCOLOR(255, 0, 0, 255);
+
+	wheelRotAngle = 0.0f;
 }
 
 cCar::~cCar()
@@ -416,10 +418,17 @@ void cCar::Render()
 		D3DXMatrixTranslation(&matT, NxWheelPos.x, NxWheelPos.y, NxWheelPos.z);
 
 		if (i < 2)	D3DXMatrixRotationY(&matR, -(D3DX_PI*0.5 + (m_wheelAngle * m_maxWheelAngle)));
+	
 		else D3DXMatrixRotationY(&matR, -D3DX_PI*0.5);
+
+		wheelRotAngle += GetRpm() *0.01;
+		if (wheelRotAngle >= 360) wheelRotAngle = 0;
+
+		D3DXMATRIXA16 matR_;
+		D3DXMatrixRotationX(&matR_, D3DXToRadian(wheelRotAngle));
 		matW = matR * matT;
 
-		MgrD3DDevice->SetTransform(D3DTS_WORLD, &(matW * cTransform::GetMatrix(false, true, true)));
+		MgrD3DDevice->SetTransform(D3DTS_WORLD, &(matR_ * matW * cTransform::GetMatrix(false,true,true)));
 		vecWheels[i]->Render();
 	}
 
@@ -1017,7 +1026,7 @@ bool cCar::IsIn(D3DXVECTOR3* pv)
 	// 시야에서 가려질 경우
 	D3DXVECTOR3 thisCar = GetPhysXData()->GetPositionToD3DXVec3() + D3DXVECTOR3(0, 0.3, 0);
 	D3DXVECTOR3 toDirL = (*pv + D3DXVECTOR3(0, 0.3, 0)) - thisCar;
-	D3DXVECTOR3 toDir(0,0,0);
+	D3DXVECTOR3 toDir(0, 0, 0);
 	D3DXVec3Normalize(&toDir, &toDirL);
 	NxRaycastHit hit = RAYCAST(thisCar, toDir, 1000);
 	if (hit.distance < D3DXVec3Length(&toDirL))

@@ -103,6 +103,9 @@ private:
 	bool m_itemEable;
 	int m_itemEableTime;
 
+
+	//wheelrotangle
+	float wheelRotAngle;
 public:
 	cCar();
 	~cCar();
