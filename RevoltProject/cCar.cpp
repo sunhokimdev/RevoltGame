@@ -34,6 +34,8 @@ cCar::cCar()
 	m_isDrift = false;
 
 	m_yAngle = 0.0f;
+
+	m_textIDColor = D3DXCOLOR(255, 0, 0, 255);
 }
 
 cCar::~cCar()
@@ -233,7 +235,6 @@ void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float bre
 	m_moterPower = 0;
 	m_eHoldItem = ITEM_NONE;
 	m_nItemCount = 0;
-
 }
 
 void cCar::SetAI(bool isAI, AI_DATA aidata)
@@ -1130,10 +1131,18 @@ void cCar::RenderBillboardID()
 	D3DXVECTOR3 pos = this->GetPhysXData()->GetPositionToD3DXVec3();
 	D3DXVECTOR3 dir;
 	dir.x = this->CarArrow(0).x;
+	dir.y = 0.0f;
 	dir.z = this->CarArrow(0).z;
 
 	m_yAngle = atan2f(dir.x, dir.z);
-	m_yAngle = D3DX_PI - m_yAngle;
+
+	if (!m_isAI)
+	{
+		g_pDataManager->m_position = dir;
+		m_textIDColor = D3DXCOLOR(0, 0, 255, 255);
+	}
+	else
+		m_textIDColor = D3DXCOLOR(255, 0, 0, 255);
 
 	LPDIRECT3DTEXTURE9 mPtexture = g_pTextureManager->GetTexture("UIImage/font2.png");
 
@@ -1149,6 +1158,8 @@ void cCar::RenderBillboardID()
 	D3DXMatrixRotationZ(&matRZ, D3DX_PI);
 	D3DXMatrixRotationY(&matRY, -D3DX_PI);
 
+	m_pSprite->SetTransform(&matWorld);
+
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
 	matR = matRY * matRZ;
 
@@ -1157,6 +1168,8 @@ void cCar::RenderBillboardID()
 	m_pSprite->SetWorldViewLH(NULL, &matView);
 	HRESULT sOK = m_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE | D3DXSPRITE_BILLBOARD);
 	matW = matWorld;
+
+	matWorld._43 = matWorld._43 + ((0.08f) * m_userName.size() / 2);
 
 	for (int i = 0; i < m_userName.size(); i++)
 	{
@@ -1172,10 +1185,11 @@ void cCar::RenderBillboardID()
 			((tPos % tTempValue) * textPosX) + textPosX,
 			((tPos / tTempValue) * textPosY) + textPosY);
 
-		matWorld._43 = matWorld._43 - 0.08f;
+		matWorld._43 = matWorld._43 - (0.08f * g_pDataManager->m_position.x);
+		matWorld._41 = matWorld._41 + (0.08f * g_pDataManager->m_position.z);
 
 		m_pSprite->SetTransform(&matWorld);
-		m_pSprite->Draw(mPtexture, &rc, &D3DXVECTOR3(8, 0, 0), &D3DXVECTOR3(0, 0, 0), 0xFFFFFFFF);
+		m_pSprite->Draw(mPtexture, &rc, &D3DXVECTOR3(8, 0, 0), &D3DXVECTOR3(0, 0, 0), m_textIDColor);
 	}
 
 	m_pSprite->End();
