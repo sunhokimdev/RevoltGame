@@ -69,8 +69,8 @@ private:
 	SYNTHESIZE(int, m_countRapNum, CountRapNum);				//µ· ¹ÙÄû¼ö
 	SYNTHESIZE(int*, m_pEndRapNum, EndRapNum);					//µ¹¾Æ¾ß ÇÏ´Â ¹ÙÄû ¼ö
 
-	SYNTHESIZE(float, m_rapTimeCount, RapTimeCount);			//ÇöÁ¦ ·¾ ½Ã°£
-	SYNTHESIZE(float, m_bastRapTimeCount, BastRapTimeCount);	//°¡Àå Â¬Àº ·¦ ½Ã°£
+	SYNTHESIZE(float, m_LabTimeCount, LabTimeCount); //ÇöÁ¦ ·¾ ½Ã°£
+	SYNTHESIZE(float, m_bastLabTimeCount, BastLabTimeCount);	//°¡Àå Â¬Àº ·¦ ½Ã°£
 	SYNTHESIZE(float, m_totlaTimeCount, TotlaTimeCount);		//ÃÑ °æ°úµÈ ·¦ ½Ã°£
 
 
@@ -92,6 +92,9 @@ private:
 	std::vector<D3DXVECTOR3>	m_vecWorldVertex;
 	std::vector<D3DXPLANE>		m_vecPlane;
 
+	//Rank°ü·Ã
+	float m_fRankPoint;
+	
 public:
 	cCar();
 	~cCar();
@@ -145,6 +148,9 @@ public:
 
 	void UpdateSound();
 
+	void UpdateRankPoint();
+
+	float GetRankPoint() { return m_fRankPoint; }
 	/*   ±è¼±È£   */
 	///////////////////////////////////////
 private:
@@ -157,6 +163,7 @@ public:
 
 	SYNTHESIZE(NxVec3, m_carPos, CarSunPos);
 	SYNTHESIZE(bool, m_isUser, IsUser);
+	SYNTHESIZE(float, m_yAngle, YAngle);
 	SYNTHESIZE(std::string, m_userName, UserName);
 	////////////////////////////////////////
 	//e
