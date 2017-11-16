@@ -622,7 +622,7 @@ void cCar::DrawSkidMark()
 			if (RayCarHit.shape->getActor().getName())
 			{
 				std::string str = RayCarHit.shape->getActor().getName();
-				if (RayCarHit.distance < 0.2f && str == "map")
+				if (RayCarHit.distance < 0.1f && str == "map")
 				{
 					m_pSkidMark->DrawSkidMark();
 					if (!m_isDrift)
