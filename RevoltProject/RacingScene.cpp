@@ -110,6 +110,8 @@ void RacingScene::Update()
 	{
 		if (m_eRaceProg == RACE_PROG_GO)
 		{
+			m_pInGameUI->UpdateRaceTime();
+
 			for (int i = 0; i < vecCars.size(); i++)
 			{
 				vecCars[i]->m_isCtl = true;;
@@ -118,6 +120,7 @@ void RacingScene::Update()
 		if (g_pNetworkManager->GetIsInGameNetwork())
 		{
 			SetNetworkCarData();
+			//m_pInGameUI->UpdateRaceTime();
 		}
 		else
 		{
@@ -427,5 +430,5 @@ void RacingScene::SetNetworkCarData()
 	if (IsCarRunTrue(vecCars[0])) vecCars[0]->Update();
 	if (!IsCarRunTrue(vecCars[0])) m_eRaceProg = RACE_PROG_FINISH;
 
-	m_pInGameUI->UpdateRaceTime();
+	
 }

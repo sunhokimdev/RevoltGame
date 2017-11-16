@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "UIImageView.h"
 #include "cCar.h"
-
-
-
 UIImageView::UIImageView()
 	: m_pTexture(NULL)
 	, m_isBoard(false)
@@ -20,7 +17,7 @@ UIImageView::UIImageView()
 	, m_updateTIme(500)
 	, m_alphaValue(0)
 	, m_fArrowAngle(0.0f)
-
+	, m_pCar(NULL)
 {
 	for (int i = 0; i < sizeof(m_speedAlpha) / sizeof(m_speedAlpha[0]); i++)
 	{
@@ -46,12 +43,13 @@ void UIImageView::SetTexture(char * szFullPath)
 
 void UIImageView::Update()
 {
-
+	
 	/*   현재 이미지가 아이템 리스트 라면   */
 	if (m_isItem)
 	{
 		/*   update타입이 100이하면 선택된 m_item이 된다   */
-		if (g_pItemManager->GetItemID() == INT_MAX)
+		if(m_pCar->GetHoldItem() == eITEM_LIST::ITEM_NONE)
+		//if (g_pItemManager->GetItemID() == INT_MAX)
 			m_updateTIme = 500;
 
 		if (m_updateTIme < 100)
@@ -60,7 +58,7 @@ void UIImageView::Update()
 
 			m_itemID = g_pItemManager->GetItemID();
 		}
-		else if(g_pItemManager->GetItemID() != INT_MAX)
+		else if(m_pCar->GetHoldItem() != eITEM_LIST::ITEM_NONE)
 		{
 			srand(time(NULL));
 			if (m_itemID > MAX_ID)
@@ -194,7 +192,7 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 	} // << if(m_isBoard) end
 	else if (m_isItem)
 	{
-		if (g_pItemManager->GetItemID() == INT_MAX)
+		if (m_pCar->GetHoldItem() == eITEM_LIST::ITEM_NONE)
 			return;
 
 		RECT rc;
@@ -308,7 +306,7 @@ void UIImageView::Render(LPD3DXSPRITE pSprite)
 		pSprite->Draw(m_pTexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_color);
 
 	}
-	else if ((!m_isBoard))
+	else if ((!m_isBoard) && !m_isItem)
 	{
 		RECT rc;
 

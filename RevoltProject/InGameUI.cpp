@@ -344,6 +344,7 @@ void InGameUI::Setup()
 	m_pItemImage->SetPosition(22, 22);
 	m_pItemImage->SetIsItem(true);
 	m_pItemImage->SetTexture("UIImage/itemlist.png");
+	m_pItemImage->LinkCarPt(m_pCar);
 
 	//속도계 추가
 
@@ -474,7 +475,6 @@ void InGameUI::Setup()
 void InGameUI::Update()
 {
 	iLobby::Update();
-	
 
 	UpdateSpeed();
 	UpdateLabCount();
@@ -592,7 +592,6 @@ void InGameUI::UpdateSpeed()
 	m_pSpeedHun->SetText(strHun);
 	m_pSpeedTen->SetText(strTen);
 	m_pSpeedOne->SetText(strOne);
-
 	m_pSpeedometerImage->SetRpmGauge(m_pCar->GetNxVehicle()->getWheel(1)->getRpm());
 }
 
@@ -1079,4 +1078,9 @@ void InGameUI::RaceResults()
 	pSecColon->AddChild(pDotMilth);
 	pDotMilth->AddChild(pDotTenth);
 	pDotTenth->AddChild(pDotOneth);
+}
+
+void InGameUI::LinkCarPt(cCar * car)
+{
+	m_pCar = car;
 }

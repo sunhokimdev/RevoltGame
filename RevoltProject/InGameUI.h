@@ -153,10 +153,7 @@ public:
 	SYNTHESIZE(int, m_MinOneth, MinOneth);
 	SYNTHESIZE(int, m_MinTenth, MinTenth);
 
-	void LinkCarPt(cCar* car)
-	{
-		m_pCar = car;
-	}
+	void LinkCarPt(cCar* car);
 	void LinkTrack(cTrack* track) { m_pTrack = track; }
 	void LinkRacingScene(RacingScene* rc) { m_pRacingScene = rc; }
 	c321GO* Get321goPt() { return m_p321go; }

@@ -1,8 +1,6 @@
 #pragma once
 #include "UIObject.h"
 
-class cCar;
-
 #define MAX_ID 11
 
 class UIImageView : public UIObject
