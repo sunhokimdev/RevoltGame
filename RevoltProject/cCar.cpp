@@ -29,11 +29,15 @@ cCar::cCar()
 	m_fRankPoint = 0;
 	familyAI = NULL;
 	m_pTarget = NULL;
-
+	m_finishTime = 1000 + rand() % 10000;
 	m_isCtl = false;
 	m_isDrift = false;
 
 	m_yAngle = 0.0f;
+
+	m_textIDColor = D3DXCOLOR(255, 0, 0, 255);
+
+	wheelRotAngle = 0.0f;
 }
 
 cCar::~cCar()
@@ -233,7 +237,6 @@ void cCar::SetCarValue(float maxRpm, float moterPower, float moterAcc, float bre
 	m_moterPower = 0;
 	m_eHoldItem = ITEM_NONE;
 	m_nItemCount = 0;
-
 }
 
 void cCar::SetAI(bool isAI, AI_DATA aidata)
@@ -261,11 +264,7 @@ void cCar::CreateItem()
 		while (1)
 		{
 			srand(time(NULL));
-			//m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
-
-			/*TEST*/
-			m_eHoldItem = eITEM_LIST::ITEM_FIREWORK;
-
+			m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
 
 			if (m_eHoldItem) break;
 		}
@@ -415,10 +414,17 @@ void cCar::Render()
 		D3DXMatrixTranslation(&matT, NxWheelPos.x, NxWheelPos.y, NxWheelPos.z);
 
 		if (i < 2)	D3DXMatrixRotationY(&matR, -(D3DX_PI*0.5 + (m_wheelAngle * m_maxWheelAngle)));
+	
 		else D3DXMatrixRotationY(&matR, -D3DX_PI*0.5);
+
+		wheelRotAngle += GetRpm() *0.01;
+		if (wheelRotAngle >= 360) wheelRotAngle = 0;
+
+		D3DXMATRIXA16 matR_;
+		D3DXMatrixRotationX(&matR_, D3DXToRadian(wheelRotAngle));
 		matW = matR * matT;
 
-		MgrD3DDevice->SetTransform(D3DTS_WORLD, &(matW * cTransform::GetMatrix(false, true, true)));
+		MgrD3DDevice->SetTransform(D3DTS_WORLD, &(matR_ * matW * cTransform::GetMatrix(false,true,true)));
 		vecWheels[i]->Render();
 	}
 
@@ -574,6 +580,7 @@ void cCar::TrackCheck()
 
 void cCar::RunEnd()
 {
+	//m_finishTime = m_totlaTimeCount;
 	for (int i = 0; i < 4; i++)
 	{
 		NxWheel* wheel = m_carNxVehicle->getWheel(i);
@@ -673,10 +680,10 @@ void cCar::CollidePickUp()
 			CreateItem();
 			g_pItemManager->SetItemID(m_eHoldItem);
 		}
-	
+
 	}
-	
-	if(m_eHoldItem != ITEM_NONE)
+
+	if (m_eHoldItem != ITEM_NONE)
 	{
 		m_itemEableTime -= 2;
 		if (m_itemEableTime <= 0)
@@ -763,7 +770,7 @@ void cCar::CarMove()
 
 void cCar::UsedItem()
 {
-	
+
 	if (m_eHoldItem != ITEM_NONE && m_itemEable)
 	{
 		//아이템 사용 함수 호츨
@@ -830,15 +837,15 @@ void cCar::CarFlip()
 void cCar::SetFrustum()
 {
 	// : near 
-	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, - 1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, + 1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, + 1, 0)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, - 1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, +1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(+1, +1, 0)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(+1, -1, 0)); //
 	// : far
-	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, - 1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3( - 1, + 1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, + 1, 1)); //
-	m_vecProjVertex.push_back(D3DXVECTOR3( + 1, - 1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, -1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(-1, +1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(+1, +1, 1)); //
+	m_vecProjVertex.push_back(D3DXVECTOR3(+1, -1, 1)); //
 
 	m_vecPlane.resize(6);
 	m_vecWorldVertex.resize(8);
@@ -1012,7 +1019,16 @@ bool cCar::IsIn(D3DXVECTOR3* pv)
 	fDist = D3DXPlaneDotCoord(&m_vecPlane[5], pv);
 	a = 0;
 	if (fDist > PLANE_EPSILON) return FALSE;	// plane의 normal벡터가 right로 향하고 있으므로 양수이면 프러스텀의 오른쪽
-	
+
+	// 시야에서 가려질 경우
+	D3DXVECTOR3 thisCar = GetPhysXData()->GetPositionToD3DXVec3() + D3DXVECTOR3(0, 0.3, 0);
+	D3DXVECTOR3 toDirL = (*pv + D3DXVECTOR3(0, 0.3, 0)) - thisCar;
+	D3DXVECTOR3 toDir(0, 0, 0);
+	D3DXVec3Normalize(&toDir, &toDirL);
+	NxRaycastHit hit = RAYCAST(thisCar, toDir, 1000);
+	if (hit.distance < D3DXVec3Length(&toDirL))
+		return FALSE;
+
 	return true;
 }
 
@@ -1024,7 +1040,7 @@ void cCar::UpdateSound()
 	float frq = 10000 + (rpmRatio * 15000) + (rand() % 1000);
 	//std::cout << rpmRatio << std::endl;
 	float volume = 0.1f + rpmRatio * 0.4f;
-	if(m_nPlayerID == 0) volume = 0.1f + rpmRatio * 0.3f;
+	if (m_nPlayerID == 0) volume = 0.1f + rpmRatio * 0.3f;
 
 	g_pSoundManager->SetPosVolPitch(
 		m_strMotorKey,
@@ -1077,7 +1093,7 @@ NxVec3 cCar::CarArrow(float angle)
 	D3DXMatrixRotationAxis(&matAngle, &D3DXVECTOR3(0, 1, 0), D3DXToRadian(angle));
 
 
-	
+
 	D3DXVECTOR3 dir(1, 0, 0);
 
 	D3DXVec3TransformNormal(&dir, &dir, &(matR*matAngle));
@@ -1112,7 +1128,7 @@ void cCar::SetNetworkKey(std::string str)
 
 void cCar::RenderBillboardID()
 {
-	D3DXMATRIXA16 matWorld;
+	D3DXMATRIXA16 matWorld, matW;
 	D3DXMATRIXA16 matView;
 	D3DXMATRIXA16 matS;
 	D3DXMATRIXA16 matR, matRZ, matRY;
@@ -1121,9 +1137,18 @@ void cCar::RenderBillboardID()
 	D3DXVECTOR3 pos = this->GetPhysXData()->GetPositionToD3DXVec3();
 	D3DXVECTOR3 dir;
 	dir.x = this->CarArrow(0).x;
+	dir.y = 0.0f;
 	dir.z = this->CarArrow(0).z;
 
-	m_yAngle = atan2f(1, -dir.z);
+	D3DXVec3Normalize(&dir, &dir);
+
+	if (!m_isAI)
+	{
+		g_pDataManager->m_position = dir;
+		m_textIDColor = D3DXCOLOR(0, 0, 255, 255);
+	}
+	else
+		m_textIDColor = D3DXCOLOR(255, 0, 0, 255);
 
 	LPDIRECT3DTEXTURE9 mPtexture = g_pTextureManager->GetTexture("UIImage/font2.png");
 
@@ -1137,19 +1162,23 @@ void cCar::RenderBillboardID()
 	D3DXMatrixScaling(&matS, 0.01f, 0.01f, 0.01f);
 	D3DXMatrixIdentity(&matWorld);
 	D3DXMatrixRotationZ(&matRZ, D3DX_PI);
+	D3DXMatrixRotationY(&matRY, -D3DX_PI);
 
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
-
-	D3DXMatrixRotationY(&matRY, -D3DX_PI);
 	matR = matRY * matRZ;
 
 	matWorld = matS * matR * matT;
 	g_pD3DDevice->GetTransform(D3DTS_VIEW, &matView);
 	m_pSprite->SetWorldViewLH(NULL, &matView);
-	HRESULT sOK = m_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE | D3DXSPRITE_BILLBOARD);
+	m_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE | D3DXSPRITE_BILLBOARD);
 
-	for (int i = 0;i < m_userName.size();i++)
+	//matWorld._43 = matWorld._43 + ((0.08f) * m_userName.size() / 2);
+	float  leftI = (int)m_userName.size() * 0.5;
+	D3DXMATRIXA16 matLieft = matWorld;
+	for (int i = 0; i < m_userName.size(); i++)
 	{
+		matLieft = matWorld;
+
 		RECT rc;
 		char tChar = m_userName[i];
 		int tPos;
@@ -1162,10 +1191,12 @@ void cCar::RenderBillboardID()
 			((tPos % tTempValue) * textPosX) + textPosX,
 			((tPos / tTempValue) * textPosY) + textPosY);
 
-		matWorld._43 = matWorld._43 - 0.08f;
 
-		m_pSprite->SetTransform(&matWorld);
-		m_pSprite->Draw(mPtexture, &rc, &D3DXVECTOR3(8, 0, 0), &D3DXVECTOR3(0, 0, 0), 0xFFFFFFFF);
+		matLieft._43 = matWorld._43 - ((i - leftI)*0.08f * g_pDataManager->m_position.x);
+		matLieft._41 = matWorld._41 + ((i - leftI)*0.08f * g_pDataManager->m_position.z);
+
+		m_pSprite->SetTransform(&matLieft);
+		m_pSprite->Draw(mPtexture, &rc, &D3DXVECTOR3(0, 0, 0), &D3DXVECTOR3(0, 0, 0), m_textIDColor);
 	}
 
 	m_pSprite->End();

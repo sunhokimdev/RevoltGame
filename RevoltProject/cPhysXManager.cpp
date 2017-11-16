@@ -62,8 +62,8 @@ BOOL cPhysXManager::InitNxPhysX()
 		NxMaterialDesc material;
 		material.setToDefault();
 		material.restitution = 0.3;
-		material.staticFriction = 0.5f;
-		material.dynamicFriction = 0.3f;
+		material.staticFriction = 10.f;
+		material.dynamicFriction = 8.f;
 		m_pNxScene->createMaterial(material);
 
 	}
@@ -71,32 +71,32 @@ BOOL cPhysXManager::InitNxPhysX()
 		NxMaterialDesc material;
 		material.setToDefault();
 		material.restitution = 0.3f;
+		material.staticFriction = 2.f;
+		material.dynamicFriction = 1.f;
+		m_pNxScene->createMaterial(material);
+	}
+	E_PHYSX_MATERIAL_GRIVATEBALL; {
+		NxMaterialDesc material;
+		material.setToDefault();
+		material.restitution = 1.0f;
+		material.staticFriction = 0.f;
+		material.dynamicFriction = 0.f;
+		m_pNxScene->createMaterial(material);
+	}
+	E_PHYSX_MATERIAL_WHATEBOMB; {
+		NxMaterialDesc material;
+		material.setToDefault();
+		material.restitution = 0.5f;
 		material.staticFriction = 5.f;
 		material.dynamicFriction = 3.f;
 		m_pNxScene->createMaterial(material);
 	}
-	E_PHYSX_MATERIAL_03; {
+	E_PHYSX_MATERIAL_ETC; {
 		NxMaterialDesc material;
 		material.setToDefault();
-		material.restitution = 0.6f;
+		material.restitution = 0.3f;
 		material.staticFriction = 10.f;
-		material.dynamicFriction = 8.f;
-		m_pNxScene->createMaterial(material);
-	}
-	E_PHYSX_MATERIAL_04; {
-		NxMaterialDesc material;
-		material.setToDefault();
-		material.restitution = 0.6f;
-		material.staticFriction = 10.f;
-		material.dynamicFriction = 8.f;
-		m_pNxScene->createMaterial(material);
-	}
-	E_PHYSX_MATERIAL_05; {
-		NxMaterialDesc material;
-		material.setToDefault();
-		material.restitution = 0.6f;
-		material.staticFriction = 10.f;
-		material.dynamicFriction = 8.f;
+		material.dynamicFriction = 10.f;
 		m_pNxScene->createMaterial(material);
 	}
 	E_PHYSX_MATERIAL_06; {
@@ -177,6 +177,7 @@ void cPhysXManager::PhysXReportSeting()
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_WHATEBOMB);
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_METALBALL);
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_GRIVATEBALL);
+	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_FAKEBOMB);
 	CollisionEnable(T, T, E_PHYSX_TAG_CAR, E_PHYSX_TAG_TRACK);
 
 	CollisionEnable(T, T, E_PHYSX_TAG_PICKUP, E_PHYSX_TAG_PICKUP);
@@ -733,7 +734,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			if (!pUserData1->isFireGravity)
 			{
 				otherShape.getActor().addForce(NxVec3(0, 900000, 0));
-				otherShape.getActor().addTorque(NxVec3(5.0f, 1.0f, 1.5f));
+				otherShape.getActor().addLocalTorque(NxVec3((1000000 + rand() % 400000), (1000000 + rand() % 400000), (1000000 + rand() % 400000)));
 				printf("데이터 충돌\n");
 			}
 		}
@@ -742,7 +743,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			if (!pUserData0->isFireGravity)
 			{
 				triggerShape.getActor().addForce(NxVec3(0, 900000, 0));
-				triggerShape.getActor().addTorque(NxVec3(5.0f, 1.0f, 1.5f));
+				triggerShape.getActor().addLocalTorque(NxVec3((1000000 + rand() % 400000), (1000000 + rand() % 400000), (1000000 + rand() % 400000)));
 				printf("데이터 충돌\n");
 			}
 		}
@@ -752,7 +753,8 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			if (pUserData1->isFireFakebomb)
 				pUserData1->isFireFakebomb = false;
 			else
-				pUserData1->isFakebombCollision = true;
+				pUserData0->isFakebombCollision = true;
+
 			printf("충돌\n");
 		}
 		else if (pUserData1->USER_TAG == E_PHYSX_TAG_FAKEBOMB && pUserData0->USER_TAG == E_PHYSX_TAG_CAR)
@@ -760,7 +762,8 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			if (pUserData0->isFireFakebomb)
 				pUserData0->isFireFakebomb = false;
 			else
-				pUserData0->isFakebombCollision = true;
+				pUserData1->isFakebombCollision = true;
+
 			printf("충돌\n");
 		}
 	}
@@ -836,14 +839,15 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 	{
 		boxShapes[0].dimensions.set(0.65, 0.1f, 0.3f);
 		boxShapes[0].localPose.t.set(0.f, 0.3f, 0.f);
-		boxShapes[0].materialIndex = 1;
+		boxShapes[0].materialIndex = E_PHYSX_MATERIAL_CAR;
 		vehicleDesc.carShapes.pushBack(&boxShapes[0]);
 
 		boxShapes[1].dimensions.set(0.3, 0.1f, 0.25f);
 		boxShapes[1].localPose.t.set(-0.1f, 0.4, 0.f);
-		boxShapes[1].materialIndex = 1;
+		boxShapes[1].materialIndex = E_PHYSX_MATERIAL_CAR;
 		vehicleDesc.carShapes.pushBack(&boxShapes[1]);
 	}
+	;
 
 	vehicleDesc.position = pos;
 	vehicleDesc.mass = 1000;//monsterTruck ? 12000 : 

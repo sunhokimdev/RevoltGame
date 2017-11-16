@@ -182,6 +182,7 @@ int ItemManager::GetItemID()
 	else if (m_eItemList == ITEM_FIREWORK)		return 6;
 	else if (m_eItemList == ITEM_MYBOMB)		return 5;
 	else if (m_eItemList == ITEM_GRAVITY)		return 4;
+	else if (m_eItemList == ITEM_FAKEBOMB)		return 9;
 	else return INT_MAX;
 }
 

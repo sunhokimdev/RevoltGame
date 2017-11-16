@@ -45,6 +45,7 @@ InGameUI::InGameUI()
 	, m_select(99)
 	, m_LabCnt(-1)
 	, m_arrowIndex(0)
+	, m_RankIndex(0)
 {
 }
 
@@ -327,16 +328,37 @@ void InGameUI::Setup()
 	pITV_Rank->SetXSize(3.0f);
 	pITV_Rank->SetYSize(3.0f);
 	pITV_Rank->SetPosition(25, -50);
-	pITV_Rank->SetText("8");
+	pITV_Rank->SetText("1");
 	pITV_Rank->SetTexture("UIImage/font2.png");
 
 	pITV_Rank2 = new UITextImageView;
 	pITV_Rank2->SetXSize(1.0f);
 	pITV_Rank2->SetYSize(1.0f);
 	pITV_Rank2->SetPosition(55, -45);
-	pITV_Rank2->SetText("th");
+	pITV_Rank2->SetText("st");
 	pITV_Rank2->SetTexture("UIImage/font2.png");
 	pITV_Rank2->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+
+	pITV_FrontRank = new UITextImageView;
+	pITV_FrontRank->SetXSize(1.3f);
+	pITV_FrontRank->SetYSize(1.3f);
+	pITV_FrontRank->SetPosition(100, 20);
+	pITV_FrontRank->SetText("");
+	pITV_FrontRank->SetTexture("UIImage/font2.png");
+	pITV_FrontRank->SetColor(D3DCOLOR_ARGB(255, 150, 255, 150));
+
+	pITV_BackRank = new UITextImageView;
+	pITV_BackRank->SetXSize(1.3f);
+	pITV_BackRank->SetYSize(1.3f);
+	pITV_BackRank->SetPosition(0, 25);
+	pITV_BackRank->SetText("");
+	pITV_BackRank->SetTexture("UIImage/font2.png");
+	pITV_BackRank->SetColor(D3DCOLOR_ARGB(255, 250, 150, 150));
+
+
+
+
+	// 아이템 리스트
 
 	m_pItemImage = new UIImageView;
 	m_pItemImage->SetXSize(1.2f);
@@ -406,53 +428,253 @@ void InGameUI::Setup()
 	m_pRaceResult->SetPosition(10, 10);
 	m_pRaceResult->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
 
+	// First
 	m_pFirst = new UITextImageView;
 	m_pFirst->SetTexture("UIImage/font2.png");
 	m_pFirst->SetXSize(1.0f);
 	m_pFirst->SetYSize(1.0f);
 	m_pFirst->SetPosition(0, 30);
+	m_pFirstPlayerName = new UITextImageView;
+	m_pFirstPlayerName->SetTexture("UIImage/font2.png");
+	m_pFirstPlayerName->SetPosition(30, 0);
+	m_pFirstPlayerName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+	m_pFirstResultMinTenth = new UITextImageView;
+	m_pFirstResultMinTenth->SetTexture("UIImage/font2.png");
+	m_pFirstResultMinTenth->SetPosition(160, 0);
+	m_pFirstResultMinOneth = new UITextImageView;
+	m_pFirstResultMinOneth->SetTexture("UIImage/font2.png");
+	m_pFirstResultMinOneth->SetPosition(10, 0);
+	m_pFirstResultMinColon = new UITextImageView;
+	m_pFirstResultMinColon->SetTexture("UIImage/font2.png");
+	m_pFirstResultMinColon->SetPosition(10, 0);
+	m_pFirstResultSecTenth = new UITextImageView;
+	m_pFirstResultSecTenth->SetTexture("UIImage/font2.png");
+	m_pFirstResultSecTenth->SetPosition(10, 0);
+	m_pFirstResultSecOneth = new UITextImageView;
+	m_pFirstResultSecOneth->SetTexture("UIImage/font2.png");
+	m_pFirstResultSecOneth->SetPosition(10, 0);
+	m_pFirstResultSecColon = new UITextImageView;
+	m_pFirstResultSecColon->SetTexture("UIImage/font2.png");
+	m_pFirstResultSecColon->SetPosition(10, 0);
+	m_pFirstResultDotMilth = new UITextImageView;
+	m_pFirstResultDotMilth->SetTexture("UIImage/font2.png");
+	m_pFirstResultDotMilth->SetPosition(10, 0);
+	m_pFirstResultDotTenth = new UITextImageView;
+	m_pFirstResultDotTenth->SetTexture("UIImage/font2.png");
+	m_pFirstResultDotTenth->SetPosition(10, 0);
+	m_pFirstResultDotOneth = new UITextImageView;
+	m_pFirstResultDotOneth->SetTexture("UIImage/font2.png");
+	m_pFirstResultDotOneth->SetPosition(10, 0);
 
-	m_pPlayerName = new UITextImageView;
-	m_pPlayerName->SetTexture("UIImage/font2.png");
-	m_pPlayerName->SetPosition(30, 0);
-	m_pPlayerName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+	// Second
+	m_pSecond = new UITextImageView;
+	m_pSecond->SetTexture("UIImage/font2.png");
+	m_pSecond->SetXSize(1.0f);
+	m_pSecond->SetYSize(1.0f);
+	m_pSecond->SetPosition(0, 30);
+	m_pSndPlayerName = new UITextImageView;
+	m_pSndPlayerName->SetTexture("UIImage/font2.png");
+	m_pSndPlayerName->SetPosition(30, 0);
+	m_pSndPlayerName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+	m_pSndResultMinTenth = new UITextImageView;
+	m_pSndResultMinTenth->SetTexture("UIImage/font2.png");
+	m_pSndResultMinTenth->SetPosition(160, 0);
+	m_pSndResultMinOneth = new UITextImageView;
+	m_pSndResultMinOneth->SetTexture("UIImage/font2.png");
+	m_pSndResultMinOneth->SetPosition(10, 0);
+	m_pSndResultMinColon = new UITextImageView;
+	m_pSndResultMinColon->SetTexture("UIImage/font2.png");
+	m_pSndResultMinColon->SetPosition(10, 0);
+	m_pSndResultSecTenth = new UITextImageView;
+	m_pSndResultSecTenth->SetTexture("UIImage/font2.png");
+	m_pSndResultSecTenth->SetPosition(10, 0);
+	m_pSndResultSecOneth = new UITextImageView;
+	m_pSndResultSecOneth->SetTexture("UIImage/font2.png");
+	m_pSndResultSecOneth->SetPosition(10, 0);
+	m_pSndResultSecColon = new UITextImageView;
+	m_pSndResultSecColon->SetTexture("UIImage/font2.png");
+	m_pSndResultSecColon->SetPosition(10, 0);
+	m_pSndResultDotMilth = new UITextImageView;
+	m_pSndResultDotMilth->SetTexture("UIImage/font2.png");
+	m_pSndResultDotMilth->SetPosition(10, 0);
+	m_pSndResultDotTenth = new UITextImageView;
+	m_pSndResultDotTenth->SetTexture("UIImage/font2.png");
+	m_pSndResultDotTenth->SetPosition(10, 0);
+	m_pSndResultDotOneth = new UITextImageView;
+	m_pSndResultDotOneth->SetTexture("UIImage/font2.png");
+	m_pSndResultDotOneth->SetPosition(10, 0);
 
-	m_pResultMinTenth = new UITextImageView;
-	m_pResultMinTenth->SetTexture("UIImage/font2.png");
-	m_pResultMinTenth->SetPosition(160, 0);
+	// Third
+	m_pThird = new UITextImageView;
+	m_pThird->SetTexture("UIImage/font2.png");
+	m_pThird->SetXSize(1.0f);
+	m_pThird->SetYSize(1.0f);
+	m_pThird->SetPosition(0, 30);
+	m_pTrdPlayerName = new UITextImageView;
+	m_pTrdPlayerName->SetTexture("UIImage/font2.png");
+	m_pTrdPlayerName->SetPosition(30, 0);
+	m_pTrdPlayerName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+	m_pTrdResultMinTenth = new UITextImageView;
+	m_pTrdResultMinTenth->SetTexture("UIImage/font2.png");
+	m_pTrdResultMinTenth->SetPosition(160, 0);
+	m_pTrdResultMinOneth = new UITextImageView;
+	m_pTrdResultMinOneth->SetTexture("UIImage/font2.png");
+	m_pTrdResultMinOneth->SetPosition(10, 0);
+	m_pTrdResultMinColon = new UITextImageView;
+	m_pTrdResultMinColon->SetTexture("UIImage/font2.png");
+	m_pTrdResultMinColon->SetPosition(10, 0);
+	m_pTrdResultSecTenth = new UITextImageView;
+	m_pTrdResultSecTenth->SetTexture("UIImage/font2.png");
+	m_pTrdResultSecTenth->SetPosition(10, 0);
+	m_pTrdResultSecOneth = new UITextImageView;
+	m_pTrdResultSecOneth->SetTexture("UIImage/font2.png");
+	m_pTrdResultSecOneth->SetPosition(10, 0);
+	m_pTrdResultSecColon = new UITextImageView;
+	m_pTrdResultSecColon->SetTexture("UIImage/font2.png");
+	m_pTrdResultSecColon->SetPosition(10, 0);
+	m_pTrdResultDotMilth = new UITextImageView;
+	m_pTrdResultDotMilth->SetTexture("UIImage/font2.png");
+	m_pTrdResultDotMilth->SetPosition(10, 0);
+	m_pTrdResultDotTenth = new UITextImageView;
+	m_pTrdResultDotTenth->SetTexture("UIImage/font2.png");
+	m_pTrdResultDotTenth->SetPosition(10, 0);
+	m_pTrdResultDotOneth = new UITextImageView;
+	m_pTrdResultDotOneth->SetTexture("UIImage/font2.png");
+	m_pTrdResultDotOneth->SetPosition(10, 0);
 
-	m_pResultMinOneth = new UITextImageView;
-	m_pResultMinOneth->SetTexture("UIImage/font2.png");
-	m_pResultMinOneth->SetPosition(10, 0);
+	// Fourth
+	m_pFourth = new UITextImageView;
+	m_pFourth->SetTexture("UIImage/font2.png");
+	m_pFourth->SetXSize(1.0f);
+	m_pFourth->SetYSize(1.0f);
+	m_pFourth->SetPosition(0, 30);
+	m_pFourthPlayerName = new UITextImageView;
+	m_pFourthPlayerName->SetTexture("UIImage/font2.png");
+	m_pFourthPlayerName->SetPosition(30, 0);
+	m_pFourthPlayerName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+	m_pFourthResultMinTenth = new UITextImageView;
+	m_pFourthResultMinTenth->SetTexture("UIImage/font2.png");
+	m_pFourthResultMinTenth->SetPosition(160, 0);
+	m_pFourthResultMinOneth = new UITextImageView;
+	m_pFourthResultMinOneth->SetTexture("UIImage/font2.png");
+	m_pFourthResultMinOneth->SetPosition(10, 0);
+	m_pFourthResultMinColon = new UITextImageView;
+	m_pFourthResultMinColon->SetTexture("UIImage/font2.png");
+	m_pFourthResultMinColon->SetPosition(10, 0);
+	m_pFourthResultSecTenth = new UITextImageView;
+	m_pFourthResultSecTenth->SetTexture("UIImage/font2.png");
+	m_pFourthResultSecTenth->SetPosition(10, 0);
+	m_pFourthResultSecOneth = new UITextImageView;
+	m_pFourthResultSecOneth->SetTexture("UIImage/font2.png");
+	m_pFourthResultSecOneth->SetPosition(10, 0);
+	m_pFourthResultSecColon = new UITextImageView;
+	m_pFourthResultSecColon->SetTexture("UIImage/font2.png");
+	m_pFourthResultSecColon->SetPosition(10, 0);
+	m_pFourthResultDotMilth = new UITextImageView;
+	m_pFourthResultDotMilth->SetTexture("UIImage/font2.png");
+	m_pFourthResultDotMilth->SetPosition(10, 0);
+	m_pFourthResultDotTenth = new UITextImageView;
+	m_pFourthResultDotTenth->SetTexture("UIImage/font2.png");
+	m_pFourthResultDotTenth->SetPosition(10, 0);
+	m_pFourthResultDotOneth = new UITextImageView;
+	m_pFourthResultDotOneth->SetTexture("UIImage/font2.png");
+	m_pFourthResultDotOneth->SetPosition(10, 0);
 
-	m_pResultMinColon = new UITextImageView;
-	m_pResultMinColon->SetTexture("UIImage/font2.png");
-	m_pResultMinColon->SetPosition(10, 0);
+	// Fifth
+	m_pFifth = new UITextImageView;
+	m_pFifth->SetTexture("UIImage/font2.png");
+	m_pFifth->SetXSize(1.0f);
+	m_pFifth->SetYSize(1.0f);
+	m_pFifth->SetPosition(0, 30);
+	m_pFifthPlayerName = new UITextImageView;
+	m_pFifthPlayerName->SetTexture("UIImage/font2.png");
+	m_pFifthPlayerName->SetPosition(30, 0);
+	m_pFifthPlayerName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+	m_pFifthResultMinTenth = new UITextImageView;
+	m_pFifthResultMinTenth->SetTexture("UIImage/font2.png");
+	m_pFifthResultMinTenth->SetPosition(160, 0);
+	m_pFifthResultMinOneth = new UITextImageView;
+	m_pFifthResultMinOneth->SetTexture("UIImage/font2.png");
+	m_pFifthResultMinOneth->SetPosition(10, 0);
+	m_pFifthResultMinColon = new UITextImageView;
+	m_pFifthResultMinColon->SetTexture("UIImage/font2.png");
+	m_pFifthResultMinColon->SetPosition(10, 0);
+	m_pFifthResultSecTenth = new UITextImageView;
+	m_pFifthResultSecTenth->SetTexture("UIImage/font2.png");
+	m_pFifthResultSecTenth->SetPosition(10, 0);
+	m_pFifthResultSecOneth = new UITextImageView;
+	m_pFifthResultSecOneth->SetTexture("UIImage/font2.png");
+	m_pFifthResultSecOneth->SetPosition(10, 0);
+	m_pFifthResultSecColon = new UITextImageView;
+	m_pFifthResultSecColon->SetTexture("UIImage/font2.png");
+	m_pFifthResultSecColon->SetPosition(10, 0);
+	m_pFifthResultDotMilth = new UITextImageView;
+	m_pFifthResultDotMilth->SetTexture("UIImage/font2.png");
+	m_pFifthResultDotMilth->SetPosition(10, 0);
+	m_pFifthResultDotTenth = new UITextImageView;
+	m_pFifthResultDotTenth->SetTexture("UIImage/font2.png");
+	m_pFifthResultDotTenth->SetPosition(10, 0);
+	m_pFifthResultDotOneth = new UITextImageView;
+	m_pFifthResultDotOneth->SetTexture("UIImage/font2.png");
+	m_pFifthResultDotOneth->SetPosition(10, 0);
 
-	m_pResultSecTenth = new UITextImageView;
-	m_pResultSecTenth->SetTexture("UIImage/font2.png");
-	m_pResultSecTenth->SetPosition(10, 0);
+	// Sixth
+	m_pSixth = new UITextImageView;
+	m_pSixth->SetTexture("UIImage/font2.png");
+	m_pSixth->SetXSize(1.0f);
+	m_pSixth->SetYSize(1.0f);
+	m_pSixth->SetPosition(0, 30);
+	m_pSixthPlayerName = new UITextImageView;
+	m_pSixthPlayerName->SetTexture("UIImage/font2.png");
+	m_pSixthPlayerName->SetPosition(30, 0);
+	m_pSixthPlayerName->SetColor(D3DCOLOR_ARGB(255, 61, 183, 204));
+	m_pSixthResultMinTenth = new UITextImageView;
+	m_pSixthResultMinTenth->SetTexture("UIImage/font2.png");
+	m_pSixthResultMinTenth->SetPosition(160, 0);
+	m_pSixthResultMinOneth = new UITextImageView;
+	m_pSixthResultMinOneth->SetTexture("UIImage/font2.png");
+	m_pSixthResultMinOneth->SetPosition(10, 0);
+	m_pSixthResultMinColon = new UITextImageView;
+	m_pSixthResultMinColon->SetTexture("UIImage/font2.png");
+	m_pSixthResultMinColon->SetPosition(10, 0);
+	m_pSixthResultSecTenth = new UITextImageView;
+	m_pSixthResultSecTenth->SetTexture("UIImage/font2.png");
+	m_pSixthResultSecTenth->SetPosition(10, 0);
+	m_pSixthResultSecOneth = new UITextImageView;
+	m_pSixthResultSecOneth->SetTexture("UIImage/font2.png");
+	m_pSixthResultSecOneth->SetPosition(10, 0);
+	m_pSixthResultSecColon = new UITextImageView;
+	m_pSixthResultSecColon->SetTexture("UIImage/font2.png");
+	m_pSixthResultSecColon->SetPosition(10, 0);
+	m_pSixthResultDotMilth = new UITextImageView;
+	m_pSixthResultDotMilth->SetTexture("UIImage/font2.png");
+	m_pSixthResultDotMilth->SetPosition(10, 0);
+	m_pSixthResultDotTenth = new UITextImageView;
+	m_pSixthResultDotTenth->SetTexture("UIImage/font2.png");
+	m_pSixthResultDotTenth->SetPosition(10, 0);
+	m_pSixthResultDotOneth = new UITextImageView;
+	m_pSixthResultDotOneth->SetTexture("UIImage/font2.png");
+	m_pSixthResultDotOneth->SetPosition(10, 0);
 
-	m_pResultSecOneth = new UITextImageView;
-	m_pResultSecOneth->SetTexture("UIImage/font2.png");
-	m_pResultSecOneth->SetPosition(10, 0);
+	m_pSecondRetired = new UITextImageView;
+	m_pSecondRetired->SetTexture("UIImage/font2.png");
+	m_pSecondRetired->SetPosition(160, 0);
 
-	m_pResultSecColon = new UITextImageView;
-	m_pResultSecColon->SetTexture("UIImage/font2.png");
-	m_pResultSecColon->SetPosition(10, 0);
+	m_pThridRetired = new UITextImageView;
+	m_pThridRetired->SetTexture("UIImage/font2.png");
+	m_pThridRetired->SetPosition(160, 0);
 
-	m_pResultDotMilth = new UITextImageView;
-	m_pResultDotMilth->SetTexture("UIImage/font2.png");
-	m_pResultDotMilth->SetPosition(10, 0);
+	m_pFourthRetired = new UITextImageView;
+	m_pFourthRetired->SetTexture("UIImage/font2.png");
+	m_pFourthRetired->SetPosition(160, 0);
 
-	m_pResultDotTenth = new UITextImageView;
-	m_pResultDotTenth->SetTexture("UIImage/font2.png");
-	m_pResultDotTenth->SetPosition(10, 0);
+	m_pFifthRetired = new UITextImageView;
+	m_pFifthRetired->SetTexture("UIImage/font2.png");
+	m_pFifthRetired->SetPosition(160, 0);
 
-	m_pResultDotOneth = new UITextImageView;
-	m_pResultDotOneth->SetTexture("UIImage/font2.png");
-	m_pResultDotOneth->SetPosition(10, 0);
-
+	m_pSixthRetired = new UITextImageView;
+	m_pSixthRetired->SetTexture("UIImage/font2.png");
+	m_pSixthRetired->SetPosition(160, 0);
 
 	/*          Set Child          */
 
@@ -473,6 +695,8 @@ void InGameUI::Setup()
 
 	pImageView7->AddChild(pITV_Rank);
 	pImageView7->AddChild(pITV_Rank2);
+	pImageView7->AddChild(pITV_FrontRank);
+	pITV_FrontRank->AddChild(pITV_BackRank);
 
 	pSpeedFrame->AddChild(m_pSpeedometerImage);
 	pSpeedFrame->AddChild(m_pSpeedOne);
@@ -529,17 +753,92 @@ void InGameUI::Setup()
 	m_pRootUI->AddChild(m_pResultRing);
 	m_pResultRing->AddChild(m_pRaceResult);
 	m_pRaceResult->AddChild(m_pFirst);
-	m_pFirst->AddChild(m_pResultMinTenth);
-	m_pFirst->AddChild(m_pPlayerName);
-	m_pResultMinTenth->AddChild(m_pResultMinOneth);
-	m_pResultMinOneth->AddChild(m_pResultMinColon);
-	m_pResultMinColon->AddChild(m_pResultSecTenth);
-	m_pResultSecTenth->AddChild(m_pResultSecOneth);
-	m_pResultSecOneth->AddChild(m_pResultSecColon);
-	m_pResultSecColon->AddChild(m_pResultDotMilth);
-	m_pResultDotMilth->AddChild(m_pResultDotTenth);
-	m_pResultDotTenth->AddChild(m_pResultDotOneth);
 
+	/*          First          */
+	m_pFirst->AddChild(m_pFirstPlayerName);
+	m_pFirst->AddChild(m_pSecond);
+	m_pFirst->AddChild(m_pFirstResultMinTenth);
+	m_pFirstResultMinTenth->AddChild(m_pFirstResultMinOneth);
+	m_pFirstResultMinOneth->AddChild(m_pFirstResultMinColon);
+	m_pFirstResultMinColon->AddChild(m_pFirstResultSecTenth);
+	m_pFirstResultSecTenth->AddChild(m_pFirstResultSecOneth);
+	m_pFirstResultSecOneth->AddChild(m_pFirstResultSecColon);
+	m_pFirstResultSecColon->AddChild(m_pFirstResultDotMilth);
+	m_pFirstResultDotMilth->AddChild(m_pFirstResultDotTenth);
+	m_pFirstResultDotTenth->AddChild(m_pFirstResultDotOneth);
+
+	/*          Second          */
+	m_pSecond->AddChild(m_pSndPlayerName);
+	m_pSecond->AddChild(m_pThird);
+
+	m_pSecond->AddChild(m_pSecondRetired);;
+	m_pSecond->AddChild(m_pSndResultMinTenth);
+
+	m_pSndResultMinTenth->AddChild(m_pSndResultMinOneth);
+	m_pSndResultMinOneth->AddChild(m_pSndResultMinColon);
+	m_pSndResultMinColon->AddChild(m_pSndResultSecTenth);
+	m_pSndResultSecTenth->AddChild(m_pSndResultSecOneth);
+	m_pSndResultSecOneth->AddChild(m_pSndResultSecColon);
+	m_pSndResultSecColon->AddChild(m_pSndResultDotMilth);
+	m_pSndResultDotMilth->AddChild(m_pSndResultDotTenth);
+	m_pSndResultDotTenth->AddChild(m_pSndResultDotOneth);
+
+	/*          Third          */
+	m_pThird->AddChild(m_pTrdPlayerName);
+	m_pThird->AddChild(m_pFourth);
+
+	m_pThird->AddChild(m_pThridRetired);
+	m_pThird->AddChild(m_pTrdResultMinTenth);
+
+	m_pTrdResultMinTenth->AddChild(m_pTrdResultMinOneth);
+	m_pTrdResultMinOneth->AddChild(m_pTrdResultMinColon);
+	m_pTrdResultMinColon->AddChild(m_pTrdResultSecTenth);
+	m_pTrdResultSecTenth->AddChild(m_pTrdResultSecOneth);
+	m_pTrdResultSecOneth->AddChild(m_pTrdResultSecColon);
+	m_pTrdResultSecColon->AddChild(m_pTrdResultDotMilth);
+	m_pTrdResultDotMilth->AddChild(m_pTrdResultDotTenth);
+	m_pTrdResultDotTenth->AddChild(m_pTrdResultDotOneth);
+
+	/*          Fourth          */
+	m_pFourth->AddChild(m_pFourthPlayerName);
+	m_pFourth->AddChild(m_pFifth);
+	m_pFourth->AddChild(m_pFourthResultMinTenth);
+	m_pFourth->AddChild(m_pFourthRetired);
+	m_pFourthResultMinTenth->AddChild(m_pFourthResultMinOneth);
+	m_pFourthResultMinOneth->AddChild(m_pFourthResultMinColon);
+	m_pFourthResultMinColon->AddChild(m_pFourthResultSecTenth);
+	m_pFourthResultSecTenth->AddChild(m_pFourthResultSecOneth);
+	m_pFourthResultSecOneth->AddChild(m_pFourthResultSecColon);
+	m_pFourthResultSecColon->AddChild(m_pFourthResultDotMilth);
+	m_pFourthResultDotMilth->AddChild(m_pFourthResultDotTenth);
+	m_pFourthResultDotTenth->AddChild(m_pFourthResultDotOneth);
+
+	/*          Fifth          */
+	m_pFifth->AddChild(m_pFifthPlayerName);
+	m_pFifth->AddChild(m_pSixth);
+	m_pFifth->AddChild(m_pFifthResultMinTenth);
+	m_pFifth->AddChild(m_pFifthRetired);
+	m_pFifthResultMinTenth->AddChild(m_pFifthResultMinOneth);
+	m_pFifthResultMinOneth->AddChild(m_pFifthResultMinColon);
+	m_pFifthResultMinColon->AddChild(m_pFifthResultSecTenth);
+	m_pFifthResultSecTenth->AddChild(m_pFifthResultSecOneth);
+	m_pFifthResultSecOneth->AddChild(m_pFifthResultSecColon);
+	m_pFifthResultSecColon->AddChild(m_pFifthResultDotMilth);
+	m_pFifthResultDotMilth->AddChild(m_pFifthResultDotTenth);
+	m_pFifthResultDotTenth->AddChild(m_pFifthResultDotOneth);
+
+	/*          Sixth          */
+	m_pSixth->AddChild(m_pSixthPlayerName);
+	m_pSixth->AddChild(m_pSixthResultMinTenth);
+	m_pSixth->AddChild(m_pSixthRetired);
+	m_pSixthResultMinTenth->AddChild(m_pSixthResultMinOneth);
+	m_pSixthResultMinOneth->AddChild(m_pSixthResultMinColon);
+	m_pSixthResultMinColon->AddChild(m_pSixthResultSecTenth);
+	m_pSixthResultSecTenth->AddChild(m_pSixthResultSecOneth);
+	m_pSixthResultSecOneth->AddChild(m_pSixthResultSecColon);
+	m_pSixthResultSecColon->AddChild(m_pSixthResultDotMilth);
+	m_pSixthResultDotMilth->AddChild(m_pSixthResultDotTenth);
+	m_pSixthResultDotTenth->AddChild(m_pSixthResultDotOneth);
 
 	//========================================
 	// 시작시 321GO 
@@ -560,6 +859,7 @@ void InGameUI::Update()
 //		return;
 	}
 
+	UpdateRank();
 	UpdateSpeed();
 	UpdateLabCount();
 
@@ -642,6 +942,45 @@ void InGameUI::Destroy()
 	m_pRacingScene = NULL;
 
 	iLobby::Destroy();
+}
+
+void InGameUI::UpdateRank()
+{
+	std::string strRank;
+	strRank = (m_pCar->GetCurRank() + FONT2_NUM0);
+	
+	m_RankIndex = m_pCar->GetCurRank();  // 현재 내 등수
+
+
+	// 등수(숫자) 표시
+	pITV_Rank->SetText(strRank);
+
+	// 등수(숫자) 옆에 글씨
+	if (m_RankIndex == 1)			pITV_Rank2->SetText("st");
+	else if (m_RankIndex == 2)		pITV_Rank2->SetText("nd");
+	else if (m_RankIndex == 3)		pITV_Rank2->SetText("rd");
+	else							pITV_Rank2->SetText("th");
+
+
+	// 내 앞과 뒤에 누가 있는지
+	if (m_pRacingScene->GetRankVectorPt().size() > 1)
+	{
+		if (m_RankIndex != 1 && m_RankIndex != m_pRacingScene->GetRankVectorPt().size())
+		{
+			pITV_FrontRank->SetText(m_pRacingScene->GetRankVectorPt()[m_RankIndex - 2]->GetUserNameW());
+			pITV_BackRank->SetText(m_pRacingScene->GetRankVectorPt()[m_RankIndex]->GetUserNameW());
+		}
+		else if (m_RankIndex == 1)
+		{
+			pITV_FrontRank->SetText("");
+			pITV_BackRank->SetText(m_pRacingScene->GetRankVectorPt()[m_RankIndex]->GetUserNameW());
+		}
+		else if (m_RankIndex == m_pRacingScene->GetRankVectorPt().size())
+		{
+			pITV_FrontRank->SetText(m_pRacingScene->GetRankVectorPt()[m_RankIndex - 2]->GetUserNameW());
+			pITV_BackRank->SetText("");
+		}
+	}
 }
 
 void InGameUI::UpdateSpeed()
@@ -922,12 +1261,12 @@ void InGameUI::UpdateLabTime()
 																	//      Therefore Current Second : 59
 
 
-																	//		EX : m_ElapseTime = 9.876
+																		//		EX : m_ElapseTime = 9.876
 	float CalcDP = (m_LabElapseTime - (int)m_LabElapseTime) * 10.0f;	//		CalcDP = (9.876 - 9) * 10 = 8.76
-	m_LabDotTenth = (int)(CalcDP)+FONT2_NUM0;								//		x.?xx = x.8xx
+	m_LabDotTenth = (int)(CalcDP)+FONT2_NUM0;							//		x.?xx = x.8xx
 	CalcDP -= (int)CalcDP;												//		CalcDP = 8.76 - 8 = 0.76
 	CalcDP *= 10.0f;													//		CalcDP = 0.76 * 10 = 7.6
-	m_LabDotMilth = (int)CalcDP + FONT2_NUM0;								//		x.8?x = x.87x
+	m_LabDotMilth = (int)CalcDP + FONT2_NUM0;							//		x.8?x = x.87x
 	CalcDP -= (int)CalcDP;												//		CalcDP = 7.6 - 7 = 0.6
 	CalcDP *= 10.0f;													//		CalcDP = 0.6 * 10 = 6
 	LabElapseTime = (int)CalcDP + FONT2_NUM0;							//		x.87? = x.876
@@ -967,12 +1306,11 @@ void InGameUI::UpdateRaceTime()
 	std::string MinOneth;								//	  0.xx.xxx
 	std::string MinTenth;								//	 0x.xx.xxx
 
-	m_ElapseTime = m_pCar->GetTotlaTimeCount();
-	//m_ElapseTime += g_pTimeManager->GetElapsedTime();	// Uptate ElapsedTime
+	m_ElapseTime = m_pCar->GetTotlaTimeCount();			// Uptate ElapsedTime
 	int CalcMin = (int)(m_ElapseTime / 60.f);
 	m_MinOneth = CalcMin % 10 + FONT2_NUM0;
 	m_MinTenth = CalcMin / 10 + FONT2_NUM0;
-	//if (m_ElapseTime > TIMEMAX)							// After 60 Second
+	//if (m_ElapseTime > TIMEMAX)						// After 60 Second
 	//{
 	//	m_ElapseTime = 0;								// ElapsedTime = 0
 	//	m_MinOneth += 1;								// Add 1 Minute
@@ -991,19 +1329,21 @@ void InGameUI::UpdateRaceTime()
 														//      m_ElapseTime % 10 = 9;
 														//      Therefore Current Second : 59
 
-
 																//		EX : m_ElapseTime = 9.876
 	float CalcDP = (m_ElapseTime - (int)m_ElapseTime) * 10.0f;	//		CalcDP = (9.876 - 9) * 10 = 8.76
-	DotMilth = m_DotMilth = (int)(CalcDP) + FONT2_NUM0;	//		x.?xx = x.8xx
+	//DotMilth = m_DotMilth = (int)(CalcDP) + FONT2_NUM0;		//		x.?xx = x.8xx
+	DotMilth = m_DotMilth = ((int)(m_ElapseTime * 10) % 10) + FONT2_NUM0;
 	CalcDP -= (int)CalcDP;										//		CalcDP = 8.76 - 8 = 0.76
 	CalcDP *= 10.0f;											//		CalcDP = 0.76 * 10 = 7.6
-	DotTenth = m_DotTenth = (int)CalcDP + FONT2_NUM0;						//		x.8?x = x.87x
+	//DotTenth = m_DotTenth = (int)CalcDP + FONT2_NUM0;			//		x.8?x = x.87x
+	DotTenth = m_DotTenth = ((int)(m_ElapseTime * 100) % 10) + FONT2_NUM0;
 	CalcDP -= (int)CalcDP;										//		CalcDP = 7.6 - 7 = 0.6
 	CalcDP *= 10.0f;											//		CalcDP = 0.6 * 10 = 6
 	ElapseTime = (int)CalcDP + FONT2_NUM0;						//		x.87? = x.876
-	m_WorldDotOneth = (int)CalcDP + FONT2_NUM0;;				//		Therefore Calculation Decimal Point = 0.876
+	//m_WorldDotOneth = (int)CalcDP + FONT2_NUM0;				//		Therefore Calculation Decimal Point = 0.876
+	m_WorldDotOneth = ((int)(m_ElapseTime * 1000) % 10) + FONT2_NUM0;
 
-																				/*          Add String          */
+	/*          Add String          */
 	SecOneth = m_SecOneth;
 	SecTenth = m_SecTenth;
 
@@ -1057,36 +1397,540 @@ void InGameUI::UpdateArrowDir()
 
 void InGameUI::RaceResults()
 {
-	std::string ResultElapseTime;							// Elase(x.xx0)
-	std::string ResultDotTenth;								//		 x.x0x
-	std::string ResultDotMilth;								//		 x.0xx
-	std::string ResultSecOneth;								//		 0.xxx
-	std::string ResultSecTenth;								//		0x.xxx
-	std::string ResultMinOneth;								//	  0.xx.xxx
-	std::string ResultMinTenth;								//	 0x.xx.xxx
+	// String
 
-	ResultElapseTime = m_WorldDotOneth;
-	ResultDotTenth = m_DotTenth;
-	ResultDotMilth = m_DotMilth;
-	ResultSecOneth = m_SecOneth;
-	ResultSecTenth = m_SecTenth;
-	ResultMinOneth = m_MinOneth;
-	ResultMinTenth = m_MinTenth;
+	/*          First          */
+	std::string FstResultDotOneth;
+	std::string FstResultDotTenth;								
+	std::string FstResultDotMilth;								
+	std::string FstResultSecOneth;								
+	std::string FstResultSecTenth;								
+	std::string FstResultMinOneth;								
+	std::string FstResultMinTenth;	
 
+	/*          Sec          */
+	std::string SndResultDotOneth;
+	std::string SndResultDotTenth;
+	std::string SndResultDotMilth;
+	std::string SndResultSecOneth;
+	std::string SndResultSecTenth;
+	std::string SndResultMinOneth;
+	std::string SndResultMinTenth;
+	std::string SndRetired;
 
-	m_pResultMinTenth->SetText(ResultMinTenth);
-	m_pResultMinOneth->SetText(ResultMinOneth);
-	m_pResultMinColon->SetText(":");
-	m_pResultSecTenth->SetText(ResultSecTenth);
-	m_pResultSecOneth->SetText(ResultSecOneth);
-	m_pResultSecColon->SetText(":");
-	m_pResultDotMilth->SetText(ResultDotMilth);
-	m_pResultDotTenth->SetText(ResultDotTenth);
-	m_pResultDotOneth->SetText(ResultElapseTime);
+	/*         Third          */
+	std::string TrdResultDotOneth;
+	std::string TrdResultDotTenth;
+	std::string TrdResultDotMilth;
+	std::string TrdResultSecOneth;
+	std::string TrdResultSecTenth;
+	std::string TrdResultMinOneth;
+	std::string TrdResultMinTenth;
+	std::string TrdRetired;
+
+	/*         Fourth          */
+	std::string FourthResultDotOneth;
+	std::string FourthResultDotTenth;
+	std::string FourthResultDotMilth;
+	std::string FourthResultSecOneth;
+	std::string FourthResultSecTenth;
+	std::string FourthResultMinOneth;
+	std::string FourthResultMinTenth;
+	std::string FourRetired;
+
+	/*         Fifth          */
+	std::string FifthResultDotOneth;
+	std::string FifthResultDotTenth;
+	std::string FifthResultDotMilth;
+	std::string FifthResultSecOneth;
+	std::string FifthResultSecTenth;
+	std::string FifthResultMinOneth;
+	std::string FifthResultMinTenth;
+	std::string FifthRetired;
+
+	/*         Sixth          */
+	std::string SixthResultDotOneth;
+	std::string SixthResultDotTenth;
+	std::string SixthResultDotMilth;
+	std::string SixthResultSecOneth;
+	std::string SixthResultSecTenth;
+	std::string SixthResultMinOneth;
+	std::string SixthResultMinTenth;
+	std::string SixthRetired;
+
+	//DotMilth = m_DotMilth = (int)(CalcDP)+FONT2_NUM0;
+	//CalcDP -= (int)CalcDP;
+	//CalcDP *= 10.0f;
+	//DotTenth = m_DotTenth = (int)CalcDP + FONT2_NUM0;
+	//CalcDP -= (int)CalcDP;
+	//CalcDP *= 10.0f;
+	//ElapseTime = (int)CalcDP + FONT2_NUM0;
+	//m_WorldDotOneth = (int)CalcDP + FONT2_NUM0;
+	//
+	//for (int i = 0; i < 6; ++i)
+	//{
+	//	float CalcDP = (m_ElapseTime - (int)m_ElapseTime) * 10.0f;
+	//}
+
+	float total = m_pRacingScene->GetRankVector(0)->GetTotlaTimeCount();
+	FstResultDotOneth			= ((int)(total * 1000) % 10) + FONT2_NUM0;
+	FstResultDotTenth			= ((int)(total * 100) % 10) + FONT2_NUM0;
+	FstResultDotMilth			= ((int)(total * 10) % 10) + FONT2_NUM0;
+	FstResultSecOneth			= ((int)total % 10) + FONT2_NUM0;
+	FstResultSecTenth			= ((int)total / 10 % 6) + FONT2_NUM0;
+	FstResultMinOneth			= (((int)total / 60) % 10) + FONT2_NUM0;
+	FstResultMinTenth			= ((((int)total / 60) / 10) % 10) + FONT2_NUM0;
+
+	total = m_pRacingScene->GetRankVector(1)->GetTotlaTimeCount();
+	SndResultDotOneth			= ((int)(total * 1000) % 10) + FONT2_NUM0;
+	SndResultDotTenth			= ((int)(total * 100) % 10) + FONT2_NUM0;
+	SndResultDotMilth			= ((int)(total * 10) % 10) + FONT2_NUM0;
+	SndResultSecOneth			= ((int)total % 10) + FONT2_NUM0;
+	SndResultSecTenth			= ((int)total / 10 % 6) + FONT2_NUM0;
+	SndResultMinOneth			= (((int)total / 60) % 10) + FONT2_NUM0;
+	SndResultMinTenth			= ((((int)total / 60) / 10) % 10) + FONT2_NUM0;
+	
+	total = m_pRacingScene->GetRankVector(2)->GetTotlaTimeCount();
+	TrdResultDotOneth			= ((int)(total * 1000) % 10) + FONT2_NUM0;
+	TrdResultDotTenth			= ((int)(total * 100) % 10) + FONT2_NUM0;
+	TrdResultDotMilth			= ((int)(total * 10) % 10) + FONT2_NUM0;
+	TrdResultSecOneth			= ((int)total % 10) + FONT2_NUM0;
+	TrdResultSecTenth			= ((int)total / 10 % 6) + FONT2_NUM0;
+	TrdResultMinOneth			= (((int)total / 60) % 10) + FONT2_NUM0;
+	TrdResultMinTenth			= ((((int)total / 60) / 10) % 10) + FONT2_NUM0;
+	
+	total = m_pRacingScene->GetRankVector(3)->GetTotlaTimeCount();
+	FourthResultDotOneth		= ((int)(total * 1000) % 10) + FONT2_NUM0;
+	FourthResultDotTenth		= ((int)(total * 100) % 10) + FONT2_NUM0;
+	FourthResultDotMilth		= ((int)(total * 10) % 10) + FONT2_NUM0;
+	FourthResultSecOneth		= ((int)total % 10) + FONT2_NUM0;
+	FourthResultSecTenth		= ((int)total / 10 % 6) + FONT2_NUM0;
+	FourthResultMinOneth		= (((int)total / 60) % 10) + FONT2_NUM0;
+	FourthResultMinTenth		= ((((int)total / 60) / 10) % 10) + FONT2_NUM0;
+	
+	total = m_pRacingScene->GetRankVector(4)->GetTotlaTimeCount();
+	FifthResultDotOneth		= ((int)(total * 1000) % 10) + FONT2_NUM0;
+	FifthResultDotTenth		= ((int)(total * 100) % 10) + FONT2_NUM0;
+	FifthResultDotMilth		= ((int)(total * 10) % 10) + FONT2_NUM0;
+	FifthResultSecOneth		= ((int)total % 10) + FONT2_NUM0;
+	FifthResultSecTenth		= ((int)total / 10 % 6) + FONT2_NUM0;
+	FifthResultMinOneth		= (((int)total / 60) % 10) + FONT2_NUM0;
+	FifthResultMinTenth		= ((((int)total / 60) / 10) % 10) + FONT2_NUM0;
+	
+	total = m_pRacingScene->GetRankVector(5)->GetTotlaTimeCount();
+	SixthResultDotOneth		= ((int)(total * 1000) % 10) + FONT2_NUM0;
+	SixthResultDotTenth		= ((int)(total * 100) % 10) + FONT2_NUM0;
+	SixthResultDotMilth		= ((int)(total * 10) % 10) + FONT2_NUM0;
+	SixthResultSecOneth		= ((int)total % 10) + FONT2_NUM0;
+	SixthResultSecTenth		= ((int)total / 10 % 6) + FONT2_NUM0;
+	SixthResultMinOneth		= (((int)total / 60) % 10) + FONT2_NUM0;
+	SixthResultMinTenth		= ((((int)total / 60) / 10) % 10) + FONT2_NUM0;
+
+	// Setting
 	m_pResultRing->SetTexture("UIImage/ring.png");
 	m_pRaceResult->SetText("Race Results");
-	m_pPlayerName->SetText(g_pDataManager->vecPlayerData[0]->ID);
+
+
+	// Text Setting
+
+	/*          First          */
+	m_pFirstResultMinTenth->SetText(FstResultMinTenth);
+	m_pFirstResultMinOneth->SetText(FstResultMinOneth);
+	m_pFirstResultMinColon->SetText(":");
+	m_pFirstResultSecTenth->SetText(FstResultSecTenth);
+	m_pFirstResultSecOneth->SetText(FstResultSecOneth);
+	m_pFirstResultSecColon->SetText(":");
+	m_pFirstResultDotMilth->SetText(FstResultDotMilth);
+	m_pFirstResultDotTenth->SetText(FstResultDotTenth);
+	m_pFirstResultDotOneth->SetText(FstResultDotOneth);
+	m_pFirstPlayerName->SetText(m_pRacingScene->GetRankVector(0)->GetUserNameW());
 	m_pFirst->SetText("01");
+	
+	/*          Second          */
+	//m_pSndResultMinTenth->SetText(SndResultMinTenth);
+	//m_pSndResultMinOneth->SetText(SndResultMinOneth);
+	//m_pSndResultMinColon->SetText(":");
+	//m_pSndResultSecTenth->SetText(SndResultSecTenth);
+	//m_pSndResultSecOneth->SetText(SndResultSecOneth);
+	//m_pSndResultSecColon->SetText(":");
+	//m_pSndResultDotMilth->SetText(SndResultDotMilth);
+	//m_pSndResultDotTenth->SetText(SndResultDotTenth);
+	//m_pSndResultDotOneth->SetText(SndResultDotOneth);
+	m_pSndPlayerName->SetText(m_pRacingScene->GetRankVector(1)->GetUserNameW());
+	m_pSecond->SetText("02");
+	//m_pSecondRetired->SetText("Retired");
+
+	/*          Thrid          */
+	//m_pTrdResultMinTenth->SetText(TrdResultMinTenth);
+	//m_pTrdResultMinOneth->SetText(TrdResultMinOneth);
+	//m_pTrdResultMinColon->SetText(":");
+	//m_pTrdResultSecTenth->SetText(TrdResultSecTenth);
+	//m_pTrdResultSecOneth->SetText(TrdResultSecOneth);
+	//m_pTrdResultSecColon->SetText(":");
+	//m_pTrdResultDotMilth->SetText(TrdResultDotMilth);
+	//m_pTrdResultDotTenth->SetText(TrdResultDotTenth);
+	//m_pTrdResultDotOneth->SetText(TrdResultDotOneth);
+	m_pTrdPlayerName->SetText(m_pRacingScene->GetRankVector(2)->GetUserNameW());
+	m_pThird->SetText("03");
+
+	/*          Fourth          */
+	//m_pFourthResultMinTenth->SetText(FourthResultMinTenth);
+	//m_pFourthResultMinOneth->SetText(FourthResultMinOneth);
+	//m_pFourthResultMinColon->SetText(":");
+	//m_pFourthResultSecTenth->SetText(FourthResultSecTenth);
+	//m_pFourthResultSecOneth->SetText(FourthResultSecOneth);
+	//m_pFourthResultSecColon->SetText(":");
+	//m_pFourthResultDotMilth->SetText(FourthResultDotMilth);
+	//m_pFourthResultDotTenth->SetText(FourthResultDotTenth);
+	//m_pFourthResultDotOneth->SetText(FourthResultDotOneth);
+	m_pFourthPlayerName->SetText(m_pRacingScene->GetRankVector(3)->GetUserNameW());
+	m_pFourth->SetText("04");
+	//m_pFourthRetired->SetText("Retired");
+
+	/*          Fifth          */
+	//m_pFifthResultMinTenth->SetText(FifthResultMinTenth);
+	//m_pFifthResultMinOneth->SetText(FifthResultMinOneth);
+	//m_pFifthResultMinColon->SetText(":");
+	//m_pFifthResultSecTenth->SetText(FifthResultSecTenth);
+	//m_pFifthResultSecOneth->SetText(FifthResultSecOneth);
+	//m_pFifthResultSecColon->SetText(":");
+	//m_pFifthResultDotMilth->SetText(FifthResultDotMilth);
+	//m_pFifthResultDotTenth->SetText(FifthResultDotTenth);
+	//m_pFifthResultDotOneth->SetText(FifthResultDotOneth);
+	m_pFifthPlayerName->SetText(m_pRacingScene->GetRankVector(4)->GetUserNameW());
+	m_pFifth->SetText("05");
+
+	/*          Sixth          */
+	//m_pSixthResultMinTenth->SetText(SixthResultMinTenth);
+	//m_pSixthResultMinOneth->SetText(SixthResultMinOneth);
+	//m_pSixthResultMinColon->SetText(":");
+	//m_pSixthResultSecTenth->SetText(SixthResultSecTenth);
+	//m_pSixthResultSecOneth->SetText(SixthResultSecOneth);
+	//m_pSixthResultSecColon->SetText(":");
+	//m_pSixthResultDotMilth->SetText(SixthResultDotMilth);
+	//m_pSixthResultDotTenth->SetText(SixthResultDotTenth);
+	//m_pSixthResultDotOneth->SetText(SixthResultDotOneth);
+	m_pSixthPlayerName->SetText(m_pRacingScene->GetRankVector(5)->GetUserNameW());
+	m_pSixth->SetText("06");
+
+	// 1
+	if (m_pCar->GetCurRank() == 1)
+	{
+		m_pSndResultMinTenth->SetText("");
+		m_pSndResultMinOneth->SetText("");
+		m_pSndResultMinColon->SetText("Retired");
+		m_pSndResultSecTenth->SetText("");
+		m_pSndResultSecOneth->SetText("");
+		m_pSndResultSecColon->SetText("");
+		m_pSndResultDotMilth->SetText("");
+		m_pSndResultDotTenth->SetText("");
+		m_pSndResultDotOneth->SetText("");
+
+		m_pTrdResultMinTenth->SetText("");
+		m_pTrdResultMinOneth->SetText("");
+		m_pTrdResultMinColon->SetText("Retired");
+		m_pTrdResultSecTenth->SetText("");
+		m_pTrdResultSecOneth->SetText("");
+		m_pTrdResultSecColon->SetText("");
+		m_pTrdResultDotMilth->SetText("");
+		m_pTrdResultDotTenth->SetText("");
+		m_pTrdResultDotOneth->SetText("");
+
+		m_pFourthResultMinTenth->SetText("");
+		m_pFourthResultMinOneth->SetText("");
+		m_pFourthResultMinColon->SetText("Retired");
+		m_pFourthResultSecTenth->SetText("");
+		m_pFourthResultSecOneth->SetText("");
+		m_pFourthResultSecColon->SetText("");
+		m_pFourthResultDotMilth->SetText("");
+		m_pFourthResultDotTenth->SetText("");
+		m_pFourthResultDotOneth->SetText("");
+
+		m_pFifthResultMinTenth->SetText("");
+		m_pFifthResultMinOneth->SetText("");
+		m_pFifthResultMinColon->SetText("Retired");
+		m_pFifthResultSecTenth->SetText("");
+		m_pFifthResultSecOneth->SetText("");
+		m_pFifthResultSecColon->SetText("");
+		m_pFifthResultDotMilth->SetText("");
+		m_pFifthResultDotTenth->SetText("");
+		m_pFifthResultDotOneth->SetText("");
+
+		m_pSixthResultMinTenth->SetText("");
+		m_pSixthResultMinOneth->SetText("");
+		m_pSixthResultMinColon->SetText("Retired");
+		m_pSixthResultSecTenth->SetText("");
+		m_pSixthResultSecOneth->SetText("");
+		m_pSixthResultSecColon->SetText("");
+		m_pSixthResultDotMilth->SetText("");
+		m_pSixthResultDotTenth->SetText("");
+		m_pSixthResultDotOneth->SetText("");
+	}
+	// 2
+	else if (m_pCar->GetCurRank() == 2)
+	{
+		m_pSndResultMinTenth->SetText(SndResultMinTenth);
+		m_pSndResultMinOneth->SetText(SndResultMinOneth);
+		m_pSndResultMinColon->SetText(":");
+		m_pSndResultSecTenth->SetText(SndResultSecTenth);
+		m_pSndResultSecOneth->SetText(SndResultSecOneth);
+		m_pSndResultSecColon->SetText(":");
+		m_pSndResultDotMilth->SetText(SndResultDotMilth);
+		m_pSndResultDotTenth->SetText(SndResultDotTenth);
+		m_pSndResultDotOneth->SetText(SndResultDotOneth);
+
+		m_pTrdResultMinTenth->SetText("");
+		m_pTrdResultMinOneth->SetText("");
+		m_pTrdResultMinColon->SetText("Retired");
+		m_pTrdResultSecTenth->SetText("");
+		m_pTrdResultSecOneth->SetText("");
+		m_pTrdResultSecColon->SetText("");
+		m_pTrdResultDotMilth->SetText("");
+		m_pTrdResultDotTenth->SetText("");
+		m_pTrdResultDotOneth->SetText("");
+
+		m_pFourthResultMinTenth->SetText("");
+		m_pFourthResultMinOneth->SetText("");
+		m_pFourthResultMinColon->SetText("Retired");
+		m_pFourthResultSecTenth->SetText("");
+		m_pFourthResultSecOneth->SetText("");
+		m_pFourthResultSecColon->SetText("");
+		m_pFourthResultDotMilth->SetText("");
+		m_pFourthResultDotTenth->SetText("");
+		m_pFourthResultDotOneth->SetText("");
+
+		m_pFifthResultMinTenth->SetText("");
+		m_pFifthResultMinOneth->SetText("");
+		m_pFifthResultMinColon->SetText("Retired");
+		m_pFifthResultSecTenth->SetText("");
+		m_pFifthResultSecOneth->SetText("");
+		m_pFifthResultSecColon->SetText("");
+		m_pFifthResultDotMilth->SetText("");
+		m_pFifthResultDotTenth->SetText("");
+		m_pFifthResultDotOneth->SetText("");
+
+		m_pSixthResultMinTenth->SetText("");
+		m_pSixthResultMinOneth->SetText("");
+		m_pSixthResultMinColon->SetText("Retired");
+		m_pSixthResultSecTenth->SetText("");
+		m_pSixthResultSecOneth->SetText("");
+		m_pSixthResultSecColon->SetText("");
+		m_pSixthResultDotMilth->SetText("");
+		m_pSixthResultDotTenth->SetText("");
+		m_pSixthResultDotOneth->SetText("");
+	}
+	// 3
+	else if (m_pCar->GetCurRank() == 3)
+	{
+		m_pSndResultMinTenth->SetText(SndResultMinTenth);
+		m_pSndResultMinOneth->SetText(SndResultMinOneth);
+		m_pSndResultMinColon->SetText(":");
+		m_pSndResultSecTenth->SetText(SndResultSecTenth);
+		m_pSndResultSecOneth->SetText(SndResultSecOneth);
+		m_pSndResultSecColon->SetText(":");
+		m_pSndResultDotMilth->SetText(SndResultDotMilth);
+		m_pSndResultDotTenth->SetText(SndResultDotTenth);
+		m_pSndResultDotOneth->SetText(SndResultDotOneth);
+
+		m_pTrdResultMinTenth->SetText(TrdResultMinTenth);
+		m_pTrdResultMinOneth->SetText(TrdResultMinOneth);
+		m_pTrdResultMinColon->SetText(":");
+		m_pTrdResultSecTenth->SetText(TrdResultSecTenth);
+		m_pTrdResultSecOneth->SetText(TrdResultSecOneth);
+		m_pTrdResultSecColon->SetText(":");
+		m_pTrdResultDotMilth->SetText(TrdResultDotMilth);
+		m_pTrdResultDotTenth->SetText(TrdResultDotTenth);
+		m_pTrdResultDotOneth->SetText(TrdResultDotOneth);
+
+		m_pFourthResultMinTenth->SetText("");
+		m_pFourthResultMinOneth->SetText("");
+		m_pFourthResultMinColon->SetText("Retired");
+		m_pFourthResultSecTenth->SetText("");
+		m_pFourthResultSecOneth->SetText("");
+		m_pFourthResultSecColon->SetText("");
+		m_pFourthResultDotMilth->SetText("");
+		m_pFourthResultDotTenth->SetText("");
+		m_pFourthResultDotOneth->SetText("");
+
+		m_pFifthResultMinTenth->SetText("");
+		m_pFifthResultMinOneth->SetText("");
+		m_pFifthResultMinColon->SetText("Retired");
+		m_pFifthResultSecTenth->SetText("");
+		m_pFifthResultSecOneth->SetText("");
+		m_pFifthResultSecColon->SetText("");
+		m_pFifthResultDotMilth->SetText("");
+		m_pFifthResultDotTenth->SetText("");
+		m_pFifthResultDotOneth->SetText("");
+
+		m_pSixthResultMinTenth->SetText("");
+		m_pSixthResultMinOneth->SetText("");
+		m_pSixthResultMinColon->SetText("Retired");
+		m_pSixthResultSecTenth->SetText("");
+		m_pSixthResultSecOneth->SetText("");
+		m_pSixthResultSecColon->SetText("");
+		m_pSixthResultDotMilth->SetText("");
+		m_pSixthResultDotTenth->SetText("");
+		m_pSixthResultDotOneth->SetText("");
+	}
+	// 4
+	else if (m_pCar->GetCurRank() == 4)
+	{
+		m_pSndResultMinTenth->SetText(SndResultMinTenth);
+		m_pSndResultMinOneth->SetText(SndResultMinOneth);
+		m_pSndResultMinColon->SetText(":");
+		m_pSndResultSecTenth->SetText(SndResultSecTenth);
+		m_pSndResultSecOneth->SetText(SndResultSecOneth);
+		m_pSndResultSecColon->SetText(":");
+		m_pSndResultDotMilth->SetText(SndResultDotMilth);
+		m_pSndResultDotTenth->SetText(SndResultDotTenth);
+		m_pSndResultDotOneth->SetText(SndResultDotOneth);
+
+		m_pTrdResultMinTenth->SetText(TrdResultMinTenth);
+		m_pTrdResultMinOneth->SetText(TrdResultMinOneth);
+		m_pTrdResultMinColon->SetText(":");
+		m_pTrdResultSecTenth->SetText(TrdResultSecTenth);
+		m_pTrdResultSecOneth->SetText(TrdResultSecOneth);
+		m_pTrdResultSecColon->SetText(":");
+		m_pTrdResultDotMilth->SetText(TrdResultDotMilth);
+		m_pTrdResultDotTenth->SetText(TrdResultDotTenth);
+		m_pTrdResultDotOneth->SetText(TrdResultDotOneth);
+
+		m_pFourthResultMinTenth->SetText(FourthResultMinTenth);
+		m_pFourthResultMinOneth->SetText(FourthResultMinOneth);
+		m_pFourthResultMinColon->SetText(":");
+		m_pFourthResultSecTenth->SetText(FourthResultSecTenth);
+		m_pFourthResultSecOneth->SetText(FourthResultSecOneth);
+		m_pFourthResultSecColon->SetText(":");
+		m_pFourthResultDotMilth->SetText(FourthResultDotMilth);
+		m_pFourthResultDotTenth->SetText(FourthResultDotTenth);
+		m_pFourthResultDotOneth->SetText(FourthResultDotOneth);
+
+		m_pFifthResultMinTenth->SetText("");
+		m_pFifthResultMinOneth->SetText("");
+		m_pFifthResultMinColon->SetText("Retired");
+		m_pFifthResultSecTenth->SetText("");
+		m_pFifthResultSecOneth->SetText("");
+		m_pFifthResultSecColon->SetText("");
+		m_pFifthResultDotMilth->SetText("");
+		m_pFifthResultDotTenth->SetText("");
+		m_pFifthResultDotOneth->SetText("");
+
+		m_pSixthResultMinTenth->SetText("");
+		m_pSixthResultMinOneth->SetText("");
+		m_pSixthResultMinColon->SetText("Retired");
+		m_pSixthResultSecTenth->SetText("");
+		m_pSixthResultSecOneth->SetText("");
+		m_pSixthResultSecColon->SetText("");
+		m_pSixthResultDotMilth->SetText("");
+		m_pSixthResultDotTenth->SetText("");
+		m_pSixthResultDotOneth->SetText("");
+	}
+	// 5
+	else if (m_pCar->GetCurRank() == 5)
+	{
+		m_pSndResultMinTenth->SetText(SndResultMinTenth);
+		m_pSndResultMinOneth->SetText(SndResultMinOneth);
+		m_pSndResultMinColon->SetText(":");
+		m_pSndResultSecTenth->SetText(SndResultSecTenth);
+		m_pSndResultSecOneth->SetText(SndResultSecOneth);
+		m_pSndResultSecColon->SetText(":");
+		m_pSndResultDotMilth->SetText(SndResultDotMilth);
+		m_pSndResultDotTenth->SetText(SndResultDotTenth);
+		m_pSndResultDotOneth->SetText(SndResultDotOneth);
+
+		m_pTrdResultMinTenth->SetText(TrdResultMinTenth);
+		m_pTrdResultMinOneth->SetText(TrdResultMinOneth);
+		m_pTrdResultMinColon->SetText(":");
+		m_pTrdResultSecTenth->SetText(TrdResultSecTenth);
+		m_pTrdResultSecOneth->SetText(TrdResultSecOneth);
+		m_pTrdResultSecColon->SetText(":");
+		m_pTrdResultDotMilth->SetText(TrdResultDotMilth);
+		m_pTrdResultDotTenth->SetText(TrdResultDotTenth);
+		m_pTrdResultDotOneth->SetText(TrdResultDotOneth);
+
+		m_pFourthResultMinTenth->SetText(FourthResultMinTenth);
+		m_pFourthResultMinOneth->SetText(FourthResultMinOneth);
+		m_pFourthResultMinColon->SetText(":");
+		m_pFourthResultSecTenth->SetText(FourthResultSecTenth);
+		m_pFourthResultSecOneth->SetText(FourthResultSecOneth);
+		m_pFourthResultSecColon->SetText(":");
+		m_pFourthResultDotMilth->SetText(FourthResultDotMilth);
+		m_pFourthResultDotTenth->SetText(FourthResultDotTenth);
+		m_pFourthResultDotOneth->SetText(FourthResultDotOneth);
+
+		m_pFifthResultMinTenth->SetText(FifthResultMinTenth);
+		m_pFifthResultMinOneth->SetText(FifthResultMinOneth);
+		m_pFifthResultMinColon->SetText(":");
+		m_pFifthResultSecTenth->SetText(FifthResultSecTenth);
+		m_pFifthResultSecOneth->SetText(FifthResultSecOneth);
+		m_pFifthResultSecColon->SetText(":");
+		m_pFifthResultDotMilth->SetText(FifthResultDotMilth);
+		m_pFifthResultDotTenth->SetText(FifthResultDotTenth);
+		m_pFifthResultDotOneth->SetText(FifthResultDotOneth);
+
+		m_pSixthResultMinTenth->SetText("");
+		m_pSixthResultMinOneth->SetText("");
+		m_pSixthResultMinColon->SetText("Retired");
+		m_pSixthResultSecTenth->SetText("");
+		m_pSixthResultSecOneth->SetText("");
+		m_pSixthResultSecColon->SetText("");
+		m_pSixthResultDotMilth->SetText("");
+		m_pSixthResultDotTenth->SetText("");
+		m_pSixthResultDotOneth->SetText("");
+	}
+	// 6
+	else if (m_pCar->GetCurRank() == 6)
+	{
+		m_pSndResultMinTenth->SetText(SndResultMinTenth);
+		m_pSndResultMinOneth->SetText(SndResultMinOneth);
+		m_pSndResultMinColon->SetText(":");
+		m_pSndResultSecTenth->SetText(SndResultSecTenth);
+		m_pSndResultSecOneth->SetText(SndResultSecOneth);
+		m_pSndResultSecColon->SetText(":");
+		m_pSndResultDotMilth->SetText(SndResultDotMilth);
+		m_pSndResultDotTenth->SetText(SndResultDotTenth);
+		m_pSndResultDotOneth->SetText(SndResultDotOneth);
+
+		m_pTrdResultMinTenth->SetText(TrdResultMinTenth);
+		m_pTrdResultMinOneth->SetText(TrdResultMinOneth);
+		m_pTrdResultMinColon->SetText(":");
+		m_pTrdResultSecTenth->SetText(TrdResultSecTenth);
+		m_pTrdResultSecOneth->SetText(TrdResultSecOneth);
+		m_pTrdResultSecColon->SetText(":");
+		m_pTrdResultDotMilth->SetText(TrdResultDotMilth);
+		m_pTrdResultDotTenth->SetText(TrdResultDotTenth);
+		m_pTrdResultDotOneth->SetText(TrdResultDotOneth);
+
+		m_pFourthResultMinTenth->SetText(FourthResultMinTenth);
+		m_pFourthResultMinOneth->SetText(FourthResultMinOneth);
+		m_pFourthResultMinColon->SetText(":");
+		m_pFourthResultSecTenth->SetText(FourthResultSecTenth);
+		m_pFourthResultSecOneth->SetText(FourthResultSecOneth);
+		m_pFourthResultSecColon->SetText(":");
+		m_pFourthResultDotMilth->SetText(FourthResultDotMilth);
+		m_pFourthResultDotTenth->SetText(FourthResultDotTenth);
+		m_pFourthResultDotOneth->SetText(FourthResultDotOneth);
+
+		m_pFifthResultMinTenth->SetText(FifthResultMinTenth);
+		m_pFifthResultMinOneth->SetText(FifthResultMinOneth);
+		m_pFifthResultMinColon->SetText(":");
+		m_pFifthResultSecTenth->SetText(FifthResultSecTenth);
+		m_pFifthResultSecOneth->SetText(FifthResultSecOneth);
+		m_pFifthResultSecColon->SetText(":");
+		m_pFifthResultDotMilth->SetText(FifthResultDotMilth);
+		m_pFifthResultDotTenth->SetText(FifthResultDotTenth);
+		m_pFifthResultDotOneth->SetText(FifthResultDotOneth);
+
+		m_pSixthResultMinTenth->SetText(SixthResultMinTenth);
+		m_pSixthResultMinOneth->SetText(SixthResultMinOneth);
+		m_pSixthResultMinColon->SetText(":");
+		m_pSixthResultSecTenth->SetText(SixthResultSecTenth);
+		m_pSixthResultSecOneth->SetText(SixthResultSecOneth);
+		m_pSixthResultSecColon->SetText(":");
+		m_pSixthResultDotMilth->SetText(SixthResultDotMilth);
+		m_pSixthResultDotTenth->SetText(SixthResultDotTenth);
+		m_pSixthResultDotOneth->SetText(SixthResultDotOneth);
+	}
 }
 
 void InGameUI::LinkCarPt(cCar * car)

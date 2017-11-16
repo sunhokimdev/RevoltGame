@@ -72,7 +72,7 @@ private:
 	SYNTHESIZE(float, m_LabTimeCount, LabTimeCount); //현제 렙 시간
 	SYNTHESIZE(float, m_bastLabTimeCount, BastLabTimeCount);	//가장 짭은 랩 시간
 	SYNTHESIZE(float, m_totlaTimeCount, TotlaTimeCount);		//총 경과된 랩 시간
-
+	SYNTHESIZE(float, m_finishTime, FinishTime);
 
 
 	//m_aICheckBoxID에서 다음 체크박스를 가리키는 방향
@@ -103,6 +103,9 @@ private:
 	bool m_itemEable;
 	int m_itemEableTime;
 
+
+	//wheelrotangle
+	float wheelRotAngle;
 public:
 	cCar();
 	~cCar();
@@ -167,6 +170,7 @@ public:
 private:
 	LPD3DXSPRITE m_pSprite;
 	LPDIRECT3DTEXTURE9 m_pNameTexture;
+	D3DXCOLOR m_textIDColor;
 public:
 	void SetResetNetworkKey();
 	void SetNetworkKey(std::string);

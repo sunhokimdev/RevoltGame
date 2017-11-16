@@ -59,9 +59,9 @@ enum eMaterialTag
 	E_PHYSX_MATERIAL_NONE = 0 // 존재하지 않은 제질
 	, E_PHYSX_MATERIAL_MAP
 	, E_PHYSX_MATERIAL_CAR
-	, E_PHYSX_MATERIAL_03
-	, E_PHYSX_MATERIAL_04
-	, E_PHYSX_MATERIAL_05
+	, E_PHYSX_MATERIAL_GRIVATEBALL
+	, E_PHYSX_MATERIAL_WHATEBOMB
+	, E_PHYSX_MATERIAL_ETC
 	, E_PHYSX_MATERIAL_06
 };
 
@@ -125,6 +125,7 @@ struct USERDATA
 
 		/*   김선호   */
 		isMyBomb = false;
+		isFireFakebomb = false;
 	}
 	void Reset()
 	{

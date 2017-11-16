@@ -64,29 +64,21 @@ void cFirework::Update()
 	{
 		NxVec3 force;
 
-		std::cout << m_isTarget << std::endl;
-
 		if (m_isTarget)
 		{
 			D3DXVECTOR3 tar = m_Target;
 			dir = tar - fwPos;
-
-			D3DXVec3Normalize(&dir, &dir);
-
-			force.x = dir.x * 1000;
-			force.y = dir.y * 500;
-			force.z = dir.z * 500;
-
 		}
 		else
 		{
 			dir.y = 1.0f - fwPos.y;
-			D3DXVec3Normalize(&dir, &dir);
-
-			force.x = dir.x * 500;
-			force.y = dir.y * 500;
-			force.z = dir.z * 500;
 		}
+
+		D3DXVec3Normalize(&dir, &dir);
+
+		force.x = dir.x * 500;
+		force.y = dir.y * 500;
+		force.z = dir.z * 500;
 
 		m_pPhysX->pPhysX->m_pActor->addForce(force);
 	}
@@ -155,9 +147,9 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	
 	NxVec3 force;
 
-	force.x = angle.x * 50;
-	force.y = 2000;
-	force.z = angle.z * 50;
+	force.x = angle.x * 100;
+	force.y = 1500;
+	force.z = angle.z * 100;
 	
 	g_pSoundManager->Play("firefire.wav", 0.8f, pos);
 
@@ -173,8 +165,8 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	// 초기화 부분
 	if (m_isInit)
 	{
-		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_CAPSULE, m_pPhysX->pos, NULL, NxVec3(0.5f, 1.5f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
-		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(2.5f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
+		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_CAPSULE, m_pPhysX->pos, NULL, NxVec3(0.5f, 1.5f, 0.0f), E_PHYSX_MATERIAL_ETC, m_pUser);
+		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(2.5f, 0.0f, 0.0f), E_PHYSX_MATERIAL_ETC, m_pUser);
 	
 		m_pPhysX->pTrigger->m_pActor->putToSleep();
 		m_pPhysX->pTrigger->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);
