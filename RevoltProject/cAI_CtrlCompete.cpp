@@ -16,8 +16,6 @@ cAI_CtrlCompete::cAI_CtrlCompete()
 	PickupValue = 100.0f;
 	CarsValue = 500.0f;
 	Competitive = 0.5f;
-
-	pVecItem = &g_pItemManager->m_vecItem;
 }
 
 
