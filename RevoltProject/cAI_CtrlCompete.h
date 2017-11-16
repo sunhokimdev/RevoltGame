@@ -11,8 +11,6 @@ public:
 	D3DXVECTOR3 POS_THISPOSDIR;
 	D3DXVECTOR3 POS_CARPOSDIR;
 
-	std::vector<cItem*>* pVecItem;
-	
 	float maxDistance;
 	
 	cPickUp* closePickup;

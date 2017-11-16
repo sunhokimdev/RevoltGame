@@ -173,8 +173,8 @@ void cFirework::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	// 초기화 부분
 	if (m_isInit)
 	{
-		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_CAPSULE, m_pPhysX->pos, NULL, NxVec3(0.5f, 1.5f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
-		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(2.5f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
+		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_CAPSULE, m_pPhysX->pos, NULL, NxVec3(0.5f, 1.5f, 0.0f), E_PHYSX_MATERIAL_ETC, m_pUser);
+		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(2.5f, 0.0f, 0.0f), E_PHYSX_MATERIAL_ETC, m_pUser);
 	
 		m_pPhysX->pTrigger->m_pActor->putToSleep();
 		m_pPhysX->pTrigger->m_pActor->raiseActorFlag(NX_AF_DISABLE_COLLISION);

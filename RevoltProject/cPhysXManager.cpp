@@ -62,8 +62,8 @@ BOOL cPhysXManager::InitNxPhysX()
 		NxMaterialDesc material;
 		material.setToDefault();
 		material.restitution = 0.3;
-		material.staticFriction = 0.5f;
-		material.dynamicFriction = 0.3f;
+		material.staticFriction = 10.f;
+		material.dynamicFriction = 8.f;
 		m_pNxScene->createMaterial(material);
 
 	}
@@ -71,32 +71,32 @@ BOOL cPhysXManager::InitNxPhysX()
 		NxMaterialDesc material;
 		material.setToDefault();
 		material.restitution = 0.3f;
+		material.staticFriction = 2.f;
+		material.dynamicFriction = 1.f;
+		m_pNxScene->createMaterial(material);
+	}
+	E_PHYSX_MATERIAL_GRIVATEBALL; {
+		NxMaterialDesc material;
+		material.setToDefault();
+		material.restitution = 1.0f;
+		material.staticFriction = 0.f;
+		material.dynamicFriction = 0.f;
+		m_pNxScene->createMaterial(material);
+	}
+	E_PHYSX_MATERIAL_WHATEBOMB; {
+		NxMaterialDesc material;
+		material.setToDefault();
+		material.restitution = 0.5f;
 		material.staticFriction = 5.f;
 		material.dynamicFriction = 3.f;
 		m_pNxScene->createMaterial(material);
 	}
-	E_PHYSX_MATERIAL_03; {
+	E_PHYSX_MATERIAL_ETC; {
 		NxMaterialDesc material;
 		material.setToDefault();
-		material.restitution = 0.6f;
+		material.restitution = 0.3f;
 		material.staticFriction = 10.f;
-		material.dynamicFriction = 8.f;
-		m_pNxScene->createMaterial(material);
-	}
-	E_PHYSX_MATERIAL_04; {
-		NxMaterialDesc material;
-		material.setToDefault();
-		material.restitution = 0.6f;
-		material.staticFriction = 10.f;
-		material.dynamicFriction = 8.f;
-		m_pNxScene->createMaterial(material);
-	}
-	E_PHYSX_MATERIAL_05; {
-		NxMaterialDesc material;
-		material.setToDefault();
-		material.restitution = 0.6f;
-		material.staticFriction = 10.f;
-		material.dynamicFriction = 8.f;
+		material.dynamicFriction = 10.f;
 		m_pNxScene->createMaterial(material);
 	}
 	E_PHYSX_MATERIAL_06; {
@@ -839,14 +839,15 @@ NxVehicle* cPhysXManager::createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERD
 	{
 		boxShapes[0].dimensions.set(0.65, 0.1f, 0.3f);
 		boxShapes[0].localPose.t.set(0.f, 0.3f, 0.f);
-		boxShapes[0].materialIndex = 1;
+		boxShapes[0].materialIndex = E_PHYSX_MATERIAL_CAR;
 		vehicleDesc.carShapes.pushBack(&boxShapes[0]);
 
 		boxShapes[1].dimensions.set(0.3, 0.1f, 0.25f);
 		boxShapes[1].localPose.t.set(-0.1f, 0.4, 0.f);
-		boxShapes[1].materialIndex = 1;
+		boxShapes[1].materialIndex = E_PHYSX_MATERIAL_CAR;
 		vehicleDesc.carShapes.pushBack(&boxShapes[1]);
 	}
+	;
 
 	vehicleDesc.position = pos;
 	vehicleDesc.mass = 1000;//monsterTruck ? 12000 : 

@@ -123,8 +123,8 @@ void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	// 초기화 부분
 	if (m_isInit)
 	{
-		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
-		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(2.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_CAR, m_pUser);
+		m_pPhysX->pPhysX->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(1.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_WHATEBOMB, m_pUser);
+		m_pPhysX->pTrigger->m_pActor = MgrPhysX->CreateActor(NX_SHAPE_SPHERE, m_pPhysX->pos, NULL, NxVec3(2.0f, 0.0f, 0.0f), E_PHYSX_MATERIAL_WHATEBOMB, m_pUser);
 		
 		NxVec3 v = m_pPhysX->pPhysX->m_pActor->getGlobalPosition();
 
