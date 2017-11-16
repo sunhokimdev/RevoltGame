@@ -734,7 +734,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			if (!pUserData1->isFireGravity)
 			{
 				otherShape.getActor().addForce(NxVec3(0, 900000, 0));
-				otherShape.getActor().addTorque(NxVec3(5.0f, 1.0f, 1.5f));
+				otherShape.getActor().addLocalTorque(NxVec3((1000000 + rand() % 400000), (1000000 + rand() % 400000), (1000000 + rand() % 400000)));
 				printf("데이터 충돌\n");
 			}
 		}
@@ -743,7 +743,7 @@ void TriggerCallback::onTrigger(NxShape & triggerShape, NxShape & otherShape, Nx
 			if (!pUserData0->isFireGravity)
 			{
 				triggerShape.getActor().addForce(NxVec3(0, 900000, 0));
-				triggerShape.getActor().addTorque(NxVec3(5.0f, 1.0f, 1.5f));
+				triggerShape.getActor().addLocalTorque(NxVec3((1000000 + rand() % 400000), (1000000 + rand() % 400000), (1000000 + rand() % 400000)));
 				printf("데이터 충돌\n");
 			}
 		}

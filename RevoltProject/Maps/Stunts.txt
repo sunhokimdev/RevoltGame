@@ -1,0 +1,36 @@
+//Revolt Scene File
+//Market2
+//Date : 2017-10-24
+
+Map Stuns
+
+Object
+Tag 0
+Name Check_Box_1
+ID 0
+Position 1.79541 0.499533 3.58082
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
+Object
+Tag 0
+Name Check_Box_2
+ID 0
+Position -6.97041 0.5 5.90561
+Scale 1 1 1
+Rotation 0 0 1
+X_Actor 0
+X_Type 2
+X_Option 1 1 0
+X_Pos 0 0 0
+X_Size 1 1 1
+X_FXU32_[9] 1 0 0 0 1 0 0 0 1
+#
+
