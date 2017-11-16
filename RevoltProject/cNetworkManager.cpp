@@ -5,18 +5,21 @@
 cNetworkManager::cNetworkManager()
 	: m_isNextStage(false)
 {
-	memset(m_vecUserIP, 0, sizeof(ST_NETUSER) * USER_SIZE);
-	for (int i = 0; i < USER_SIZE; i++)
+	for (int i = 0; i < 20; i++)
 	{
-		m_vecUserIP[i].IsUse = false;
-		m_vecUserIP[i].IsReady = false;
-		m_vecUserIP[i].index = 0;
+		ST_NETUSER netUser;
+		netUser.IsReady = false;
+		netUser.IsUse = false;
+		m_vecUserIP.push_back(netUser);
 	}
 }
 
 cNetworkManager::~cNetworkManager()
 {
 	Release();
+
+	m_vecUserIP.clear();
+	m_vecMyIP.clear();
 }
 
 void cNetworkManager::Start()
@@ -54,14 +57,6 @@ void cNetworkManager::Start()
 
 void cNetworkManager::Release()
 {
-	memset(m_vecUserIP, 0, sizeof(ST_NETUSER) * USER_SIZE);
-	for (int i = 0; i < USER_SIZE; i++)
-	{
-		m_vecUserIP[i].IsUse = false;
-		m_vecUserIP[i].IsReady = false;
-		m_vecUserIP[i].index = 0;
-	}
-
 	m_user.index = 0;
 	m_user.IsReady = false;
 	m_user.IsUse = false;
@@ -103,13 +98,13 @@ bool cNetworkManager::RecvMsg()
 		sIP = strtok((char*)m_msg.c_str(), "&#!");
 		sIndex = strtok(NULL, "&#!");
 
-		printf("%s %s\n", sIP.c_str(),sIndex.c_str());
-
-		if(sIP.c_str() != NULL && sIndex.c_str() != NULL)
+		if (sIP.c_str() != NULL && sIndex.c_str() != NULL)
+		{
 			m_vecUserIP[atoi(sIndex.c_str())].userIP = sIP;
-
-		if (m_user.userIP == sIP)
-			m_user.index = atoi(sIndex.c_str());
+			m_vecUserIP[atoi(sIndex.c_str())].IsUse = false;
+			m_vecUserIP[atoi(sIndex.c_str())].IsReady = false;
+			m_vecUserIP[atoi(sIndex.c_str())].index = atoi(sIndex.c_str());
+		}
 
 		SendClientData();
 
@@ -119,8 +114,7 @@ bool cNetworkManager::RecvMsg()
 	else if (m_msg.find("@") != -1 && !GetIsInGameNetwork())
 	{
 		ST_NETUSER netUser;
-
-		printf("%s\n", m_msg.c_str());
+		int index = 0;
 
 		sIP = strtok((char*)m_msg.c_str(), "@#");
 		sIndex = strtok(NULL, "@");
@@ -132,10 +126,12 @@ bool cNetworkManager::RecvMsg()
 		netUser.index = atoi(sIndex.c_str());
 		netUser.userID = sUserID;
 		netUser.carName = sCarName;
-		netUser.IsReady = false;
+		netUser.IsReady = atoi(sReady.c_str());
 		netUser.IsUse = true;
-		//
+
 		m_vecUserIP[netUser.index] = netUser;
+
+		printf("%s %s\n", sIP.c_str(), sIndex.c_str());
 
 		return false;
 	}
@@ -185,6 +181,7 @@ void cNetworkManager::SendClientData()
 		"@" + m_user.userID + 
 		"@" + m_user.carName +
 		"@" + std::to_string(m_user.IsReady);
+
 	SendMsg(str.c_str());
 }
 
@@ -242,6 +239,12 @@ void cNetworkManager::SetClientPosition(NxVec3 v)
 std::string cNetworkManager::GetClientPosition()
 {
 	return m_vPosition;
+}
+
+void cNetworkManager::SetClientReadyReset()
+{
+	for (int i = 0;i < USER_SIZE;i++)
+		m_vecUserIP[i].IsReady = false;
 }
 
 sockaddr_in cNetworkManager::GetDefaultMyIP()

@@ -21,7 +21,7 @@ LPDIRECT3DTEXTURE9 TextureManager::GetTexture(char * szFullPath)
 			);
 
 		if (FAILED(hok))
-			MessageBoxA(g_hWnd, szFullPath, ("asdasd"), MB_OK);
+			MessageBoxA(g_hWnd, szFullPath, ("텍스쳐없음"), MB_OK);
 	}
 	return m_mapTexture[szFullPath];
 }

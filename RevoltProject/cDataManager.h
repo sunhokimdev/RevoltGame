@@ -16,8 +16,19 @@ public:
 
 	}
 
+	void Reset()
+	{
+		mapName = "";
+		for (int i = 0; i < vecPlayerData.size(); i++)
+		{
+			SAFE_DELETE(vecPlayerData[i]);
+		}
+		vecPlayerData.clear();
+	}
+
 	void Destroy()
 	{
+		Reset();
 
 	}
 

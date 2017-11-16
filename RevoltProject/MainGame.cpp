@@ -74,13 +74,7 @@ void MainGame::Update()
 	SAFE_UPDATE(g_pItemManager);
 
 	//PhysX 시뮬 런
-	//g_pTimeManager->GetElapsedTime());//
-	//	MgrPhysXScene->simulate((1.f/60.f));	//프레임 지정
-
-	MgrPhysXScene->simulate((float)(1.f / 60.f));	//프레임 지정
-	MgrPhysXScene->flushStream();
-	MgrPhysXScene->fetchResults(NX_RIGID_BODY_FINISHED, true);
-	//	MgrPhysXScene->checkResults(NX_RIGID_BODY_FINISHED, true);
+	SAFE_UPDATE(g_pPhysX);
 
 	//PhysX와 정보 동기화
 	if (g_SceneManager) g_SceneManager->LastUpdate();
@@ -155,5 +149,8 @@ void MainGame::SetAddSound()
 	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", "skid_normal.3", true, true);
 	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", "skid_normal.4", true, true);
 	g_pSoundManager->LoadSound("Sound", "skid_normal.wav", "skid_normal.5", true, true);
-
+	
+	g_pSoundManager->LoadSound("Sound", "The Rockafeller Skank.mp3", "BGM_RACE", true,false);
+	g_pSoundManager->LoadSound("Sound", "01 Nitty Gritty.mp3", "BGM_LOBBY", true, false);
+	
 }

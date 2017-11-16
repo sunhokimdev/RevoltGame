@@ -13,6 +13,7 @@
 #define KEY_CAR_FLIP	'F'
 #define KEY_TIME_INFO	VK_F1
 
+
 class KeyManager
 {
 private:

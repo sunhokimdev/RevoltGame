@@ -32,6 +32,7 @@ class cCar;
 #define  g_pPhysXSDK	MgrPhysXSDK		
 #define  g_pPhysXData	MgrPhysXData	
 
+#define IS_DEBUG_RENDER cPhysXManager::GetInstance()->m_IS_DEBUG_RENDER
 
 #define RAYCAST			MgrPhysX->RaycastClosestShape
 
@@ -45,6 +46,7 @@ enum ePhysXTag
 	, E_PHYSX_TAG_FIREWORK
 	, E_PHYSX_TAG_WHATEBOMB
 	, E_PHYSX_TAG_MYBOMB
+	, E_PHYSX_TAG_FAKEBOMB
 	, E_PHYSX_TAG_METALBALL
 	, E_PHYSX_TAG_GRIVATEBALL
 	, E_PHYSX_TAG_TRACK
@@ -77,6 +79,7 @@ struct PHYSXDATA
 
 struct USERDATA
 {
+	
 	ePhysXTag USER_TAG;
 	NxU32 UserPointValue;
 	std::vector<NxU32> TargetPointValue;
@@ -93,9 +96,9 @@ struct USERDATA
 
 	/*   김선호 작업   */
 	bool isMyBomb;
-	bool isFirework;
-	bool isFireFirework;
-	bool isFireFireworkCollision;
+	bool isFireGravity;
+	bool isFireFakebomb;			
+	bool isFakebombCollision;		//	페이크 폭탄과 충돌할 시
 	NxVec3* m_pCarPosion;
 
 	USERDATA(ePhysXTag tag)
@@ -122,9 +125,6 @@ struct USERDATA
 
 		/*   김선호   */
 		isMyBomb = false;
-		isFirework = false;
-		isFireFirework = false;
-		isFireFireworkCollision = false;
 	}
 	void Reset()
 	{
@@ -203,6 +203,7 @@ public:
 	void Update();
 	void Destroy();
 
+	bool m_IS_DEBUG_RENDER;
 	void Render();
 
 	NxTriangleMeshShapeDesc CreateTringleMesh(ID3DXMesh* pMesh, D3DXMATRIXA16* matS = NULL);
@@ -254,5 +255,7 @@ public:
 
 	NxVehicle* createCarWithDesc(NxVec3 pos, stCARSPEC carspec, USERDATA* pUserData, bool frontWheelDrive, bool backWheelDrive);
 
-
+	//CCD 는 사각형
+	NxActor* CreateActorToCCD(NxVec3 position, NxF32* mat, NxVec3 sizeValue, eMaterialTag materialTag = E_PHYSX_MATERIAL_NONE, USERDATA* pUserData = NULL,
+		bool IsTrigger = false, bool isStatic = false, bool isGravaty = true);
 };

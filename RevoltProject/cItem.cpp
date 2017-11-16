@@ -56,11 +56,14 @@ void cItem::Destroy()
 
 void cItem::SetActorGroup(NxActor * actor, NxCollisionGroup group)
 {
-	NxU32 nbShapes = actor->getNbShapes();
-	NxShape** shapes = (NxShape**)actor->getShapes();
+	
+	g_pPhysX->SetActorGroup(actor , group);
 
-	while (nbShapes--)
-	{
-		shapes[nbShapes]->setGroup(group);
-	}
+//	NxU32 nbShapes = actor->getNbShapes();
+//	NxShape** shapes = (NxShape**)actor->getShapes();
+//
+//	while (nbShapes--)
+//	{
+//		shapes[nbShapes]->setGroup(group);
+//	}
 }

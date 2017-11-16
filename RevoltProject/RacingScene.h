@@ -41,6 +41,7 @@ private:
 	LPD3DXSPRITE m_Sprite;
 
 	bool m_isDrift;
+	bool m_isPlayBGM;
 
 	cSkyBox* m_pSkyBox;
 
@@ -64,8 +65,8 @@ public:
 
 
 //	void CreateCar(int carId) {}
-	void CreateCar(D3DXVECTOR3 setPos, int playerID, std::string carName, bool isAI, bool isUser = false);
-	void CreateCar(int playerID, std::string carName);
+	void CreateCar(D3DXVECTOR3 setPos, int playerID, std::string userName, std::string carName, int trackEndCount, bool isAI, bool isUser = false);
+	//void CreateCar(int playerID, std::string carName);
 	void LinkUI(int playerID);
 	void FindTarget(cCar* MyCar);
 

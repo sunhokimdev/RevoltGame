@@ -6,6 +6,8 @@
 cWbomb::cWbomb()
 	: m_pImapt(NULL)
 	, m_isSleep(false)
+	, m_isSoundFire(false)
+	, m_isSoundBang(false)
 {
 }
 
@@ -62,7 +64,19 @@ void cWbomb::Update()
 	}
 
 	if (!m_isUse && m_pImapt->GetIsUse())
+	{
+		if (!m_isSoundBang)
+		{
+			D3DXVECTOR3 vec = { 
+				m_pPhysX->pPhysX->m_pActor->getGlobalPosition().x,
+				m_pPhysX->pPhysX->m_pActor->getGlobalPosition().y,
+				m_pPhysX->pPhysX->m_pActor->getGlobalPosition().z };
+			g_pSoundManager->Play("puttbang.wav", 1.0f, vec);
+			m_isSoundBang = true;
+		}
 		m_pImapt->Update();
+	}
+		
 
 	m_pPhysX->pTrigger->m_pActor->setGlobalPosition(m_pPhysX->pPhysX->m_pActor->getGlobalPosition());
 }
@@ -89,6 +103,12 @@ void cWbomb::Create(D3DXVECTOR3 angle, D3DXVECTOR3 pos)
 	force.x = angle.x * 10000;
 	force.y = 3000;
 	force.z = angle.z * 10000;
+
+	if (!m_isSoundFire)
+	{
+		g_pSoundManager->Play("wbombfire.wav", 0.8f, pos);
+		m_isSoundFire = true;
+	}
 
 	if (m_isSleep)
 	{

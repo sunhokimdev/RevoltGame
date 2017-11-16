@@ -112,8 +112,9 @@ void Lobby::Update()
 	else if (m_stateLobby == NETWORK_IN_LOBBY)
 	{
 		/*    서버에서 recv가 무한대기에 빠지지 않도록 메시지를 계속해서 보낸다    */
-	
+
 		bool isNext = true;
+		bool isUser = false;
 
 		g_pNetworkManager->SendMsg("#");
 
@@ -129,6 +130,8 @@ void Lobby::Update()
 			{
 				if (g_pNetworkManager->GetIsClientUse(i))
 				{
+					isUser = true;
+
 					if (g_pNetworkManager->GetClientReady(i))
 						m_pInRoom->SetUserText(g_pNetworkManager->GetClientList(i), index, D3DCOLOR_ARGB(255, 255, 0, 0));
 					else
@@ -140,9 +143,9 @@ void Lobby::Update()
 					index++;
 				}
 			}
-			
+
 			// 만약 다음스테이지로 넘어가기 위한 단계라면
-			if (isNext)
+			if (isNext && isUser)
 			{
 				if (m_stateLobby == NETWORK_IN_LOBBY)
 					m_stateLobby = SELECT_MAP_LOBBY;
@@ -163,9 +166,6 @@ void Lobby::Update()
 	{
 		m_mapLobby[m_stateLobby]->m_pObject->Update();
 	}
-
-	KeyUpdate();   // 키 이벤트 갱신 메서드
-		
 }
 
 void Lobby::Render()
@@ -173,23 +173,23 @@ void Lobby::Render()
 	if (m_mapLobby[m_stateLobby]->m_pObject)
 		m_mapLobby[m_stateLobby]->m_pObject->Render(m_pSprite);
 
-	if(m_stateLobby > INTRO3)
+	if (m_stateLobby > INTRO3)
 		m_pSelectMap->Render(m_pSprite);
 }
 
 void Lobby::Destroy()
 {
-	
+
 
 	SAFE_RELEASE(m_pSprite);
 	SAFE_RELEASE(m_pObjMesh);
 
-	if(m_pSelectMap)
+	if (m_pSelectMap)
 	{
 		m_pSelectMap->Destroy();
 		SAFE_DELETE(m_pSelectMap);
 	}
-	
+
 	if (m_multiLobby)
 	{
 		//m_multiLobby->Destroy();
@@ -208,19 +208,19 @@ void Lobby::Destroy()
 		//m_pSelectCarLobbby->Destroy();
 		SAFE_DELETE(m_pSelectCarLobbby);
 	}
-	
+
 	if (m_pViewCarLobby)
 	{
 		//m_pViewCarLobby->Destroy();
 		SAFE_DELETE(m_pViewCarLobby);
 	}
-	
+
 	if (m_pInRoom)
 	{
 		//m_pInRoom->Destroy();
 		SAFE_DELETE(m_pInRoom);
 	}
-	
+
 	if (m_pfileList)
 	{
 		//m_pfileList->Destroy();
@@ -252,7 +252,7 @@ void Lobby::KeyUpdate()
 
 		if (m_stateLobby == START_LOBBY)
 		{
-	
+
 		}
 		else
 		{
@@ -268,7 +268,7 @@ void Lobby::KeyUpdate()
 
 		if (m_stateLobby == START_LOBBY)
 		{
-	
+
 		}
 		else
 		{
@@ -371,14 +371,48 @@ void Lobby::KeyUpdate()
 			//씬변경
 
 			g_pDataManager->mapName = m_pfileList->GetMapName();
+			index = 0;
+			std::string AIName = "AI";
+			std::string CarName;
+			bool isUser;
 
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", m_pfileList->GetCarName(), false));
-			g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc1", true));
-			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
-			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
-			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
-			//g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
-		
+			if (g_pNetworkManager->GetIsNetwork())
+			{
+				for (int i = 0; i < USER_SIZE; i++)
+				{
+					if (g_pNetworkManager->GetIsClientUse(i))
+					{
+						if (g_pNetworkManager->GetClientIP(i) == g_pNetworkManager->GetUserIP())
+						{
+							isUser = false;
+							g_pNetworkManager->SetCarIndex(index);
+						}
+						else
+						{
+							isUser = true;
+						}
+
+						g_pDataManager->vecPlayerData.push_back(new cPlayerData("", g_pNetworkManager->GetClientList(i), "tc1", false, isUser));
+						index++;
+					}
+				}
+				for (int i = index; i < 6; i++)
+				{
+					AIName = "AI" + std::to_string((i + 1) % 6);
+					CarName = "tc" + std::to_string((i) % 6);
+					g_pDataManager->vecPlayerData.push_back(new cPlayerData("", AIName, CarName, true));
+				}
+			}
+			else
+			{
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", m_pfileList->GetCarName(), false));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc1", true));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc2", true));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc3", true));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc4", true));
+				g_pDataManager->vecPlayerData.push_back(new cPlayerData("", "", "tc5", true));
+			}
+
 			g_SceneManager->ChangeScene("Race");
 
 			return;
@@ -453,7 +487,7 @@ void Lobby::KeyUpdate()
 		{
 			//g_pSoundManager->Play("menuNext.wav", 1.0f);
 			g_pSoundManager->Play("menuPrev.wav", 0.6f);
-			
+
 			m_time = 0.0f;
 			m_select = 0;
 
@@ -477,6 +511,9 @@ void Lobby::KeyUpdate()
 				if (g_pNetworkManager->GetIsNetwork())
 				{
 					m_stateLobby = NETWORK_IN_LOBBY;
+					g_pNetworkManager->SetIsReady(false);
+					g_pNetworkManager->SetClientReadyReset();
+					m_pInRoom->SetResetUserNameColor();
 					m_time = 0.0f;
 					m_select = 0;
 					m_leftAndrightSelect = 0;
@@ -499,7 +536,6 @@ void Lobby::KeyUpdate()
 		{
 			g_pNetworkManager->SetUserReady();
 			g_pNetworkManager->SendClientData();
-
 		}
 	}
 
@@ -517,10 +553,8 @@ void Lobby::TimeUpdate()
 	{
 		m_time = 0.0f;
 
-		if (m_stateLobby == INTRO1)
-			m_stateLobby = INTRO2;
-		else if (m_stateLobby == INTRO2)
-			m_stateLobby = INTRO3;
+		if (m_stateLobby == INTRO1)			m_stateLobby = INTRO2;
+		else if (m_stateLobby == INTRO2)	m_stateLobby = INTRO3;
 		else if (m_stateLobby == INTRO3)
 		{
 			m_stateLobby = START_LOBBY;
