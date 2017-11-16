@@ -94,7 +94,8 @@ private:
 
 	//Rank°ü·Ã
 	float m_fRankPoint;
-	
+	SYNTHESIZE(int, m_nCurRank, CurRank);
+
 public:
 	cCar();
 	~cCar();
