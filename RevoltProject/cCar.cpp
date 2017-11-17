@@ -265,7 +265,7 @@ void cCar::CreateItem()
 			m_eHoldItem = eITEM_LIST(rand() % (eITEM_LIST::ITEM_LAST));
 
 			/*TEST*/
-			m_eHoldItem = eITEM_LIST::ITEM_FIREWORK;
+			//m_eHoldItem = eITEM_LIST::ITEM_FIREWORK;
 
 
 			if (m_eHoldItem) break;

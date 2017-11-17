@@ -584,7 +584,6 @@ void InGameUI::Update()
 //		return;
 	}
 
-	UpdateRank();
 	UpdateSpeed();
 	UpdateLabCount();
 
@@ -593,7 +592,11 @@ void InGameUI::Update()
 	
 
 	int nTrackCount = m_pRacingScene->GettrackEndCount();
-	if (m_LabCnt > -1 && m_LabCnt < nTrackCount)	UpdateLabTime();
+	if (m_LabCnt > -1 && m_LabCnt < nTrackCount)
+	{
+		UpdateLabTime();
+		UpdateRank();
+	}
 
 	if (m_LabCnt >= nTrackCount)
 	{
